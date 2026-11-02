@@ -7,6 +7,19 @@ Site pédagogique pour apprendre l’électricité domestique : leçons, schéma
 - Version de test (hébergée sur le NAS via un tunnel Cloudflare) : https://satisfactory-quarter-determination-david.trycloudflare.com — cette adresse change à chaque redémarrage du tunnel.
 - Ancienne version (privée, claude.ai) : https://claude.ai/artifact/S6ikzc59nVyA9KQGuzFv2d
 
+## Branche `refonte-design`
+
+Refonte visuelle complète, mêmes fonctionnalités. Thème « coffret électrique » :
+
+- en-tête en rangée de modules sur un rail DIN ; chaque onglet a un petit levier qui monte et passe au jaune sur la page active ;
+- accueil réduit au schéma interactif et à un sommaire en étiquettes de départ (Q1 à Q5) ;
+- polices Barlow Condensed (titres, étiquettes), Barlow (texte) et JetBrains Mono (repères) ;
+- angles presque droits, traits fins, presque pas d’ombres ; titres d’encadrés en étiquettes capitales ;
+- textes décoratifs retirés (surtitres, introductions, cartes « Le parcours », bloc « Prochaine étape ») ;
+- la couche de style est à la fin du `<style>` (« Refonte coffret électrique ») et surcharge les règles d’origine.
+
+Aperçu de la branche : https://raw.githack.com/Valar207/Valelec/refonte-design/site/index.html
+
 ## Contenu du dossier
 
 ```

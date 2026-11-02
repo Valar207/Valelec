@@ -9,30 +9,30 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout : pages papier, schémas sur tableau sombre quadrillé ; un seul moteur de simulation pour tout le site */
 :root{
-  --paper:#F3EFE6; --paper-2:#FBF9F4; --paper-3:#EDE7DA; --line:#D9D3C5; --hover:#E7E1D3;
-  --ink:#17191E; --ink-2:#3B3F47; --muted:#5B5F68; --accent:#B5341F; --accent-2:#8A2414;
-  --inv-bg:#17191E; --inv-fg:#F3EFE6; --inv-muted:#C9D1DA; --inv-accent:#FFD84A; --sel:#FFF3C2;
-  --ok-bg:#E3F1E1; --ok-fg:#1F4D22; --bad-bg:#F9E2DC; --bad-fg:#6B1A0E; --warn-bg:#FBEFC9; --warn-fg:#5A4200; --info-bg:#EDE7DA; --info-fg:#2A2D33;
-  --board:#111A24; --board-2:#0B1219; --yellow:#FFD84A;
-  --f-display:'Bricolage Grotesque', 'Avenir Next', system-ui, sans-serif;
-  --f-body:'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
-  --f-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --paper:#E4E3DD; --paper-2:#F7F6F2; --paper-3:#D9D7CF; --line:#C3C0B5; --hover:#EEEDE8;
+  --ink:#141414; --ink-2:#383836; --muted:#686761; --accent:#1C55A0; --accent-2:#123E78;
+  --inv-bg:#141414; --inv-fg:#F7F6F2; --inv-muted:#B9B8B1; --inv-accent:#F5C400; --sel:#FFF1B8;
+  --ok-bg:#DDEEDB; --ok-fg:#1D4A20; --bad-bg:#F6DDD6; --bad-fg:#6A1A0E; --warn-bg:#F8EDC4; --warn-fg:#574000; --info-bg:#E4E3DD; --info-fg:#2A2A28;
+  --board:#111A24; --board-2:#0B1219; --yellow:#FFD84A; --lever:#F5C400;
+  --f-display:'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --f-body:'Barlow', 'Segoe UI', system-ui, sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#15171B; --paper-2:#1C1F24; --paper-3:#252930; --line:#30353D; --hover:#272B32;
-  --ink:#ECE7DC; --ink-2:#C6C1B6; --muted:#A09C93; --accent:#FF8E70; --accent-2:#FFB49F;
-  --inv-bg:#ECE7DC; --inv-fg:#15171B; --inv-muted:#3B3F47; --inv-accent:#8A2414; --sel:#3A3420;
-  --ok-bg:#1C3320; --ok-fg:#BFE5C2; --bad-bg:#3C1D17; --bad-fg:#FFC9BC; --warn-bg:#3A3013; --warn-fg:#F5DE9A; --info-bg:#252930; --info-fg:#D9D4CA;
+  --paper:#131415; --paper-2:#1B1D1F; --paper-3:#24272A; --line:#34383C; --hover:#222528;
+  --ink:#ECEBE6; --ink-2:#C3C2BC; --muted:#8E8D87; --accent:#86B4F2; --accent-2:#B0CDF6;
+  --inv-bg:#ECEBE6; --inv-fg:#131415; --inv-muted:#46474A; --inv-accent:#1C55A0; --sel:#3A3418;
+  --ok-bg:#1B321E; --ok-fg:#BDE3C0; --bad-bg:#3B1C16; --bad-fg:#FFC8BB; --warn-bg:#382F12; --warn-fg:#F3DC98; --info-bg:#24272A; --info-fg:#D6D5CF;
   color-scheme:dark}}
 :root[data-theme="dark"]{
-  --paper:#15171B; --paper-2:#1C1F24; --paper-3:#252930; --line:#30353D; --hover:#272B32;
-  --ink:#ECE7DC; --ink-2:#C6C1B6; --muted:#A09C93; --accent:#FF8E70; --accent-2:#FFB49F;
-  --inv-bg:#ECE7DC; --inv-fg:#15171B; --inv-muted:#3B3F47; --inv-accent:#8A2414; --sel:#3A3420;
-  --ok-bg:#1C3320; --ok-fg:#BFE5C2; --bad-bg:#3C1D17; --bad-fg:#FFC9BC; --warn-bg:#3A3013; --warn-fg:#F5DE9A; --info-bg:#252930; --info-fg:#D9D4CA;
+  --paper:#131415; --paper-2:#1B1D1F; --paper-3:#24272A; --line:#34383C; --hover:#222528;
+  --ink:#ECEBE6; --ink-2:#C3C2BC; --muted:#8E8D87; --accent:#86B4F2; --accent-2:#B0CDF6;
+  --inv-bg:#ECEBE6; --inv-fg:#131415; --inv-muted:#46474A; --inv-accent:#1C55A0; --sel:#3A3418;
+  --ok-bg:#1B321E; --ok-fg:#BDE3C0; --bad-bg:#3B1C16; --bad-fg:#FFC8BB; --warn-bg:#382F12; --warn-fg:#F3DC98; --info-bg:#24272A; --info-fg:#D6D5CF;
   color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -424,12 +424,104 @@ tr:last-child td{border-bottom:0}
   .sim-nav>div{display:contents}
   .sim-nav h2{grid-column:1/-1;margin-top:8px}
 }
+/* ================= Refonte « coffret électrique » =================
+   Modules sur rail DIN, étiquettes de repérage, angles presque droits, traits fins, peu d’ombres. */
+body{font-size:16.5px;line-height:1.55}
+.eyebrow,.sim-hint,#sim-group,#ex-sub{display:none!important}
+.display{font-family:var(--f-display);font-weight:700;letter-spacing:-.005em;line-height:.95}
+.lead{font-size:17px;max-width:62ch}
+h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:.005em}
+.box h2,.props-col h2,.room h3,.symcard h3,caption{font:600 13px/1.2 var(--f-display);letter-spacing:.09em;text-transform:uppercase}
+/* angles presque droits partout */
+.btn,.btn.sm,.card,.box,.symcard,.symcard .tilebd,.room,.lab-ctl,.tbl-box,.side,.side .ic,.extab,.extab .num,.ctl,.tool,.tgroup,.selectc,.pal,.pal .ic,.app,.seg2,.tile,.board,.stage .board,.scroller,.hint,.refbadge,.diag li,.cchip,.metric,.chip,.cta,.safety,.toc a,.snd{border-radius:3px}
+.stage .board,.board{box-shadow:none;outline:1px solid #000;outline-offset:-1px}
+.card,.box,.symcard,.room,.lab-ctl,.tbl-box,.side,.extab,.ctl,.app,.cchip,.selectc{border-width:1px}
+
+/* En-tête : rangée de modules sur un rail DIN */
+.top{background:var(--paper-2);border-bottom:0}
+.top::after{content:"";display:block;height:7px;background:repeating-linear-gradient(90deg,var(--line) 0 22px,transparent 22px 30px),var(--paper-3);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.top .wrap{padding-block:8px}
+.brand b{font:700 24px/1 var(--f-display);letter-spacing:.06em;text-transform:uppercase}
+.brand b span{color:inherit}
+.nav{gap:4px}
+.nav a{position:relative;padding:9px 12px 9px 27px;border:1px solid var(--line);border-radius:3px;background:var(--paper);font:600 15px/1.1 var(--f-display);letter-spacing:.06em;text-transform:uppercase;transition:border-color .15s,background .15s}
+.nav a::before{content:"";position:absolute;left:10px;top:50%;width:7px;height:14px;margin-top:-4px;border-radius:2px;background:var(--line);transition:transform .15s,background .15s}
+.nav a:hover{border-color:var(--ink);transform:none;box-shadow:none;background:var(--paper-2)}
+.nav a:hover::before{background:var(--muted)}
+.nav a[aria-current="page"]{background:var(--paper-2);color:var(--ink);border-color:var(--ink)}
+.nav a[aria-current="page"]::before{background:var(--lever);transform:translateY(-6px);box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.snd{width:38px;height:38px;border:1px solid var(--line);background:var(--paper)}
+
+/* Boutons */
+.btn{min-height:46px;padding:0 20px;border:1px solid var(--ink);font:600 16px var(--f-display);letter-spacing:.06em;text-transform:uppercase}
+.btn.sm{min-height:38px;font-size:14px}
+.btn.pri{background:var(--ink);color:var(--paper-2);border-color:var(--ink)}
+.btn.pri:hover{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
+.ctl{font:600 14px var(--f-body);border-color:var(--line)}
+.ctl:hover{border-color:var(--ink);background:var(--paper-2)}
+.ctl[aria-pressed="true"]{background:var(--ink);color:var(--paper-2);border-color:var(--ink)}
+
+/* Accueil */
+.home{display:grid;gap:40px;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:end;padding-block:clamp(36px,6vw,72px) 36px}
+.home h1{margin:0 0 26px;font-size:clamp(54px,8vw,110px);text-transform:uppercase;line-height:.88}
+.home-fig{margin:0;display:flex;flex-direction:column;gap:12px}
+.home-fig figcaption{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;font:500 14px var(--f-mono);color:var(--ink-2)}
+.home-fig figcaption .st{display:inline-flex;align-items:center;gap:10px}
+@media (max-width: 820px){.home{grid-template-columns:minmax(0,1fr);align-items:start}}
+.dir{list-style:none;margin:0 0 72px;padding:0;border-top:1px solid var(--ink)}
+.dir li{border-bottom:1px solid var(--line)}
+.dir a{display:grid;grid-template-columns:64px minmax(0,220px) minmax(0,1fr) 24px;align-items:center;gap:16px;padding:16px 4px;color:var(--ink);text-decoration:none}
+.dir a:hover{background:var(--paper-2);color:var(--ink)}
+.dir .rep{justify-self:start;padding:3px 8px;border:1px solid var(--ink);background:var(--paper-2);font:500 14px var(--f-mono)}
+.dir a:hover .rep{background:var(--lever);border-color:var(--ink);color:#141414}
+.dir b{font:600 24px/1.1 var(--f-display);text-transform:uppercase;letter-spacing:.03em}
+.dir span.d{color:var(--ink-2);font-size:15.5px}
+.dir .go{color:var(--muted)}
+.dir a:hover .go{color:var(--ink)}
+@media (max-width: 640px){.dir a{grid-template-columns:52px minmax(0,1fr) 20px}.dir span.d{grid-column:2/3}.dir .go{grid-row:1;grid-column:3}}
+
+/* Cartes, encadrés, listes */
+.card{background:var(--paper-2)}
+.box{background:var(--paper-2)}
+.box h2{padding-bottom:9px;border-bottom:1px solid var(--line);color:var(--ink)}
+.box.inv{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
+.box.inv h2{color:var(--inv-accent);border-bottom-color:var(--inv-muted)}
+.box ol li i{border-radius:2px}
+.qty{font-family:var(--f-display);font-weight:700;color:var(--accent)}
+.tile{background:var(--ink);color:var(--paper-2)}
+.tile b{font-family:var(--f-display)}
+th{border-bottom:1px solid var(--ink)}
+.toc a{border:1px solid var(--line);background:var(--paper-2);font:600 14px var(--f-display);letter-spacing:.05em;text-transform:uppercase}
+.toc a:hover{border-color:var(--ink)}
+.sec-head h2,.panel-h h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;letter-spacing:.01em}
+.sim-main h1,.ex h1{text-transform:uppercase}
+
+/* Liste des circuits et espaces d’examen : étiquettes de départ */
+.side{min-height:50px;background:var(--paper-2)}
+.side:hover,.extab:hover{transform:none;box-shadow:none;border-color:var(--ink)}
+.side[aria-current="true"],.extab[aria-pressed="true"]{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
+.side[aria-current="true"] .go,.extab[aria-pressed="true"] .go{color:var(--inv-accent)}
+.side[aria-current="true"] .ic,.extab[aria-pressed="true"] .num{box-shadow:0 0 0 2px var(--lever)}
+.sim-nav h2{font:600 12px var(--f-display);letter-spacing:.1em}
+.extab .num{font-family:var(--f-mono);font-weight:500}
+.extab strong{font:600 19px/1.1 var(--f-display);text-transform:uppercase;letter-spacing:.03em}
+
+/* Bac à sable */
+.tgroup{background:transparent;border:1px solid var(--line);padding:1px;gap:1px}
+.tool[aria-pressed="true"]{background:var(--ink);color:var(--paper-2)}
+.pal[aria-pressed="true"]{border-color:var(--ink)}
+.hint{background:var(--ink);color:var(--paper-2)}
+.refbadge{background:var(--ink)}
+
+/* Pied de page */
+footer .wrap{font:500 13px var(--f-mono);color:var(--muted)}
+footer a{color:var(--ink-2)}
 </style>
 
 <header class="top">
   <div class="wrap wide">
     <a class="brand" href="#accueil" aria-label="Valelec, accueil">
-      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="#17191E" style="stroke:var(--line);stroke-width:1.5"/><path d="M7 17 C10 8, 14 8, 17 17 S24 26, 27 17" fill="none" stroke="#FFD84A" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="3" fill="#141414"/><path d="M6 5 L14.5 15 L10 15 L16 27 L26 5" fill="none" stroke="#F5C400" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="miter"/></svg>
       <b>Val<span>elec</span></b>
     </a>
     <nav class="nav" aria-label="Navigation principale">
@@ -446,75 +538,32 @@ tr:last-child td{border-bottom:0}
 <main>
 <!-- ============ ACCUEIL ============ -->
 <div id="page-accueil" data-page="accueil">
-  <div class="wrap hero">
-    <div class="stack">
-      <p class="eyebrow">Électricité domestique · pour débuter</p>
+  <section class="wrap home">
+    <div>
       <h1 class="display">L’électricité, pas à pas.</h1>
-      <p class="lead">Comprends les bases de l’électricité, apprends à lire un schéma, puis manipule des circuits animés : simple allumage, va-et-vient, télérupteur… et dessine les tiens dans le bac à sable.</p>
-      <div class="row">
-        <a class="btn pri" href="#bases">Commencer le parcours <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></a>
-        <a class="btn" href="#bac-a-sable">Dessiner un schéma</a>
-      </div>
+      <div class="row"><a class="btn pri" href="#bases">Commencer</a><a class="btn" href="#bac-a-sable">Bac à sable</a></div>
     </div>
-    <figure style="margin:0;display:flex;flex-direction:column;gap:14px">
-      <div class="board" style="box-shadow:0 30px 60px -30px rgba(17,26,36,.55)">
-        <svg id="hero-svg" class="view" role="img" aria-label="Schéma d’un simple allumage : clique sur l’interrupteur S1 pour allumer la lampe"></svg>
-      </div>
-      <figcaption class="stack" style="display:flex;flex-direction:column;align-items:flex-start;gap:14px">
-        <span class="row mono" style="gap:10px;font-size:14px;color:var(--ink-2)"><span class="sdot" id="hero-dot"></span><span id="hero-status">Circuit ouvert</span></span>
-        <button class="btn sm" id="hero-btn" type="button">Fermer l’interrupteur</button>
-      </figcaption>
+    <figure class="home-fig">
+      <div class="board"><svg id="hero-svg" class="view" role="img" aria-label="Schéma d’un simple allumage : clique sur l’interrupteur S1 pour allumer la lampe"></svg></div>
+      <figcaption><span class="st"><span class="sdot" id="hero-dot"></span><span id="hero-status">Circuit ouvert</span></span><button class="btn sm" id="hero-btn" type="button">Fermer l’interrupteur</button></figcaption>
     </figure>
-  </div>
-
-  <section class="band alt"><div class="wrap pad">
-    <div class="sec-head"><h2 class="display">Le parcours</h2><p>Des premiers volts au tableau électrique. Chaque notion se manipule dans un schéma animé.</p></div>
-    <div class="grid">
-      <a class="card" href="#bases"><span class="eyebrow">Module 1</span><h3>Les bases</h3><p>Tension, intensité, résistance : ce qui se passe vraiment dans un fil.</p><div class="chips"><span class="chip">U · I · R</span><span class="chip">Loi d’Ohm</span><span class="chip">Puissance</span></div></a>
-      <a class="card" href="#symboles"><span class="eyebrow">Module 2</span><h3>Lire un schéma</h3><p>Les symboles normalisés et le code couleur des conducteurs.</p><div class="chips"><span class="chip">Symboles</span><span class="chip">Phase · neutre · terre</span></div></a>
-      <a class="card" href="#schemas"><span class="eyebrow">Module 3</span><h3>Circuits de base</h3><p>Les montages d’éclairage de la maison, à actionner toi-même.</p><div class="chips"><span class="chip">Simple allumage</span><span class="chip">Va-et-vient</span><span class="chip">Double allumage</span></div></a>
-      <a class="card" href="#schemas" data-preset="tele"><span class="eyebrow">Module 4</span><h3>Circuits avancés</h3><p>Commande et puissance : télérupteur, minuterie, contacteur, protections.</p><div class="chips"><span class="chip">Télérupteur</span><span class="chip">Minuterie</span><span class="chip">Court-circuit</span></div></a>
-    </div>
-  </div></section>
-
-  <section class="band"><div class="wrap pad">
-    <div class="sec-head"><h2 class="display">Comprendre, manipuler, dessiner.</h2></div>
-    <div class="ways">
-      <div><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" style="color:var(--accent)"><path d="M8 10 H20 C22 10 22 12 22 12 V36 C22 34 20 33 18 33 H8 Z M36 10 H24 C22 10 22 12 22 12 V36 C22 34 24 33 26 33 H36 Z" class="ico"/></svg><h3>Comprendre</h3><p>Des leçons courtes, chaque notion accompagnée d’un circuit que tu fais varier : la tension monte, le courant accélère, la lampe brille plus fort.</p></div>
-      <div><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" style="color:var(--accent)"><rect x="6" y="14" width="32" height="16" rx="8" class="ico"/><circle cx="30" cy="22" r="5" class="ico"/></svg><h3>Manipuler</h3><p>Actionne interrupteurs et boutons poussoirs : tu vois par où passe le courant, et quels fils restent sous tension.</p></div>
-      <div><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" style="color:var(--accent)"><path d="M6 32 H14 V20 H26 V32 H38" class="ico"/><circle cx="14" cy="20" r="3" class="ico"/><circle cx="26" cy="32" r="3" class="ico"/><path d="M30 8 L36 14 L22 28 L16 28 L16 22 Z" class="ico"/></svg><h3>Dessiner</h3><p>Dans le bac à sable, pose les symboles, relie-les, mets sous tension. Le diagnostic signale courts-circuits et erreurs de câblage.</p></div>
-    </div>
-  </div></section>
-
-  <section class="band dark"><div class="wrap pad" style="display:grid;gap:44px;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr))">
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <h2 class="display" style="margin:0;font-size:clamp(32px,4vw,50px)">Lire l’animation</h2>
-      <p style="margin:0;color:#B7C3D0;max-width:46ch">La couleur du fil dit son rôle, le mouvement dit si le courant passe. En alternatif, le courant change de sens 50 fois par seconde : l’animation montre le sens conventionnel pour suivre le trajet.</p>
-    </div>
-    <ul class="legend">
-      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w ph"/></svg><span><b>Phase</b><small>le fil « chargé »</small></span></li>
-      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w ne"/></svg><span><b>Neutre</b><small>le retour vers le tableau</small></span></li>
-      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w rt"/></svg><span><b>Retour lampe, navettes</b><small>après l’interrupteur</small></span></li>
-      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w pe"/><path d="M4 8 H52" class="w pey"/></svg><span><b>Terre</b><small>protection des personnes</small></span></li>
-      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="cur on"/></svg><span><b>Le courant circule</b><small>tirets jaunes en mouvement</small></span></li>
-      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w ph"/><path d="M4 8 H52" class="cur live"/></svg><span><b>Sous tension</b><small>dangereux, même sans courant</small></span></li>
-    </ul>
-  </div></section>
-
-  <div class="wrap" style="padding-block:64px">
-    <div class="safety">
-      <svg width="46" height="46" viewBox="0 0 48 48" aria-hidden="true" style="color:var(--accent);flex:none"><path d="M24 5 L44 41 H4 Z" class="ico"/><path d="M24 19 V29 M24 34 V35" class="ico"/></svg>
-      <div><h2>La sécurité d’abord</h2><p>Les schémas du site sont pédagogiques. Avant toute intervention sur une installation réelle : coupe le disjoncteur, vérifie l’absence de tension avec un VAT et respecte la norme NF C 15-100, ou fais appel à un électricien qualifié.</p></div>
-    </div>
-  </div>
+  </section>
+  <section class="wrap">
+    <ol class="dir" aria-label="Sommaire">
+      <li><a href="#bases"><span class="rep">Q1</span><b>Les bases</b><span class="d">Tension, intensité, résistance, loi d’Ohm, symboles, couleurs des fils.</span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a href="#schemas"><span class="rep">Q2</span><b>Schémas</b><span class="d">10 circuits à actionner, du simple allumage au contacteur heures creuses.</span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a href="#examen"><span class="rep">Q3</span><b>Examen pratique</b><span class="d">TP-00467 : logement, parties communes, locaux tertiaires.</span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a href="#bac-a-sable"><span class="rep">Q4</span><b>Bac à sable</b><span class="d">Pose les symboles, câble, mets sous tension.</span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a href="#tableaux"><span class="rep">Q5</span><b>Tableaux FR / US</b><span class="d">Le même logement câblé à la française et à l’américaine.</span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+    </ol>
+  </section>
 </div>
 
 <!-- ============ LES BASES ============ -->
 <div id="page-bases" data-page="bases" hidden>
   <div class="wrap" style="padding-top:52px;display:flex;flex-direction:column;gap:20px">
     <p class="eyebrow">Module 1 · Les bases</p>
-    <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:16ch">Tension, intensité, résistance.</h1>
-    <p class="lead">Trois grandeurs suffisent pour comprendre presque tout ce qui se passe dans une installation électrique. Pour les retenir, pense à un tuyau d’eau.</p>
+    <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:16ch;text-transform:uppercase">Tension, intensité, résistance.</h1>
     <nav class="toc" aria-label="Sommaire de la leçon">
       <a href="#grandeurs">1 · Les trois grandeurs</a><a href="#ohm">2 · La loi d’Ohm</a><a href="#puissance">3 · La puissance</a><a href="#symboles">4 · Les symboles</a><a href="#couleurs">5 · Les couleurs des fils</a>
     </nav>
@@ -529,7 +578,7 @@ tr:last-child td{border-bottom:0}
   </section>
 
   <section id="ohm" class="wrap" style="padding-top:80px;scroll-margin-top:90px">
-    <div class="sec-head"><div><p class="eyebrow">2 · Expérience</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La loi d’Ohm : I = U ÷ R</h2></div><p>Fais varier la tension et la résistance. Plus l’intensité est forte, plus le courant défile vite et plus la lampe brille.</p></div>
+    <div class="sec-head"><div><p class="eyebrow">2 · Expérience</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La loi d’Ohm : I = U ÷ R</h2></div></div>
     <div class="lab">
       <div class="board" id="ohm-board">
         <svg viewBox="0 0 640 360" role="img" aria-label="Circuit en série : générateur, résistance et lampe">
@@ -576,7 +625,7 @@ tr:last-child td{border-bottom:0}
   </section>
 
   <section id="symboles" class="wrap" style="padding-top:80px;scroll-margin-top:90px">
-    <div class="sec-head"><div><p class="eyebrow">4 · Module 2 · Lire un schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les symboles à connaître</h2></div><p>Ce sont les mêmes symboles que dans le bac à sable : tu peux tous les poser et les câbler.</p></div>
+    <div class="sec-head"><div><p class="eyebrow">4 · Module 2 · Lire un schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les symboles à connaître</h2></div></div>
     <div class="grid" id="sym-grid" style="grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:14px"></div>
   </section>
 
@@ -589,12 +638,7 @@ tr:last-child td{border-bottom:0}
     </div>
   </section>
 
-  <div class="wrap" style="padding-block:80px 96px">
-    <div class="cta">
-      <div><span class="mono" style="font-size:14px;color:var(--inv-accent)">Module 3 · Circuits de base</span><h2>Prochaine étape : le simple allumage</h2></div>
-      <a class="btn yel" href="#schemas">Ouvrir les schémas <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></a>
-    </div>
-  </div>
+  <div style="height:80px"></div>
 </div>
 
 <!-- ============ SCHÉMAS ============ -->
@@ -638,7 +682,7 @@ tr:last-child td{border-bottom:0}
     <div>
       <p class="eyebrow">Titre pro électricien d’équipement du bâtiment · TP-00467</p>
       <h1 class="display">Examen pratique</h1>
-      <p class="lead">Mise en situation : l’installation électrique d’un centre de formation de plusieurs étages (logement du gardien, parking en sous-sol, espaces ouverts au public), répartie en espaces de travail. Choisis un espace, puis manipule son schéma pour comprendre chaque circuit avant l’épreuve.</p>
+      <p class="lead">Titre pro électricien d’équipement du bâtiment · TP-00467.</p>
     </div>
     <div id="ex-tabs" role="group" aria-label="Espaces de travail">
       <button class="extab" type="button" data-espace="1" aria-pressed="true"><span class="num">1</span><span class="tx"><span class="k">Espace de travail n°1</span><strong>Logement</strong><span class="ds">Tableau, télérupteurs radio, heures creuses</span></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -835,7 +879,7 @@ tr:last-child td{border-bottom:0}
 <!-- ============ BAC À SABLE ============ -->
 <div id="page-bac-a-sable" data-page="bac-a-sable" hidden>
   <div class="ed-bar"><div class="wrap wide" role="toolbar" aria-label="Outils du bac à sable">
-    <div style="display:flex;flex-direction:column;margin-right:6px"><span class="mono muted" style="font-size:11px">Bac à sable</span><b style="font-family:var(--f-display);font-size:18px">Schéma libre</b></div>
+    <b style="margin-right:6px;font:700 19px var(--f-display);letter-spacing:.06em;text-transform:uppercase">Bac à sable</b>
     <div class="tgroup">
       <button class="tool" data-tool="select" aria-pressed="true" type="button"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3 L15 11 L10 11.5 L12.5 17 L10.5 18 L8 12.5 L5 15 Z" class="ico"/></svg>Déplacer</button>
       <button class="tool" data-tool="erase" aria-pressed="false" type="button"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 16 L3 11 L11 3 L17 9 L10 16 Z M7 7 L13 13 M8 16 H17" class="ico"/></svg>Gomme</button>
@@ -884,8 +928,8 @@ tr:last-child td{border-bottom:0}
 <div id="page-tableaux" data-page="tableaux" hidden>
   <div class="wrap" style="padding-top:52px;display:flex;flex-direction:column;gap:18px">
     <p class="eyebrow">Comparaison · même logement, deux pays</p>
-    <h1 class="display" style="margin:0;font-size:clamp(40px,5.4vw,68px);max-width:18ch">Tableau français, tableau américain.</h1>
-    <p class="lead">Deux chambres, une cuisine, une salle de bain, câblées selon les usages de chaque pays. Allume des appareils, coupe des disjoncteurs et provoque des défauts pour voir par où passe le neutre.</p>
+    <h1 class="display" style="margin:0;font-size:clamp(40px,5.4vw,68px);max-width:18ch;text-transform:uppercase">Tableau français, tableau américain.</h1>
+    <p class="lead">Allume des appareils, coupe des disjoncteurs, provoque des défauts : regarde par où passe le neutre.</p>
   </div>
 
   <section class="wrap" style="padding-top:36px">
@@ -929,7 +973,7 @@ tr:last-child td{border-bottom:0}
 </div>
 </main>
 
-<footer><div class="wrap"><span>Valelec · apprendre l’électricité par le schéma</span><nav class="row" style="gap:18px" aria-label="Pied de page"><a href="#bases">Les bases</a><a href="#schemas">Schémas</a><a href="#bac-a-sable">Bac à sable</a><a href="#tableaux">Tableaux FR / US</a></nav></div></footer>
+<footer><div class="wrap"><span>Valelec</span><span>Schémas pédagogiques. Sur une vraie installation : couper, vérifier l’absence de tension (VAT), NF C 15-100.</span></div></footer>
 
 <script>
 (() => {
