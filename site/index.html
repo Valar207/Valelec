@@ -848,7 +848,7 @@ tr:last-child td{border-bottom:0}
     <div class="canvas-col">
       <div class="hintbar"><span class="hint"><span class="sdot on" id="ed-hdot" style="width:9px;height:9px"></span><span id="ed-hint"></span></span><span class="mono" id="ed-counts" style="font-size:13px;color:var(--ink-2)"></span></div>
       <div class="scroller" id="ed-scroll" tabindex="0" aria-label="Plan de travail. Touches : Suppr pour effacer la sélection, R ou Maj+R pour pivoter de 90°, Ctrl+C pour copier, Ctrl+V pour coller, Ctrl+D pour dupliquer, Échap pour annuler.">
-        <svg id="ed-svg" class="edit" width="900" height="600" viewBox="0 0 1200 800" role="application" aria-label="Plan de travail du schéma"></svg>
+        <svg id="ed-svg" class="edit" width="1050" height="750" viewBox="0 0 1400 1000" role="application" aria-label="Plan de travail du schéma"></svg>
       </div>
       <ul class="mini-legend" aria-label="Légende">
         <li><span class="lsw" style="background:#E5533D"></span>Phase</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre</li><li><span class="lsw" style="background:#B48CF2"></span>Retour / navette</li><li><span class="lsw" style="background:#8E9BAA"></span>Commande</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#3E9A3A 0 4px,#F2CB2E 4px 8px)"></span>Terre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li><li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
@@ -960,6 +960,7 @@ const DEF = {
 };
 const WATT = { detect: 1, baes: 1, lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3, yokis: 1 };
 const MINU_MS = 8000;
+const ED_W = 1400, ED_H = 1000; // taille du plan du bac à sable
 
 function defSt(type) {
   switch (type) {
@@ -1352,6 +1353,84 @@ class Board {
   }
   snap(v) { return Math.round(v / 20) * 20; }
   route(A, B, flip, fwd) { const C = flip ? { x: A.x, y: B.y } : { x: B.x, y: A.y }; return fwd ? [A, C, B] : [B, C, A]; }
+  /* Routage des fils du bac à sable : chemin orthogonal sur la grille (A*), sans jamais longer un autre fil.
+     Un fil peut seulement en croiser un autre à angle droit ; il évite l’intérieur des composants et les bornes des autres appareils. */
+  routeAll(pos) {
+    const C = this.C, G = 20, W = ED_W, H = ED_H;
+    const sig = C.comps.map((c) => c.id + ':' + c.x + ',' + c.y + ',' + (c.rot || 0)).join('|') + '#' + C.wires.map((w) => w.id + w.a + w.b + (w.flip ? 1 : 0)).join('|');
+    if (this._rsig === sig) return this._routes;
+    const terms = new Set(Object.values(pos).map((q) => q.x + ',' + q.y));
+    const inside = new Set();
+    C.comps.forEach((c) => {
+      const b = boxOf(c), x0 = c.x - b.W / 2, x1 = c.x + b.W / 2, y0 = c.y - b.H / 2, y1 = c.y + b.H / 2;
+      for (let x = Math.floor(x0 / G) * G; x <= x1; x += G) for (let y = Math.floor(y0 / G) * G; y <= y1; y += G) if (x > x0 && x < x1 && y > y0 && y < y1) inside.add(x + ',' + y);
+    });
+    const edges = new Set(), nodes = new Map(), out = {}, attach = {}, junctions = [];
+    const ek = (x1, y1, x2, y2) => (y1 === y2 ? 'h' + Math.min(x1, x2) + ',' + y1 : 'v' + x1 + ',' + Math.min(y1, y2));
+    const DX = [G, -G, 0, 0], DY = [0, 0, G, -G];
+    // Départs possibles : la borne elle-même, ou un point d’un fil déjà tracé depuis cette borne (piquage en T)
+    const ends = (key, P) => [{ x: P.x, y: P.y, g: 0 }].concat((attach[key] || []).filter((q) => ['H', 'V'].includes(nodes.get(q.x + ',' + q.y))).map((q) => ({ x: q.x, y: q.y, g: 0.5 })));
+    const astar = (starts, goals, B, flip, strict) => {
+      const gset = new Set(goals.map((q) => q.x + ',' + q.y)), best = new Map(), heap = [];
+      const push = (n) => { heap.push(n); let i = heap.length - 1; while (i > 0) { const j = (i - 1) >> 1; if (heap[j].f <= heap[i].f) break; [heap[i], heap[j]] = [heap[j], heap[i]]; i = j; } };
+      const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let i = 0; for (;;) { const l = 2 * i + 1, r = l + 1; let m = i; if (l < heap.length && heap[l].f < heap[m].f) m = l; if (r < heap.length && heap[r].f < heap[m].f) m = r; if (m === i) break; [heap[i], heap[m]] = [heap[m], heap[i]]; i = m; } } return top; };
+      const hh = (x, y) => (Math.abs(x - B.x) + Math.abs(y - B.y)) / G;
+      starts.forEach((q) => push({ x: q.x, y: q.y, d: 4, g: q.g, f: q.g + hh(q.x, q.y), p: null }));
+      let n = 0;
+      while (heap.length && n++ < 40000) {
+        const cur = pop(), ck = cur.x + ',' + cur.y;
+        if (cur.p && gset.has(ck)) { const pts = []; for (let q = cur; q; q = q.p) pts.unshift({ x: q.x, y: q.y }); return pts; }
+        if (best.get(ck + ':' + cur.d) < cur.g) continue;
+        const crossing = cur.d !== 4 && nodes.has(ck);
+        for (let k = 0; k < 4; k++) {
+          if (cur.d !== 4 && k === (cur.d ^ 1)) continue;
+          if (crossing && k !== cur.d) continue;
+          const nx = cur.x + DX[k], ny = cur.y + DY[k], nk = nx + ',' + ny;
+          if (nx < 0 || ny < 0 || nx > W || ny > H) continue;
+          if (edges.has(ek(cur.x, cur.y, nx, ny))) continue;
+          const goal = gset.has(nk); let u = null;
+          if (!goal) {
+            if (terms.has(nk) || (strict && inside.has(nk))) continue;
+            u = nodes.get(nk);
+            if (u && (u === 'X' || (u === 'H') === (k < 2))) continue;
+          }
+          const g = cur.g + 1 + (cur.d !== 4 && cur.d !== k ? 2 : 0) + (u ? 1.5 : 0) + (cur.d === 4 && (k >= 2) !== !!flip ? 0.3 : 0) + (goal && nk !== B.x + ',' + B.y ? 0.5 : 0);
+          const bk = nk + ':' + k;
+          if (best.has(bk) && best.get(bk) <= g) continue;
+          best.set(bk, g); push({ x: nx, y: ny, d: k, g, f: g + hh(nx, ny), p: cur });
+        }
+      }
+      return null;
+    };
+    C.wires.forEach((w) => {
+      const A = pos[w.a], B = pos[w.b]; if (!A || !B) return;
+      let pts = null;
+      if (A.x % G === 0 && A.y % G === 0 && B.x % G === 0 && B.y % G === 0 && (A.x !== B.x || A.y !== B.y)) {
+        const S0 = ends(w.a, A), E0 = ends(w.b, B);
+        pts = astar(S0, E0, B, w.flip, true) || astar(S0, E0, B, w.flip, false);
+      }
+      if (!pts) { out[w.id] = this.route(A, B, w.flip, true); return; }
+      // découpe en pas de grille, puis réserve les segments et les nœuds de ce fil
+      const unit = [pts[0]];
+      for (let i = 1; i < pts.length; i++) unit.push(pts[i]);
+      unit.forEach((q, i) => {
+        const k = q.x + ',' + q.y;
+        if (i > 0) edges.add(ek(unit[i - 1].x, unit[i - 1].y, q.x, q.y));
+        let t = 'X';
+        if (i > 0 && i < unit.length - 1) { const a = unit[i - 1], b = unit[i + 1]; if (a.y === b.y) t = 'H'; else if (a.x === b.x) t = 'V'; }
+        const old = nodes.get(k); nodes.set(k, old && old !== t ? 'X' : t);
+      });
+      const first = unit[0], last = unit[unit.length - 1];
+      if (first.x !== A.x || first.y !== A.y) junctions.push(first);
+      if (last.x !== B.x || last.y !== B.y) junctions.push(last);
+      const inner = unit.filter((q, i) => i > 0 && i < unit.length - 1);
+      (attach[w.a] = attach[w.a] || []).push(...inner); (attach[w.b] = attach[w.b] || []).push(...inner);
+      out[w.id] = unit.filter((q, i) => i === 0 || i === unit.length - 1 || !((unit[i - 1].x === q.x && unit[i + 1].x === q.x) || (unit[i - 1].y === q.y && unit[i + 1].y === q.y)));
+    });
+    out._j = junctions;
+    this._rsig = sig; this._routes = out;
+    return out;
+  }
   render() {
     const C = this.C, ui = this.ui, res = C.res, now = Date.now();
     const t = performance.now() / 1000;
@@ -1373,17 +1452,17 @@ class Board {
     });
     const refOf = {}; C.comps.forEach((c) => { refOf[c.id] = c.ref; });
     let h = '';
-    const vb = this.edit ? { x: 0, y: 0, w: 1200, h: 800 } : (this.vb || { x: 0, y: 0, w: 800, h: 500 });
+    const vb = this.edit ? { x: 0, y: 0, w: ED_W, h: ED_H } : (this.vb || { x: 0, y: 0, w: 800, h: 500 });
     h += `<rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="#111A24"/><rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="url(#${this.gid})" data-bg="1"/>`;
-    const conn = {};
+    const conn = {}, RT = this.edit ? this.routeAll(pos) : null;
     C.wires.forEach((w) => {
       conn[w.a] = (conn[w.a] || 0) + 1; conn[w.b] = (conn[w.b] || 0) + 1;
       const A = pos[w.a], B = pos[w.b]; if (!A || !B) return;
       const color = w.color === 'auto' ? (kind[f2(w.a)] || 'rt') : w.color;
       const r = res.ws[w.id] || { s: '' };
       const fwd = r.from ? r.from === w.a : true;
-      const pts = this.route(A, B, w.flip, fwd);
-      const d = `M${pts[0].x} ${pts[0].y}L${pts[1].x} ${pts[1].y}L${pts[2].x} ${pts[2].y}`;
+      const pts = RT && RT[w.id] ? (fwd ? RT[w.id] : RT[w.id].slice().reverse()) : this.route(A, B, w.flip, fwd);
+      const d = 'M' + pts.map((q) => q.x + ' ' + q.y).join('L');
       const sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === w.id ? ' sel' : '';
       const delay = r.s === 'live' ? dLive : dFlow;
       h += `<g class="wire${sel}" data-wire="${w.id}">${this.edit ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
@@ -1421,7 +1500,7 @@ class Board {
       if (rsc && !DEF[rsc.type].norot) {
         const bx = boxOf(rsc), ty = Math.max(16, rsc.y - bx.H / 2 - 24);
         const hd = (x, dir) => `<g class="roth" data-rot="${rsc.id}" data-dir="${dir}" transform="translate(${x} ${ty})"><title>Pivoter de 90° ${dir > 0 ? 'dans le sens horaire' : 'dans le sens antihoraire'}</title><circle r="13"/><path d="${dir > 0 ? 'M-6 0A6 6 0 1 1 0 6M3 3L0 6L3 9' : 'M6 0A6 6 0 1 0 0 6M-3 3L0 6L-3 9'}" class="rarc"/></g>`;
-        h += hd(Math.max(16, rsc.x - bx.W / 2 - 14), -1) + hd(Math.min(1184, rsc.x + bx.W / 2 + 14), 1);
+        h += hd(Math.max(16, rsc.x - bx.W / 2 - 14), -1) + hd(Math.min(ED_W - 16, rsc.x + bx.W / 2 + 14), 1);
       }
       if (ui.pending && ui.mouse && pos[ui.pending]) {
         const A = pos[ui.pending], B = { x: this.snap(ui.mouse.x), y: this.snap(ui.mouse.y) };
@@ -1434,6 +1513,7 @@ class Board {
         h += `<g transform="translate(${x} ${y}) rotate(${rot})" style="pointer-events:none"><rect class="ghost" x="${-d.w / 2}" y="${-d.h / 2}" width="${d.w}" height="${d.h}" rx="8"/><g transform="translate(${-d.w / 2} ${-d.h / 2})" opacity=".45">${sym({ type: ui.place, st: gst }, false, 0)}</g></g>`;
       }
     } else {
+      if (RT && RT._j) RT._j.forEach((q) => { h += `<circle class="jdot" cx="${q.x}" cy="${q.y}" r="4.5"/>`; });
       Object.keys(conn).forEach((k) => { if (conn[k] >= 2 && pos[k] && !k.startsWith('x')) { const c = C.find(k.split(':')[0]); if (c && c.type !== 'borne') h += `<circle class="jdot" cx="${pos[k].x}" cy="${pos[k].y}" r="4"/>`; } });
     }
     this.root.innerHTML = h;
@@ -1503,7 +1583,7 @@ class Board {
       if (!d.moved && Math.abs(dx) + Math.abs(dy) < 6) return;
       if (!d.moved) { this.C.snapshot(); d.moved = true; ui.sel = { k: 'c', id: d.id }; }
       const c = this.C.find(d.id), nx = this.snap(d.ox + dx), ny = this.snap(d.oy + dy);
-      if (c && (c.x !== nx || c.y !== ny)) { c.x = Math.max(20, Math.min(1180, nx)); c.y = Math.max(20, Math.min(780, ny)); this.render(); }
+      if (c && (c.x !== nx || c.y !== ny)) { c.x = Math.max(20, Math.min(ED_W - 20, nx)); c.y = Math.max(20, Math.min(ED_H - 20, ny)); this.render(); }
       return;
     }
     if (ui.pending || ui.place) { ui.mouse = p; this.render(); }
@@ -1540,7 +1620,7 @@ class Board {
     const pre = DEF[type].pre; let n = 0;
     C.comps.forEach((c) => { if (c.ref && c.ref.indexOf(pre) === 0) { const k = parseInt(c.ref.slice(pre.length), 10); if (!isNaN(k) && k > n) n = k; } });
     C.snapshot();
-    const x = Math.max(20, Math.min(1180, this.snap(p.x))), y = Math.max(20, Math.min(780, this.snap(p.y)));
+    const x = Math.max(20, Math.min(ED_W - 20, this.snap(p.x))), y = Math.max(20, Math.min(ED_H - 20, this.snap(p.y)));
     const c = mk(type, x, y, ((tpl ? tpl.rot || 0 : 0) + (this.ui.prot || 0)) % 360, pre + (n + 1));
     if (tpl) {
       if (!['tele', 'cont', 'minu', 'yokis'].includes(type)) c.st = Object.assign(defSt(type), JSON.parse(JSON.stringify(tpl.st || {})), type === 'bp' ? { pressed: false } : {});
@@ -1937,7 +2017,7 @@ const editor = (() => {
     const ax = anchor ? anchor.x - r.left : sc.clientWidth / 2, ay = anchor ? anchor.y - r.top : sc.clientHeight / 2;
     const wx = (sc.scrollLeft + ax) / zoom, wy = (sc.scrollTop + ay) / zoom;
     zoom = z;
-    svg.setAttribute('width', Math.round(1200 * z)); svg.setAttribute('height', Math.round(800 * z));
+    svg.setAttribute('width', Math.round(ED_W * z)); svg.setAttribute('height', Math.round(ED_H * z));
     $('#ed-zoom').textContent = Math.round(z * 100) + ' %';
     sc.scrollLeft = wx * z - ax; sc.scrollTop = wy * z - ay;
   };
@@ -2037,7 +2117,7 @@ const editor = (() => {
       const OPTS = [['auto', 'Auto', '#C9C2B2'], ['ph', 'Phase', '#E5533D'], ['ne', 'Neutre', '#4E8EF7'], ['rt', 'Retour', '#B48CF2'], ['cm', 'Commande', '#8E9BAA'], ['pe', 'Terre', 'repeating-linear-gradient(90deg,#3E9A3A 0 4px,#F2CB2E 4px 8px)']];
       h = `<div style="display:flex;flex-direction:column;gap:12px"><div><strong style="display:block">Fil ${esc(refOf(sw.a))} → ${esc(refOf(sw.b))}</strong><span style="font-size:13px;color:var(--ink-2)">${r.s === 'on' ? 'Le courant circule dans ce fil' : r.s === 'live' ? 'Sous tension, sans courant' : r.s === 'short' ? 'Court-circuit !' : 'Aucun courant'}</span></div>
         <div class="row" style="gap:6px" role="group" aria-label="Couleur du conducteur">${OPTS.map((o) => `<button class="cchip" type="button" data-act="color" data-val="${o[0]}" aria-pressed="${sw.color === o[0]}"><span class="lsw" style="width:14px;background:${o[2]}"></span>${o[1]}</button>`).join('')}</div>
-        <div class="row" style="gap:8px"><button class="btn sm" type="button" data-act="flip">Inverser le coude</button><button class="btn sm danger" type="button" data-act="del">Supprimer le fil</button></div></div>`;
+        <div class="row" style="gap:8px"><button class="btn sm" type="button" data-act="flip">Changer le tracé</button><button class="btn sm danger" type="button" data-act="del">Supprimer le fil</button></div></div>`;
     } else {
       h = `<div style="display:flex;flex-direction:column;gap:10px"><h2>Mode d’emploi</h2><ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-2)">
         <li>Choisis un symbole, puis clique sur la grille pour le poser.</li><li>Clique sur une borne, puis sur une autre : un fil les relie.</li><li>Glisse un composant pour le déplacer. Clique sur un interrupteur pour l’actionner.</li><li>Se déplacer dans le plan : glisse le fond (un doigt sur téléphone). Zoomer : pince avec deux doigts, ou Ctrl + molette sur ordinateur.</li><li>Copier-coller : sélectionne un composant, Ctrl+C puis Ctrl+V à l’endroit voulu (ou les boutons Copier / Coller). Ctrl+D le duplique à côté.</li><li>Rotation par pas de 90° : poignées jaunes autour du composant sélectionné, ou R (Maj+R dans l’autre sens), y compris pendant qu’on le pose.</li><li>Autres raccourcis : Suppr efface la sélection, Ctrl+Z annule, Échap abandonne.</li></ol></div>`;
