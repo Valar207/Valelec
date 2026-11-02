@@ -289,6 +289,9 @@ tr:last-child td{border-bottom:0}
 .plugb{fill:#3A4D63;stroke:#E8EDF2;stroke-width:1.5}.plugb.lit{fill:#FFD84A;stroke:#FFD84A}
 .rbox{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .2s,stroke .2s}.rbox.on{fill:#3A3110;stroke:#FFD84A}
 .rw{fill:none;stroke:#8E9BAA;stroke-width:2;stroke-linecap:round}.rw.on{stroke:#FFD84A}
+.baesb{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .2s}.baesb.lit{fill:#E9FFF0;stroke:#7BE495;filter:drop-shadow(0 0 8px #7BE495)}
+.baesa{fill:none;stroke:#3E9A3A;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.baesa.lit{stroke:#1F7A2E}
+.baesv{fill:#26323F}.baesv.on{fill:#7BE495;filter:drop-shadow(0 0 3px #7BE495)}
 .rlink{fill:none;stroke:#8E9BAA;stroke-width:1.6;stroke-dasharray:2 7;stroke-linecap:round;opacity:.65;pointer-events:none}
 .rlink.on{stroke:#FFD84A;opacity:1;animation:pnflow .7s linear infinite;filter:drop-shadow(0 0 3px #FFD84A)}
 .hitbox{fill:transparent;cursor:pointer}
@@ -615,6 +618,7 @@ tr:last-child td{border-bottom:0}
     <div class="ctls" id="ex-tabs" role="group" aria-label="Espaces de travail">
       <button class="ctl" type="button" data-espace="1" aria-pressed="true">Espace n°1 · Logement</button>
       <button class="ctl" type="button" data-espace="2" aria-pressed="false">Espace n°2 · Parties communes</button>
+      <button class="ctl" type="button" data-espace="3" aria-pressed="false">Espace n°3 · Locaux tertiaires</button>
     </div>
     <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p></div>
     <div class="sim-cols">
@@ -655,7 +659,7 @@ tr:last-child td{border-bottom:0}
           <li>Appuie sur S1 : la minuterie KT1 allume L1 et L2 pendant 8 secondes, puis tout s’éteint seul.</li>
           <li>Réappuie sur S2 pendant le décompte : la temporisation repart de zéro.</li>
           <li>Branche un appareil sur PC1 : il est alimenté par son propre circuit (câble C3).</li>
-          <li>Actionne DM1 : le voyant d’alarme du circuit SSI s’allume. Réarme-le, puis essaie DM2.</li>
+          <li>Actionne DM1 : le voyant d’alarme du circuit SSI s’allume et l’alarme incendie retentit (si le son est activé). Réarme-le, puis essaie DM2.</li>
         </ol></div>
         <div class="box" data-espace="2"><h2>Travail demandé</h2><ul>
           <li>Poser les canalisations C01 à C08 (conduits IRL).</li>
@@ -663,6 +667,21 @@ tr:last-child td{border-bottom:0}
           <li>Câbler la prise PC1 à partir de BD1, avec le câble C3.</li>
           <li>Câbler L1 et L2, commandées par S1 et S2 en minuterie, à partir de BD2, avec le câble C4.</li>
           <li>Câbler DM1 et DM2 avec le câble C9, dans la boîte de dérivation 8.</li>
+        </ul></div>
+        <div class="box inv" data-espace="3" hidden><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
+          <li>Simule un passage devant le détecteur S2 : L1 et L2 s’allument 8 secondes, puis s’éteignent seules.</li>
+          <li>Branche un appareil sur PC1, puis appuie sur l’arrêt d’urgence S1 : la bobine de KM1 n’est plus alimentée et la prise est coupée.</li>
+          <li>Déverrouille S1 : la prise est de nouveau alimentée.</li>
+          <li>Déclenche Q2 (éclairage) : le BAES passe en secours et s’allume sur sa batterie.</li>
+          <li>Pendant la coupure, mets le BAES au repos avec la télécommande : il s’éteint. Réarme Q2 : il revient en veille et recharge sa batterie.</li>
+        </ol></div>
+        <div class="box" data-espace="3" hidden><h2>Travail demandé</h2><ul>
+          <li>Poser la boîte de dérivation étanche BD1, la goulotte PVC double compartiment (DLP) et ses accessoires.</li>
+          <li>Poser les conduits IRL C01, C02 et C03 (C03 peut être en moulure 32 × 12,5 mm).</li>
+          <li>Poser les patères L1 et L2, le détecteur S2, la prise PC1, l’arrêt d’urgence S1 et le BAES.</li>
+          <li>À partir du câble C7 : le détecteur S2, qui commande L1 et L2, et le BAES.</li>
+          <li>À partir du câble C6 : la prise PC1. À partir du câble C8 : l’arrêt d’urgence S1.</li>
+          <li>Poser une prise RJ45 sur la goulotte et une autre en boîtier étanche (ou saillie Mosaic), puis les relier entre elles.</li>
         </ul></div>
         <button class="btn" id="ex-open" type="button" style="justify-content:space-between;border-radius:12px">Modifier dans le bac à sable <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></button>
       </div>
@@ -741,6 +760,47 @@ tr:last-child td{border-bottom:0}
             <tr><td>DM1, DM2</td><td>Déclencheur manuel saillie SSI</td><td>2</td></tr>
             <tr><td>—</td><td>Fixations de conduit IRL Ø 16 et 20</td><td>16</td></tr>
             <tr><td>—</td><td>Bornes sans vis ou barrettes, accessoires de fixation</td><td>lot</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ex-grid" data-espace="3" hidden>
+      <div class="box"><h2>Câbles et canalisations</h2>
+        <table class="ex-table">
+          <thead><tr><th>Repère</th><th>Matériel</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><td>C6</td><td>Câble U1000 R2V 3G2,5 mm²</td><td>Circuit prise PC1, depuis la boîte étanche 7</td></tr>
+            <tr><td>C7</td><td>Câble U1000 R2V 5G1,5 mm²</td><td>Éclairage (détecteur S2, L1, L2), alimentation du BAES et sa commande (télécommande)</td></tr>
+            <tr><td>C8</td><td>Câble U1000 R2V (3G1,5 · 4G1,5 · 2 × 1,5 mm²)</td><td>Circuit d’arrêt d’urgence S1, à émission ou à manque de tension</td></tr>
+            <tr><td>—</td><td>Câble cat 6 FTP (2 m)</td><td>Liaison entre les deux prises RJ45</td></tr>
+            <tr><td>DLP</td><td>Goulotte PVC double compartiment (2 m), embouts, angle plat</td><td>Porte S1, S2, PC1 et une prise RJ45</td></tr>
+            <tr><td>C01 à C03</td><td>Conduit IRL Ø 16 (3 m) et 6 fixations</td><td>Vers L1, L2 et la seconde prise RJ45 (C03 peut être une moulure 32 × 12,5)</td></tr>
+          </tbody>
+        </table>
+        <p class="ex-note">Le raccordement des câbles C6, C7 et C8 à la boîte 7 est fait par le jury, hors de ta présence. Sur le schéma, Q1 à Q3 et le contacteur KM1 représentent l’armoire tertiaire, en amont de la boîte 7 : leur calibre, et le fait que l’arrêt d’urgence coupe la prise PC1, sont des hypothèses à vérifier avec le schéma de bornier de la boîte 7.</p>
+      </div>
+      <div class="box"><h2>À savoir pour l’épreuve</h2><ul>
+        <li>Le <strong>BAES</strong> se raccorde sur le circuit d’éclairage du local, <strong>en aval de la protection et en amont de la commande</strong> : il doit rester alimenté quand les lampes sont éteintes, et s’allumer si ce circuit est coupé.</li>
+        <li>La <strong>télécommande</strong> du BAES (câble C7) le met au repos pendant les coupures volontaires, pour ne pas vider sa batterie.</li>
+        <li>Le <strong>détecteur</strong> est alimenté par la phase et le neutre, et sa sortie (retour lampes) alimente L1 et L2. Il peut être remplacé par un interrupteur.</li>
+        <li>Arrêt d’urgence <strong>à manque de tension</strong> : contact fermé au repos, l’appui coupe la bobine (représenté ici par KM1). <strong>À émission</strong> : contact ouvert au repos, l’appui alimente une bobine qui fait déclencher l’appareil de coupure.</li>
+        <li>Après un arrêt d’urgence, la remise en service doit être volontaire (réarmement), jamais automatique.</li>
+        <li>Goulotte DLP <strong>double compartiment</strong> : courants forts (230 V) d’un côté, courants faibles (RJ45) de l’autre, jamais mélangés.</li>
+        <li>Prises RJ45 : câble cat 6 FTP, même plan de câblage (T568A ou T568B) aux deux extrémités, blindage repris.</li>
+        <li>Documents remis au début : attestation de consignation, autorisation de travail, schéma de bornier de la boîte 7.</li>
+      </ul></div>
+      <div class="box"><h2>Matériel</h2>
+        <table class="ex-table">
+          <thead><tr><th>Repère</th><th>Désignation</th><th>Qté</th></tr></thead>
+          <tbody>
+            <tr><td>BD1</td><td>Boîte de dérivation étanche saillie, 7 entrées</td><td>1</td></tr>
+            <tr><td>L1, L2</td><td>Patère étanche saillie, avec lampe adaptée</td><td>2</td></tr>
+            <tr><td>S2</td><td>Détecteur de mouvement automatique sur goulotte</td><td>1</td></tr>
+            <tr><td>S1</td><td>Arrêt d’urgence, montage sur goulotte</td><td>1</td></tr>
+            <tr><td>PC1</td><td>Prise 2P+T, montage sur goulotte</td><td>1</td></tr>
+            <tr><td>BAES</td><td>Bloc autonome d’éclairage de sécurité</td><td>1</td></tr>
+            <tr><td>RJ45</td><td>Prise RJ45 sur goulotte + prise RJ45 étanche saillie (ou Mosaic)</td><td>2</td></tr>
           </tbody>
         </table>
       </div>
@@ -876,6 +936,8 @@ const DEF = {
   minu: { name: 'Minuterie', pre: 'KT', w: 120, h: 80, t: COIL, desc: 'Une impulsion sur la bobine ferme le contact pendant 8 secondes.' },
   yokis: { name: 'Micromodule télérupteur', pre: 'Y', w: 80, h: 80, t: [['L', 0, 20], ['BP', 0, 60], ['S', 80, 20], ['N', 80, 60]], desc: 'Micromodule encastré (type Yokis) : alimenté par L et N, il fait basculer sa sortie S vers les lampes à chaque impulsion reçue sur BP.' },
   radio: { name: 'Bouton poussoir radio', pre: 'E', w: 80, h: 40, t: [], desc: 'Émetteur radio sans fil (type Yokis) : chaque appui envoie une impulsion au récepteur associé, sans fil de commande.', op: true },
+  detect: { name: 'Détecteur de mouvement', pre: 'S', w: 80, h: 80, t: [['L', 0, 20], ['N', 0, 60], ['S', 80, 20]], desc: 'Détecteur automatique : alimenté par L et N, il allume sa sortie S quand il détecte un passage, puis l’éteint après une temporisation (ici 8 secondes).', op: true },
+  baes: { name: 'BAES', pre: 'BAES', w: 80, h: 40, t: T2, desc: 'Bloc autonome d’éclairage de sécurité : sur secteur, il recharge sa batterie (voyant vert) ; en cas de coupure, il s’allume seul. La télécommande peut le mettre au repos.', op: true },
   lampe: { name: 'Lampe', pre: 'L', w: 80, h: 40, t: T2, desc: 'Point lumineux de 60 W.' },
   voyant: { name: 'Voyant', pre: 'H', w: 80, h: 40, t: T2, desc: 'Petit témoin lumineux de 1 W.' },
   rad: { name: 'Radiateur', pre: 'R', w: 80, h: 40, t: T2, desc: 'Résistance chauffante de 1 000 W.' },
@@ -884,7 +946,7 @@ const DEF = {
   prise: { name: 'Prise 2P+T', pre: 'P', w: 80, h: 80, t: [['L', 0, 20], ['N', 0, 40], ['PE', 0, 60]], desc: 'Prise de courant. Actionne-la pour brancher un appareil de 2 000 W.', op: true },
   borne: { name: 'Borne de connexion', pre: 'X', w: 40, h: 40, t: [['P', 20, 20]], desc: 'Point de raccordement pour relier plusieurs fils.', norot: true }
 };
-const WATT = { lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3, yokis: 1 };
+const WATT = { detect: 1, baes: 1, lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3, yokis: 1 };
 const MINU_MS = 8000;
 
 function defSt(type) {
@@ -895,6 +957,8 @@ function defSt(type) {
     case 'vav': return { pos: 1 };
     case 'perm': return { cross: false };
     case 'bp': case 'radio': return { pressed: false };
+    case 'detect': return { k: false, until: 0 };
+    case 'baes': return { rest: false };
     case 'prise': return { plug: false };
     case 'tele': case 'cont': case 'yokis': return { k: false, coil: false };
     case 'minu': return { k: false, coil: false, until: 0 };
@@ -919,7 +983,7 @@ function links(c) {
     case 'perm': return s.cross ? [['1', '4'], ['2', '3']] : [['1', '3'], ['2', '4']];
     case 'bp': return s.pressed ? [['1', '2']] : [];
     case 'tele': case 'cont': case 'minu': return s.k ? [['1', '2']] : [];
-    case 'yokis': return s.k ? [['L', 'S']] : [];
+    case 'yokis': case 'detect': return s.k ? [['L', 'S']] : [];
     default: return [];
   }
 }
@@ -928,6 +992,8 @@ function loadPair(c) {
   if (c.type === 'prise') return c.st.plug ? ['L', 'N'] : null;
   if (c.type === 'tele' || c.type === 'cont' || c.type === 'minu') return ['A1', 'A2'];
   if (c.type === 'yokis') return ['BP', 'N'];
+  if (c.type === 'detect') return ['L', 'N'];
+  if (c.type === 'baes') return ['1', '2'];
   return null;
 }
 const wattOf = (c) => c.watt || WATT[c.type] || 0;
@@ -956,7 +1022,7 @@ function solve(comps, wires, power) {
     const a = c.id + ':' + lp[0], b = c.id + ':' + lp[1], ra = f(a), rb = f(b);
     if ((LN.has(ra) && NN.has(rb)) || (LN.has(rb) && NN.has(ra))) {
       loadsOn[c.id] = true; anchors.add(a); anchors.add(b); loadNets.add(ra); loadNets.add(rb);
-      watts += wattOf(c); if (!['tele', 'cont', 'minu', 'yokis'].includes(c.type)) onCount++;
+      watts += wattOf(c); if (!['tele', 'cont', 'minu', 'yokis', 'detect', 'baes'].includes(c.type)) onCount++;
     }
   });
   const act = edges.filter((e) => loadNets.has(f(e.a)));
@@ -1023,6 +1089,8 @@ function simulate(comps, wires, power) {
     }
     let ch = false; const now = Date.now();
     cs = cs.map((c) => {
+      if (c.type === 'baes' && res.loadsOn[c.id] && c.st.rest) return Object.assign({}, c, { st: Object.assign({}, c.st, { rest: false }) });
+      if (c.type === 'detect') { const st = Object.assign({}, c.st); st.k = !!res.loadsOn[c.id] && now < st.until; if (st.k !== c.st.k) ch = true; return Object.assign({}, c, { st }); }
       if (!['tele', 'cont', 'minu', 'yokis'].includes(c.type)) return c;
       const radio = c.type === 'yokis' && res.sup[c.id] && cs.some((r) => r.type === 'radio' && r.st.pressed && (r.to || []).includes(c.ref));
       const en = !!res.loadsOn[c.id] || !!radio, st = Object.assign({}, c.st), rising = en && !st.coil;
@@ -1057,6 +1125,8 @@ function opLabel(c, on) {
     case 'perm': return s.cross ? 'Décroiser' : 'Croiser';
     case 'bp': return 'Appuyer';
     case 'radio': return 'Appuyer (radio)';
+    case 'detect': return 'Simuler un passage';
+    case 'baes': return s.rest ? 'Sortir du repos' : 'Mettre au repos (télécommande)';
     case 'prise': return s.plug ? 'Débrancher l’appareil' : 'Brancher un appareil';
     default: return '';
   }
@@ -1071,6 +1141,8 @@ function stateText(c, on, power) {
     case 'vav': return 'Sur la navette ' + s.pos;
     case 'perm': return s.cross ? 'Position croisée' : 'Position droite';
     case 'bp': return s.pressed ? 'Enfoncé' : 'Relâché';
+    case 'detect': { const left = s.k && s.until > Date.now() ? Math.ceil((s.until - Date.now()) / 1000) : 0; return on ? (s.k ? 'Présence détectée · sortie allumée (' + left + ' s)' : 'En attente d’un passage') : 'Non alimenté'; }
+    case 'baes': return on ? 'Veille : batterie en charge (voyant vert)' : (s.rest ? 'Au repos (télécommande)' : 'Secours : allumé sur sa batterie');
     case 'radio': return (s.pressed ? 'Impulsion radio envoyée' : 'Au repos') + (c.to && c.to.length ? ' · vers ' + c.to.join(', ') : '');
     case 'prise': return s.plug ? (on ? 'Appareil en marche' : 'Appareil branché, sans courant') : 'Aucun appareil branché';
     case 'tele': case 'cont': case 'minu': return (s.coil ? 'Bobine alimentée · ' : 'Bobine au repos · ') + (s.k ? 'contact fermé' : 'contact ouvert');
@@ -1111,6 +1183,11 @@ function sym(c, on, now) {
     case 'moteur': return `<path d="M0 20H22M58 20H80" class="s"/><circle cx="40" cy="20" r="18" class="mot${o}"/><text x="40" y="25" class="t c">M</text><g class="rotor${o}"><path d="M40 5A15 15 0 0 1 55 20" class="arc"/></g>`;
     case 'sonnette': return `<path d="M0 20H24M56 20H80M24 20V28M56 20V28" class="s"/><g class="bell${o}"><path d="M24 28A16 16 0 0 1 56 28Z" class="bellb${o}"/></g>`;
     case 'prise': return `<path d="M0 20H41" class="stub ph"/><path d="M0 40H32" class="stub ne"/><path d="M0 60H41" class="stub pe"/><path d="M58 14A26 26 0 0 0 58 66M58 8V72" class="s"/>${s.plug ? `<rect x="64" y="26" width="16" height="28" rx="3" class="plugb${on ? ' lit' : ''}"/>` : ''}`;
+    case 'detect': {
+      const left = s.k && s.until > now ? Math.ceil((s.until - now) / 1000) + ' s' : '';
+      return `<rect x="8" y="6" width="64" height="68" rx="10" class="coil${s.k ? ' on' : ''}"/><path d="M0 20H18M62 20H80M0 60H8" class="s"/>${dot(18, 20)}${dot(62, 20)}<line x1="18" y1="20" x2="${s.k ? 62 : 56}" y2="${s.k ? 20 : 8}" class="s"/><path d="M26 58A14 14 0 0 1 54 58Z" class="rbox${s.k ? ' on' : ''}"/><path d="M22 44A20 20 0 0 1 58 44" class="rw${s.k ? ' on' : ''}"/><text x="40" y="72" class="t sm c" style="fill:#FFD84A">${left}</text>`;
+    }
+    case 'baes': { const lit = !on && !s.rest; return `<path d="M0 20H8M72 20H80" class="s"/><rect x="8" y="4" width="64" height="32" rx="4" class="baesb${lit ? ' lit' : ''}"/><path d="M18 20H44M36 13L44 20L36 27" class="baesa${lit ? ' lit' : ''}"/><circle cx="60" cy="20" r="4" class="baesv${on ? ' on' : ''}"/>`; }
     case 'radio': { const o2 = s.pressed ? ' on' : ''; return `<rect x="14" y="4" width="32" height="32" rx="6" class="rbox${o2}"/><circle cx="30" cy="20" r="5" class="rw${o2}"/><path d="M52 12A12 12 0 0 1 52 28M59 6A20 20 0 0 1 59 34" class="rw${o2}"/>`; }
     case 'borne': return `<circle cx="20" cy="20" r="8" class="sf"/>`;
     case 'yokis': return `<rect x="8" y="6" width="64" height="68" rx="10" class="coil${s.coil ? ' on' : ''}"/><path d="M0 20H18M62 20H80M0 60H8M72 60H80" class="s"/>${dot(18, 20)}${dot(62, 20)}<line x1="18" y1="20" x2="${s.k ? 62 : 56}" y2="${s.k ? 20 : 8}" class="s"/><text x="40" y="46" class="t c">μTR</text><text x="13" y="34" class="t sm">L</text><text x="13" y="66" class="t sm">BP</text><text x="60" y="34" class="t sm">S</text><text x="61" y="66" class="t sm">N</text>`;
@@ -1143,11 +1220,28 @@ const Sound = (() => {
       o.connect(g); g.connect(out); o.start(t); o.stop(t + d + 0.05);
     });
   }
+  // Alarme incendie : 554 Hz pendant 0,1 s puis 440 Hz pendant 0,4 s, en boucle (signal d’évacuation)
+  const want = new Set(); let timer = null;
+  function tone(c, t, f, d) {
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = 'square'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.01);
+    g.gain.setValueAtTime(0.05, t + d - 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + d + 0.02);
+  }
+  function cycle() { const c = getCtx(); if (!c) return; const t = c.currentTime + 0.02; tone(c, t, 554, 0.1); tone(c, t + 0.1, 440, 0.4); }
+  function sync() {
+    const play = on && want.size > 0;
+    if (play && !timer) { cycle(); timer = setInterval(cycle, 500); }
+    else if (!play && timer) { clearInterval(timer); timer = null; }
+  }
   return {
     ding: () => bell(659.25, 1.8, 0.22),
     dong: () => bell(523.25, 2.2, 0.22),
+    alarm(owner, v) { if (v) want.add(owner); else want.delete(owner); sync(); },
+    alarmClear() { want.clear(); sync(); },
     get on() { return on; },
-    set on(v) { on = !!v; store.set('pn-son', on); if (on) getCtx(); }
+    set on(v) { on = !!v; store.set('pn-son', on); if (on) getCtx(); sync(); }
   };
 })();
 
@@ -1173,10 +1267,11 @@ class Circuit {
       else if ([...this.bells].some((id) => !bells.has(id) && this.find(id))) Sound.dong();
     }
     this.bells = bells;
+    Sound.alarm(this, this.comps.some((c) => c.alarm && this.res.loadsOn[c.id]));
     if (out.msgs.length) this.events = out.msgs.concat(this.events).slice(0, 3);
     clearTimeout(this.tick);
     const now = Date.now();
-    if (this.comps.some((c) => c.type === 'minu' && c.st.k && c.st.until > now)) this.tick = setTimeout(() => this.update(), 250);
+    if (this.comps.some((c) => (c.type === 'minu' || c.type === 'detect') && c.st.until > now)) this.tick = setTimeout(() => this.update(), 250);
     this.listeners.forEach((fn) => fn());
   }
   operate(id) {
@@ -1194,6 +1289,8 @@ class Circuit {
     else if (c.type === 'vav') s.pos = s.pos === 1 ? 2 : 1;
     else if (c.type === 'perm') s.cross = !s.cross;
     else if (c.type === 'prise') s.plug = !s.plug;
+    else if (c.type === 'detect') s.until = Date.now() + MINU_MS;
+    else if (c.type === 'baes') s.rest = !s.rest;
     else return;
     this.update();
   }
@@ -1542,7 +1639,8 @@ function buildImpulse(type, ref, labs) {
 function summary(C) {
   const res = C.res;
   if (res.short) return { dot: 'bad', title: 'Court-circuit !', detail: 'La phase touche le neutre sans récepteur et rien ne protège le circuit.' };
-  const ons = C.comps.filter((c) => res.loadsOn[c.id] && ON_WORD[c.type]).map((c) => c.ref + ' ' + ON_WORD[c.type]);
+  const ons = C.comps.filter((c) => res.loadsOn[c.id] && ON_WORD[c.type]).map((c) => c.ref + ' ' + ON_WORD[c.type])
+    .concat(C.comps.filter((c) => c.type === 'baes' && !res.loadsOn[c.id] && !c.st.rest).map((c) => c.ref + ' allumé (secours)'));
   const ops = C.comps.filter((c) => ['inter', 'vav', 'perm', 'disj', 'bp'].includes(c.type) || (c.type === 'fus' && !c.st.ok)).map((c) => c.ref + ' ' + stateText(c, false, C.power).toLowerCase());
   if (C.events.length) return { dot: 'bad', title: ons.length ? ons.join(' · ') : 'Circuit coupé', detail: C.events[0] };
   if (!C.power) return { dot: '', title: 'Hors tension', detail: ops.join(' · ') };
@@ -1583,7 +1681,7 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
   u.addEventListener('input', upd); r.addEventListener('input', upd); upd();
 })();
 (function symbols() {
-  const order = ['src', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'tele', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'borne'];
+  const order = ['src', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'detect', 'tele', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes', 'borne'];
   $('#sym-grid').innerHTML = order.map((k) => `<div class="symcard"><div class="tilebd">${symIcon(k, 12)}</div><h3>${DEF[k].name}</h3><p>${DEF[k].desc}</p></div>`).join('');
 })();
 
@@ -1683,7 +1781,7 @@ function buildExam2() {
   const xs1 = mk('borne', 200, 560, 0, 'XS1'), xs2 = mk('borne', 420, 560, 0, 'XS2'), xs3 = mk('borne', 560, 700, 0, 'XS3'), xs4 = mk('borne', 160, 700, 0, 'XS4');
   const dm1 = mk('inter', 300, 560, 0, 'DM1'), dm2 = mk('inter', 300, 640, 0, 'DM2');
   [dm1, dm2].forEach((d) => { d.ops = ['Actionner', 'Réarmer']; d.sts = ['Au repos', 'Actionné']; });
-  const h1 = mk('voyant', 560, 600, 90, 'H1', { lab: 'alarme (C9)' });
+  const h1 = mk('voyant', 560, 600, 90, 'H1', { lab: 'alarme (C9)' }); h1.alarm = true;
   return { comps: [src, xl, xn0, q1, q2, pc1, x1, s1, s2, xb, kt, l1, l2, na, nb, nd, nc, ne, tbt, xs1, xs2, xs3, xs4, dm1, dm2, h1],
     wires: [
       wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'),
@@ -1696,15 +1794,40 @@ function buildExam2() {
       wr(xs2, 'P', h1, '1'), wr(h1, '2', xs3, 'P'), wr(xs3, 'P', xs4, 'P'), wr(xs4, 'P', tbt, 'N', true)
     ] };
 }
+// Espace n°3 : locaux tertiaires (détecteur, BAES, arrêt d'urgence, prise)
+function buildExam3() {
+  const src = mk('src', 80, 300, 0, 'TER'), xl = mk('borne', 160, 240, 0, 'XL'), xn0 = mk('borne', 160, 320, 0, 'XN');
+  const q1 = mk('disj', 240, 100, 0, 'Q1', { lab: '20 A' }), q3 = mk('disj', 240, 260, 0, 'Q3', { lab: '2 A' }), q2 = mk('disj', 240, 420, 0, 'Q2', { lab: '16 A' });
+  const xk = mk('borne', 760, 100, 0, 'XK'), km = mk('cont', 700, 180, 0, 'KM1', { lab: 'MN · AU' });
+  const pc1 = mk('prise', 1000, 220, 0, 'PC1', { lab: 'C6' });
+  const s1 = mk('inter', 440, 260, 0, 'S1', { lab: 'arrêt d’urgence', st: { on: true } });
+  s1.inv = true; s1.ops = ['Déverrouiller', 'Appuyer (coup de poing)']; s1.sts = ['Enfoncé : bobine coupée', 'Au repos : contact fermé'];
+  const xe = mk('borne', 360, 420, 0, 'XE'), baes = mk('baes', 520, 340, 0, 'BAES', { lab: 'C7' });
+  const s2 = mk('detect', 520, 440, 0, 'S2');
+  const l1 = mk('lampe', 680, 460, 90, 'L1'), l2 = mk('lampe', 760, 460, 90, 'L2');
+  const nk = mk('borne', 640, 300, 0, 'N1'), na = mk('borne', 920, 300, 0, 'N2'), ns = mk('borne', 480, 580, 0, 'N7'), nbae = mk('borne', 920, 340, 0, 'N3'), nc = mk('borne', 920, 500, 0, 'N4'), nd = mk('borne', 920, 580, 0, 'N5'), ne = mk('borne', 160, 580, 0, 'N6');
+  return { comps: [src, xl, xn0, q1, q2, q3, xk, km, pc1, s1, xe, baes, s2, l1, l2, nk, na, ns, nbae, nc, nd, ne],
+    wires: [
+      wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q3, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'),
+      wr(q1, '2', xk, 'P'), wr(xk, 'P', km, '1'), wr(km, '2', pc1, 'L'), wr(pc1, 'N', na, 'P'),
+      wr(q3, '2', s1, '1'), wr(s1, '2', km, 'A1', true), wr(km, 'A2', nk, 'P'), wr(nk, 'P', na, 'P'),
+      wr(q2, '2', xe, 'P'), wr(xe, 'P', s2, 'L'), wr(xe, 'P', baes, '1', true), wr(baes, '2', nbae, 'P'),
+      wr(s2, 'S', l1, '1'), wr(l1, '1', l2, '1'), wr(s2, 'N', ns, 'P'), wr(l1, '2', l2, '2'), wr(l2, '2', nc, 'P'),
+      wr(na, 'P', nbae, 'P'), wr(nbae, 'P', nc, 'P'), wr(nc, 'P', nd, 'P'), wr(nd, 'P', ns, 'P'), wr(ns, 'P', ne, 'P'), wr(ne, 'P', xn0, 'P')
+    ] };
+}
 const ESPACES = {
   1: { build: buildExam1, eyebrow: 'Espace de travail n°1', title: 'Installation électrique d’un logement',
     sub: 'Le logement du gardien : tableau de répartition TR, éclairage en télérupteur avec des boutons poussoirs radio, chauffe-eau en heures creuses et prises.',
     order: ['ID1', 'D1', 'D2', 'D3', 'ID2', 'D4', 'D5', 'D6', 'S1', 'E1', 'E2', 'S2', 'PC1', 'PC2'] },
   2: { build: buildExam2, eyebrow: 'Espace de travail n°2', title: 'Parties communes d’un immeuble d’habitation',
     sub: 'Un couloir d’immeuble : éclairage sur minuterie commandé par deux boutons-poussoirs, une prise de courant et deux déclencheurs manuels d’alarme incendie (SSI). Tout le matériel est étanche, en saillie.',
-    order: ['Q1', 'Q2', 'S1', 'S2', 'PC1', 'DM1', 'DM2'] }
+    order: ['Q1', 'Q2', 'S1', 'S2', 'PC1', 'DM1', 'DM2'] },
+  3: { build: buildExam3, eyebrow: 'Espace de travail n°3', title: 'Locaux tertiaires petits et moyens',
+    sub: 'Un bureau : éclairage commandé par un détecteur de mouvement, bloc autonome d’éclairage de sécurité (BAES), prise de courant protégée par un arrêt d’urgence, et deux prises informatiques RJ45 dans une goulotte double compartiment.',
+    order: ['Q1', 'Q2', 'Q3', 'S2', 'S1', 'PC1', 'BAES'] }
 };
-let exN = store.get('pn-espace') === 2 ? 2 : 1;
+let exN = [2, 3].includes(store.get('pn-espace')) ? store.get('pn-espace') : 1;
 const exC = new Circuit();
 const exB = new Board($('#ex-svg'), exC, {});
 function exSet(n) {
@@ -1725,7 +1848,7 @@ function exUpd() {
   $('#ex-metric').textContent = metricTxt(exC.res);
   const ops = exC.comps.filter((c) => DEF[c.type].op && opLabel(c)).sort((a, b) => order.indexOf(a.ref) - order.indexOf(b.ref));
   $('#ex-ctls').innerHTML = ops.map((c) => {
-    const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug) || (c.type === 'inter' && c.st.on);
+    const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug) || (c.type === 'inter' && c.st.on !== !!c.inv);
     return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise', 'inter'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
   }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
 }
@@ -1748,7 +1871,7 @@ const editor = (() => {
   const save = () => store.set('pn-bac-a-sable', { comps: C.comps.map((c) => Object.assign({}, c, { st: Object.assign({}, c.st, (c.type === 'bp' || c.type === 'radio') ? { pressed: false } : {}) })), wires: C.wires });
   C.listeners.push(() => { panel(); save(); });
 
-  const groups = [['Alimentation · protection', ['src', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vav', 'perm', 'bp']], ['Appareillage modulaire', ['tele', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise']], ['Connexion', ['borne']]];
+  const groups = [['Alimentation · protection', ['src', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vav', 'perm', 'bp', 'detect']], ['Appareillage modulaire', ['tele', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']], ['Connexion', ['borne']]];
   $('#ed-pal').innerHTML = `<p style="margin:0 8px 6px;font-size:13px;color:var(--ink-2)">Choisis un symbole, puis clique sur la grille pour le poser.</p>` +
     groups.map(([g, ks]) => `<h2>${g}</h2>` + ks.map((k) => `<button class="pal" type="button" data-pal="${k}" aria-pressed="false" title="${esc(DEF[k].desc)}"><span class="ic">${symIcon(k, 8)}</span>${DEF[k].name}</button>`).join('')).join('');
   $('#ed-pal').addEventListener('click', (e) => {
@@ -2338,6 +2461,7 @@ function route() {
   else window.scrollTo(0, 0);
   document.body.classList.toggle('ed-mode', h === 'bac-a-sable');
   if (h === 'bac-a-sable') { editor.render(); requestAnimationFrame(sizeEd); }
+  Sound.alarmClear(); if (h === 'examen') exC.update();
 }
 function sizeEd() {
   const ed = $('.ed'); if (!ed || ed.closest('[hidden]')) return;
