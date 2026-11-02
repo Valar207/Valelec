@@ -76,6 +76,8 @@ Toute modification de `site/index.html` est en ligne immédiatement.
 
 ## Examen pratique : hypothèses
 
+Ces hypothèses ne sont plus affichées sur le site (encarts retirés à la demande) ; elles restent notées ici.
+
 La page Examen pratique reprend le dossier candidat TP-00467 (espaces de travail n°1, n°2 et n°3).
 
 Espace n°1 : La page du schéma unifilaire du tableau TR n’était pas disponible : la répartition des circuits (D1 → PC1, D2 → L1 + L3, D3 → L2, D4 → PC2, D5 → commande de C1, D6 → chauffe-eau) est une proposition cohérente avec la NF C 15-100, à vérifier avec le dossier. Les différentiels sont dessinés sur la phase seulement, et l’interphone I1 (très basse tension) n’est pas représenté.
