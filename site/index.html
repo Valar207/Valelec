@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Valelec</title>
+<script>try{var t=JSON.parse(localStorage.getItem("pn-theme"));if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2317191E'/%3E%3Cpath d='M6 5 L14.5 15 L10 15 L16 27 L26 5' fill='none' stroke='%23FFD84A' stroke-width='3.6' stroke-linejoin='miter' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -187,6 +188,17 @@ tr:last-child td{border-bottom:0}
 .box ol li i{flex:none;width:24px;height:24px;border-radius:6px;background:var(--inv-bg);color:var(--yellow);font:normal 500 12px/24px var(--f-mono);text-align:center}
 .box ul{margin:0;padding-left:18px;font-size:15px;color:var(--ink-2);display:flex;flex-direction:column;gap:4px}
 
+/* Examen pratique */
+.ex{display:flex;flex-direction:column;gap:28px;padding-block:32px 72px}
+.ex h1{margin:6px 0 8px;font-size:clamp(36px,4.4vw,54px)}
+.ex-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr))}
+.ex-table{width:100%;border-collapse:collapse;font-size:15px}
+.ex-table th,.ex-table td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--line)}
+.ex-table th{font:500 12px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.ex-table td:first-child{font-family:var(--f-mono);font-weight:500;white-space:nowrap}
+.ex-note{margin:0;padding:14px 16px;border-radius:12px;background:var(--warn-bg);color:var(--warn-fg);font-size:14px}
+.box ol.ex-steps li{display:list-item;margin-left:18px;list-style:decimal}
+
 /* Bac à sable */
 .ed-bar{border-bottom:1px solid var(--line);background:var(--paper-2)}
 .ed-bar .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding-block:8px}
@@ -274,6 +286,10 @@ tr:last-child td{border-bottom:0}
 .coil{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .2s,stroke .2s}.coil.on{fill:#3A3110;stroke:#FFD84A}
 .fuse{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5}.fuse.blown{fill:#4A1A14;stroke:#FF6B52}
 .plugb{fill:#3A4D63;stroke:#E8EDF2;stroke-width:1.5}.plugb.lit{fill:#FFD84A;stroke:#FFD84A}
+.rbox{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .2s,stroke .2s}.rbox.on{fill:#3A3110;stroke:#FFD84A}
+.rw{fill:none;stroke:#8E9BAA;stroke-width:2;stroke-linecap:round}.rw.on{stroke:#FFD84A}
+.rlink{fill:none;stroke:#8E9BAA;stroke-width:1.6;stroke-dasharray:2 7;stroke-linecap:round;opacity:.65;pointer-events:none}
+.rlink.on{stroke:#FFD84A;opacity:1;animation:pnflow .7s linear infinite;filter:drop-shadow(0 0 3px #FFD84A)}
 .hitbox{fill:transparent;cursor:pointer}
 .comp.op .hitbox:hover{fill:rgba(255,216,74,.08)}
 .edit .comp .hitbox{cursor:grab}
@@ -383,15 +399,17 @@ tr:last-child td{border-bottom:0}
 <header class="top">
   <div class="wrap wide">
     <a class="brand" href="#accueil" aria-label="Valelec, accueil">
-      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="#17191E"/><path d="M7 17 C10 8, 14 8, 17 17 S24 26, 27 17" fill="none" stroke="#FFD84A" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="#17191E" style="stroke:var(--line);stroke-width:1.5"/><path d="M7 17 C10 8, 14 8, 17 17 S24 26, 27 17" fill="none" stroke="#FFD84A" stroke-width="2.4" stroke-linecap="round"/></svg>
       <b>Val<span>elec</span></b>
     </a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="#bases" data-nav="bases">Les bases</a>
       <a href="#schemas" data-nav="schemas">Schémas</a>
+      <a href="#examen" data-nav="examen">Examen pratique</a>
       <a href="#bac-a-sable" data-nav="bac-a-sable">Bac à sable</a>
       <a href="#tableaux" data-nav="tableaux">Tableaux FR / US</a>
       <button class="snd" id="snd" type="button" aria-pressed="true" aria-label="Son des appareils" title="Couper le son"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5 H6 L10 4.5 V15.5 L6 12.5 H3 Z" class="ico"/><path id="snd-on" d="M13 7.5 A3.5 3.5 0 0 1 13 12.5 M15.3 5.3 A6.5 6.5 0 0 1 15.3 14.7" class="ico"/><path id="snd-off" d="M13 8 L17 12 M17 8 L13 12" class="ico" style="display:none"/></svg></button>
+      <button class="snd" id="theme" type="button" aria-label="Mode sombre" title="Passer en mode sombre"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path id="theme-moon" d="M15.5 12.2 A6.5 6.5 0 0 1 7.8 4.5 A6.5 6.5 0 1 0 15.5 12.2 Z" class="ico"/><g id="theme-sun" style="display:none"><circle cx="10" cy="10" r="3.4" class="ico"/><path d="M10 2.5V4.3M10 15.7V17.5M2.5 10H4.3M15.7 10H17.5M4.7 4.7L6 6M14 14L15.3 15.3M4.7 15.3L6 14M14 6L15.3 4.7" class="ico"/></g></svg></button>
     </nav>
   </div>
 </header>
@@ -585,6 +603,91 @@ tr:last-child td{border-bottom:0}
   </div>
 </div>
 
+<!-- ============ EXAMEN PRATIQUE ============ -->
+<div id="page-examen" data-page="examen" hidden>
+  <div class="wrap wide ex">
+    <div>
+      <p class="eyebrow">Titre pro électricien d’équipement du bâtiment · TP-00467 · Espace de travail n°1</p>
+      <h1 class="display">Examen pratique : le logement</h1>
+      <p class="lead">Mise en situation : l’installation électrique d’un logement, dans un centre de formation de plusieurs étages (logement du gardien, parking en sous-sol, espaces ouverts au public). Ce schéma reproduit le travail demandé : manipule-le pour comprendre chaque circuit avant l’épreuve.</p>
+    </div>
+    <div class="sim-cols">
+      <div class="stage">
+        <div class="board">
+          <svg id="ex-svg" class="view" role="img" aria-label="Schéma développé de l’espace de travail n°1"></svg>
+          <div class="statusbar">
+            <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
+            <span class="metric" id="ex-metric">0 W</span>
+          </div>
+        </div>
+        <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes du logement"></div>
+        <ul class="mini-legend" aria-label="Légende">
+          <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
+          <li><span class="lsw" style="background:#4E8EF7"></span>Neutre</li>
+          <li><span class="lsw" style="background:#B48CF2"></span>Retour, commande</li>
+          <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#8E9BAA 0 2px,transparent 2px 8px)"></span>Liaison radio</li>
+          <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
+        </ul>
+      </div>
+      <div class="info">
+        <div class="box inv"><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
+          <li>Appuie sur S1 (filaire), puis sur E1 (radio) : L1 et L3 s’allument puis s’éteignent ensemble.</li>
+          <li>Appuie sur E2 : seule L2 change d’état.</li>
+          <li>Bascule S2 : le contact heures creuses alimente la bobine de C1, qui fait chauffer le chauffe-eau.</li>
+          <li>Branche la machine à laver sur PC2, puis déclenche ID1 : l’éclairage s’éteint, la machine continue (elle est sous ID2).</li>
+        </ol></div>
+        <div class="box"><h2>Travail demandé</h2><ul>
+          <li>L1 et L3 commandées par S1 et E1 en télérupteur (récepteur R1 dans BD1).</li>
+          <li>L2 commandée par le BP radio E2 en télérupteur (récepteur R2 dans BD1).</li>
+          <li>Sortie de câble SC (chauffe-eau) par le contacteur C1, commandé par S2 qui simule le contact C1-C2 du compteur.</li>
+          <li>Raccorder PC2 (machine à laver) et la prise modulaire PC1.</li>
+          <li>Tirer les conducteurs dans les gaines G01 à G06 et la boîte BD1.</li>
+          <li>Poser le combiné d’interphone I1 dans la boîte repère 4.</li>
+          <li>Câbler le tableau TR, puis le raccorder à la source consignée.</li>
+        </ul></div>
+        <button class="btn" id="ex-open" type="button" style="justify-content:space-between;border-radius:12px">Modifier dans le bac à sable <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></button>
+      </div>
+    </div>
+
+    <div class="ex-grid">
+      <div class="box"><h2>Tableau de répartition TR</h2>
+        <table class="ex-table">
+          <thead><tr><th>Repère</th><th>Appareil</th><th>Circuit</th></tr></thead>
+          <tbody>
+            <tr><td>ID1</td><td>Inter. différentiel 40 A · 30 mA · type AC</td><td>Protège D1, D2, D3</td></tr>
+            <tr><td>D1</td><td>Disjoncteur C20</td><td>PC1 (prise modulaire)</td></tr>
+            <tr><td>D2</td><td>Disjoncteur C16</td><td>L1 + L3 par R1</td></tr>
+            <tr><td>D3</td><td>Disjoncteur C16</td><td>L2 par R2</td></tr>
+            <tr><td>ID2</td><td>Inter. différentiel 40 A · 30 mA · type A</td><td>Protège D4, D5, D6</td></tr>
+            <tr><td>D4</td><td>Disjoncteur C20</td><td>PC2 (machine à laver)</td></tr>
+            <tr><td>D5</td><td>Disjoncteur C2</td><td>Commande de C1 (par S2)</td></tr>
+            <tr><td>D6</td><td>Disjoncteur C20</td><td>Chauffe-eau (SC) par C1</td></tr>
+            <tr><td>C1</td><td>Contacteur HC/HP</td><td>Coupe le chauffe-eau</td></tr>
+            <tr><td>PC1</td><td>Prise modulaire 16 A 2P+T</td><td>Dans le tableau</td></tr>
+          </tbody>
+        </table>
+        <p class="ex-note">La page du schéma unifilaire ne figurait pas sur tes photos. Cette répartition des circuits est une proposition cohérente avec la NF C 15-100 (machine à laver sous un différentiel de type A, commande de contacteur en C2) : vérifie-la avec le schéma unifilaire de ton dossier.</p>
+      </div>
+      <div class="box"><h2>À savoir pour l’épreuve</h2><ul>
+        <li><strong>R1</strong> est un récepteur radio et filaire (type Yokis MTR2000ERP) : il reçoit à la fois le poussoir filaire S1 et l’émetteur radio E1.</li>
+        <li><strong>R2</strong> est un récepteur radio seul : E2 lui parle sans aucun fil de commande.</li>
+        <li>Les micromodules sont alimentés en permanence par la phase et le neutre, dans la boîte de dérivation BD1.</li>
+        <li>Sections : 1,5 mm² sur les circuits en C16 et C2, 2,5 mm² sur les circuits en C20.</li>
+        <li>Le combiné d’interphone I1 est en très basse tension, par la liaison C2 vers la platine de rue : il ne figure pas sur ce schéma 230 V.</li>
+        <li>Sur le schéma, les différentiels sont dessinés sur la phase seulement ; en vrai, ils coupent aussi le neutre.</li>
+        <li>Documents remis au début : attestation de consignation, autorisation de travail, schéma de bornier de la boîte 4.</li>
+      </ul></div>
+      <div class="box"><h2>Installation existante</h2><ul>
+        <li>1 tableau de répartition et 1 AGCP consigné</li>
+        <li>2 pots d’encastrement, 3 boîtiers DCL, 1 boîte de dérivation</li>
+        <li>1 moulure M1 (angle, embout, cadre) pour S2 et PC2</li>
+        <li>Conduits ICTA G01 à G07</li>
+        <li>Liaison C2 vers la platine de rue, en attente dans la boîte repère 4</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
 <!-- ============ BAC À SABLE ============ -->
 <div id="page-bac-a-sable" data-page="bac-a-sable" hidden>
   <div class="ed-bar"><div class="wrap wide" role="toolbar" aria-label="Outils du bac à sable">
@@ -712,6 +815,7 @@ const DEF = {
   cont: { name: 'Contacteur', pre: 'KM', w: 120, h: 80, t: COIL, desc: 'Son contact reste fermé tant que la bobine (A1-A2) est alimentée.' },
   minu: { name: 'Minuterie', pre: 'KT', w: 120, h: 80, t: COIL, desc: 'Une impulsion sur la bobine ferme le contact pendant 8 secondes.' },
   yokis: { name: 'Micromodule télérupteur', pre: 'Y', w: 80, h: 80, t: [['L', 0, 20], ['BP', 0, 60], ['S', 80, 20], ['N', 80, 60]], desc: 'Micromodule encastré (type Yokis) : alimenté par L et N, il fait basculer sa sortie S vers les lampes à chaque impulsion reçue sur BP.' },
+  radio: { name: 'Bouton poussoir radio', pre: 'E', w: 80, h: 40, t: [], desc: 'Émetteur radio sans fil (type Yokis) : chaque appui envoie une impulsion au récepteur associé, sans fil de commande.', op: true },
   lampe: { name: 'Lampe', pre: 'L', w: 80, h: 40, t: T2, desc: 'Point lumineux de 60 W.' },
   voyant: { name: 'Voyant', pre: 'H', w: 80, h: 40, t: T2, desc: 'Petit témoin lumineux de 1 W.' },
   rad: { name: 'Radiateur', pre: 'R', w: 80, h: 40, t: T2, desc: 'Résistance chauffante de 1 000 W.' },
@@ -730,7 +834,7 @@ function defSt(type) {
     case 'inter': return { on: false };
     case 'vav': return { pos: 1 };
     case 'perm': return { cross: false };
-    case 'bp': return { pressed: false };
+    case 'bp': case 'radio': return { pressed: false };
     case 'prise': return { plug: false };
     case 'tele': case 'cont': case 'yokis': return { k: false, coil: false };
     case 'minu': return { k: false, coil: false, until: 0 };
@@ -832,7 +936,9 @@ function solve(comps, wires, power) {
     if (!['inter', 'vav', 'perm', 'bp'].includes(c.type)) return;
     if (DEF[c.type].t.some((t) => { const r = f(c.id + ':' + t[0]); return NN.has(r) && !LN.has(r); })) nsw.push(c.ref);
   });
-  return { ws, loadsOn, short, earth, nsw, watts, onCount };
+  const sup = {};
+  if (!short) comps.forEach((c) => { if (c.type === 'yokis' && LN.has(f(c.id + ':L')) && NN.has(f(c.id + ':N'))) sup[c.id] = true; });
+  return { ws, loadsOn, short, earth, nsw, watts, onCount, sup };
 }
 
 /* Simulation avec les bobines (télérupteur, contacteur, minuterie) et les protections */
@@ -858,7 +964,8 @@ function simulate(comps, wires, power) {
     let ch = false; const now = Date.now();
     cs = cs.map((c) => {
       if (!['tele', 'cont', 'minu', 'yokis'].includes(c.type)) return c;
-      const en = !!res.loadsOn[c.id], st = Object.assign({}, c.st), rising = en && !st.coil;
+      const radio = c.type === 'yokis' && res.sup[c.id] && cs.some((r) => r.type === 'radio' && r.st.pressed && (r.to || []).includes(c.ref));
+      const en = !!res.loadsOn[c.id] || !!radio, st = Object.assign({}, c.st), rising = en && !st.coil;
       if ((c.type === 'tele' || c.type === 'yokis') && rising) st.k = !st.k;
       if (c.type === 'cont') st.k = en;
       if (c.type === 'minu') { if (en) st.until = now + MINU_MS; st.k = en || now < st.until; }
@@ -889,6 +996,7 @@ function opLabel(c, on) {
     case 'vav': return 'Basculer (navette ' + s.pos + ')';
     case 'perm': return s.cross ? 'Décroiser' : 'Croiser';
     case 'bp': return 'Appuyer';
+    case 'radio': return 'Appuyer (radio)';
     case 'prise': return s.plug ? 'Débrancher l’appareil' : 'Brancher un appareil';
     default: return '';
   }
@@ -903,6 +1011,7 @@ function stateText(c, on, power) {
     case 'vav': return 'Sur la navette ' + s.pos;
     case 'perm': return s.cross ? 'Position croisée' : 'Position droite';
     case 'bp': return s.pressed ? 'Enfoncé' : 'Relâché';
+    case 'radio': return (s.pressed ? 'Impulsion radio envoyée' : 'Au repos') + (c.to && c.to.length ? ' · vers ' + c.to.join(', ') : '');
     case 'prise': return s.plug ? (on ? 'Appareil en marche' : 'Appareil branché, sans courant') : 'Aucun appareil branché';
     case 'tele': case 'cont': case 'minu': return (s.coil ? 'Bobine alimentée · ' : 'Bobine au repos · ') + (s.k ? 'contact fermé' : 'contact ouvert');
     case 'yokis': return (s.coil ? 'Impulsion reçue sur BP · ' : '') + (s.k ? 'sortie allumée' : 'sortie éteinte');
@@ -942,6 +1051,7 @@ function sym(c, on, now) {
     case 'moteur': return `<path d="M0 20H22M58 20H80" class="s"/><circle cx="40" cy="20" r="18" class="mot${o}"/><text x="40" y="25" class="t c">M</text><g class="rotor${o}"><path d="M40 5A15 15 0 0 1 55 20" class="arc"/></g>`;
     case 'sonnette': return `<path d="M0 20H24M56 20H80M24 20V28M56 20V28" class="s"/><g class="bell${o}"><path d="M24 28A16 16 0 0 1 56 28Z" class="bellb${o}"/></g>`;
     case 'prise': return `<path d="M0 20H41" class="stub ph"/><path d="M0 40H32" class="stub ne"/><path d="M0 60H41" class="stub pe"/><path d="M58 14A26 26 0 0 0 58 66M58 8V72" class="s"/>${s.plug ? `<rect x="64" y="26" width="16" height="28" rx="3" class="plugb${on ? ' lit' : ''}"/>` : ''}`;
+    case 'radio': { const o2 = s.pressed ? ' on' : ''; return `<rect x="14" y="4" width="32" height="32" rx="6" class="rbox${o2}"/><circle cx="30" cy="20" r="5" class="rw${o2}"/><path d="M52 12A12 12 0 0 1 52 28M59 6A20 20 0 0 1 59 34" class="rw${o2}"/>`; }
     case 'borne': return `<circle cx="20" cy="20" r="8" class="sf"/>`;
     case 'yokis': return `<rect x="8" y="6" width="64" height="68" rx="10" class="coil${s.coil ? ' on' : ''}"/><path d="M0 20H18M62 20H80M0 60H8M72 60H80" class="s"/>${dot(18, 20)}${dot(62, 20)}<line x1="18" y1="20" x2="${s.k ? 62 : 56}" y2="${s.k ? 20 : 8}" class="s"/><text x="40" y="46" class="t c">μTR</text><text x="13" y="34" class="t sm">L</text><text x="13" y="66" class="t sm">BP</text><text x="60" y="34" class="t sm">S</text><text x="61" y="66" class="t sm">N</text>`;
   }
@@ -1012,10 +1122,10 @@ class Circuit {
   operate(id) {
     const c = this.find(id); if (!c) return;
     const s = c.st;
-    if (c.type === 'bp') {
+    if (c.type === 'bp' || c.type === 'radio') {
       s.pressed = true; this.update();
       clearTimeout(this.bpT);
-      this.bpT = setTimeout(() => { this.comps.forEach((x) => { if (x.type === 'bp') x.st.pressed = false; }); this.update(); }, 650);
+      this.bpT = setTimeout(() => { this.comps.forEach((x) => { if (x.type === 'bp' || x.type === 'radio') x.st.pressed = false; }); this.update(); }, 650);
       return;
     }
     if (c.type === 'disj') { s.closed = !s.closed; if (s.closed) this.events = []; }
@@ -1108,6 +1218,10 @@ class Board {
       const sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === w.id ? ' sel' : '';
       const delay = r.s === 'live' ? dLive : dFlow;
       h += `<g class="wire${sel}" data-wire="${w.id}">${this.edit ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
+    });
+    C.comps.forEach((c) => {
+      if (c.type !== 'radio' || !c.to) return;
+      c.to.forEach((ref) => { const r = C.comps.find((x) => x.ref === ref); if (r) h += `<path d="M${c.x} ${c.y}L${r.x} ${r.y}" class="rlink${c.st.pressed ? ' on' : ''}"/>`; });
     });
     C.comps.forEach((c) => {
       const d = DEF[c.type], on = !!res.loadsOn[c.id];
@@ -1409,7 +1523,7 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
   u.addEventListener('input', upd); r.addEventListener('input', upd); upd();
 })();
 (function symbols() {
-  const order = ['src', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'tele', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'borne'];
+  const order = ['src', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'tele', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'borne'];
   $('#sym-grid').innerHTML = order.map((k) => `<div class="symcard"><div class="tilebd">${symIcon(k, 12)}</div><h3>${DEF[k].name}</h3><p>${DEF[k].desc}</p></div>`).join('');
 })();
 
@@ -1453,6 +1567,71 @@ $('#sim-open').addEventListener('click', () => { editor.load(cur.build()); locat
 $$('a[data-preset]').forEach((a) => a.addEventListener('click', () => { const p = PRESETS.find((x) => x.id === a.dataset.preset); if (p) simSet(p); }));
 simSet(PRESETS[0]);
 
+/* ---------------- Examen pratique (TP-00467, espace n°1) ---------------- */
+function buildExam() {
+  const src = mk('src', 80, 440, 0, 'AGCP'), xl = mk('borne', 160, 380, 0, 'XL'), xn0 = mk('borne', 160, 460, 0, 'XN');
+  const id1 = mk('disj', 240, 120, 0, 'ID1', { lab: '40 A · 30 mA AC' }), id2 = mk('disj', 240, 660, 0, 'ID2', { lab: '40 A · 30 mA A' });
+  const xa1 = mk('borne', 320, 120, 0, 'X1'), xa2 = mk('borne', 320, 260, 0, 'X2'), xa3 = mk('borne', 320, 460, 0, 'X3');
+  const xb1 = mk('borne', 320, 660, 0, 'X4'), xb2 = mk('borne', 320, 760, 0, 'X5'), xb3 = mk('borne', 320, 860, 0, 'X6');
+  const d1 = mk('disj', 400, 120, 0, 'D1', { lab: 'C20' }), d2 = mk('disj', 400, 260, 0, 'D2', { lab: 'C16' }), d3 = mk('disj', 400, 460, 0, 'D3', { lab: 'C16' });
+  const d4 = mk('disj', 400, 660, 0, 'D4', { lab: 'C20' }), d6 = mk('disj', 400, 760, 0, 'D6', { lab: 'C20' }), d5 = mk('disj', 400, 860, 0, 'D5', { lab: 'C2' });
+  // PC1 : prise modulaire du tableau
+  const pc1 = mk('prise', 1140, 140, 0, 'PC1', { lab: 'modulaire' });
+  // Éclairage L1 + L3 : R1 radio et filaire, S1 filaire, E1 radio
+  const xd2 = mk('borne', 520, 260, 0, 'X7'), s1 = mk('bp', 520, 320, 90, 'S1', { lab: 'filaire' });
+  const r1 = mk('yokis', 720, 280, 0, 'R1'), e1 = mk('radio', 600, 200, 0, 'E1');
+  const l1 = mk('lampe', 860, 300, 90, 'L1'), l3 = mk('lampe', 960, 300, 90, 'L3');
+  // Éclairage L2 : R2 radio seul, E2
+  const r2 = mk('yokis', 720, 480, 0, 'R2'), e2 = mk('radio', 600, 560, 0, 'E2'), l2 = mk('lampe', 860, 500, 90, 'L2');
+  e1.to = ['R1']; e2.to = ['R2'];
+  // PC2 : machine à laver
+  const pc2 = mk('prise', 1140, 680, 0, 'PC2', { lab: 'machine à laver', watt: 2200 });
+  // Chauffe-eau : C1 commandé par S2 (contact heures creuses simulé)
+  const xd6 = mk('borne', 800, 760, 0, 'X8'), c1 = mk('cont', 740, 800, 0, 'C1', { lab: 'HC / HP' });
+  const sc = mk('rad', 900, 840, 90, 'SC', { lab: 'chauffe-eau', watt: 2400 }), s2 = mk('vav', 560, 860, 0, 'S2', { lab: 'contact HC', st: { pos: 2 } });
+  // Neutre : bus à droite et retour par le bas
+  const xn1 = mk('borne', 1060, 140, 0, 'N1'), xn2 = mk('borne', 1060, 340, 0, 'N2'), xn3 = mk('borne', 1060, 540, 0, 'N3'), xn4 = mk('borne', 1060, 680, 0, 'N4');
+  const xn5 = mk('borne', 1060, 880, 0, 'N5'), xn6 = mk('borne', 1060, 940, 0, 'N6'), xn7 = mk('borne', 680, 940, 0, 'N7'), xn8 = mk('borne', 160, 940, 0, 'N8');
+  return { comps: [src, xl, xn0, id1, id2, xa1, xa2, xa3, xb1, xb2, xb3, d1, d2, d3, d4, d5, d6, pc1, xd2, s1, r1, e1, l1, l3, r2, e2, l2, pc2, xd6, c1, sc, s2, xn1, xn2, xn3, xn4, xn5, xn6, xn7, xn8],
+    wires: [
+      wr(src, 'L', xl, 'P'), wr(xl, 'P', id1, '1'), wr(xl, 'P', id2, '1'),
+      wr(id1, '2', xa1, 'P'), wr(xa1, 'P', xa2, 'P'), wr(xa2, 'P', xa3, 'P'),
+      wr(id2, '2', xb1, 'P'), wr(xb1, 'P', xb2, 'P'), wr(xb2, 'P', xb3, 'P'),
+      wr(xa1, 'P', d1, '1'), wr(xa2, 'P', d2, '1'), wr(xa3, 'P', d3, '1'), wr(xb1, 'P', d4, '1'), wr(xb2, 'P', d6, '1'), wr(xb3, 'P', d5, '1'),
+      wr(d1, '2', pc1, 'L'), wr(pc1, 'N', xn1, 'P'),
+      wr(d2, '2', xd2, 'P'), wr(xd2, 'P', r1, 'L'), wr(xd2, 'P', s1, '1'), wr(s1, '2', r1, 'BP'),
+      wr(r1, 'S', l1, '1'), wr(l1, '1', l3, '1'), wr(r1, 'N', l1, '2', true), wr(l1, '2', l3, '2'), wr(l3, '2', xn2, 'P'),
+      wr(d3, '2', r2, 'L'), wr(r2, 'S', l2, '1'), wr(r2, 'N', l2, '2', true), wr(l2, '2', xn3, 'P'),
+      wr(d4, '2', pc2, 'L'), wr(pc2, 'N', xn4, 'P'),
+      wr(d6, '2', xd6, 'P'), wr(xd6, 'P', c1, '1'), wr(c1, '2', sc, '1'), wr(sc, '2', xn5, 'P'),
+      wr(d5, '2', s2, 'C'), wr(s2, '1', c1, 'A1', true), wr(c1, 'A2', xn7, 'P'),
+      wr(xn1, 'P', xn2, 'P'), wr(xn2, 'P', xn3, 'P'), wr(xn3, 'P', xn4, 'P'), wr(xn4, 'P', xn5, 'P'), wr(xn5, 'P', xn6, 'P'),
+      wr(xn6, 'P', xn7, 'P'), wr(xn7, 'P', xn8, 'P'), wr(xn8, 'P', xn0, 'P'), wr(xn0, 'P', src, 'N')
+    ] };
+}
+const exC = new Circuit();
+const exB = new Board($('#ex-svg'), exC, {});
+const EX_ORDER = ['ID1', 'D1', 'D2', 'D3', 'ID2', 'D4', 'D5', 'D6', 'S1', 'E1', 'E2', 'S2', 'PC1', 'PC2'];
+function exSet() { exC.power = true; exC.load(buildExam()); exB.fit(); exB.render(); exUpd(); }
+function exUpd() {
+  const s = summary(exC);
+  $('#ex-dot').className = 'sdot' + (s.dot ? ' ' + s.dot : '');
+  $('#ex-st').textContent = s.title; $('#ex-sd').textContent = s.detail;
+  $('#ex-metric').textContent = metricTxt(exC.res);
+  const ops = exC.comps.filter((c) => DEF[c.type].op && opLabel(c)).sort((a, b) => EX_ORDER.indexOf(a.ref) - EX_ORDER.indexOf(b.ref));
+  $('#ex-ctls').innerHTML = ops.map((c) => {
+    const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug);
+    return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
+  }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
+}
+exC.listeners.push(exUpd);
+$('#ex-ctls').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.reset) exSet(); else exC.operate(b.dataset.op);
+});
+$('#ex-open').addEventListener('click', () => { editor.load(buildExam()); location.hash = 'bac-a-sable'; });
+exSet();
+
 /* ---------------- Bac à sable ---------------- */
 const editor = (() => {
   const C = new Circuit();
@@ -1460,7 +1639,7 @@ const editor = (() => {
   let zoom = window.matchMedia('(max-width: 700px)').matches ? 0.5 : 0.75;
   const ZL = [0.5, 0.6, 0.75, 0.9, 1, 1.25, 1.5];
   const B = new Board(svg, C, { editable: true, wireColor: () => $('#ed-wcolor').value, onUI: () => panel(), getZoom: () => zoom, setZoom: (z, a) => setZoom(z, a) });
-  const save = () => store.set('pn-bac-a-sable', { comps: C.comps.map((c) => Object.assign({}, c, { st: Object.assign({}, c.st, c.type === 'bp' ? { pressed: false } : {}) })), wires: C.wires });
+  const save = () => store.set('pn-bac-a-sable', { comps: C.comps.map((c) => Object.assign({}, c, { st: Object.assign({}, c.st, (c.type === 'bp' || c.type === 'radio') ? { pressed: false } : {}) })), wires: C.wires });
   C.listeners.push(() => { panel(); save(); });
 
   const groups = [['Alimentation · protection', ['src', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vav', 'perm', 'bp']], ['Appareillage modulaire', ['tele', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise']], ['Connexion', ['borne']]];
@@ -2020,8 +2199,24 @@ const tableaux = (() => {
   upd();
 })();
 
+/* ---------------- Bouton mode sombre ---------------- */
+(function themeBtn() {
+  const b = $('#theme'), root = document.documentElement, mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : mq.matches;
+  const upd = () => {
+    const d = isDark();
+    b.setAttribute('aria-label', d ? 'Passer en mode clair' : 'Passer en mode sombre');
+    b.title = d ? 'Passer en mode clair' : 'Passer en mode sombre';
+    $('#theme-moon').style.display = d ? 'none' : '';
+    $('#theme-sun').style.display = d ? '' : 'none';
+  };
+  b.addEventListener('click', () => { const t = isDark() ? 'light' : 'dark'; root.dataset.theme = t; store.set('pn-theme', t); upd(); });
+  if (mq.addEventListener) mq.addEventListener('change', upd);
+  upd();
+})();
+
 /* ---------------- Navigation ---------------- */
-const PAGES = ['accueil', 'bases', 'schemas', 'bac-a-sable', 'tableaux'];
+const PAGES = ['accueil', 'bases', 'schemas', 'examen', 'bac-a-sable', 'tableaux'];
 function route() {
   let h = decodeURIComponent(location.hash.slice(1)) || 'accueil';
   let target = null;
@@ -2032,7 +2227,7 @@ function route() {
   }
   $$('[data-page]').forEach((p) => { p.hidden = p.dataset.page !== h; });
   $$('[data-nav]').forEach((a) => { if (a.dataset.nav === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
-  document.title = { accueil: 'Valelec', bases: 'Les bases · Valelec', schemas: 'Schémas · Valelec', 'bac-a-sable': 'Bac à sable · Valelec', tableaux: 'Tableaux France / États-Unis · Valelec' }[h];
+  document.title = { accueil: 'Valelec', bases: 'Les bases · Valelec', schemas: 'Schémas · Valelec', examen: 'Examen pratique · Valelec', 'bac-a-sable': 'Bac à sable · Valelec', tableaux: 'Tableaux France / États-Unis · Valelec' }[h];
   if (target) requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
   else window.scrollTo(0, 0);
   document.body.classList.toggle('ed-mode', h === 'bac-a-sable');
