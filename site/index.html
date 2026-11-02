@@ -822,7 +822,7 @@ const DEF = {
   moteur: { name: 'Moteur', pre: 'M', w: 80, h: 40, t: T2, desc: 'Moteur de 250 W (ventilation, volet roulant…).' },
   sonnette: { name: 'Sonnette', pre: 'B', w: 80, h: 40, t: T2, desc: 'Sonnette de 8 W.' },
   prise: { name: 'Prise 2P+T', pre: 'P', w: 80, h: 80, t: [['L', 0, 20], ['N', 0, 40], ['PE', 0, 60]], desc: 'Prise de courant. Actionne-la pour brancher un appareil de 2 000 W.', op: true },
-  borne: { name: 'Borne de connexion', pre: 'X', w: 40, h: 40, t: [['P', 20, 20]], desc: 'Point de raccordement pour relier plusieurs fils.' }
+  borne: { name: 'Borne de connexion', pre: 'X', w: 40, h: 40, t: [['P', 20, 20]], desc: 'Point de raccordement pour relier plusieurs fils.', norot: true }
 };
 const WATT = { lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3, yokis: 1 };
 const MINU_MS = 8000;
@@ -1248,8 +1248,8 @@ class Board {
         const cls = 'term' + (ui.pending === k ? ' pend' : '') + (conn[k] ? ' con' : '');
         h += `<g class="${cls}" data-term="${k}"><circle class="thit" cx="${p.x}" cy="${p.y}" r="11"/><circle class="tdot" cx="${p.x}" cy="${p.y}" r="5"/><title>Borne ${esc(k.split(':')[1])} de ${esc(refOf[k.split(':')[0]])}</title></g>`;
       });
-      const rsc = ui.sel && ui.sel.k === 'c' && !ui.place && !ui.drag ? C.find(ui.sel.id) : null;
-      if (rsc) {
+      const rsc = ui.sel && ui.sel.k === 'c' && !ui.place && !ui.drag && !ui.pending ? C.find(ui.sel.id) : null;
+      if (rsc && !DEF[rsc.type].norot) {
         const bx = boxOf(rsc), ty = Math.max(16, rsc.y - bx.H / 2 - 24);
         const hd = (x, dir) => `<g class="roth" data-rot="${rsc.id}" data-dir="${dir}" transform="translate(${x} ${ty})"><title>Pivoter de 90° ${dir > 0 ? 'dans le sens horaire' : 'dans le sens antihoraire'}</title><circle r="13"/><path d="${dir > 0 ? 'M-6 0A6 6 0 1 1 0 6M3 3L0 6L3 9' : 'M6 0A6 6 0 1 0 0 6M-3 3L0 6L-3 9'}" class="rarc"/></g>`;
         h += hd(Math.max(16, rsc.x - bx.W / 2 - 14), -1) + hd(Math.min(1184, rsc.x + bx.W / 2 + 14), 1);
@@ -1381,7 +1381,7 @@ class Board {
     C.comps.push(c); this.ui.place = null; this.ui.clip = null; this.ui.prot = 0; this.ui.sel = { k: 'c', id: c.id }; C.update();
   }
   rotate(id, dir) {
-    const c = this.C.find(id); if (!c) return;
+    const c = this.C.find(id); if (!c || DEF[c.type].norot) return;
     this.C.snapshot();
     c.rot = ((c.rot || 0) + (dir < 0 ? 270 : 90)) % 360;
     this.ui.sel = { k: 'c', id };
@@ -1729,7 +1729,7 @@ const editor = (() => {
       if (ui.sel.k === 'c') B.removeComp(ui.sel.id); else { C.snapshot(); C.wires = C.wires.filter((w) => w.id !== ui.sel.id); ui.sel = null; C.update(); }
     } else if (!mod && (e.key === 'r' || e.key === 'R')) {
       const dir = e.shiftKey ? -1 : 1;
-      if (ui.place) { e.preventDefault(); ui.prot = ((ui.prot || 0) + (dir < 0 ? 270 : 90)) % 360; B.render(); }
+      if (ui.place) { if (DEF[ui.place].norot) return; e.preventDefault(); ui.prot = ((ui.prot || 0) + (dir < 0 ? 270 : 90)) % 360; B.render(); }
       else if (ui.sel && ui.sel.k === 'c') { e.preventDefault(); rotate(ui.sel.id, dir); }
     }
     else if ((e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey)) { e.preventDefault(); C.undo(); }
@@ -1788,7 +1788,7 @@ const editor = (() => {
       const on = !!res.loadsOn[sc.id], op = DEF[sc.type].op ? opLabel(sc) : '';
       h = `<div style="display:flex;flex-direction:column;gap:12px"><div class="row" style="gap:12px;flex-wrap:nowrap"><span class="refbadge">${esc(sc.ref)}</span><div style="min-width:0"><strong style="display:block">${DEF[sc.type].name}</strong><span style="font-size:13px;color:var(--ink-2)">${stateText(sc, on, C.power)}</span></div></div>
         <p style="margin:0;font-size:14px;color:var(--ink-2)">${DEF[sc.type].desc}</p>
-        <div class="row" style="gap:8px">${op ? `<button class="btn sm pri" type="button" data-act="op">${op}</button>` : ''}<button class="btn sm" type="button" data-act="copy">Copier</button><button class="btn sm" type="button" data-act="dup">Dupliquer</button><button class="btn sm" type="button" data-act="rotl" aria-label="Pivoter de 90° dans le sens antihoraire"><svg width="16" height="16" viewBox="-10 -10 20 20" aria-hidden="true"><path d="M6 0A6 6 0 1 0 0 6M-3 3L0 6L-3 9" class="ico"/></svg>90°</button><button class="btn sm" type="button" data-act="rot" aria-label="Pivoter de 90° dans le sens horaire"><svg width="16" height="16" viewBox="-10 -10 20 20" aria-hidden="true"><path d="M-6 0A6 6 0 1 1 0 6M3 3L0 6L3 9" class="ico"/></svg>90°</button><button class="btn sm danger" type="button" data-act="del">Supprimer</button></div></div>`;
+        <div class="row" style="gap:8px">${op ? `<button class="btn sm pri" type="button" data-act="op">${op}</button>` : ''}<button class="btn sm" type="button" data-act="copy">Copier</button><button class="btn sm" type="button" data-act="dup">Dupliquer</button>${DEF[sc.type].norot ? '' : `<button class="btn sm" type="button" data-act="rotl" aria-label="Pivoter de 90° dans le sens antihoraire"><svg width="16" height="16" viewBox="-10 -10 20 20" aria-hidden="true"><path d="M6 0A6 6 0 1 0 0 6M-3 3L0 6L-3 9" class="ico"/></svg>90°</button><button class="btn sm" type="button" data-act="rot" aria-label="Pivoter de 90° dans le sens horaire"><svg width="16" height="16" viewBox="-10 -10 20 20" aria-hidden="true"><path d="M-6 0A6 6 0 1 1 0 6M3 3L0 6L3 9" class="ico"/></svg>90°</button>`}<button class="btn sm danger" type="button" data-act="del">Supprimer</button></div></div>`;
     } else if (sw) {
       const r = res.ws[sw.id] || { s: '' };
       const OPTS = [['auto', 'Auto', '#C9C2B2'], ['ph', 'Phase', '#E5533D'], ['ne', 'Neutre', '#4E8EF7'], ['rt', 'Retour', '#B48CF2'], ['cm', 'Commande', '#8E9BAA'], ['pe', 'Terre', 'repeating-linear-gradient(90deg,#3E9A3A 0 4px,#F2CB2E 4px 8px)']];

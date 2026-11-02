@@ -55,7 +55,7 @@ Le fichier est découpé par des commentaires repères (chercher ces lignes) :
 
 ## Ajouter un composant
 
-1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille).
+1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).
 2. Si besoin : état par défaut dans `defSt`, contacts dans `links`, récepteur dans `loadPair`, puissance dans `WATT`.
 3. Dessin dans `sym()` (repère local 0..w, 0..h).
 4. L’ajouter à un groupe de la palette (`groups` dans la partie Bac à sable).
