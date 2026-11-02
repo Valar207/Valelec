@@ -3,7 +3,8 @@
 Site pédagogique pour apprendre l’électricité domestique : leçons, schémas animés, bac à sable de schémas et comparaison des tableaux électriques français et américain.
 
 - Code source : https://github.com/Valar207/Valelec
-- Version en ligne (test, hébergée sur le NAS via un tunnel Cloudflare) : https://satisfactory-quarter-determination-david.trycloudflare.com — cette adresse change à chaque redémarrage du tunnel.
+- Version en ligne (adresse fixe, GitHub Pages, mise à jour à chaque push) : https://valar207.github.io/Valelec/site/
+- Version de test (hébergée sur le NAS via un tunnel Cloudflare) : https://satisfactory-quarter-determination-david.trycloudflare.com — cette adresse change à chaque redémarrage du tunnel.
 - Ancienne version (privée, claude.ai) : https://claude.ai/artifact/S6ikzc59nVyA9KQGuzFv2d
 
 ## Contenu du dossier
