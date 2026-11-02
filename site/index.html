@@ -64,7 +64,6 @@ p{text-wrap:pretty}
 .nav a[aria-current="page"]{background:var(--inv-bg);color:var(--inv-fg)}
 .snd{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;margin-left:4px;border:1.5px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);cursor:pointer}
 .snd:hover{border-color:var(--ink)}
-.snd[aria-pressed="false"]{color:var(--muted)}
 
 /* Boutons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;font-size:16px;text-decoration:none;cursor:pointer;background:transparent;color:var(--ink)}
@@ -423,7 +422,6 @@ tr:last-child td{border-bottom:0}
       <a href="#examen" data-nav="examen">Examen pratique</a>
       <a href="#bac-a-sable" data-nav="bac-a-sable">Bac à sable</a>
       <a href="#tableaux" data-nav="tableaux">Tableaux FR / US</a>
-      <button class="snd" id="snd" type="button" aria-pressed="true" aria-label="Son des appareils" title="Couper le son"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5 H6 L10 4.5 V15.5 L6 12.5 H3 Z" class="ico"/><path id="snd-on" d="M13 7.5 A3.5 3.5 0 0 1 13 12.5 M15.3 5.3 A6.5 6.5 0 0 1 15.3 14.7" class="ico"/><path id="snd-off" d="M13 8 L17 12 M17 8 L13 12" class="ico" style="display:none"/></svg></button>
       <button class="snd" id="theme" type="button" aria-label="Mode sombre" title="Passer en mode sombre"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path id="theme-moon" d="M15.5 12.2 A6.5 6.5 0 0 1 7.8 4.5 A6.5 6.5 0 1 0 15.5 12.2 Z" class="ico"/><g id="theme-sun" style="display:none"><circle cx="10" cy="10" r="3.4" class="ico"/><path d="M10 2.5V4.3M10 15.7V17.5M2.5 10H4.3M15.7 10H17.5M4.7 4.7L6 6M14 14L15.3 15.3M4.7 15.3L6 14M14 6L15.3 4.7" class="ico"/></g></svg></button>
     </nav>
   </div>
@@ -670,7 +668,7 @@ tr:last-child td{border-bottom:0}
           <li>Appuie sur S1 : la minuterie KT1 allume L1 et L2 pendant 8 secondes, puis tout s’éteint seul.</li>
           <li>Réappuie sur S2 pendant le décompte : la temporisation repart de zéro.</li>
           <li>Branche un appareil sur PC1 : il est alimenté par son propre circuit (câble C3).</li>
-          <li>Actionne DM1 : le voyant d’alarme du circuit SSI s’allume et l’alarme incendie retentit (si le son est activé). Réarme-le, puis essaie DM2.</li>
+          <li>Actionne DM1 : le voyant d’alarme du circuit SSI s’allume et l’alarme incendie retentit. Réarme-le, puis essaie DM2.</li>
         </ol></div>
         <div class="box" data-espace="2"><h2>Travail demandé</h2><ul>
           <li>Poser les canalisations C01 à C08 (conduits IRL).</li>
@@ -1213,7 +1211,7 @@ function symIcon(type, pad) {
 
 /* ---------------- Son de carillon (synthèse Web Audio, aucun fichier) ---------------- */
 const Sound = (() => {
-  let ctx = null, on = store.get('pn-son') !== false;
+  let ctx = null; const on = true; // son toujours actif
   const getCtx = () => {
     if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; try { ctx = new AC(); } catch (e) { return null; } }
     if (ctx.state === 'suspended') ctx.resume().catch(() => {});
@@ -1252,7 +1250,6 @@ const Sound = (() => {
     alarm(owner, v) { if (v) want.add(owner); else want.delete(owner); sync(); },
     alarmClear() { want.clear(); sync(); },
     get on() { return on; },
-    set on(v) { on = !!v; store.set('pn-son', on); if (on) getCtx(); sync(); }
   };
 })();
 
@@ -2505,19 +2502,6 @@ const tableaux = (() => {
   });
   update();
   return { render };
-})();
-
-/* ---------------- Bouton son ---------------- */
-(function soundBtn() {
-  const b = $('#snd');
-  const upd = () => {
-    b.setAttribute('aria-pressed', String(Sound.on));
-    b.title = Sound.on ? 'Couper le son' : 'Activer le son';
-    $('#snd-on').style.display = Sound.on ? '' : 'none';
-    $('#snd-off').style.display = Sound.on ? 'none' : '';
-  };
-  b.addEventListener('click', () => { Sound.on = !Sound.on; upd(); });
-  upd();
 })();
 
 /* ---------------- Bouton mode sombre ---------------- */
