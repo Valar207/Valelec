@@ -58,10 +58,26 @@ p{text-wrap:pretty}
 .brand:hover{color:var(--ink)}
 .brand b{font-family:var(--f-display);font-weight:800;font-size:21px;letter-spacing:-.02em}
 .brand b span{color:var(--accent)}
-.nav{display:flex;flex-wrap:wrap;gap:4px}
-.nav a{padding:9px 14px;border-radius:999px;color:var(--ink);text-decoration:none;font-weight:500;font-size:15px}
-.nav a:hover{background:var(--hover);color:var(--ink)}
-.nav a[aria-current="page"]{background:var(--inv-bg);color:var(--inv-fg)}
+.nav{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.nav a{padding:8px 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper-2);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;transition:border-color .15s,transform .15s,box-shadow .15s}
+.nav a:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-1px);box-shadow:0 6px 14px -10px rgba(17,26,36,.5)}
+.nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.nav a[aria-current="page"]{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg);transform:none;box-shadow:none}
+#ex-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:10px}
+.extab{display:flex;align-items:center;gap:12px;padding:14px 14px 14px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper-2);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+.extab:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 22px -16px rgba(17,26,36,.6)}
+.extab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.extab .num{flex:none;width:42px;height:42px;border-radius:10px;background:var(--board);color:var(--yellow);font:800 20px var(--f-display);display:grid;place-items:center}
+.extab .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.extab .k{font:500 11px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.extab strong{font-size:16px;line-height:1.25}
+.extab .ds{font-size:13px;color:var(--ink-2)}
+.extab .go{flex:none;color:var(--muted);transition:transform .15s,color .15s}
+.extab:hover .go{color:var(--accent);transform:translateX(2px)}
+.extab[aria-pressed="true"]{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg);transform:none;box-shadow:none}
+.extab[aria-pressed="true"] .k,.extab[aria-pressed="true"] .ds{color:var(--inv-muted)}
+.extab[aria-pressed="true"] .go{color:var(--inv-accent)}
+.extab[aria-pressed="true"] .num{box-shadow:0 0 0 2px var(--yellow)}
 .snd{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;margin-left:4px;border:1.5px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);cursor:pointer}
 .snd:hover{border-color:var(--ink)}
 
@@ -624,10 +640,10 @@ tr:last-child td{border-bottom:0}
       <h1 class="display">Examen pratique</h1>
       <p class="lead">Mise en situation : l’installation électrique d’un centre de formation de plusieurs étages (logement du gardien, parking en sous-sol, espaces ouverts au public), répartie en espaces de travail. Choisis un espace, puis manipule son schéma pour comprendre chaque circuit avant l’épreuve.</p>
     </div>
-    <div class="ctls" id="ex-tabs" role="group" aria-label="Espaces de travail">
-      <button class="ctl" type="button" data-espace="1" aria-pressed="true">Espace n°1 · Logement</button>
-      <button class="ctl" type="button" data-espace="2" aria-pressed="false">Espace n°2 · Parties communes</button>
-      <button class="ctl" type="button" data-espace="3" aria-pressed="false">Espace n°3 · Locaux tertiaires</button>
+    <div id="ex-tabs" role="group" aria-label="Espaces de travail">
+      <button class="extab" type="button" data-espace="1" aria-pressed="true"><span class="num">1</span><span class="tx"><span class="k">Espace de travail n°1</span><strong>Logement</strong><span class="ds">Tableau, télérupteurs radio, heures creuses</span></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="extab" type="button" data-espace="2" aria-pressed="false"><span class="num">2</span><span class="tx"><span class="k">Espace de travail n°2</span><strong>Parties communes</strong><span class="ds">Minuterie, prise, alarme incendie</span></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="extab" type="button" data-espace="3" aria-pressed="false"><span class="num">3</span><span class="tx"><span class="k">Espace de travail n°3</span><strong>Locaux tertiaires</strong><span class="ds">Détecteur, BAES, arrêt d’urgence</span></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
     <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p></div>
     <div class="sim-cols">
