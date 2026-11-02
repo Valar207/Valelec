@@ -37,6 +37,7 @@ Le fichier est découpé par des commentaires repères (chercher ces lignes) :
 
 | Repère | Rôle |
 |---|---|
+| `<link rel="icon">` en tête | Favicon : « V » stylisé en éclair jaune sur fond sombre, en SVG intégré (aucun fichier à part) |
 | `<style>` en tête | Jetons de couleurs (thèmes clair et sombre), styles des pages et des symboles |
 | `<!-- ============ ACCUEIL / LES BASES / SCHÉMAS / BAC À SABLE / TABLEAUX … ============ -->` | HTML de chaque page (une seule page HTML, routage par `#ancre`) |
 | `/* Symboles et règles */` | `DEF` : les 19 composants (bornes, dimensions, description), `defSt`, `links` (contacts internes), `loadPair` (récepteurs) |
