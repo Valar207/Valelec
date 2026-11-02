@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Phase·Neutre — Simulateur de schémas</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3EFE6}
+a{color:#B5341F}a:hover{color:#8A2414}
+.nav{padding:10px 14px;border-radius:999px;color:#17191E;text-decoration:none;font-weight:500;font-size:15px}
+.nav:hover{background:#E7E1D3;color:#17191E}
+.nav.on{background:#17191E;color:#F3EFE6}
+.side{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:8px 12px;border:0;border-radius:10px;background:transparent;font:500 15px 'IBM Plex Sans',system-ui,sans-serif;color:#17191E;text-align:left;cursor:pointer}
+.side:hover{background:#E7E1D3}
+.side.on{background:#17191E;color:#F3EFE6}
+.side.soon{color:#5B5F68;cursor:default;justify-content:space-between}
+.side.soon:hover{background:transparent}
+.ctl{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:10px;border:1.5px solid #17191E;background:#FBF9F4;color:#17191E;font:600 15px 'IBM Plex Sans',system-ui,sans-serif;cursor:pointer}
+.ctl:hover{background:#E7E1D3}
+.ctl.on{background:#17191E;color:#F3EFE6}
+.ctl.ghost{border-color:#BDB5A4;font-weight:500}
+.seg{display:inline-flex;border:1.5px solid #17191E;border-radius:10px;overflow:hidden}
+.seg button{min-height:44px;padding:0 16px;border:0;border-right:1.5px solid #17191E;background:#FBF9F4;color:#17191E;font:600 15px 'IBM Plex Sans',system-ui,sans-serif;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:#E7E1D3}
+.seg button.on{background:#17191E;color:#F3EFE6}
+.board{background-color:#111A24;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:20px 20px}
+.sch{position:absolute;inset:0;display:block;width:100%;height:100%}
+.w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ph{stroke:#E5533D}.ne{stroke:#4E8EF7}.rt{stroke:#B48CF2}.cm{stroke:#8E9BAA}
+.cur{fill:none;stroke:#FFD84A;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 13;opacity:0;transition:opacity .25s}
+.cur.on{opacity:1;animation:pnflow .8s linear infinite;filter:drop-shadow(0 0 3px #FFD84A)}
+.cur.live{opacity:.3;stroke:#FF6B52;stroke-width:10;stroke-dasharray:none;animation:pnlive 1.8s ease-in-out infinite;filter:blur(3px)}
+.speed-lent .cur.on{animation-duration:1.6s}.speed-rapide .cur.on{animation-duration:.4s}
+.nolive .cur.live{opacity:0;animation:none}
+@keyframes pnflow{to{stroke-dashoffset:-16}}
+@keyframes pnlive{0%,100%{opacity:.12}50%{opacity:.42}}
+.lever{stroke:#E8EDF2;stroke-width:3.5;stroke-linecap:round}
+.dot{fill:#E8EDF2}
+.lamp{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .25s}
+.lamp.on{fill:#FFE58A}
+.lampx{stroke:#8E9BAA;stroke-width:2}
+.halo{fill:#FFD84A;opacity:0;transition:opacity .3s;filter:blur(12px)}
+.halo.on{opacity:.6}
+.coil{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .2s,stroke .2s}
+.coil.on{fill:#3A3110;stroke:#FFD84A}
+.wave{fill:none;stroke:#8E9BAA;stroke-width:1.8;stroke-linejoin:round}
+.res{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .3s,stroke .3s}
+.res.on{fill:#4A2410;stroke:#FF9A3D}
+.mech{fill:none;stroke:#6E7F92;stroke-width:1.5;stroke-dasharray:4 4}
+.src{fill:#18232F;stroke:#2A3A4C;stroke-width:1.5}
+.lbl{fill:#9AABBD;font:500 13px 'IBM Plex Mono',monospace}
+.lbl.c{text-anchor:middle}.lbl.e{text-anchor:end}.lbl.hi{fill:#E8EDF2}.lbl.grp{fill:#6E7F92;letter-spacing:.06em}
+.hit{position:absolute;background:transparent;border:2px dashed transparent;border-radius:12px;cursor:pointer;padding:0}
+.hit:hover,.hit:focus-visible{border-color:rgba(255,216,74,.75);outline:none}
+.ico{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.leg{fill:none;stroke-width:3;stroke-linecap:round}
+.mono{font-family:'IBM Plex Mono',monospace}
+</style>
+</helmet>
+<div class="speed-{{speed}} {{liveCls}}" style="background: #F3EFE6; color: #17191E; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.55">
+
+<header style="border-bottom: 1px solid #D9D3C5">
+<div style="max-width: 1280px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #17191E">
+<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="#17191E"></rect><path d="M7 17 C10 8, 14 8, 17 17 S24 26, 27 17" fill="none" stroke="#FFD84A" class="ico"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.02em">Phase<span style="color: #C2412B">·</span>Neutre</span>
+</a>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="Bases.dc.html" class="nav">Les bases</a>
+<a href="Simulateur.dc.html" class="nav on" aria-current="page">Schémas</a>
+<a href="Editeur.dc.html" class="nav">Atelier</a>
+<a href="BacASable.dc.html" class="nav">Bac à sable</a>
+</nav>
+</div>
+</header>
+
+<div style="max-width: 1280px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+
+<aside style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 24px">
+<nav aria-label="Circuits de base" style="display: flex; flex-direction: column; gap: 4px">
+<p class="mono" style="margin: 0 0 6px 12px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #5B5F68">03 · Circuits de base</p>
+<sc-for list="{{base}}" as="item" hint-placeholder-count="3">
+<button class="side {{item.cls}}" onClick="{{item.pick}}" aria-current="{{item.cur}}"><span class="mono" style="font-size: 12px; opacity: 0.7">{{item.num}}</span>{{item.label}}</button>
+</sc-for>
+</nav>
+<nav aria-label="Circuits avancés" style="display: flex; flex-direction: column; gap: 4px">
+<p class="mono" style="margin: 0 0 6px 12px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #5B5F68">04 · Circuits avancés</p>
+<sc-for list="{{adv}}" as="item" hint-placeholder-count="1">
+<button class="side {{item.cls}}" onClick="{{item.pick}}" aria-current="{{item.cur}}"><span class="mono" style="font-size: 12px; opacity: 0.7">{{item.num}}</span>{{item.label}}</button>
+</sc-for>
+<sc-for list="{{soon}}" as="item" hint-placeholder-count="3">
+<div class="side soon"><span>{{item}}</span><span class="mono" style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: #E7E1D3; color: #3B3F47">bientôt</span></div>
+</sc-for>
+</nav>
+</aside>
+
+<main style="flex: 999 1 720px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<p class="mono" style="margin: 0; font-size: 14px; color: #B5341F">{{info.group}}</p>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(36px, 4.4vw, 56px); line-height: 1; letter-spacing: -0.03em">{{info.title}}</h1>
+<p style="margin: 0; font-size: 18px; color: #3B3F47; max-width: 720px">{{info.sub}}</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px -36px rgba(17, 26, 36, 0.6)">
+<div class="board" style="position: relative; width: 100%; aspect-ratio: 640 / 400">
+
+<sc-if value="{{isS}}" hint-placeholder-val="{{ true }}">
+<svg class="sch" viewBox="0 0 640 400" role="img" aria-label="Schéma développé du simple allumage">
+<rect x="24" y="52" width="56" height="296" rx="8" class="src"></rect>
+<text x="52" y="205" class="lbl c hi">230 V</text>
+<text x="92" y="68" class="lbl">L</text>
+<text x="92" y="312" class="lbl">N</text>
+<path d="M80 80 H260" class="w ph"></path>
+<path d="M320 80 H520 V176" class="w rt"></path>
+<path d="M520 224 V320 H80" class="w ne"></path>
+<path d="M80 80 H260" class="cur {{a.p1}}"></path>
+<path d="M320 80 H520 V176" class="cur {{a.p2}}"></path>
+<path d="M520 224 V320 H80" class="cur {{a.p3}}"></path>
+<line x1="260" y1="80" x2="{{a.lx}}" y2="{{a.ly}}" class="lever"></line>
+<circle cx="260" cy="80" r="5" class="dot"></circle>
+<circle cx="320" cy="80" r="5" class="dot"></circle>
+<circle cx="520" cy="200" r="46" class="halo {{a.lamp}}"></circle>
+<circle cx="520" cy="200" r="24" class="lamp {{a.lamp}}"></circle>
+<line x1="503" y1="183" x2="537" y2="217" class="lampx"></line>
+<line x1="537" y1="183" x2="503" y2="217" class="lampx"></line>
+<text x="170" y="66" class="lbl c">phase</text>
+<text x="290" y="128" class="lbl c hi">S1</text>
+<text x="290" y="146" class="lbl c">interrupteur</text>
+<text x="420" y="66" class="lbl c">retour lampe</text>
+<text x="560" y="205" class="lbl hi">L1</text>
+<text x="300" y="342" class="lbl c">neutre</text>
+</svg>
+<button class="hit" onClick="{{toggleS}}" aria-label="Actionner l’interrupteur S1" style="left: 37.5%; top: 6%; width: 15.6%; height: 22%"></button>
+</sc-if>
+
+<sc-if value="{{isV}}" hint-placeholder-val="{{ false }}">
+<svg class="sch" viewBox="0 0 640 400" role="img" aria-label="Schéma développé du va-et-vient">
+<rect x="24" y="116" width="56" height="248" rx="8" class="src"></rect>
+<text x="52" y="245" class="lbl c hi">230 V</text>
+<text x="92" y="130" class="lbl">L</text>
+<text x="92" y="332" class="lbl">N</text>
+<path d="M80 140 H180" class="w ph"></path>
+<path d="M240 100 H400" class="w rt"></path>
+<path d="M240 180 H400" class="w rt"></path>
+<path d="M460 140 H560 V196" class="w rt"></path>
+<path d="M560 244 V340 H80" class="w ne"></path>
+<path d="M80 140 H180" class="cur {{v.pL}}"></path>
+<path d="M240 100 H400" class="cur {{v.n1}}"></path>
+<path d="M240 180 H400" class="cur {{v.n2}}"></path>
+<path d="M460 140 H560 V196" class="cur {{v.pR}}"></path>
+<path d="M560 244 V340 H80" class="cur {{v.pN}}"></path>
+<line x1="180" y1="140" x2="238" y2="{{v.l1y}}" class="lever"></line>
+<line x1="460" y1="140" x2="402" y2="{{v.l2y}}" class="lever"></line>
+<circle cx="180" cy="140" r="5" class="dot"></circle>
+<circle cx="240" cy="100" r="5" class="dot"></circle>
+<circle cx="240" cy="180" r="5" class="dot"></circle>
+<circle cx="400" cy="100" r="5" class="dot"></circle>
+<circle cx="400" cy="180" r="5" class="dot"></circle>
+<circle cx="460" cy="140" r="5" class="dot"></circle>
+<circle cx="560" cy="220" r="46" class="halo {{v.lamp}}"></circle>
+<circle cx="560" cy="220" r="24" class="lamp {{v.lamp}}"></circle>
+<line x1="543" y1="203" x2="577" y2="237" class="lampx"></line>
+<line x1="577" y1="203" x2="543" y2="237" class="lampx"></line>
+<text x="130" y="128" class="lbl c">phase</text>
+<text x="320" y="90" class="lbl c">navette 1</text>
+<text x="320" y="202" class="lbl c">navette 2</text>
+<text x="210" y="236" class="lbl c hi">S1</text>
+<text x="210" y="254" class="lbl c">bas d’escalier</text>
+<text x="430" y="236" class="lbl c hi">S2</text>
+<text x="430" y="254" class="lbl c">haut d’escalier</text>
+<text x="510" y="128" class="lbl c">retour lampe</text>
+<text x="598" y="225" class="lbl hi">L1</text>
+<text x="320" y="332" class="lbl c">neutre</text>
+</svg>
+<button class="hit" onClick="{{flipV1}}" aria-label="Basculer le va-et-vient S1" style="left: 26.5%; top: 21%; width: 12.5%; height: 27%"></button>
+<button class="hit" onClick="{{flipV2}}" aria-label="Basculer le va-et-vient S2" style="left: 61%; top: 21%; width: 12.5%; height: 27%"></button>
+</sc-if>
+
+<sc-if value="{{isT}}" hint-placeholder-val="{{ false }}">
+<svg class="sch" viewBox="0 0 640 400" role="img" aria-label="Schéma développé d’un télérupteur commandé par trois boutons poussoirs">
+<rect x="12" y="40" width="48" height="340" rx="8" class="src"></rect>
+<text x="36" y="206" class="lbl c hi">230</text>
+<text x="36" y="224" class="lbl c hi">V</text>
+<text x="68" y="52" class="lbl">L</text>
+<text x="68" y="352" class="lbl">N</text>
+<text x="230" y="26" class="lbl c grp">CIRCUIT DE COMMANDE</text>
+<text x="520" y="26" class="lbl c grp">PUISSANCE</text>
+<path d="M60 60 H500" class="w ph"></path>
+<path d="M100 60 V110 M190 60 V110 M280 60 V110" class="w ph"></path>
+<path d="M100 150 V200 H360 V230 M190 150 V200 M280 150 V200" class="w cm"></path>
+<path d="M360 290 V360" class="w ne"></path>
+<path d="M500 60 V110" class="w ph"></path>
+<path d="M500 150 V196" class="w rt"></path>
+<path d="M500 244 V360 H60" class="w ne"></path>
+<path d="M60 60 H100" class="cur {{t.r1}}"></path>
+<path d="M100 60 H190" class="cur {{t.r2}}"></path>
+<path d="M190 60 H280" class="cur {{t.r3}}"></path>
+<path d="M280 60 H500" class="cur {{t.r4}}"></path>
+<path d="M100 60 V110" class="cur {{t.d1t}}"></path>
+<path d="M190 60 V110" class="cur {{t.d2t}}"></path>
+<path d="M280 60 V110" class="cur {{t.d3t}}"></path>
+<path d="M100 150 V200" class="cur {{t.d1b}}"></path>
+<path d="M190 150 V200" class="cur {{t.d2b}}"></path>
+<path d="M280 150 V200" class="cur {{t.d3b}}"></path>
+<path d="M100 200 H190" class="cur {{t.c1}}"></path>
+<path d="M190 200 H280" class="cur {{t.c2}}"></path>
+<path d="M280 200 H360 V230" class="cur {{t.c3}}"></path>
+<path d="M360 290 V360" class="cur {{t.cb}}"></path>
+<path d="M500 60 V110" class="cur {{t.pt}}"></path>
+<path d="M500 150 V196" class="cur {{t.pm}}"></path>
+<path d="M500 244 V360" class="cur {{t.pb}}"></path>
+<path d="M500 360 H360" class="cur {{t.nR}}"></path>
+<path d="M360 360 H60" class="cur {{t.nL}}"></path>
+<line x1="100" y1="110" x2="{{t.b1x}}" y2="{{t.b1y}}" class="lever"></line>
+<line x1="190" y1="110" x2="{{t.b2x}}" y2="{{t.b2y}}" class="lever"></line>
+<line x1="280" y1="110" x2="{{t.b3x}}" y2="{{t.b3y}}" class="lever"></line>
+<line x1="500" y1="110" x2="{{t.kx}}" y2="{{t.ky}}" class="lever"></line>
+<path d="M380 240 H440 V130 H490" class="mech"></path>
+<rect x="340" y="230" width="40" height="60" rx="3" class="coil {{t.coil}}"></rect>
+<path d="M348 272 V248 H356 V272 H364 V248 H372" class="wave"></path>
+<circle cx="100" cy="60" r="4" class="dot"></circle>
+<circle cx="190" cy="60" r="4" class="dot"></circle>
+<circle cx="280" cy="60" r="4" class="dot"></circle>
+<circle cx="190" cy="200" r="4" class="dot"></circle>
+<circle cx="280" cy="200" r="4" class="dot"></circle>
+<circle cx="360" cy="360" r="4" class="dot"></circle>
+<circle cx="100" cy="110" r="5" class="dot"></circle>
+<circle cx="100" cy="150" r="5" class="dot"></circle>
+<circle cx="190" cy="110" r="5" class="dot"></circle>
+<circle cx="190" cy="150" r="5" class="dot"></circle>
+<circle cx="280" cy="110" r="5" class="dot"></circle>
+<circle cx="280" cy="150" r="5" class="dot"></circle>
+<circle cx="500" cy="110" r="5" class="dot"></circle>
+<circle cx="500" cy="150" r="5" class="dot"></circle>
+<circle cx="500" cy="220" r="46" class="halo {{t.lamp}}"></circle>
+<circle cx="500" cy="220" r="24" class="lamp {{t.lamp}}"></circle>
+<line x1="483" y1="203" x2="517" y2="237" class="lampx"></line>
+<line x1="517" y1="203" x2="483" y2="237" class="lampx"></line>
+<text x="126" y="128" class="lbl hi">BP1</text>
+<text x="126" y="144" class="lbl">entrée</text>
+<text x="216" y="128" class="lbl hi">BP2</text>
+<text x="216" y="144" class="lbl">couloir</text>
+<text x="306" y="128" class="lbl hi">BP3</text>
+<text x="306" y="144" class="lbl">chambre</text>
+<text x="332" y="266" class="lbl e hi">KA</text>
+<text x="332" y="282" class="lbl e">bobine</text>
+<text x="526" y="128" class="lbl hi">KA</text>
+<text x="526" y="144" class="lbl">contact</text>
+<text x="538" y="225" class="lbl hi">L1</text>
+</svg>
+<button class="hit" onClick="{{bp1}}" aria-label="Appuyer sur le bouton poussoir BP1" style="left: 13.5%; top: 24%; width: 11%; height: 16%"></button>
+<button class="hit" onClick="{{bp2}}" aria-label="Appuyer sur le bouton poussoir BP2" style="left: 27.6%; top: 24%; width: 11%; height: 16%"></button>
+<button class="hit" onClick="{{bp3}}" aria-label="Appuyer sur le bouton poussoir BP3" style="left: 41.7%; top: 24%; width: 11%; height: 16%"></button>
+</sc-if>
+
+<sc-if value="{{isH}}" hint-placeholder-val="{{ false }}">
+<svg class="sch" viewBox="0 0 640 400" role="img" aria-label="Schéma développé d’un contacteur heures creuses pour chauffe-eau">
+<rect x="12" y="40" width="48" height="340" rx="8" class="src"></rect>
+<text x="36" y="206" class="lbl c hi">230</text>
+<text x="36" y="224" class="lbl c hi">V</text>
+<text x="68" y="52" class="lbl">L</text>
+<text x="68" y="352" class="lbl">N</text>
+<text x="200" y="26" class="lbl c grp">CIRCUIT DE COMMANDE</text>
+<text x="460" y="26" class="lbl c grp">PUISSANCE</text>
+<path d="M60 60 H460" class="w ph"></path>
+<path d="M150 60 V100 M250 60 V190" class="w ph"></path>
+<path d="M150 140 V190 M200 250 V272" class="w cm"></path>
+<path d="M200 318 V360 H60" class="w ne"></path>
+<path d="M460 60 V110" class="w ph"></path>
+<path d="M460 150 V190" class="w rt"></path>
+<path d="M460 270 V360 H200" class="w ne"></path>
+<path d="M60 60 H150" class="cur {{h.r1}}"></path>
+<path d="M150 60 H250" class="cur {{h.r2}}"></path>
+<path d="M250 60 H460" class="cur {{h.r3}}"></path>
+<path d="M150 60 V100" class="cur {{h.aT}}"></path>
+<path d="M150 140 V190" class="cur {{h.aB}}"></path>
+<path d="M250 60 V190" class="cur {{h.mD}}"></path>
+<path d="M200 250 V272" class="cur {{h.cmT}}"></path>
+<path d="M200 318 V360" class="cur {{h.cmB}}"></path>
+<path d="M200 360 H60" class="cur {{h.nL}}"></path>
+<path d="M460 60 V110" class="cur {{h.pT}}"></path>
+<path d="M460 150 V190" class="cur {{h.pM}}"></path>
+<path d="M460 270 V360" class="cur {{h.pB}}"></path>
+<path d="M460 360 H200" class="cur {{h.nR}}"></path>
+<line x1="150" y1="100" x2="{{h.hx}}" y2="{{h.hy}}" class="lever"></line>
+<line x1="200" y1="250" x2="{{h.sx}}" y2="196" class="lever"></line>
+<line x1="460" y1="110" x2="{{h.kx}}" y2="{{h.ky}}" class="lever"></line>
+<path d="M220 295 H360 V130 H450" class="mech"></path>
+<rect x="180" y="272" width="40" height="46" rx="3" class="coil {{h.coil}}"></rect>
+<rect x="448" y="190" width="24" height="80" rx="3" class="res {{h.res}}"></rect>
+<circle cx="150" cy="60" r="4" class="dot"></circle>
+<circle cx="250" cy="60" r="4" class="dot"></circle>
+<circle cx="200" cy="360" r="4" class="dot"></circle>
+<circle cx="150" cy="100" r="5" class="dot"></circle>
+<circle cx="150" cy="140" r="5" class="dot"></circle>
+<circle cx="150" cy="190" r="5" class="dot"></circle>
+<circle cx="200" cy="190" r="5" class="dot"></circle>
+<circle cx="250" cy="190" r="5" class="dot"></circle>
+<circle cx="200" cy="250" r="5" class="dot"></circle>
+<circle cx="460" cy="110" r="5" class="dot"></circle>
+<circle cx="460" cy="150" r="5" class="dot"></circle>
+<text x="140" y="116" class="lbl e">compteur</text>
+<text x="140" y="132" class="lbl e hi">contact HC</text>
+<text x="140" y="194" class="lbl e hi">Auto</text>
+<text x="200" y="178" class="lbl c hi">0</text>
+<text x="262" y="194" class="lbl hi">I</text>
+<text x="212" y="262" class="lbl">sélecteur</text>
+<text x="170" y="292" class="lbl e hi">KM</text>
+<text x="170" y="308" class="lbl e">bobine</text>
+<text x="486" y="128" class="lbl hi">KM</text>
+<text x="486" y="144" class="lbl">contact</text>
+<text x="484" y="226" class="lbl hi">chauffe-eau</text>
+<text x="484" y="242" class="lbl">3 000 W</text>
+</svg>
+</sc-if>
+
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; padding: 16px 20px; background: #0B1219; color: #E8EDF2">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex: none"><circle cx="7" cy="7" r="6" fill="{{status.dot}}"></circle></svg>
+<div style="display: flex; flex-direction: column; min-width: 0">
+<strong style="font-weight: 600">{{status.title}}</strong>
+<span style="font-size: 14px; color: #B7C3D0">{{status.detail}}</span>
+</div>
+</div>
+<span class="mono" style="font-size: 14px; padding: 6px 10px; border-radius: 8px; background: #1C2836; color: #FFD84A">{{status.metric}}</span>
+</div>
+</div>
+
+<div role="group" aria-label="Commandes du circuit" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<sc-if value="{{isS}}" hint-placeholder-val="{{ true }}">
+<button class="ctl {{sCls}}" onClick="{{toggleS}}" aria-pressed="{{sPressed}}">S1 · {{sTxt}}</button>
+</sc-if>
+<sc-if value="{{isV}}" hint-placeholder-val="{{ false }}">
+<button class="ctl" onClick="{{flipV1}}">Basculer S1 · navette {{v1n}}</button>
+<button class="ctl" onClick="{{flipV2}}">Basculer S2 · navette {{v2n}}</button>
+</sc-if>
+<sc-if value="{{isT}}" hint-placeholder-val="{{ false }}">
+<button class="ctl {{bp1Cls}}" onClick="{{bp1}}">Appuyer BP1 · entrée</button>
+<button class="ctl {{bp2Cls}}" onClick="{{bp2}}">Appuyer BP2 · couloir</button>
+<button class="ctl {{bp3Cls}}" onClick="{{bp3}}">Appuyer BP3 · chambre</button>
+</sc-if>
+<sc-if value="{{isH}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="mono" style="font-size: 12px; color: #5B5F68">Signal du compteur</span>
+<div class="seg" role="group" aria-label="Signal du compteur">
+<button class="{{hpCls}}" onClick="{{setHP}}" aria-pressed="{{hpPressed}}">Heures pleines</button>
+<button class="{{hcCls}}" onClick="{{setHC}}" aria-pressed="{{hcPressed}}">Heures creuses</button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="mono" style="font-size: 12px; color: #5B5F68">Sélecteur</span>
+<div class="seg" role="group" aria-label="Sélecteur du contacteur">
+<button class="{{autoCls}}" onClick="{{mAuto}}" aria-pressed="{{autoPressed}}">Auto</button>
+<button class="{{arretCls}}" onClick="{{mArret}}" aria-pressed="{{arretPressed}}">0 · arrêt</button>
+<button class="{{marcheCls}}" onClick="{{mMarche}}" aria-pressed="{{marchePressed}}">I · marche forcée</button>
+</div>
+</div>
+</sc-if>
+<button class="ctl ghost" onClick="{{reset}}" style="margin-left: auto">
+<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8 A5 5 0 1 0 5 4 M3 2 V5 H6" class="ico"></path></svg>
+Réinitialiser</button>
+</div>
+
+<ul aria-label="Légende" style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14px; color: #3B3F47">
+<li style="display: flex; align-items: center; gap: 8px"><svg width="28" height="10" viewBox="0 0 28 10" aria-hidden="true"><path d="M2 5 H26" class="leg ph"></path></svg>Phase</li>
+<li style="display: flex; align-items: center; gap: 8px"><svg width="28" height="10" viewBox="0 0 28 10" aria-hidden="true"><path d="M2 5 H26" class="leg ne"></path></svg>Neutre</li>
+<li style="display: flex; align-items: center; gap: 8px"><svg width="28" height="10" viewBox="0 0 28 10" aria-hidden="true"><path d="M2 5 H26" class="leg rt"></path></svg>Retour lampe, navettes</li>
+<li style="display: flex; align-items: center; gap: 8px"><svg width="28" height="10" viewBox="0 0 28 10" aria-hidden="true"><path d="M2 5 H26" class="leg cm"></path></svg>Commande</li>
+<li style="display: flex; align-items: center; gap: 8px"><svg width="28" height="10" viewBox="0 0 28 10" aria-hidden="true" style="background: #111A24; border-radius: 3px"><path d="M2 5 H26" class="cur on"></path></svg>Courant</li>
+<li style="display: flex; align-items: center; gap: 8px"><svg width="28" height="10" viewBox="0 0 28 10" aria-hidden="true" style="background: #111A24; border-radius: 3px"><path d="M2 5 H26" class="cur live" style="opacity: 0.6; animation: none; filter: none; stroke-width: 6"></path></svg>Sous tension</li>
+</ul>
+</div>
+
+<div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 16px">
+<section style="padding: 24px; border: 1.5px solid #D9D3C5; border-radius: 16px; background: #FBF9F4; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">À retenir</h2>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{info.retenir}}" as="r" hint-placeholder-count="3">
+<li style="display: flex; gap: 12px; font-size: 15px; color: #2A2D33"><span class="mono" style="flex: none; width: 24px; height: 24px; border-radius: 6px; background: #17191E; color: #FFD84A; font-size: 12px; display: flex; align-items: center; justify-content: center">{{r.n}}</span><span>{{r.t}}</span></li>
+</sc-for>
+</ol>
+</section>
+<section style="padding: 24px; border-radius: 16px; background: #17191E; color: #F3EFE6; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600; color: #FFD84A">À toi de jouer</h2>
+<p style="margin: 0; font-size: 15px; color: #D6DDE5">{{info.essai}}</p>
+</section>
+<section style="padding: 24px; border: 1.5px solid #D9D3C5; border-radius: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Matériel</h2>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: #3B3F47">
+<sc-for list="{{info.materiel}}" as="m" hint-placeholder-count="3">
+<li>{{m}}</li>
+</sc-for>
+</ul>
+</section>
+<a href="Editeur.dc.html" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 14px 18px; border-radius: 12px; border: 1.5px solid #17191E; color: #17191E; text-decoration: none; font-weight: 600">Redessiner ce schéma dans l’atelier
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"></path></svg>
+</a>
+</div>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"speed":{"editor":"enum","options":["lent","normal","rapide"],"default":"normal"},"showLive":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":1120}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { c: 'simple', s: false, v1: 'a', v2: 'b', tl: false, press: 0, mode: 'auto', hc: false };
+  }
+  componentWillUnmount() {
+    clearTimeout(this.t);
+  }
+  press(k) {
+    if (this.state.press) return;
+    this.setState({ press: k, tl: !this.state.tl });
+    clearTimeout(this.t);
+    this.t = setTimeout(() => this.setState({ press: 0 }), 900);
+  }
+  renderVals() {
+    const st = this.state;
+    const on = (b) => (b ? 'on' : '');
+    const lv = (b) => (b ? 'on' : 'live');
+    const c = st.c;
+
+    const s = st.s;
+    const a = { p1: lv(s), p2: on(s), p3: on(s), lamp: on(s), lx: s ? 320 : 312, ly: s ? 80 : 46 };
+
+    const lit = st.v1 === st.v2;
+    const v = {
+      pL: lv(lit),
+      n1: st.v1 === 'a' ? lv(lit) : '',
+      n2: st.v1 === 'b' ? lv(lit) : '',
+      pR: on(lit), pN: on(lit), lamp: on(lit),
+      l1y: st.v1 === 'a' ? 102 : 178,
+      l2y: st.v2 === 'a' ? 102 : 178
+    };
+
+    const k = st.press;
+    const cmd = k > 0;
+    const tl = st.tl;
+    const t = {
+      r1: lv(cmd || tl), r2: lv((cmd && k >= 2) || tl), r3: lv((cmd && k >= 3) || tl), r4: lv(tl),
+      d1t: lv(k === 1), d2t: lv(k === 2), d3t: lv(k === 3),
+      d1b: on(k === 1), d2b: on(k === 2), d3b: on(k === 3),
+      c1: on(k === 1), c2: on(k === 1 || k === 2), c3: on(cmd), cb: on(cmd), coil: on(cmd),
+      pt: lv(tl), pm: on(tl), pb: on(tl), nR: on(tl), nL: on(cmd || tl), lamp: on(tl),
+      b1x: k === 1 ? 100 : 118, b1y: k === 1 ? 150 : 142,
+      b2x: k === 2 ? 190 : 208, b2y: k === 2 ? 150 : 142,
+      b3x: k === 3 ? 280 : 298, b3y: k === 3 ? 150 : 142,
+      kx: tl ? 500 : 518, ky: tl ? 150 : 142
+    };
+
+    const coil = st.mode === 'marche' || (st.mode === 'auto' && st.hc);
+    const va = st.mode === 'auto' && st.hc;
+    const vm = st.mode === 'marche';
+    const h = {
+      r1: lv(coil), r2: lv(coil), r3: lv(coil),
+      aT: lv(va), aB: va ? 'on' : (st.hc ? 'live' : ''), mD: lv(vm),
+      cmT: on(coil), cmB: on(coil), nL: on(coil),
+      pT: lv(coil), pM: on(coil), pB: on(coil), nR: on(coil),
+      coil: on(coil), res: on(coil),
+      hx: st.hc ? 150 : 168, hy: st.hc ? 140 : 132,
+      sx: st.mode === 'auto' ? 150 : st.mode === 'arret' ? 200 : 250,
+      kx: coil ? 460 : 478, ky: coil ? 150 : 142
+    };
+
+    const ON = '#FFD84A';
+    const OFF = '#6E7F92';
+    let status;
+    if (c === 'simple') {
+      status = s
+        ? { title: 'Lampe allumée', detail: 'Le courant circule : phase → S1 → retour lampe → lampe → neutre.', metric: '60 W · 0,26 A', dot: ON }
+        : { title: 'Lampe éteinte', detail: 'S1 est ouvert : aucun courant, mais la phase reste sous tension jusqu’à S1.', metric: '0 A', dot: OFF };
+    } else if (c === 'vav') {
+      status = lit
+        ? { title: 'Lampe allumée', detail: 'Les deux leviers sont sur la navette ' + (st.v1 === 'a' ? '1' : '2') + ' : le circuit est fermé.', metric: '60 W · 0,26 A', dot: ON }
+        : { title: 'Lampe éteinte', detail: 'Les leviers sont sur des navettes différentes : le circuit est ouvert.', metric: '0 A', dot: OFF };
+    } else if (c === 'tl') {
+      if (cmd) status = { title: 'Impulsion sur la bobine', detail: 'BP' + k + ' est enfoncé : la bobine KA reçoit du courant et fait basculer le contact.', metric: tl ? '60 W · 0,26 A' : '0 A', dot: ON };
+      else status = tl
+        ? { title: 'Lampe allumée', detail: 'Le contact KA reste fermé jusqu’à la prochaine impulsion.', metric: '60 W · 0,26 A', dot: ON }
+        : { title: 'Lampe éteinte', detail: 'Le contact KA est ouvert. Appuie sur un bouton poussoir.', metric: '0 A', dot: OFF };
+    } else {
+      let d;
+      if (st.mode === 'arret') d = 'Sélecteur sur 0 : la bobine KM ne peut pas être alimentée.';
+      else if (st.mode === 'marche') d = 'Marche forcée : la bobine KM est alimentée directement, quel que soit le tarif.';
+      else if (st.hc) d = 'Heures creuses : le compteur ferme son contact, la bobine KM est alimentée.';
+      else d = 'Heures pleines : le contact du compteur est ouvert, KM reste ouvert.';
+      status = coil
+        ? { title: 'Chauffe-eau en chauffe', detail: d, metric: '3 000 W · ≈ 13 A', dot: ON }
+        : { title: 'Chauffe-eau à l’arrêt', detail: d, metric: '0 A', dot: OFF };
+    }
+
+    const num = (arr) => arr.map((x, i) => ({ n: i + 1, t: x }));
+    const INFO = {
+      simple: {
+        group: '03 · Circuits de base', title: 'Simple allumage',
+        sub: 'Un interrupteur commande un point lumineux depuis un seul endroit.',
+        retenir: num(['L’interrupteur coupe toujours la phase, jamais le neutre.', 'Le fil entre l’interrupteur et la lampe s’appelle le retour lampe.', 'Le neutre va directement du tableau à la lampe.']),
+        essai: 'Ouvre l’interrupteur : la lampe s’éteint, mais la lueur rouge montre que le fil de phase reste sous tension jusqu’à S1.',
+        materiel: ['1 interrupteur simple allumage', '1 point lumineux (DCL)', 'Disjoncteur 16 A · fils 1,5 mm²']
+      },
+      vav: {
+        group: '03 · Circuits de base', title: 'Va-et-vient',
+        sub: 'Commander une même lampe depuis deux endroits : escalier, couloir, chambre.',
+        retenir: num(['Chaque va-et-vient a une borne commune et deux bornes de navettes.', 'Les deux navettes relient les interrupteurs entre eux.', 'La lampe s’allume quand les deux leviers sont sur la même navette.']),
+        essai: 'Bascule S1, puis S2 : à chaque action, l’état de la lampe s’inverse, d’où que tu le commandes.',
+        materiel: ['2 interrupteurs va-et-vient', '1 point lumineux (DCL)', 'Disjoncteur 16 A · fils 1,5 mm²']
+      },
+      tl: {
+        group: '03 · Circuits de base', title: 'Télérupteur',
+        sub: 'Commander une lampe depuis trois endroits ou plus, avec des boutons poussoirs.',
+        retenir: num(['Les boutons poussoirs sont câblés en parallèle et alimentent la bobine.', 'Chaque impulsion fait basculer le contact : allumé, éteint, allumé…', 'Deux circuits distincts : la commande (bobine) et la puissance (lampe).']),
+        essai: 'Appuie sur BP1, puis sur BP3 : le courant ne traverse la bobine que pendant l’appui, mais la lampe garde son état.',
+        materiel: ['1 télérupteur modulaire (au tableau)', '3 boutons poussoirs', '1 point lumineux · disjoncteur 16 A']
+      },
+      hc: {
+        group: '04 · Circuits avancés', title: 'Contacteur heures creuses',
+        sub: 'Faire chauffer le ballon d’eau chaude uniquement pendant les heures creuses.',
+        retenir: num(['Le compteur ferme un contact sec au début des heures creuses.', 'Ce contact alimente la bobine KM, qui ferme le circuit de puissance.', 'Le sélecteur Auto / 0 / I permet d’arrêter ou de forcer la chauffe.']),
+        essai: 'En mode Auto, passe en heures creuses. Puis repasse en heures pleines et force la marche avec I.',
+        materiel: ['1 contacteur jour/nuit 20 A', '1 chauffe-eau 3 000 W', 'Disjoncteur 20 A · fils 2,5 mm²']
+      }
+    };
+
+    const pick = (id) => () => {
+      clearTimeout(this.t);
+      this.setState({ c: id, press: 0 });
+    };
+    const mk = (id, n, label) => ({ label: label, num: n, cls: c === id ? 'on' : '', cur: c === id ? 'page' : 'false', pick: pick(id) });
+
+    return {
+      speed: this.props.speed ?? 'normal',
+      liveCls: (this.props.showLive ?? true) ? '' : 'nolive',
+      isS: c === 'simple', isV: c === 'vav', isT: c === 'tl', isH: c === 'hc',
+      a: a, v: v, t: t, h: h,
+      status: status,
+      info: INFO[c],
+      base: [mk('simple', '01', 'Simple allumage'), mk('vav', '02', 'Va-et-vient'), mk('tl', '03', 'Télérupteur')],
+      adv: [mk('hc', '04', 'Contacteur heures creuses')],
+      soon: ['Minuterie d’escalier', 'Volet roulant', 'Délesteur'],
+      toggleS: () => this.setState({ s: !this.state.s }),
+      sTxt: s ? 'ouvrir' : 'fermer',
+      sCls: s ? 'on' : '',
+      sPressed: s ? 'true' : 'false',
+      flipV1: () => this.setState({ v1: this.state.v1 === 'a' ? 'b' : 'a' }),
+      flipV2: () => this.setState({ v2: this.state.v2 === 'a' ? 'b' : 'a' }),
+      v1n: st.v1 === 'a' ? '1' : '2',
+      v2n: st.v2 === 'a' ? '1' : '2',
+      bp1: () => this.press(1), bp2: () => this.press(2), bp3: () => this.press(3),
+      bp1Cls: on(k === 1), bp2Cls: on(k === 2), bp3Cls: on(k === 3),
+      setHP: () => this.setState({ hc: false }),
+      setHC: () => this.setState({ hc: true }),
+      hpCls: on(!st.hc), hcCls: on(st.hc),
+      hpPressed: st.hc ? 'false' : 'true', hcPressed: st.hc ? 'true' : 'false',
+      mAuto: () => this.setState({ mode: 'auto' }),
+      mArret: () => this.setState({ mode: 'arret' }),
+      mMarche: () => this.setState({ mode: 'marche' }),
+      autoCls: on(st.mode === 'auto'), arretCls: on(st.mode === 'arret'), marcheCls: on(st.mode === 'marche'),
+      autoPressed: st.mode === 'auto' ? 'true' : 'false',
+      arretPressed: st.mode === 'arret' ? 'true' : 'false',
+      marchePressed: st.mode === 'marche' ? 'true' : 'false',
+      reset: () => {
+        clearTimeout(this.t);
+        this.setState({ s: false, v1: 'a', v2: 'b', tl: false, press: 0, mode: 'auto', hc: false });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

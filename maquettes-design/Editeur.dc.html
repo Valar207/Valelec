@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Phase·Neutre — Atelier</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3EFE6}
+a{color:#B5341F}a:hover{color:#8A2414}
+.nav{padding:8px 12px;border-radius:999px;color:#17191E;text-decoration:none;font-weight:500;font-size:14px}
+.nav:hover{background:#E7E1D3;color:#17191E}
+.nav.on{background:#17191E;color:#F3EFE6}
+.tool{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:10px;background:transparent;color:#17191E;cursor:pointer}
+.tool:hover{background:#E7E1D3}
+.tool.on{background:#17191E;color:#F3EFE6}
+.tb{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:10px;border:1.5px solid #17191E;background:transparent;color:#17191E;font:600 14px 'IBM Plex Sans',system-ui,sans-serif;cursor:pointer}
+.tb:hover{background:#E7E1D3}
+.tb.pri{background:#17191E;color:#F3EFE6}.tb.pri:hover{background:#2C3038}
+.tb.run{background:#FFD84A;border-color:#17191E;color:#17191E}.tb.run:hover{background:#FFE47F}
+.pal{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:6px 10px;border:1.5px solid transparent;border-radius:10px;background:transparent;font:500 14px 'IBM Plex Sans',system-ui,sans-serif;color:#17191E;text-align:left;cursor:grab}
+.pal:hover{background:#EDE7DA}
+.pal.on{border-color:#17191E;background:#FFF3C2}
+.psym{fill:none;stroke:#17191E;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.grp{margin:0;padding:0 10px;font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5B5F68}
+.board{background-color:#111A24;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:50px 50px,50px 50px,10px 10px,10px 10px}
+.sch{position:absolute;inset:0;display:block;width:100%;height:100%}
+.w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ph{stroke:#E5533D}.ne{stroke:#4E8EF7}.rt{stroke:#B48CF2}
+.peg{fill:none;stroke:#3E9A3A;stroke-width:3.5;stroke-linecap:round}
+.pey{fill:none;stroke:#F2CB2E;stroke-width:3.5;stroke-dasharray:8 8}
+.cur{fill:none;stroke:#FFD84A;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 13;opacity:0;transition:opacity .25s}
+.cur.on{opacity:1;animation:pnflow .8s linear infinite;filter:drop-shadow(0 0 3px #FFD84A)}
+.cur.live{opacity:.3;stroke:#FF6B52;stroke-width:10;stroke-dasharray:none;animation:pnlive 1.8s ease-in-out infinite;filter:blur(3px)}
+@keyframes pnflow{to{stroke-dashoffset:-16}}
+@keyframes pnlive{0%,100%{opacity:.12}50%{opacity:.42}}
+.lever{stroke:#E8EDF2;stroke-width:3.5;stroke-linecap:round}
+.mk{stroke:#E8EDF2;stroke-width:2.5;stroke-linecap:round}
+.dot{fill:#E8EDF2}
+.lamp{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .25s}
+.lamp.on{fill:#FFE58A}
+.lampx{stroke:#8E9BAA;stroke-width:2}
+.halo{fill:#FFD84A;opacity:0;transition:opacity .3s;filter:blur(12px)}
+.halo.on{opacity:.6}
+.sock{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5}
+.pin{fill:#E8EDF2}
+.src{fill:#18232F;stroke:#2A3A4C;stroke-width:1.5}
+.lbl{fill:#9AABBD;font:500 13px 'IBM Plex Mono',monospace}
+.lbl.c{text-anchor:middle}.lbl.e{text-anchor:end}.lbl.hi{fill:#E8EDF2}
+.selbox{fill:rgba(255,216,74,.06);stroke:#FFD84A;stroke-width:1.5;stroke-dasharray:5 4}
+.handle{fill:#111A24;stroke:#FFD84A;stroke-width:1.5}
+.hit{position:absolute;background:transparent;border:0;border-radius:8px;cursor:pointer;padding:0}
+.hit:focus-visible{outline:2px solid #FFD84A;outline-offset:2px}
+.ico{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mono{font-family:'IBM Plex Mono',monospace}
+.seg{display:flex;border:1.5px solid #17191E;border-radius:10px;overflow:hidden}
+.seg button{flex:1;min-height:44px;border:0;border-right:1.5px solid #17191E;background:#FBF9F4;color:#17191E;font:600 14px 'IBM Plex Sans',system-ui,sans-serif;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:#E7E1D3}
+.seg button.on{background:#17191E;color:#F3EFE6}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: #F3EFE6; color: #17191E; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.5">
+
+<header style="border-bottom: 1px solid #D9D3C5; padding: 8px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #17191E">
+<svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="#17191E"></rect><path d="M7 17 C10 8, 14 8, 17 17 S24 26, 27 17" fill="none" stroke="#FFD84A" class="ico"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -0.02em">Phase<span style="color: #C2412B">·</span>Neutre</span>
+</a>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="Bases.dc.html" class="nav">Les bases</a>
+<a href="Simulateur.dc.html" class="nav">Schémas</a>
+<a href="Editeur.dc.html" class="nav on" aria-current="page">Atelier</a>
+<a href="BacASable.dc.html" class="nav">Bac à sable</a>
+</nav>
+</header>
+
+<div role="toolbar" aria-label="Outils de l’atelier" style="border-bottom: 1px solid #D9D3C5; padding: 8px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; background: #FBF9F4">
+<div style="display: flex; flex-direction: column; margin-right: 8px">
+<span class="mono" style="font-size: 11px; color: #5B5F68">Mon schéma</span>
+<strong style="font-weight: 600; font-size: 16px">Chambre parentale</strong>
+</div>
+<div style="display: flex; gap: 2px; padding: 2px; border-radius: 12px; background: #EDE7DA">
+<button class="tool {{tc.select}}" onClick="{{tk.select}}" aria-label="Sélection" title="Sélection (V)"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3 L15 11 L10 11.5 L12.5 17 L10.5 18 L8 12.5 L5 15 Z" class="ico"></path></svg></button>
+<button class="tool {{tc.wire}}" onClick="{{tk.wire}}" aria-label="Tracer un fil" title="Fil (F)"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 15 H9 V5 H17" class="ico"></path><circle cx="3" cy="15" r="1.8" class="ico"></circle><circle cx="17" cy="5" r="1.8" class="ico"></circle></svg></button>
+<button class="tool {{tc.text}}" onClick="{{tk.text}}" aria-label="Ajouter une étiquette" title="Étiquette (T)"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5 H16 M10 5 V16 M7 16 H13" class="ico"></path></svg></button>
+<button class="tool {{tc.erase}}" onClick="{{tk.erase}}" aria-label="Gomme" title="Gomme (E)"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 16 L3 11 L11 3 L17 9 L10 16 Z M7 7 L13 13 M8 16 H17" class="ico"></path></svg></button>
+</div>
+<div style="display: flex; gap: 2px">
+<button class="tool" aria-label="Annuler" title="Annuler"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5 L3 9 L7 13 M3 9 H12 A4 4 0 0 1 12 17 H9" class="ico"></path></svg></button>
+<button class="tool" aria-label="Rétablir" title="Rétablir"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 5 L17 9 L13 13 M17 9 H8 A4 4 0 0 0 8 17 H11" class="ico"></path></svg></button>
+</div>
+<div style="display: flex; align-items: center; gap: 2px">
+<button class="tool" aria-label="Zoom arrière"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10 H15" class="ico"></path></svg></button>
+<span class="mono" style="font-size: 13px; min-width: 48px; text-align: center">100 %</span>
+<button class="tool" aria-label="Zoom avant"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10 H15 M10 5 V15" class="ico"></path></svg></button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto">
+<button class="tb">
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 V11 M5 7 L9 11 L13 7 M3 15 H15" class="ico"></path></svg>
+Exporter</button>
+<button class="tb {{simCls}}" onClick="{{toggleSim}}" aria-pressed="{{simPressed}}">
+<sc-if value="{{sim}}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="4" y="4" width="10" height="10" rx="1.5" class="ico"></rect></svg></sc-if>
+<sc-if value="{{notSim}}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 3 L15 9 L5 15 Z" class="ico"></path></svg></sc-if>
+{{simLabel}}</button>
+</div>
+</div>
+
+<div style="flex: 1; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<aside aria-label="Composants" style="flex: 1 1 220px; max-width: 100%; border-right: 1px solid #D9D3C5; background: #FBF9F4; padding: 16px 10px; display: flex; flex-direction: column; gap: 18px">
+<div style="padding: 0 4px">
+<label for="search" class="mono" style="font-size: 12px; color: #5B5F68">Rechercher</label>
+<input id="search" type="search" placeholder="Lampe, prise…" style="width: 100%; box-sizing: border-box; min-height: 40px; margin-top: 4px; padding: 0 12px; border: 1.5px solid #D9D3C5; border-radius: 10px; background: #F3EFE6; font: 400 14px 'IBM Plex Sans', system-ui, sans-serif; color: #17191E">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<p class="grp">Commande</p>
+<button class="pal {{pc.inter}}" onClick="{{pk.inter}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 16 H12 M12 16 L26 6 M28 16 H38" class="psym"></path></svg>Interrupteur</button>
+<button class="pal {{pc.vav}}" onClick="{{pk.vav}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 12 H12 M12 12 L26 5 M28 4 H38 M28 20 H38" class="psym"></path></svg>Va-et-vient</button>
+<button class="pal {{pc.bp}}" onClick="{{pk.bp}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 19 H14 M26 19 H38 M10 13 H30 M20 13 V5 M15 5 H25" class="psym"></path></svg>Bouton poussoir</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<p class="grp">Récepteurs</p>
+<button class="pal {{pc.lampe}}" onClick="{{pk.lampe}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 12 H11 M29 12 H38 M14 6 L26 18 M26 6 L14 18" class="psym"></path><circle cx="20" cy="12" r="9" class="psym"></circle></svg>Lampe</button>
+<button class="pal {{pc.prise}}" onClick="{{pk.prise}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 12 H17 M26 3 A9 9 0 0 0 26 21 M26 2 V22" class="psym"></path></svg>Prise 2P+T</button>
+<button class="pal {{pc.ce}}" onClick="{{pk.ce}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 12 H10 M30 12 H38" class="psym"></path><rect x="10" y="7" width="20" height="10" class="psym"></rect></svg>Chauffe-eau</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<p class="grp">Tableau</p>
+<button class="pal {{pc.disj}}" onClick="{{pk.disj}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 16 H12 M12 16 L26 6 M31 16 H38 M27 12 L33 20 M33 12 L27 20" class="psym"></path></svg>Disjoncteur</button>
+<button class="pal {{pc.tele}}" onClick="{{pk.tele}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><rect x="3" y="5" width="15" height="14" class="psym"></rect><path d="M6 15 V9 H10.5 V15 H15 V9 M24 18 L34 7 M20 18 H24" class="psym"></path></svg>Télérupteur</button>
+<button class="pal {{pc.cont}}" onClick="{{pk.cont}}"><svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"><rect x="3" y="5" width="15" height="14" class="psym"></rect><path d="M6 16 L15 8 M24 18 L34 7 M20 18 H24" class="psym"></path></svg>Contacteur</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<p class="grp">Conducteurs</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; padding: 0 10px; font-size: 13px">
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 4px; border-radius: 2px; background: #E5533D"></span>Phase</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 4px; border-radius: 2px; background: #4E8EF7"></span>Neutre</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 4px; border-radius: 2px; background: #B48CF2"></span>Retour</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 4px; border-radius: 2px; background: repeating-linear-gradient(90deg, #3E9A3A 0 4px, #F2CB2E 4px 8px)"></span>Terre</span>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 600px; min-width: 0; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #E9E4D8">
+<div class="board" style="position: relative; width: 100%; aspect-ratio: 880 / 500; border-radius: 14px; overflow: hidden">
+<svg class="sch" viewBox="0 0 880 500" role="img" aria-label="Schéma en cours : disjoncteur Q1, interrupteur S1, lampe L1 et prise P1">
+<rect x="20" y="60" width="70" height="420" rx="8" class="src"></rect>
+<text x="55" y="84" class="lbl c">tableau</text>
+<text x="98" y="92" class="lbl">L</text>
+<text x="98" y="392" class="lbl">N</text>
+<text x="98" y="442" class="lbl">PE</text>
+<path d="M776 450 H90" class="peg"></path>
+<path d="M776 450 H90" class="pey"></path>
+<path d="M776 360 V450" class="peg"></path>
+<path d="M776 360 V450" class="pey"></path>
+<path d="M90 100 H130 M198 100 H360" class="w ph"></path>
+<path d="M300 100 V180 H760 V300" class="w ph"></path>
+<path d="M420 100 H620 V236" class="w rt"></path>
+<path d="M620 284 V400 M745 360 V400 H90" class="w ne"></path>
+<path d="M90 100 H130" class="cur {{w.ph1}}"></path>
+<path d="M198 100 H300" class="cur {{w.ph2}}"></path>
+<path d="M300 100 H360" class="cur {{w.ph3}}"></path>
+<path d="M300 100 V180 H760 V300" class="cur {{w.sk}}"></path>
+<path d="M420 100 H620 V236" class="cur {{w.rt}}"></path>
+<path d="M620 284 V400" class="cur {{w.ln}}"></path>
+<path d="M620 400 H90" class="cur {{w.nB}}"></path>
+<line x1="130" y1="100" x2="{{w.qx}}" y2="{{w.qy}}" class="lever"></line>
+<line x1="186" y1="94" x2="198" y2="106" class="mk"></line>
+<line x1="198" y1="94" x2="186" y2="106" class="mk"></line>
+<circle cx="130" cy="100" r="5" class="dot"></circle>
+<line x1="360" y1="100" x2="{{w.sx}}" y2="{{w.sy}}" class="lever"></line>
+<circle cx="360" cy="100" r="5" class="dot"></circle>
+<circle cx="420" cy="100" r="5" class="dot"></circle>
+<circle cx="300" cy="100" r="4.5" class="dot"></circle>
+<circle cx="620" cy="400" r="4.5" class="dot"></circle>
+<circle cx="620" cy="260" r="46" class="halo {{w.lamp}}"></circle>
+<circle cx="620" cy="260" r="24" class="lamp {{w.lamp}}"></circle>
+<line x1="603" y1="243" x2="637" y2="277" class="lampx"></line>
+<line x1="637" y1="243" x2="603" y2="277" class="lampx"></line>
+<rect x="728" y="300" width="64" height="60" rx="12" class="sock"></rect>
+<circle cx="748" cy="332" r="5" class="pin"></circle>
+<circle cx="772" cy="332" r="5" class="pin"></circle>
+<rect x="756" y="306" width="8" height="10" rx="2" class="pin"></rect>
+<text x="164" y="134" class="lbl c hi">Q1</text>
+<text x="164" y="150" class="lbl c">16 A</text>
+<text x="390" y="134" class="lbl c hi">S1</text>
+<text x="390" y="150" class="lbl c">entrée</text>
+<text x="656" y="265" class="lbl hi">L1</text>
+<text x="656" y="281" class="lbl">60 W</text>
+<text x="718" y="326" class="lbl e hi">P1</text>
+<text x="718" y="342" class="lbl e">prise 16 A</text>
+<rect x="{{sel.x}}" y="{{sel.y}}" width="{{sel.w}}" height="{{sel.h}}" rx="6" class="selbox"></rect>
+<rect x="{{sel.x1}}" y="{{sel.y1}}" width="8" height="8" class="handle"></rect>
+<rect x="{{sel.x2}}" y="{{sel.y1}}" width="8" height="8" class="handle"></rect>
+<rect x="{{sel.x1}}" y="{{sel.y2}}" width="8" height="8" class="handle"></rect>
+<rect x="{{sel.x2}}" y="{{sel.y2}}" width="8" height="8" class="handle"></rect>
+</svg>
+<button class="hit" onClick="{{hitQ}}" aria-label="Disjoncteur Q1" style="left: 13.4%; top: 11.6%; width: 10.5%; height: 19.2%"></button>
+<button class="hit" onClick="{{hitS}}" aria-label="Interrupteur S1" style="left: 39.8%; top: 11.6%; width: 9.5%; height: 19.6%"></button>
+<button class="hit" onClick="{{hitL}}" aria-label="Lampe L1" style="left: 66.8%; top: 45.6%; width: 7.3%; height: 12.8%"></button>
+<button class="hit" onClick="{{hitP}}" aria-label="Prise P1" style="left: 81.8%; top: 58.4%; width: 9.1%; height: 15.2%"></button>
+<div style="position: absolute; left: 14px; top: 14px; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(11, 18, 25, 0.85); color: #E8EDF2; font: 500 13px 'IBM Plex Mono', monospace">
+<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4" fill="{{hintDot}}"></circle></svg>
+{{hint}}</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font: 500 13px 'IBM Plex Mono', monospace; color: #3B3F47">
+<span>{{modeTxt}}</span>
+<span>4 composants · 8 conducteurs · grille 10 mm</span>
+<span style="color: #17191E">{{metric}}</span>
+</div>
+</main>
+
+<aside aria-label="Propriétés et vérification" style="flex: 1 1 280px; max-width: 100%; border-left: 1px solid #D9D3C5; background: #FBF9F4; padding: 20px; display: flex; flex-direction: column; gap: 24px">
+<section style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span class="mono" style="flex: none; min-width: 44px; height: 44px; padding: 0 8px; box-sizing: border-box; border-radius: 10px; background: #17191E; color: #FFD84A; font-size: 16px; display: flex; align-items: center; justify-content: center">{{prop.ref}}</span>
+<div style="display: flex; flex-direction: column">
+<span class="mono" style="font-size: 12px; color: #5B5F68">Composant sélectionné</span>
+<strong style="font-weight: 600">{{prop.type}}</strong>
+</div>
+</div>
+<sc-if value="{{prop.hasToggle}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 600">État</span>
+<div class="seg" role="group" aria-label="État du composant">
+<button class="{{prop.offCls}}" onClick="{{prop.setOff}}" aria-pressed="{{prop.offPressed}}">{{prop.offTxt}}</button>
+<button class="{{prop.onCls}}" onClick="{{prop.setOn}}" aria-pressed="{{prop.onPressed}}">{{prop.onTxt}}</button>
+</div>
+</div>
+</sc-if>
+<dl style="margin: 0; display: flex; flex-direction: column">
+<sc-for list="{{prop.rows}}" as="row" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #E4DED1">
+<dt style="color: #5B5F68">{{row.k}}</dt>
+<dd style="margin: 0; font-weight: 500; text-align: right">{{row.v}}</dd>
+</div>
+</sc-for>
+</dl>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Vérification du câblage</h2>
+<span class="mono" style="font-size: 13px; color: #5B5F68">3 / 4</span>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{checks}}" as="ck" hint-placeholder-count="4">
+<li style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px">
+<sc-if value="{{ck.ok}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="Correct" style="flex: none; color: #2F7D32"><circle cx="10" cy="10" r="8" class="ico"></circle><path d="M6.5 10.2 L9 12.5 L13.5 7.5" class="ico"></path></svg></sc-if>
+<sc-if value="{{ck.warn}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="À corriger" style="flex: none; color: #B5341F"><path d="M10 2.5 L18 17 H2 Z" class="ico"></path><path d="M10 8 V11.5 M10 14 V14.2" class="ico"></path></svg></sc-if>
+<span style="color: {{ck.color}}">{{ck.t}}</span>
+</li>
+</sc-for>
+</ul>
+<div style="padding: 14px; border-radius: 12px; background: #F9E6E1; display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font-size: 14px; color: #5E1C10">La norme NF C 15-100 impose des circuits séparés pour l’éclairage et les prises.</p>
+<button class="tb" style="align-self: flex-start; border-color: #8A2414; color: #8A2414">Créer un circuit prises (Q2 · 20 A)</button>
+</div>
+</section>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":920}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tool: 'select', pal: null, sel: 'S1', sim: true, s: true, q: true };
+  }
+  hit(id) {
+    const st = this.state;
+    const next = { sel: id };
+    if (st.sim && id === 'S1') next.s = !st.s;
+    if (st.sim && id === 'Q1') next.q = !st.q;
+    this.setState(next);
+  }
+  renderVals() {
+    const st = this.state;
+    const sim = st.sim;
+    const f = sim && st.q && st.s;
+    const lq = sim && st.q;
+    const cls = (flow, live) => (flow ? 'on' : live ? 'live' : '');
+    const w = {
+      ph1: cls(f, sim), ph2: cls(f, lq), ph3: cls(f, lq), sk: cls(false, lq),
+      rt: cls(f, false), ln: cls(f, false), nB: cls(f, false), lamp: f ? 'on' : '',
+      qx: st.q ? 186 : 178, qy: st.q ? 100 : 66,
+      sx: st.s ? 420 : 412, sy: st.s ? 100 : 66
+    };
+
+    const BOX = {
+      Q1: { x: 116, y: 56, w: 96, h: 104 },
+      S1: { x: 348, y: 56, w: 86, h: 104 },
+      L1: { x: 588, y: 228, w: 64, h: 64 },
+      P1: { x: 720, y: 292, w: 80, h: 76 }
+    };
+    const b = BOX[st.sel];
+    const sel = { x: b.x, y: b.y, w: b.w, h: b.h, x1: b.x - 4, y1: b.y - 4, x2: b.x + b.w - 4, y2: b.y + b.h - 4 };
+
+    const tog = (key, offTxt, onTxt) => ({
+      hasToggle: true, offTxt: offTxt, onTxt: onTxt,
+      offCls: st[key] ? '' : 'on', onCls: st[key] ? 'on' : '',
+      offPressed: st[key] ? 'false' : 'true', onPressed: st[key] ? 'true' : 'false',
+      setOff: () => this.setState({ [key]: false }),
+      setOn: () => this.setState({ [key]: true })
+    });
+    const PROPS = {
+      S1: Object.assign({ ref: 'S1', type: 'Interrupteur simple allumage', rows: [{ k: 'Libellé', v: 'Entrée chambre' }, { k: 'Conducteurs', v: 'Phase → retour lampe' }, { k: 'Section', v: '1,5 mm²' }] }, tog('s', 'Ouvert', 'Fermé')),
+      Q1: Object.assign({ ref: 'Q1', type: 'Disjoncteur divisionnaire', rows: [{ k: 'Calibre', v: '16 A' }, { k: 'Courbe', v: 'C' }, { k: 'Circuit', v: 'Chambre parentale' }] }, tog('q', 'Déclenché', 'Armé')),
+      L1: { ref: 'L1', type: 'Point lumineux', hasToggle: false, rows: [{ k: 'Puissance', v: '60 W' }, { k: 'Raccordement', v: 'DCL' }, { k: 'Intensité', v: f ? '0,26 A' : '0 A' }] },
+      P1: { ref: 'P1', type: 'Prise de courant 2P+T', hasToggle: false, rows: [{ k: 'Calibre', v: '16 A' }, { k: 'Section conseillée', v: '2,5 mm²' }, { k: 'Terre', v: 'Raccordée' }] }
+    };
+
+    const PAL = { inter: 'Interrupteur', vav: 'Va-et-vient', bp: 'Bouton poussoir', lampe: 'Lampe', prise: 'Prise 2P+T', ce: 'Chauffe-eau', disj: 'Disjoncteur', tele: 'Télérupteur', cont: 'Contacteur' };
+    const pc = {};
+    const pk = {};
+    Object.keys(PAL).forEach((key) => {
+      pc[key] = st.pal === key ? 'on' : '';
+      pk[key] = () => this.setState({ pal: this.state.pal === key ? null : key, tool: 'select' });
+    });
+    const tc = {};
+    const tk = {};
+    ['select', 'wire', 'text', 'erase'].forEach((key) => {
+      tc[key] = st.tool === key ? 'on' : '';
+      tk[key] = () => this.setState({ tool: key, pal: null });
+    });
+
+    let hint;
+    if (st.pal) hint = 'Placer : ' + PAL[st.pal] + ' — clique sur la grille';
+    else if (st.tool === 'wire') hint = 'Fil : clique sur une borne, puis sur une autre';
+    else if (st.tool === 'erase') hint = 'Gomme : clique sur un élément pour le supprimer';
+    else if (st.tool === 'text') hint = 'Étiquette : clique pour écrire';
+    else if (sim) hint = 'Simulation — clique sur S1 ou Q1 pour les actionner';
+    else hint = 'Édition — clique sur un composant pour le sélectionner';
+
+    const okc = '#2A2D33';
+    return {
+      w: w, sel: sel, prop: PROPS[st.sel], pc: pc, pk: pk, tc: tc, tk: tk,
+      hint: hint,
+      hintDot: sim ? '#FFD84A' : '#8E9BAA',
+      sim: sim, notSim: !sim,
+      simLabel: sim ? 'Arrêter la simulation' : 'Lancer la simulation',
+      simCls: sim ? 'run' : 'pri',
+      simPressed: sim ? 'true' : 'false',
+      toggleSim: () => this.setState({ sim: !this.state.sim }),
+      modeTxt: sim ? 'Simulation en cours · 230 V ~ 50 Hz' : 'Mode édition',
+      metric: !sim ? 'Simulation arrêtée' : f ? 'I = 0,26 A · P = 60 W' : 'I = 0 A',
+      hitQ: () => this.hit('Q1'), hitS: () => this.hit('S1'), hitL: () => this.hit('L1'), hitP: () => this.hit('P1'),
+      checks: [
+        { ok: true, warn: false, color: okc, t: 'L’interrupteur S1 coupe bien la phase.' },
+        { ok: true, warn: false, color: okc, t: 'Le neutre arrive directement à la lampe L1.' },
+        { ok: true, warn: false, color: okc, t: 'La prise P1 est reliée à la terre.' },
+        { ok: false, warn: true, color: '#8A2414', t: 'Éclairage et prise partagent le même disjoncteur Q1.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

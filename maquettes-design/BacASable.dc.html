@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Phase·Neutre — Bac à sable</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3EFE6}
+a{color:#B5341F}a:hover{color:#8A2414}
+.nav{padding:8px 12px;border-radius:999px;color:#17191E;text-decoration:none;font-weight:500;font-size:14px}
+.nav:hover{background:#E7E1D3;color:#17191E}
+.nav.on{background:#17191E;color:#F3EFE6}
+.tool{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:#17191E;font:600 14px 'IBM Plex Sans',system-ui,sans-serif;cursor:pointer}
+.tool:hover{background:#E7E1D3}
+.tool.on{background:#17191E;color:#F3EFE6}
+.tool.sq{width:44px;padding:0;justify-content:center}
+.tb{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:10px;border:1.5px solid #17191E;background:transparent;color:#17191E;font:600 14px 'IBM Plex Sans',system-ui,sans-serif;cursor:pointer}
+.tb:hover{background:#E7E1D3}
+.tb.pwr{background:#FFD84A}.tb.pwr:hover{background:#FFE47F}
+.tb.off{background:#17191E;color:#F3EFE6}.tb.off:hover{background:#2C3038}
+.tb.sm{min-height:40px;padding:0 12px;font-size:13px}
+.tb.danger{border-color:#8A2414;color:#8A2414}
+.sel{min-height:44px;padding:0 10px;border:1.5px solid #17191E;border-radius:10px;background:#FBF9F4;font:500 14px 'IBM Plex Sans',system-ui,sans-serif;color:#17191E}
+.pal{display:flex;align-items:center;gap:10px;width:100%;min-height:40px;padding:4px 8px;border:1.5px solid transparent;border-radius:10px;background:transparent;font:500 14px 'IBM Plex Sans',system-ui,sans-serif;color:#17191E;text-align:left;cursor:pointer}
+.pal:hover{background:#EDE7DA}
+.pal.on{border-color:#17191E;background:#FFF3C2}
+.psym{fill:none;stroke:#17191E;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.psf{fill:#17191E}
+.grp{margin:4px 0 2px;padding:0 8px;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5B5F68}
+.mono{font-family:'IBM Plex Mono',monospace}
+.ico{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.chip{min-height:36px;padding:0 10px;border:1.5px solid #D9D3C5;border-radius:8px;background:#FBF9F4;font:500 13px 'IBM Plex Sans',system-ui,sans-serif;color:#17191E;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:#17191E}
+.chip.on{border-color:#17191E;background:#17191E;color:#F3EFE6}
+.sw{display:inline-block;width:14px;height:4px;border-radius:2px}
+
+.brd{position:absolute;left:0;top:0;transform-origin:0 0;user-select:none;-webkit-user-select:none;touch-action:none;background-color:#111A24;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:100px 100px,100px 100px,20px 20px,20px 20px}
+.brd.mode-place{cursor:copy}
+
+.seg{position:absolute;padding:0;border:0;background:transparent;cursor:pointer}
+.seg::before,.seg::after{content:'';position:absolute;border-radius:2px;pointer-events:none}
+.seg.h::before,.seg.h::after{left:0;right:0;top:5px;height:4px}
+.seg.v::before,.seg.v::after{top:0;bottom:0;left:5px;width:4px}
+.seg::before{background:var(--c,#B48CF2)}
+.seg.ph{--c:#E5533D}.seg.ne{--c:#4E8EF7}.seg.rt{--c:#B48CF2}.seg.cm{--c:#8E9BAA}
+.seg.h.pe::before{background:repeating-linear-gradient(90deg,#3E9A3A 0 8px,#F2CB2E 8px 16px)}
+.seg.v.pe::before{background:repeating-linear-gradient(180deg,#3E9A3A 0 8px,#F2CB2E 8px 16px)}
+.seg::after{opacity:0}
+.seg.on::after{opacity:1;filter:drop-shadow(0 0 3px #FFD84A)}
+.seg.h.on::after{background-image:repeating-linear-gradient(90deg,#FFD84A 0 5px,transparent 5px 16px);background-size:16px 4px}
+.seg.v.on::after{background-image:repeating-linear-gradient(180deg,#FFD84A 0 5px,transparent 5px 16px);background-size:4px 16px}
+.seg.on.r::after{animation:fr .7s linear infinite}.seg.on.l::after{animation:fl .7s linear infinite}
+.seg.on.d::after{animation:fd .7s linear infinite}.seg.on.u::after{animation:fu .7s linear infinite}
+@keyframes fr{from{background-position:0 0}to{background-position:16px 0}}
+@keyframes fl{from{background-position:16px 0}to{background-position:0 0}}
+@keyframes fd{from{background-position:0 0}to{background-position:0 16px}}
+@keyframes fu{from{background-position:0 16px}to{background-position:0 0}}
+.seg.live::after{opacity:1;background:#FF6B52;filter:blur(4px);animation:pnlive 1.8s ease-in-out infinite}
+.seg.h.live::after{top:2px;height:10px}.seg.v.live::after{left:2px;width:10px}
+@keyframes pnlive{0%,100%{opacity:.12}50%{opacity:.5}}
+.seg.short::after{opacity:1;background:#FFFFFF;animation:blink .3s linear infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.seg:hover::before{box-shadow:0 0 0 3px rgba(255,255,255,.22)}
+.seg.sel::before{box-shadow:0 0 0 3px rgba(255,216,74,.6)}
+.seg:focus-visible{outline:2px solid #FFD84A}
+.mode-erase .seg:hover::before{background:#FF6B52}
+.seg.prev{pointer-events:none}
+.seg.prev::before{background:repeating-linear-gradient(90deg,#FFD84A 0 6px,transparent 6px 12px)}
+.seg.v.prev::before{background:repeating-linear-gradient(180deg,#FFD84A 0 6px,transparent 6px 12px)}
+
+.comp{position:absolute;padding:0;border:0;background:transparent;color:inherit;cursor:grab;border-radius:6px;touch-action:none}
+.comp:active{cursor:grabbing}
+.comp.sel{outline:2px dashed #FFD84A;outline-offset:6px}
+.comp:focus-visible{outline:2px solid #FFD84A;outline-offset:6px}
+.mode-erase .comp{cursor:pointer}
+.mode-erase .comp:hover{outline:2px solid #FF6B52;outline-offset:6px}
+.cs{position:absolute;left:50%;top:50%;display:block}
+.cs svg{display:block;overflow:visible}
+.ref{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:6px;font:500 13px 'IBM Plex Mono',monospace;color:#C9D3DD;white-space:nowrap;pointer-events:none}
+.ghost{position:absolute;border:2px dashed #FFD84A;border-radius:8px;background:rgba(255,216,74,.08);pointer-events:none}
+
+.term{position:absolute;width:22px;height:22px;padding:0;border:0;border-radius:50%;background:transparent;cursor:crosshair}
+.term::before{content:'';position:absolute;left:6px;top:6px;width:10px;height:10px;box-sizing:border-box;border-radius:50%;background:#111A24;border:2px solid #E8EDF2;transition:transform .12s}
+.term.con::before{background:#E8EDF2}
+.term:hover::before{background:#FFD84A;border-color:#FFD84A;transform:scale(1.4)}
+.term.pend::before{background:#FFD84A;border-color:#FFD84A;box-shadow:0 0 0 5px rgba(255,216,74,.3)}
+.term:focus-visible{outline:2px solid #FFD84A}
+
+.s{fill:none;stroke:#E8EDF2;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.s.thin{stroke-width:1.8}
+.s.dash{stroke:#6E7F92;stroke-width:1.5;stroke-dasharray:4 4}
+.s.pe2{stroke:#7DBA3A}
+.s.blown{opacity:0}
+.sf{fill:#E8EDF2}
+.stub{fill:none;stroke-width:3;stroke-linecap:round}
+.stub.ph{stroke:#E5533D}.stub.ne{stroke:#4E8EF7}.stub.pe{stroke:#7DBA3A}
+.srcb{fill:#18232F;stroke:#3A4D63;stroke-width:1.5}
+.t{fill:#C9D3DD;font:500 13px 'IBM Plex Mono',monospace}
+.t.c{text-anchor:middle}.t.sm{font-size:10px;fill:#9AABBD}
+.lamp{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .25s}
+.lamp.on{fill:#FFE58A}
+.lampx{fill:none;stroke:#8E9BAA;stroke-width:2}
+.halo{fill:#FFD84A;opacity:0;transition:opacity .3s;filter:blur(10px)}
+.halo.on{opacity:.6}
+.voy{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.2}
+.voy.on{fill:#7BE495}
+.vhalo{fill:#7BE495;opacity:0;filter:blur(6px)}
+.vhalo.on{opacity:.7}
+.res{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .3s,stroke .3s}
+.res.on{fill:#4A2410;stroke:#FF9A3D}
+.zig{fill:none;stroke:#8E9BAA;stroke-width:1.6;stroke-linejoin:round}
+.mot{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5}
+.mot.on{stroke:#FFD84A}
+.rotor{opacity:0}
+.rotor.on{opacity:1;animation:spin .9s linear infinite;transform-origin:40px 20px}
+.arc{fill:none;stroke:#FFD84A;stroke-width:2.5;stroke-linecap:round}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bell.on{animation:ring .14s linear infinite;transform-origin:40px 28px}
+@keyframes ring{0%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}100%{transform:rotate(-9deg)}}
+.bellb{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5}
+.bellb.on{fill:#FFE58A}
+.coil{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .2s,stroke .2s}
+.coil.on{fill:#3A3110;stroke:#FFD84A}
+.fuse{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5}
+.fuse.blown{fill:#4A1A14;stroke:#FF6B52}
+.plug{opacity:0;transition:opacity .2s}
+.plug.on{opacity:1}
+.plugb{fill:#3A4D63;stroke:#E8EDF2;stroke-width:1.5}
+.plug.lit .plugb{fill:#FFD84A;stroke:#FFD84A}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: #F3EFE6; color: #17191E; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.5">
+
+<header style="border-bottom: 1px solid #D9D3C5; padding: 8px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #17191E">
+<svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="#17191E"></rect><path d="M7 17 C10 8, 14 8, 17 17 S24 26, 27 17" fill="none" stroke="#FFD84A" class="ico"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -0.02em">Phase<span style="color: #C2412B">·</span>Neutre</span>
+</a>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="Bases.dc.html" class="nav">Les bases</a>
+<a href="Simulateur.dc.html" class="nav">Schémas</a>
+<a href="Editeur.dc.html" class="nav">Atelier</a>
+<a href="BacASable.dc.html" class="nav on" aria-current="page">Bac à sable</a>
+</nav>
+</header>
+
+<div role="toolbar" aria-label="Outils du bac à sable" style="border-bottom: 1px solid #D9D3C5; padding: 8px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; background: #FBF9F4">
+<div style="display: flex; flex-direction: column; margin-right: 6px">
+<span class="mono" style="font-size: 11px; color: #5B5F68">Bac à sable</span>
+<strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.01em">Schéma libre</strong>
+</div>
+<div style="display: flex; gap: 2px; padding: 2px; border-radius: 12px; background: #EDE7DA">
+<button class="tool {{tc.select}}" onClick="{{tk.select}}" aria-pressed="{{tp.select}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3 L15 11 L10 11.5 L12.5 17 L10.5 18 L8 12.5 L5 15 Z" class="ico"></path></svg>Déplacer</button>
+<button class="tool {{tc.erase}}" onClick="{{tk.erase}}" aria-pressed="{{tp.erase}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 16 L3 11 L11 3 L17 9 L10 16 Z M7 7 L13 13 M8 16 H17" class="ico"></path></svg>Gomme</button>
+</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<label for="wcolor" style="font-size: 13px; font-weight: 600">Nouveaux fils</label>
+<select id="wcolor" class="sel" value="{{wcolor}}" onChange="{{setWColor}}">
+<option value="auto">Couleur auto</option>
+<option value="ph">Phase</option>
+<option value="ne">Neutre</option>
+<option value="rt">Retour / navette</option>
+<option value="cm">Commande</option>
+<option value="pe">Terre</option>
+</select>
+</div>
+<div style="display: flex; align-items: center; gap: 2px">
+<button class="tool sq" onClick="{{zoomOut}}" aria-label="Zoom arrière"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10 H15" class="ico"></path></svg></button>
+<span class="mono" style="font-size: 13px; min-width: 48px; text-align: center">{{zoomTxt}}</span>
+<button class="tool sq" onClick="{{zoomIn}}" aria-label="Zoom avant"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10 H15 M10 5 V15" class="ico"></path></svg></button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto">
+<button class="tb danger" onClick="{{clearAll}}">Tout effacer</button>
+<button class="tb {{pwrCls}}" onClick="{{togglePower}}" aria-pressed="{{pwrPressed}}">
+<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2 V10 M5.5 5 A7 7 0 1 0 14.5 5" class="ico"></path></svg>
+{{pwrTxt}}</button>
+</div>
+</div>
+
+<div style="flex: 1; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<aside aria-label="Symboles électriques" style="flex: 1 1 220px; max-width: 100%; border-right: 1px solid #D9D3C5; background: #FBF9F4; padding: 12px 8px; display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0 8px 4px; font-size: 13px; color: #3B3F47">Choisis un symbole, puis clique sur la grille pour le poser.</p>
+
+<p class="grp">Alimentation · protection</p>
+<button class="pal {{pc.src}}" onClick="{{pk.src}}" title="{{pd.src}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><rect x="6" y="3" width="24" height="18" rx="3" class="psym"></rect><path d="M11 12 C13 7 16 7 18 12 S23 17 25 12" class="psym"></path></svg>Alimentation 230 V</button>
+<button class="pal {{pc.disj}}" onClick="{{pk.disj}}" title="{{pd.disj}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 16 H10 M10 16 L22 6 M27 16 H34 M23 12 L29 20 M29 12 L23 20" class="psym"></path></svg>Disjoncteur</button>
+<button class="pal {{pc.fus}}" onClick="{{pk.fus}}" title="{{pd.fus}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H9 M27 12 H34 M9 12 H27" class="psym"></path><rect x="9" y="7" width="18" height="10" class="psym"></rect></svg>Fusible</button>
+<button class="pal {{pc.terre}}" onClick="{{pk.terre}}" title="{{pd.terre}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M18 2 V12 M8 12 H28 M12 17 H24 M15 22 H21" class="psym"></path></svg>Prise de terre</button>
+
+<p class="grp">Commande</p>
+<button class="pal {{pc.inter}}" onClick="{{pk.inter}}" title="{{pd.inter}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 16 H10 M10 16 L23 6 M26 16 H34" class="psym"></path></svg>Interrupteur</button>
+<button class="pal {{pc.vav}}" onClick="{{pk.vav}}" title="{{pd.vav}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H10 M10 12 L23 5 M26 4 H34 M26 20 H34" class="psym"></path></svg>Va-et-vient</button>
+<button class="pal {{pc.perm}}" onClick="{{pk.perm}}" title="{{pd.perm}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 6 H10 M2 18 H10 M26 6 H34 M26 18 H34 M10 6 L26 18 M10 18 L26 6" class="psym"></path></svg>Permutateur</button>
+<button class="pal {{pc.bp}}" onClick="{{pk.bp}}" title="{{pd.bp}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 18 H12 M24 18 H34 M8 12 H28 M18 12 V4 M14 4 H22" class="psym"></path></svg>Bouton poussoir</button>
+
+<p class="grp">Appareillage modulaire</p>
+<button class="pal {{pc.tele}}" onClick="{{pk.tele}}" title="{{pd.tele}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><rect x="2" y="4" width="14" height="16" class="psym"></rect><path d="M5 15 V9 H9 V15 H13 V9 M18 18 H22 L32 7" class="psym"></path></svg>Télérupteur</button>
+<button class="pal {{pc.cont}}" onClick="{{pk.cont}}" title="{{pd.cont}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><rect x="2" y="4" width="14" height="16" class="psym"></rect><path d="M5 17 L13 7 M18 18 H22 L32 7" class="psym"></path></svg>Contacteur</button>
+<button class="pal {{pc.minu}}" onClick="{{pk.minu}}" title="{{pd.minu}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><rect x="2" y="4" width="14" height="16" class="psym"></rect><circle cx="9" cy="12" r="4" class="psym"></circle><path d="M18 18 H22 L32 7" class="psym"></path></svg>Minuterie</button>
+
+<p class="grp">Récepteurs</p>
+<button class="pal {{pc.lampe}}" onClick="{{pk.lampe}}" title="{{pd.lampe}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H9 M27 12 H34 M12 6 L24 18 M24 6 L12 18" class="psym"></path><circle cx="18" cy="12" r="9" class="psym"></circle></svg>Lampe</button>
+<button class="pal {{pc.voyant}}" onClick="{{pk.voyant}}" title="{{pd.voyant}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H12 M24 12 H34 M14 8 L22 16 M22 8 L14 16" class="psym"></path><circle cx="18" cy="12" r="6" class="psym"></circle></svg>Voyant</button>
+<button class="pal {{pc.rad}}" onClick="{{pk.rad}}" title="{{pd.rad}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H7 M29 12 H34 M10 12 L13 8 L16 16 L19 8 L22 16 L25 8 L27 12" class="psym"></path><rect x="7" y="6" width="22" height="12" class="psym"></rect></svg>Radiateur</button>
+<button class="pal {{pc.moteur}}" onClick="{{pk.moteur}}" title="{{pd.moteur}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H8 M28 12 H34 M13 16 V8 L18 13 L23 8 V16" class="psym"></path><circle cx="18" cy="12" r="10" class="psym"></circle></svg>Moteur</button>
+<button class="pal {{pc.sonnette}}" onClick="{{pk.sonnette}}" title="{{pd.sonnette}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 18 H8 M28 18 H34 M8 18 A10 10 0 0 1 28 18 Z" class="psym"></path></svg>Sonnette</button>
+<button class="pal {{pc.prise}}" onClick="{{pk.prise}}" title="{{pd.prise}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H15 M24 3 A9 9 0 0 0 24 21 M24 2 V22" class="psym"></path></svg>Prise 2P+T</button>
+
+<p class="grp">Connexion</p>
+<button class="pal {{pc.borne}}" onClick="{{pk.borne}}" title="{{pd.borne}}"><svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true"><path d="M2 12 H34" class="psym"></path><circle cx="18" cy="12" r="4.5" class="psf"></circle></svg>Borne de connexion</button>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: #E9E4D8">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: #17191E; color: #E8EDF2; font: 500 13px 'IBM Plex Mono', monospace">
+<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4" fill="{{hintDot}}"></circle></svg>
+{{hint}}</span>
+<span class="mono" style="font-size: 13px; color: #3B3F47">{{counts}}</span>
+</div>
+<div style="flex: 1; min-height: 520px; overflow: auto; border-radius: 14px; background: #0B1219; position: relative">
+<div style="position: relative; width: {{bw}}px; height: {{bh}}px">
+<div class="brd mode-{{mode}}" data-board="1" style="width: 1200px; height: 800px; transform: scale({{zoom}})" onClick="{{boardClick}}" onPointerMove="{{boardMove}}" onPointerUp="{{boardUp}}" onPointerLeave="{{boardLeave}}">
+
+<sc-for list="{{segs}}" as="g" hint-placeholder-count="4">
+<button class="{{g.cls}}" style="left: {{g.left}}px; top: {{g.top}}px; width: {{g.width}}px; height: {{g.height}}px" onClick="{{g.click}}" aria-label="{{g.label}}"></button>
+</sc-for>
+
+<sc-for list="{{items}}" as="c" hint-placeholder-count="4">
+<button class="{{c.cls}}" style="left: {{c.left}}px; top: {{c.top}}px; width: {{c.W}}px; height: {{c.H}}px" onPointerDown="{{c.down}}" onClick="{{c.key}}" aria-label="{{c.title}}" title="{{c.title}}">
+<span class="cs" style="width: {{c.iw}}px; height: {{c.ih}}px; transform: translate(-50%, -50%) rotate({{c.rot}}deg)">
+
+<sc-if value="{{c.is_src}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="160" viewBox="0 0 80 160" aria-hidden="true"><rect x="4" y="4" width="50" height="152" rx="8" class="srcb"></rect><path d="M54 20 H80" class="stub ph"></path><path d="M54 100 H80" class="stub ne"></path><path d="M54 140 H80" class="stub pe"></path><text x="29" y="72" class="t c">230</text><text x="29" y="90" class="t c">V ~</text><text x="62" y="13" class="t sm">L</text><text x="62" y="93" class="t sm">N</text><text x="60" y="133" class="t sm">PE</text></svg>
+</sc-if>
+<sc-if value="{{c.is_disj}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H20 M62 20 H80 M56 14 L68 26 M68 14 L56 26" class="s"></path><circle cx="20" cy="20" r="3.5" class="sf"></circle><line x1="20" y1="20" x2="{{c.lx}}" y2="{{c.ly}}" class="s"></line></svg>
+</sc-if>
+<sc-if value="{{c.is_fus}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H18 M62 20 H80" class="s"></path><rect x="18" y="11" width="44" height="18" rx="2" class="fuse {{c.fx}}"></rect><path d="M18 20 H62" class="s thin {{c.fx}}"></path></svg>
+</sc-if>
+<sc-if value="{{c.is_terre}}" hint-placeholder-val="{{ false }}">
+<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 0 V20 M6 20 H34 M11 27 H29 M16 34 H24" class="s pe2"></path></svg>
+</sc-if>
+<sc-if value="{{c.is_inter}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H20 M60 20 H80" class="s"></path><circle cx="20" cy="20" r="3.5" class="sf"></circle><circle cx="60" cy="20" r="3.5" class="sf"></circle><line x1="20" y1="20" x2="{{c.lx}}" y2="{{c.ly}}" class="s"></line></svg>
+</sc-if>
+<sc-if value="{{c.is_vav}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true"><path d="M0 40 H20 M60 20 H80 M60 60 H80" class="s"></path><circle cx="20" cy="40" r="3.5" class="sf"></circle><circle cx="60" cy="20" r="3.5" class="sf"></circle><circle cx="60" cy="60" r="3.5" class="sf"></circle><line x1="20" y1="40" x2="58" y2="{{c.vy}}" class="s"></line></svg>
+</sc-if>
+<sc-if value="{{c.is_perm}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true"><path d="M0 20 H20 M0 60 H20 M60 20 H80 M60 60 H80" class="s"></path><circle cx="20" cy="20" r="3.5" class="sf"></circle><circle cx="20" cy="60" r="3.5" class="sf"></circle><circle cx="60" cy="20" r="3.5" class="sf"></circle><circle cx="60" cy="60" r="3.5" class="sf"></circle><line x1="20" y1="20" x2="60" y2="{{c.p1}}" class="s"></line><line x1="20" y1="60" x2="60" y2="{{c.p2}}" class="s"></line></svg>
+</sc-if>
+<sc-if value="{{c.is_bp}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H20 M60 20 H80 M20 20 V15 M60 20 V15" class="s"></path><line x1="14" y1="{{c.by}}" x2="66" y2="{{c.by}}" class="s"></line><line x1="40" y1="{{c.by}}" x2="40" y2="{{c.py}}" class="s thin"></line><line x1="32" y1="{{c.py}}" x2="48" y2="{{c.py}}" class="s"></line></svg>
+</sc-if>
+<sc-if value="{{c.is_tele}}" hint-placeholder-val="{{ false }}">
+<svg width="120" height="80" viewBox="0 0 120 80" aria-hidden="true"><path d="M0 20 H20 M0 60 H20 M120 20 H98 M120 60 H98" class="s"></path><rect x="20" y="12" width="40" height="56" rx="3" class="coil {{c.coil}}"></rect><path d="M28 50 V30 H36 V50 H44 V30 H52" class="s thin"></path><path d="M60 40 H86" class="s dash"></path><circle cx="98" cy="20" r="3.5" class="sf"></circle><circle cx="98" cy="60" r="3.5" class="sf"></circle><line x1="98" y1="60" x2="{{c.kx}}" y2="{{c.ky}}" class="s"></line><text x="2" y="12" class="t sm">A1</text><text x="2" y="76" class="t sm">A2</text></svg>
+</sc-if>
+<sc-if value="{{c.is_cont}}" hint-placeholder-val="{{ false }}">
+<svg width="120" height="80" viewBox="0 0 120 80" aria-hidden="true"><path d="M0 20 H20 M0 60 H20 M120 20 H98 M120 60 H98" class="s"></path><rect x="20" y="12" width="40" height="56" rx="3" class="coil {{c.coil}}"></rect><path d="M28 56 L52 24" class="s thin"></path><path d="M60 40 H86" class="s dash"></path><circle cx="98" cy="20" r="3.5" class="sf"></circle><circle cx="98" cy="60" r="3.5" class="sf"></circle><line x1="98" y1="60" x2="{{c.kx}}" y2="{{c.ky}}" class="s"></line><text x="2" y="12" class="t sm">A1</text><text x="2" y="76" class="t sm">A2</text></svg>
+</sc-if>
+<sc-if value="{{c.is_minu}}" hint-placeholder-val="{{ false }}">
+<svg width="120" height="80" viewBox="0 0 120 80" aria-hidden="true"><path d="M0 20 H20 M0 60 H20 M120 20 H98 M120 60 H98" class="s"></path><rect x="20" y="12" width="40" height="56" rx="3" class="coil {{c.coil}}"></rect><circle cx="40" cy="40" r="11" class="s thin"></circle><path d="M40 33 V40 L45 43" class="s thin"></path><path d="M60 40 H86" class="s dash"></path><circle cx="98" cy="20" r="3.5" class="sf"></circle><circle cx="98" cy="60" r="3.5" class="sf"></circle><line x1="98" y1="60" x2="{{c.kx}}" y2="{{c.ky}}" class="s"></line><text x="2" y="12" class="t sm">A1</text><text x="2" y="76" class="t sm">A2</text><text x="74" y="78" class="t sm">{{c.tm}}</text></svg>
+</sc-if>
+<sc-if value="{{c.is_lampe}}" hint-placeholder-val="{{ true }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H24 M56 20 H80" class="s"></path><circle cx="40" cy="20" r="30" class="halo {{c.on}}"></circle><circle cx="40" cy="20" r="16" class="lamp {{c.on}}"></circle><path d="M29 9 L51 31 M51 9 L29 31" class="lampx"></path></svg>
+</sc-if>
+<sc-if value="{{c.is_voyant}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H30 M50 20 H80" class="s"></path><circle cx="40" cy="20" r="18" class="vhalo {{c.on}}"></circle><circle cx="40" cy="20" r="10" class="voy {{c.on}}"></circle><path d="M33 13 L47 27 M47 13 L33 27" class="lampx"></path></svg>
+</sc-if>
+<sc-if value="{{c.is_rad}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H14 M66 20 H80" class="s"></path><rect x="14" y="8" width="52" height="24" rx="3" class="res {{c.on}}"></rect><path d="M20 20 L25 13 L31 27 L37 13 L43 27 L49 13 L55 27 L60 20" class="zig"></path></svg>
+</sc-if>
+<sc-if value="{{c.is_moteur}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H22 M58 20 H80" class="s"></path><circle cx="40" cy="20" r="18" class="mot {{c.on}}"></circle><text x="40" y="25" class="t c">M</text><g class="rotor {{c.on}}"><path d="M40 5 A15 15 0 0 1 55 20" class="arc"></path></g></svg>
+</sc-if>
+<sc-if value="{{c.is_sonnette}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="40" viewBox="0 0 80 40" aria-hidden="true"><path d="M0 20 H24 M56 20 H80 M24 20 V28 M56 20 V28" class="s"></path><g class="bell {{c.on}}"><path d="M24 28 A16 16 0 0 1 56 28 Z" class="bellb {{c.on}}"></path></g></svg>
+</sc-if>
+<sc-if value="{{c.is_prise}}" hint-placeholder-val="{{ false }}">
+<svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true"><path d="M0 20 H41" class="stub ph"></path><path d="M0 40 H32" class="stub ne"></path><path d="M0 60 H41" class="stub pe"></path><path d="M58 14 A26 26 0 0 0 58 66 M58 8 V72" class="s"></path><g class="plug {{c.pl}}"><rect x="64" y="26" width="16" height="28" rx="3" class="plugb"></rect></g></svg>
+</sc-if>
+<sc-if value="{{c.is_borne}}" hint-placeholder-val="{{ false }}">
+<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="8" class="sf"></circle></svg>
+</sc-if>
+
+</span>
+<sc-if value="{{c.showRef}}" hint-placeholder-val="{{ true }}"><span class="ref">{{c.ref}}</span></sc-if>
+</button>
+</sc-for>
+
+<sc-for list="{{terms}}" as="t" hint-placeholder-count="6">
+<button class="{{t.cls}}" style="left: {{t.left}}px; top: {{t.top}}px" onClick="{{t.click}}" aria-label="{{t.label}}" title="{{t.label}}"></button>
+</sc-for>
+
+<sc-for list="{{prev}}" as="g" hint-placeholder-count="0">
+<div class="{{g.cls}}" style="left: {{g.left}}px; top: {{g.top}}px; width: {{g.width}}px; height: {{g.height}}px"></div>
+</sc-for>
+
+<sc-if value="{{ghost.show}}" hint-placeholder-val="{{ false }}">
+<div class="ghost" style="left: {{ghost.left}}px; top: {{ghost.top}}px; width: {{ghost.w}}px; height: {{ghost.h}}px"></div>
+</sc-if>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: #3B3F47">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span class="sw" style="background: #E5533D"></span>Phase</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span class="sw" style="background: #4E8EF7"></span>Neutre</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span class="sw" style="background: #B48CF2"></span>Retour / navette</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span class="sw" style="background: #8E9BAA"></span>Commande</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span class="sw" style="background: repeating-linear-gradient(90deg, #3E9A3A 0 4px, #F2CB2E 4px 8px)"></span>Terre</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span class="sw" style="background: repeating-linear-gradient(90deg, #E0A800 0 4px, transparent 4px 8px)"></span>Courant</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span class="sw" style="background: #FF6B52; box-shadow: 0 0 6px #FF6B52"></span>Sous tension</span>
+</div>
+</main>
+
+<aside aria-label="Propriétés et diagnostic" style="flex: 1 1 290px; max-width: 100%; border-left: 1px solid #D9D3C5; background: #FBF9F4; padding: 18px; display: flex; flex-direction: column; gap: 22px">
+
+<sc-if value="{{panel.none}}" hint-placeholder-val="{{ false }}">
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Mode d’emploi</h2>
+<ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #3B3F47">
+<li>Choisis un symbole à gauche, puis clique sur la grille pour le poser.</li>
+<li>Clique sur une borne, puis sur une autre : un fil les relie.</li>
+<li>Glisse un composant pour le déplacer. Clique sur un interrupteur pour l’actionner.</li>
+<li>Mets sous tension et regarde le courant circuler.</li>
+</ol>
+</section>
+</sc-if>
+
+<sc-if value="{{panel.comp}}" hint-placeholder-val="{{ true }}">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span class="mono" style="flex: none; min-width: 44px; height: 44px; padding: 0 8px; box-sizing: border-box; border-radius: 10px; background: #17191E; color: #FFD84A; font-size: 15px; display: flex; align-items: center; justify-content: center">{{panel.ref}}</span>
+<div style="display: flex; flex-direction: column; min-width: 0">
+<strong style="font-weight: 600">{{panel.name}}</strong>
+<span style="font-size: 13px; color: #3B3F47">{{panel.state}}</span>
+</div>
+</div>
+<p style="margin: 0; font-size: 14px; color: #3B3F47">{{panel.desc}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-if value="{{panel.canOp}}" hint-placeholder-val="{{ true }}"><button class="tb sm" onClick="{{panel.op}}" style="background: #17191E; color: #F3EFE6">{{panel.opTxt}}</button></sc-if>
+<button class="tb sm" onClick="{{panel.rotate}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8 A5 5 0 1 1 11 4 M13 2 V5 H10" class="ico"></path></svg>Pivoter</button>
+<button class="tb sm danger" onClick="{{panel.del}}">Supprimer</button>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{panel.wire}}" hint-placeholder-val="{{ false }}">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column">
+<strong style="font-weight: 600">Fil · {{panel.wname}}</strong>
+<span style="font-size: 13px; color: #3B3F47">{{panel.wstate}}</span>
+</div>
+<div role="group" aria-label="Couleur du conducteur" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{panel.colors}}" as="o" hint-placeholder-count="6">
+<button class="chip {{o.cls}}" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}"><span class="sw" style="background: {{o.sw}}"></span>{{o.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button class="tb sm" onClick="{{panel.flip}}">Inverser le coude</button>
+<button class="tb sm danger" onClick="{{panel.del}}">Supprimer le fil</button>
+</div>
+</section>
+</sc-if>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Diagnostic</h2>
+<span class="mono" style="font-size: 13px; color: #17191E">{{metric}}</span>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{diag}}" as="d" hint-placeholder-count="2">
+<li style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; padding: 10px 12px; border-radius: 10px; background: {{d.bg}}; color: {{d.fg}}">
+<sc-if value="{{d.isOk}}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 20 20" role="img" aria-label="Correct" style="flex: none"><circle cx="10" cy="10" r="8" class="ico"></circle><path d="M6.5 10.2 L9 12.5 L13.5 7.5" class="ico"></path></svg></sc-if>
+<sc-if value="{{d.isBad}}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 20 20" role="img" aria-label="Attention" style="flex: none"><path d="M10 2.5 L18 17 H2 Z" class="ico"></path><path d="M10 8 V11.5 M10 14 V14.2" class="ico"></path></svg></sc-if>
+<sc-if value="{{d.isInfo}}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 20 20" role="img" aria-label="Info" style="flex: none"><circle cx="10" cy="10" r="8" class="ico"></circle><path d="M10 9 V14 M10 6 V6.2" class="ico"></path></svg></sc-if>
+<span>{{d.t}}</span>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Partir d’un exemple</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<button class="chip" onClick="{{ex.simple}}" style="justify-content: center; min-height: 44px">Simple allumage</button>
+<button class="chip" onClick="{{ex.vav}}" style="justify-content: center; min-height: 44px">Va-et-vient</button>
+<button class="chip" onClick="{{ex.perm}}" style="justify-content: center; min-height: 44px">3 points (permutateur)</button>
+<button class="chip" onClick="{{ex.tele}}" style="justify-content: center; min-height: 44px">Télérupteur</button>
+</div>
+</section>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const T2 = (a, b) => [['1', a, 20], ['2', b, 20]];
+    this.DEF = {
+      src: { name: 'Alimentation 230 V', pre: 'ALIM', w: 80, h: 160, t: [['L', 80, 20], ['N', 80, 100], ['PE', 80, 140]], desc: 'Le tableau : il fournit la phase (L), le neutre (N) et la terre (PE).' },
+      disj: { name: 'Disjoncteur', pre: 'Q', w: 80, h: 40, t: T2(0, 80), desc: 'Protège le circuit : il déclenche en cas de court-circuit.' },
+      fus: { name: 'Fusible', pre: 'F', w: 80, h: 40, t: T2(0, 80), desc: 'Protection qui fond en cas de court-circuit. Il faut ensuite le remplacer.' },
+      terre: { name: 'Prise de terre', pre: 'PE', w: 40, h: 40, t: [['PE', 20, 0]], desc: 'Relie les masses métalliques et les prises à la terre.' },
+      inter: { name: 'Interrupteur', pre: 'S', w: 80, h: 40, t: T2(0, 80), desc: 'Ouvre ou ferme le circuit. Clique dessus pour l’actionner.' },
+      vav: { name: 'Va-et-vient', pre: 'S', w: 80, h: 80, t: [['C', 0, 40], ['1', 80, 20], ['2', 80, 60]], desc: 'Relie sa borne commune (C) à l’une ou l’autre navette.' },
+      perm: { name: 'Permutateur', pre: 'S', w: 80, h: 80, t: [['1', 0, 20], ['2', 0, 60], ['3', 80, 20], ['4', 80, 60]], desc: 'Croise les navettes : il se place entre deux va-et-vient pour ajouter un point de commande.' },
+      bp: { name: 'Bouton poussoir', pre: 'BP', w: 80, h: 40, t: T2(0, 80), desc: 'Ferme le circuit uniquement pendant l’appui.' },
+      tele: { name: 'Télérupteur', pre: 'KA', w: 120, h: 80, t: [['A1', 0, 20], ['A2', 0, 60], ['1', 120, 20], ['2', 120, 60]], desc: 'À chaque impulsion sur sa bobine (A1-A2), son contact change d’état.' },
+      cont: { name: 'Contacteur', pre: 'KM', w: 120, h: 80, t: [['A1', 0, 20], ['A2', 0, 60], ['1', 120, 20], ['2', 120, 60]], desc: 'Son contact reste fermé tant que la bobine (A1-A2) est alimentée.' },
+      minu: { name: 'Minuterie', pre: 'KT', w: 120, h: 80, t: [['A1', 0, 20], ['A2', 0, 60], ['1', 120, 20], ['2', 120, 60]], desc: 'Une impulsion sur la bobine ferme le contact pendant 8 secondes.' },
+      lampe: { name: 'Lampe', pre: 'L', w: 80, h: 40, t: T2(0, 80), desc: 'Point lumineux de 60 W.' },
+      voyant: { name: 'Voyant', pre: 'H', w: 80, h: 40, t: T2(0, 80), desc: 'Petit témoin lumineux de 1 W.' },
+      rad: { name: 'Radiateur', pre: 'R', w: 80, h: 40, t: T2(0, 80), desc: 'Résistance chauffante de 1 000 W.' },
+      moteur: { name: 'Moteur', pre: 'M', w: 80, h: 40, t: T2(0, 80), desc: 'Moteur de 250 W (ventilation, volet roulant…).' },
+      sonnette: { name: 'Sonnette', pre: 'B', w: 80, h: 40, t: T2(0, 80), desc: 'Sonnette de 8 W.' },
+      prise: { name: 'Prise 2P+T', pre: 'P', w: 80, h: 80, t: [['L', 0, 20], ['N', 0, 40], ['PE', 0, 60]], desc: 'Prise de courant. Clique dessus pour brancher un appareil de 2 000 W.' },
+      borne: { name: 'Borne de connexion', pre: 'X', w: 40, h: 40, t: [['P', 20, 20]], desc: 'Point de raccordement pour relier plusieurs fils.' }
+    };
+    this.WATT = { lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3 };
+    this.nid = 1;
+    this.drag = null;
+    this.justDragged = false;
+    const ex = this.example('simple');
+    const out = this.simulate(ex.comps, ex.wires, true);
+    this.state = { comps: out.comps, wires: ex.wires, res: out.res, events: [], sel: null, tool: 'select', place: null, pending: null, mouse: null, power: true, zoom: 0.75, wcolor: 'auto' };
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.tk);
+    clearTimeout(this.bpT);
+  }
+
+  defSt(type) {
+    if (type === 'disj') return { closed: true };
+    if (type === 'fus') return { ok: true };
+    if (type === 'inter') return { on: false };
+    if (type === 'vav') return { pos: 1 };
+    if (type === 'perm') return { cross: false };
+    if (type === 'bp') return { pressed: false };
+    if (type === 'prise') return { plug: false };
+    if (type === 'tele' || type === 'cont') return { k: false, coil: false };
+    if (type === 'minu') return { k: false, coil: false, until: 0 };
+    return {};
+  }
+
+  mk(type, x, y, rot, ref, st) {
+    return { id: 'c' + (this.nid++), type: type, x: x, y: y, rot: rot || 0, ref: ref, st: Object.assign(this.defSt(type), st || {}) };
+  }
+
+  wr(a, at, b, bt) {
+    return { id: 'w' + (this.nid++), a: a.id + ':' + at, b: b.id + ':' + bt, color: 'auto', flip: false };
+  }
+
+  example(name) {
+    const m = (...a) => this.mk(...a);
+    const w = (...a) => this.wr(...a);
+    if (name === 'vav') {
+      const src = m('src', 100, 280, 0, 'ALIM'), q = m('disj', 240, 220, 0, 'Q1');
+      const s1 = m('vav', 400, 220, 0, 'S1'), s2 = m('vav', 600, 220, 180, 'S2'), l = m('lampe', 760, 260, 90, 'L1');
+      return { comps: [src, q, s1, s2, l], wires: [w(src, 'L', q, '1'), w(q, '2', s1, 'C'), w(s1, '1', s2, '2'), w(s1, '2', s2, '1'), w(s2, 'C', l, '1'), w(l, '2', src, 'N')] };
+    }
+    if (name === 'perm') {
+      const src = m('src', 100, 280, 0, 'ALIM'), q = m('disj', 240, 220, 0, 'Q1');
+      const s1 = m('vav', 400, 220, 0, 'S1'), s2 = m('perm', 560, 220, 0, 'S2'), s3 = m('vav', 720, 220, 180, 'S3'), l = m('lampe', 880, 260, 90, 'L1');
+      return { comps: [src, q, s1, s2, s3, l], wires: [w(src, 'L', q, '1'), w(q, '2', s1, 'C'), w(s1, '1', s2, '1'), w(s1, '2', s2, '2'), w(s2, '3', s3, '2'), w(s2, '4', s3, '1'), w(s3, 'C', l, '1'), w(l, '2', src, 'N')] };
+    }
+    if (name === 'tele') {
+      const src = m('src', 100, 280, 0, 'ALIM'), q = m('disj', 240, 220, 0, 'Q1');
+      const x1 = m('borne', 360, 220, 0, 'X1'), xn = m('borne', 180, 400, 0, 'X2');
+      const b1 = m('bp', 360, 320, 90, 'BP1'), b2 = m('bp', 440, 320, 90, 'BP2'), b3 = m('bp', 520, 320, 90, 'BP3');
+      const ka = m('tele', 680, 380, 0, 'KA1'), l = m('lampe', 880, 440, 90, 'L1');
+      return { comps: [src, q, x1, xn, b1, b2, b3, ka, l], wires: [
+        w(src, 'L', q, '1'), w(q, '2', x1, 'P'), w(x1, 'P', b1, '1'), w(x1, 'P', b2, '1'), w(x1, 'P', b3, '1'),
+        w(b1, '2', b2, '2'), w(b2, '2', b3, '2'), w(b3, '2', ka, 'A1'), w(src, 'N', xn, 'P'), w(ka, 'A2', xn, 'P'),
+        w(x1, 'P', ka, '1'), w(ka, '2', l, '1'), w(l, '2', xn, 'P')] };
+    }
+    const src = m('src', 100, 280, 0, 'ALIM'), q = m('disj', 240, 220, 0, 'Q1'), s = m('inter', 400, 220, 0, 'S1'), l = m('lampe', 600, 260, 90, 'L1');
+    return { comps: [src, q, s, l], wires: [w(src, 'L', q, '1'), w(q, '2', s, '1'), w(s, '2', l, '1'), w(l, '2', src, 'N')] };
+  }
+
+  links(c) {
+    const s = c.st;
+    switch (c.type) {
+      case 'disj': return s.closed ? [['1', '2']] : [];
+      case 'fus': return s.ok ? [['1', '2']] : [];
+      case 'inter': return s.on ? [['1', '2']] : [];
+      case 'vav': return s.pos === 1 ? [['C', '1']] : [['C', '2']];
+      case 'perm': return s.cross ? [['1', '4'], ['2', '3']] : [['1', '3'], ['2', '4']];
+      case 'bp': return s.pressed ? [['1', '2']] : [];
+      case 'tele': case 'cont': case 'minu': return s.k ? [['1', '2']] : [];
+      default: return [];
+    }
+  }
+
+  loadPair(c) {
+    if (['lampe', 'voyant', 'rad', 'moteur', 'sonnette'].indexOf(c.type) >= 0) return ['1', '2'];
+    if (c.type === 'prise') return c.st.plug ? ['L', 'N'] : null;
+    if (c.type === 'tele' || c.type === 'cont' || c.type === 'minu') return ['A1', 'A2'];
+    return null;
+  }
+
+  solve(comps, wires, power) {
+    const D = this.DEF;
+    const P = {};
+    comps.forEach((c) => D[c.type].t.forEach((t) => { const k = c.id + ':' + t[0]; P[k] = k; }));
+    const f = (a) => { while (P[a] !== a) { P[a] = P[P[a]]; a = P[a]; } return a; };
+    const u = (a, b) => { const ra = f(a), rb = f(b); if (ra !== rb) P[ra] = rb; };
+    const edges = [];
+    wires.forEach((w) => { if (P[w.a] !== undefined && P[w.b] !== undefined && w.a !== w.b) { edges.push({ a: w.a, b: w.b, w: w.id }); u(w.a, w.b); } });
+    comps.forEach((c) => this.links(c).forEach((l) => { const a = c.id + ':' + l[0], b = c.id + ':' + l[1]; edges.push({ a: a, b: b, w: null }); u(a, b); }));
+    const Ls = [], Ns = [], Es = [];
+    comps.forEach((c) => {
+      if (c.type === 'src') { if (power) { Ls.push(c.id + ':L'); Ns.push(c.id + ':N'); } Es.push(c.id + ':PE'); }
+      if (c.type === 'terre') Es.push(c.id + ':PE');
+    });
+    const LN = new Set(Ls.map(f)), NN = new Set(Ns.map(f)), EN = new Set(Es.map(f));
+    let short = false, earth = false;
+    LN.forEach((r) => { if (NN.has(r)) short = true; if (EN.has(r)) earth = true; });
+    const loadsOn = {};
+    const anchors = new Set(Ls.concat(Ns));
+    const loadNets = new Set();
+    let watts = 0, onCount = 0;
+    if (!short) {
+      comps.forEach((c) => {
+        const lp = this.loadPair(c);
+        if (!lp) return;
+        const a = c.id + ':' + lp[0], b = c.id + ':' + lp[1];
+        const ra = f(a), rb = f(b);
+        const on = (LN.has(ra) && NN.has(rb)) || (LN.has(rb) && NN.has(ra));
+        if (on) { loadsOn[c.id] = true; anchors.add(a); anchors.add(b); loadNets.add(ra); loadNets.add(rb); watts += this.WATT[c.type] || 0; onCount++; }
+      });
+    }
+    const act = edges.filter((e) => loadNets.has(f(e.a)));
+    const alive = act.map(() => true);
+    let changed = true, guard = 0;
+    while (changed && guard++ < 500) {
+      changed = false;
+      const deg = {};
+      act.forEach((e, i) => { if (alive[i]) { deg[e.a] = (deg[e.a] || 0) + 1; deg[e.b] = (deg[e.b] || 0) + 1; } });
+      act.forEach((e, i) => {
+        if (!alive[i]) return;
+        if ((deg[e.a] === 1 && !anchors.has(e.a)) || (deg[e.b] === 1 && !anchors.has(e.b))) { alive[i] = false; changed = true; }
+      });
+    }
+    const adj = {};
+    act.forEach((e, i) => { if (!alive[i]) return; (adj[e.a] = adj[e.a] || []).push(e.b); (adj[e.b] = adj[e.b] || []).push(e.a); });
+    const bfs = (starts) => {
+      const d = {}; const q = [];
+      starts.forEach((s) => { d[s] = 0; q.push(s); });
+      while (q.length) { const x = q.shift(); (adj[x] || []).forEach((y) => { if (d[y] === undefined) { d[y] = d[x] + 1; q.push(y); } }); }
+      return d;
+    };
+    const dL = bfs(Ls), dN = bfs(Ns);
+    const ws = {};
+    act.forEach((e, i) => {
+      if (!alive[i] || !e.w) return;
+      const r = f(e.a);
+      let from;
+      if (LN.has(r)) { const da = dL[e.a] ?? 1e9, db = dL[e.b] ?? 1e9; from = da <= db ? e.a : e.b; }
+      else { const da = dN[e.a] ?? -1, db = dN[e.b] ?? -1; from = da >= db ? e.a : e.b; }
+      ws[e.w] = { s: 'on', from: from };
+    });
+    wires.forEach((w) => {
+      if (ws[w.id] || P[w.a] === undefined) return;
+      const r = f(w.a);
+      if (short && (LN.has(r) || NN.has(r))) ws[w.id] = { s: 'short' };
+      else if (LN.has(r)) ws[w.id] = { s: 'live' };
+    });
+    const nsw = [];
+    if (!short) comps.forEach((c) => {
+      if (['inter', 'vav', 'perm', 'bp'].indexOf(c.type) < 0) return;
+      const roots = D[c.type].t.map((t) => f(c.id + ':' + t[0]));
+      if (roots.some((r) => NN.has(r) && !LN.has(r))) nsw.push(c.ref);
+    });
+    return { ws: ws, loadsOn: loadsOn, short: short, earth: earth, nsw: nsw, watts: watts, onCount: onCount };
+  }
+
+  simulate(comps, wires, power) {
+    let cs = comps.map((c) => Object.assign({}, c, { st: Object.assign({}, c.st) }));
+    let res;
+    const msgs = [];
+    for (let it = 0; it < 12; it++) {
+      res = this.solve(cs, wires, power);
+      if (res.short) {
+        const prot = cs.filter((c) => (c.type === 'disj' && c.st.closed) || (c.type === 'fus' && c.st.ok));
+        let fixed = false;
+        for (let j = 0; j < prot.length; j++) {
+          const p = prot[j];
+          const test = cs.map((c) => (c.id === p.id ? Object.assign({}, c, { st: c.type === 'disj' ? Object.assign({}, c.st, { closed: false }) : Object.assign({}, c.st, { ok: false }) }) : c));
+          if (!this.solve(test, wires, power).short) {
+            cs = test;
+            msgs.push('Court-circuit ! ' + p.ref + (p.type === 'disj' ? ' a déclenché' : ' a fondu') + ' pour protéger l’installation.');
+            fixed = true;
+            break;
+          }
+        }
+        if (fixed) continue;
+        break;
+      }
+      let ch = false;
+      const now = Date.now();
+      cs = cs.map((c) => {
+        if (c.type !== 'tele' && c.type !== 'cont' && c.type !== 'minu') return c;
+        const en = !!res.loadsOn[c.id];
+        const st = Object.assign({}, c.st);
+        const rising = en && !st.coil;
+        if (c.type === 'tele' && rising) st.k = !st.k;
+        if (c.type === 'cont') st.k = en;
+        if (c.type === 'minu') { if (en) st.until = now + 8000; st.k = en || now < st.until; }
+        st.coil = en;
+        if (st.k !== c.st.k) ch = true;
+        return Object.assign({}, c, { st: st });
+      });
+      if (!ch) break;
+    }
+    return { comps: cs, res: res, msgs: msgs };
+  }
+
+  update(next) {
+    const s = Object.assign({}, this.state, next);
+    const out = this.simulate(s.comps, s.wires, s.power);
+    const base = next.events !== undefined ? next.events : s.events;
+    const events = out.msgs.length ? out.msgs.concat(base).slice(0, 3) : base;
+    this.setState(Object.assign({}, next, { comps: out.comps, res: out.res, events: events }));
+    clearTimeout(this.tk);
+    const now = Date.now();
+    if (out.comps.some((c) => c.type === 'minu' && c.st.k && c.st.until > now)) this.tk = setTimeout(() => this.update({}), 250);
+  }
+
+  tp(c, tn) {
+    const d = this.DEF[c.type];
+    const t = d.t.find((x) => x[0] === tn);
+    const dx = t[1] - d.w / 2, dy = t[2] - d.h / 2;
+    const r = c.rot || 0;
+    let x = dx, y = dy;
+    if (r === 90) { x = -dy; y = dx; } else if (r === 180) { x = -dx; y = -dy; } else if (r === 270) { x = dy; y = -dx; }
+    return { x: c.x + x, y: c.y + y };
+  }
+
+  pt(e) {
+    const b = e.currentTarget.closest('[data-board]');
+    const r = b.getBoundingClientRect();
+    const sc = r.width / 1200;
+    return { x: (e.clientX - r.left) / sc, y: (e.clientY - r.top) / sc };
+  }
+
+  snap(v) { return Math.round(v / 20) * 20; }
+
+  nextRef(type) {
+    const pre = this.DEF[type].pre;
+    let n = 0;
+    this.state.comps.forEach((c) => {
+      if (c.ref && c.ref.indexOf(pre) === 0) { const k = parseInt(c.ref.slice(pre.length), 10); if (!isNaN(k) && k > n) n = k; }
+    });
+    return pre + (n + 1);
+  }
+
+  operate(id) {
+    const c = this.state.comps.find((x) => x.id === id);
+    if (!c) return;
+    const set = (patch) => this.state.comps.map((x) => (x.id === id ? Object.assign({}, x, { st: Object.assign({}, x.st, patch) }) : x));
+    const s = c.st;
+    if (c.type === 'bp') {
+      this.update({ comps: set({ pressed: true }) });
+      clearTimeout(this.bpT);
+      this.bpT = setTimeout(() => this.update({ comps: this.state.comps.map((x) => (x.type === 'bp' && x.st.pressed ? Object.assign({}, x, { st: Object.assign({}, x.st, { pressed: false }) }) : x)) }), 600);
+      return;
+    }
+    let patch = null;
+    if (c.type === 'disj') patch = { closed: !s.closed };
+    else if (c.type === 'fus') patch = s.ok ? null : { ok: true };
+    else if (c.type === 'inter') patch = { on: !s.on };
+    else if (c.type === 'vav') patch = { pos: s.pos === 1 ? 2 : 1 };
+    else if (c.type === 'perm') patch = { cross: !s.cross };
+    else if (c.type === 'prise') patch = { plug: !s.plug };
+    if (patch) this.update({ comps: set(patch), events: [] });
+  }
+
+  removeComp(id) {
+    const pre = id + ':';
+    this.update({
+      comps: this.state.comps.filter((c) => c.id !== id),
+      wires: this.state.wires.filter((w) => w.a.indexOf(pre) !== 0 && w.b.indexOf(pre) !== 0),
+      sel: null, pending: null
+    });
+  }
+
+  renderVals() {
+    const st = this.state;
+    const D = this.DEF;
+    const res = st.res || { ws: {}, loadsOn: {}, nsw: [] };
+    const now = Date.now();
+    const refOf = {};
+    st.comps.forEach((c) => { refOf[c.id] = c.ref; });
+
+    const pos = {};
+    st.comps.forEach((c) => D[c.type].t.forEach((t) => { pos[c.id + ':' + t[0]] = this.tp(c, t[0]); }));
+
+    const P2 = {};
+    Object.keys(pos).forEach((k) => { P2[k] = k; });
+    const f2 = (a) => { while (P2[a] !== a) { P2[a] = P2[P2[a]]; a = P2[a]; } return a; };
+    const u2 = (a, b) => { const ra = f2(a), rb = f2(b); if (ra !== rb) P2[ra] = rb; };
+    st.wires.forEach((w) => { if (P2[w.a] !== undefined && P2[w.b] !== undefined) u2(w.a, w.b); });
+    st.comps.forEach((c) => { if (c.type === 'disj' || c.type === 'fus') u2(c.id + ':1', c.id + ':2'); });
+    const kind = {};
+    st.comps.forEach((c) => { if (c.type === 'src') kind[f2(c.id + ':L')] = 'ph'; });
+    st.comps.forEach((c) => {
+      if (c.type === 'src') { const n = f2(c.id + ':N'); if (!kind[n]) kind[n] = 'ne'; const e = f2(c.id + ':PE'); if (!kind[e]) kind[e] = 'pe'; }
+      if (c.type === 'terre') { const e = f2(c.id + ':PE'); if (!kind[e]) kind[e] = 'pe'; }
+    });
+
+    const selW = st.sel && st.sel.k === 'w' ? st.sel.id : null;
+    const selC = st.sel && st.sel.k === 'c' ? st.sel.id : null;
+    const route = (A, B, flip, fwd) => {
+      const C = flip ? { x: A.x, y: B.y } : { x: B.x, y: A.y };
+      return fwd ? [A, C, B] : [B, C, A];
+    };
+    const mkSegs = (pts, extra) => {
+      const out = [];
+      for (let i = 0; i < 2; i++) {
+        const p = pts[i], q = pts[i + 1];
+        if (p.x === q.x && p.y === q.y) continue;
+        const h = p.y === q.y;
+        const dir = h ? (q.x > p.x ? 'r' : 'l') : (q.y > p.y ? 'd' : 'u');
+        out.push({
+          h: h, dir: dir,
+          left: h ? Math.min(p.x, q.x) - 2 : p.x - 7,
+          top: h ? p.y - 7 : Math.min(p.y, q.y) - 2,
+          width: h ? Math.abs(q.x - p.x) + 4 : 14,
+          height: h ? 14 : Math.abs(q.y - p.y) + 4
+        });
+      }
+      return out;
+    };
+    const COLN = { ph: 'phase', ne: 'neutre', rt: 'retour', cm: 'commande', pe: 'terre' };
+    const segs = [];
+    st.wires.forEach((w) => {
+      const A = pos[w.a], B = pos[w.b];
+      if (!A || !B) return;
+      const color = w.color === 'auto' ? (kind[f2(w.a)] || 'rt') : w.color;
+      const r = res.ws[w.id] || { s: '' };
+      const fwd = r.from ? r.from === w.a : true;
+      const label = 'Fil ' + COLN[color] + ' ' + refOf[w.a.split(':')[0]] + ' – ' + refOf[w.b.split(':')[0]];
+      mkSegs(route(A, B, w.flip, fwd)).forEach((g) => {
+        segs.push({
+          cls: ['seg', g.h ? 'h' : 'v', color, r.s, r.s === 'on' ? g.dir : '', selW === w.id ? 'sel' : ''].join(' '),
+          left: g.left, top: g.top, width: g.width, height: g.height, label: label,
+          click: (e) => {
+            e.stopPropagation();
+            if (this.state.tool === 'erase') this.update({ wires: this.state.wires.filter((x) => x.id !== w.id), sel: null });
+            else this.setState({ sel: { k: 'w', id: w.id }, pending: null });
+          }
+        });
+      });
+    });
+
+    const items = st.comps.map((c) => {
+      const d = D[c.type];
+      const rot = c.rot || 0;
+      const sw = rot % 180 !== 0;
+      const W = sw ? d.h : d.w, H = sw ? d.w : d.h;
+      const s = c.st;
+      const on = res.loadsOn[c.id] ? 'on' : '';
+      const it = {
+        left: c.x - W / 2, top: c.y - H / 2, W: W, H: H, iw: d.w, ih: d.h, rot: rot,
+        ref: c.ref, showRef: c.type !== 'borne' && c.type !== 'terre',
+        title: d.name + ' ' + c.ref,
+        cls: 'comp' + (selC === c.id ? ' sel' : ''),
+        on: on, coil: s.coil ? 'on' : '',
+        lx: c.type === 'disj' ? (s.closed ? 60 : 54) : (s.on ? 60 : 54),
+        ly: c.type === 'disj' ? (s.closed ? 20 : 3) : (s.on ? 20 : 3),
+        fx: s.ok === false ? 'blown' : '',
+        vy: s.pos === 2 ? 58 : 22,
+        p1: s.cross ? 60 : 20, p2: s.cross ? 20 : 60,
+        by: s.pressed ? 15 : 6, py: s.pressed ? 6 : -4,
+        kx: s.k ? 98 : 82, ky: s.k ? 22 : 28,
+        pl: s.plug ? (on ? 'on lit' : 'on') : '',
+        tm: c.type === 'minu' && s.k && s.until > now ? Math.ceil((s.until - now) / 1000) + ' s' : '',
+        down: (e) => {
+          e.stopPropagation();
+          if (this.state.tool === 'erase') { this.removeComp(c.id); return; }
+          if (this.state.place) return;
+          const p = this.pt(e);
+          this.drag = { id: c.id, sx: p.x, sy: p.y, ox: c.x, oy: c.y, moved: false };
+        },
+        key: (e) => {
+          if (e.detail === 0) { this.setState({ sel: { k: 'c', id: c.id } }); this.operate(c.id); }
+        }
+      };
+      Object.keys(D).forEach((k) => { it['is_' + k] = c.type === k; });
+      return it;
+    });
+
+    const conn = {};
+    st.wires.forEach((w) => { conn[w.a] = 1; conn[w.b] = 1; });
+    const terms = Object.keys(pos).map((k) => {
+      const parts = k.split(':');
+      return {
+        left: pos[k].x - 11, top: pos[k].y - 11,
+        cls: 'term' + (st.pending === k ? ' pend' : '') + (conn[k] ? ' con' : ''),
+        label: 'Borne ' + parts[1] + ' de ' + refOf[parts[0]],
+        click: (e) => {
+          e.stopPropagation();
+          const S = this.state;
+          if (S.tool === 'erase') { this.update({ wires: S.wires.filter((w) => w.a !== k && w.b !== k) }); return; }
+          if (!S.pending) { this.setState({ pending: k, mouse: pos[k], sel: null }); return; }
+          if (S.pending === k) { this.setState({ pending: null }); return; }
+          const dup = S.wires.some((w) => (w.a === S.pending && w.b === k) || (w.a === k && w.b === S.pending));
+          if (dup) { this.setState({ pending: null }); return; }
+          const nw = { id: 'w' + (this.nid++), a: S.pending, b: k, color: S.wcolor, flip: false };
+          this.update({ wires: S.wires.concat([nw]), pending: null, sel: { k: 'w', id: nw.id } });
+        }
+      };
+    });
+
+    let prev = [];
+    if (st.pending && st.mouse && pos[st.pending]) {
+      const A = pos[st.pending];
+      const B = { x: this.snap(st.mouse.x), y: this.snap(st.mouse.y) };
+      prev = mkSegs(route(A, B, false, true)).map((g) => ({ cls: 'seg prev ' + (g.h ? 'h' : 'v'), left: g.left, top: g.top, width: g.width, height: g.height }));
+    }
+    let ghost = { show: false, left: 0, top: 0, w: 0, h: 0 };
+    if (st.place && st.mouse) {
+      const d = D[st.place];
+      ghost = { show: true, left: this.snap(st.mouse.x) - d.w / 2, top: this.snap(st.mouse.y) - d.h / 2, w: d.w, h: d.h };
+    }
+
+    const pc = {}, pk = {}, pd = {};
+    Object.keys(D).forEach((k) => {
+      pc[k] = st.place === k ? 'on' : '';
+      pd[k] = D[k].desc;
+      pk[k] = () => this.setState({ place: this.state.place === k ? null : k, pending: null, tool: 'select', sel: null });
+    });
+    const tc = {}, tk = {}, tpp = {};
+    ['select', 'erase'].forEach((k) => {
+      tc[k] = st.tool === k ? 'on' : '';
+      tpp[k] = st.tool === k ? 'true' : 'false';
+      tk[k] = () => this.setState({ tool: k, place: null, pending: null });
+    });
+
+    let hint;
+    if (st.place) hint = 'Clique sur la grille pour poser : ' + D[st.place].name;
+    else if (st.pending) hint = 'Clique sur une autre borne pour terminer le fil';
+    else if (st.tool === 'erase') hint = 'Gomme : clique sur un composant, un fil ou une borne';
+    else hint = 'Glisse pour déplacer · clique une borne pour tirer un fil';
+
+    let panel = { none: true, comp: false, wire: false };
+    const sc = selC ? st.comps.find((c) => c.id === selC) : null;
+    const sw = selW ? st.wires.find((w) => w.id === selW) : null;
+    if (sc) {
+      const s = sc.st;
+      const on = !!res.loadsOn[sc.id];
+      const T = sc.type;
+      let state = '', opTxt = '', canOp = true;
+      if (T === 'src') { state = st.power ? 'Sous tension' : 'Hors tension'; canOp = false; }
+      else if (T === 'disj') { state = s.closed ? 'Armé' : 'Déclenché'; opTxt = s.closed ? 'Déclencher' : 'Réarmer'; }
+      else if (T === 'fus') { state = s.ok ? 'En bon état' : 'Fondu'; opTxt = 'Remplacer le fusible'; canOp = !s.ok; }
+      else if (T === 'inter') { state = s.on ? 'Fermé' : 'Ouvert'; opTxt = s.on ? 'Ouvrir' : 'Fermer'; }
+      else if (T === 'vav') { state = 'Sur la navette ' + s.pos; opTxt = 'Basculer'; }
+      else if (T === 'perm') { state = s.cross ? 'Position croisée' : 'Position droite'; opTxt = 'Basculer'; }
+      else if (T === 'bp') { state = s.pressed ? 'Enfoncé' : 'Relâché'; opTxt = 'Appuyer'; }
+      else if (T === 'prise') { state = s.plug ? (on ? 'Appareil en marche' : 'Appareil branché, sans courant') : 'Aucun appareil branché'; opTxt = s.plug ? 'Débrancher l’appareil' : 'Brancher un appareil'; }
+      else if (T === 'tele' || T === 'cont' || T === 'minu') { state = (s.coil ? 'Bobine alimentée · ' : 'Bobine au repos · ') + (s.k ? 'contact fermé' : 'contact ouvert'); canOp = false; }
+      else if (T === 'borne' || T === 'terre') { state = 'Point de raccordement'; canOp = false; }
+      else { state = on ? 'Alimenté · ' + this.WATT[T] + ' W' : 'Non alimenté'; canOp = false; }
+      panel = {
+        none: false, comp: true, wire: false, ref: sc.ref, name: D[T].name, state: state, desc: D[T].desc,
+        canOp: canOp, opTxt: opTxt, op: () => this.operate(sc.id),
+        rotate: () => this.update({ comps: this.state.comps.map((c) => (c.id === sc.id ? Object.assign({}, c, { rot: ((c.rot || 0) + 90) % 360 }) : c)) }),
+        del: () => this.removeComp(sc.id)
+      };
+    } else if (sw) {
+      const r = res.ws[sw.id] || { s: '' };
+      const OPTS = [['auto', 'Auto', '#C9C2B2'], ['ph', 'Phase', '#E5533D'], ['ne', 'Neutre', '#4E8EF7'], ['rt', 'Retour', '#B48CF2'], ['cm', 'Commande', '#8E9BAA'], ['pe', 'Terre', 'repeating-linear-gradient(90deg, #3E9A3A 0 4px, #F2CB2E 4px 8px)']];
+      panel = {
+        none: false, comp: false, wire: true,
+        wname: refOf[sw.a.split(':')[0]] + ' → ' + refOf[sw.b.split(':')[0]],
+        wstate: r.s === 'on' ? 'Le courant circule dans ce fil' : r.s === 'live' ? 'Sous tension, sans courant' : r.s === 'short' ? 'Court-circuit !' : 'Aucun courant',
+        colors: OPTS.map((o) => ({
+          label: o[1], sw: o[2], cls: sw.color === o[0] ? 'on' : '', pressed: sw.color === o[0] ? 'true' : 'false',
+          pick: () => this.setState({ wires: this.state.wires.map((w) => (w.id === sw.id ? Object.assign({}, w, { color: o[0] }) : w)) })
+        })),
+        flip: () => this.setState({ wires: this.state.wires.map((w) => (w.id === sw.id ? Object.assign({}, w, { flip: !w.flip }) : w)) }),
+        del: () => this.update({ wires: this.state.wires.filter((w) => w.id !== sw.id), sel: null })
+      };
+    }
+
+    const OK = { bg: '#E3F1E1', fg: '#1F4D22', isOk: true, isBad: false, isInfo: false };
+    const BAD = { bg: '#F9E2DC', fg: '#6B1A0E', isOk: false, isBad: true, isInfo: false };
+    const WARN = { bg: '#FBEFC9', fg: '#5A4200', isOk: false, isBad: true, isInfo: false };
+    const INFO = { bg: '#EDE7DA', fg: '#2A2D33', isOk: false, isBad: false, isInfo: true };
+    const diag = [];
+    const hasSrc = st.comps.some((c) => c.type === 'src');
+    const hasProt = st.comps.some((c) => c.type === 'disj' || c.type === 'fus');
+    if (!hasSrc) diag.push(Object.assign({ t: 'Ajoute une alimentation 230 V pour alimenter le circuit.' }, INFO));
+    else if (!st.power) diag.push(Object.assign({ t: 'Le circuit est hors tension.' }, INFO));
+    if (res.short) diag.push(Object.assign({ t: 'Court-circuit : la phase touche le neutre sans passer par un récepteur. Sans protection, les fils chauffent dangereusement.' }, BAD));
+    (st.events || []).forEach((m) => diag.push(Object.assign({ t: m + ' Corrige le câblage puis réarme-le.' }, BAD)));
+    if (res.earth) diag.push(Object.assign({ t: 'Défaut d’isolement : la phase est reliée à la terre.' }, BAD));
+    (res.nsw || []).forEach((r) => diag.push(Object.assign({ t: r + ' est placé sur le neutre : un interrupteur doit couper la phase.' }, WARN)));
+    if (hasSrc && !hasProt && st.comps.length > 1) diag.push(Object.assign({ t: 'Aucune protection : place un disjoncteur juste après l’alimentation.' }, WARN));
+    if (res.onCount > 0) diag.push(Object.assign({ t: res.onCount + (res.onCount > 1 ? ' récepteurs alimentés.' : ' récepteur alimenté.') }, OK));
+    else if (hasSrc && st.power && !res.short) diag.push(Object.assign({ t: 'Aucun récepteur alimenté pour l’instant.' }, INFO));
+
+    const amps = (res.watts || 0) / 230;
+    const ex = {};
+    ['simple', 'vav', 'perm', 'tele'].forEach((n) => {
+      ex[n] = () => { const e = this.example(n); this.update({ comps: e.comps, wires: e.wires, sel: null, pending: null, place: null, events: [] }); };
+    });
+    const ZL = [0.5, 0.6, 0.75, 0.9, 1, 1.25];
+    const zi = ZL.indexOf(st.zoom);
+
+    return {
+      segs: segs, items: items, terms: terms, prev: prev, ghost: ghost,
+      pc: pc, pk: pk, pd: pd, tc: tc, tk: tk, tp: tpp,
+      hint: hint, hintDot: st.power ? '#FFD84A' : '#8E9BAA',
+      counts: st.comps.length + ' composants · ' + st.wires.length + ' fils',
+      mode: st.place ? 'place' : st.tool,
+      zoom: st.zoom, zoomTxt: Math.round(st.zoom * 100) + ' %',
+      bw: Math.round(1200 * st.zoom), bh: Math.round(800 * st.zoom),
+      zoomIn: () => this.setState({ zoom: ZL[Math.min(ZL.length - 1, zi + 1)] }),
+      zoomOut: () => this.setState({ zoom: ZL[Math.max(0, zi - 1)] }),
+      wcolor: st.wcolor,
+      setWColor: (e) => this.setState({ wcolor: e.target.value }),
+      pwrTxt: st.power ? 'Couper le courant' : 'Mettre sous tension',
+      pwrCls: st.power ? 'off' : 'pwr',
+      pwrPressed: st.power ? 'true' : 'false',
+      togglePower: () => this.update({ power: !this.state.power }),
+      clearAll: () => this.update({ comps: [], wires: [], sel: null, pending: null, place: null, events: [] }),
+      panel: panel, diag: diag, ex: ex,
+      metric: res.watts > 0 ? res.watts.toLocaleString('fr-FR') + ' W · ' + amps.toFixed(2).replace('.', ',') + ' A' : '0 W',
+      boardClick: (e) => {
+        if (this.justDragged) { this.justDragged = false; return; }
+        if (e.target !== e.currentTarget) return;
+        const S = this.state;
+        const p = this.pt(e);
+        if (S.place) {
+          const c = this.mk(S.place, this.snap(p.x), this.snap(p.y), 0, this.nextRef(S.place));
+          this.update({ comps: S.comps.concat([c]), place: null, sel: { k: 'c', id: c.id } });
+        } else {
+          this.setState({ sel: null, pending: null });
+        }
+      },
+      boardMove: (e) => {
+        const p = this.pt(e);
+        const d = this.drag;
+        if (d) {
+          const dx = p.x - d.sx, dy = p.y - d.sy;
+          if (!d.moved && Math.abs(dx) + Math.abs(dy) < 5) return;
+          d.moved = true;
+          const nx = this.snap(d.ox + dx), ny = this.snap(d.oy + dy);
+          const cur = this.state.comps.find((c) => c.id === d.id);
+          if (cur && (cur.x !== nx || cur.y !== ny)) this.setState({ comps: this.state.comps.map((c) => (c.id === d.id ? Object.assign({}, c, { x: nx, y: ny }) : c)) });
+          return;
+        }
+        if (this.state.pending || this.state.place) this.setState({ mouse: p });
+      },
+      boardUp: () => {
+        const d = this.drag;
+        if (!d) return;
+        this.drag = null;
+        if (d.moved) { this.justDragged = true; return; }
+        this.setState({ sel: { k: 'c', id: d.id }, pending: null });
+        this.operate(d.id);
+      },
+      boardLeave: () => { this.drag = null; }
+    };
+  }
+}
+</script>
+</body>
+</html>

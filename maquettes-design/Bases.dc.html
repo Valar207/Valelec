@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Phase·Neutre — Les bases</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3EFE6}
+a{color:#B5341F}a:hover{color:#8A2414}
+.nav{padding:10px 14px;border-radius:999px;color:#17191E;text-decoration:none;font-weight:500;font-size:15px}
+.nav:hover{background:#E7E1D3;color:#17191E}
+.nav.on{background:#17191E;color:#F3EFE6}
+.toc{padding:8px 12px;border-radius:8px;text-decoration:none;color:#3B3F47;font-size:15px}
+.toc:hover{background:#E7E1D3;color:#17191E}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:600 16px 'IBM Plex Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;border:1.5px solid #17191E}
+.btn.pri{background:#17191E;color:#F3EFE6}.btn.pri:hover{background:#2C3038;color:#F3EFE6}
+.btn.sec{background:transparent;color:#17191E}.btn.sec:hover{background:#E7E1D3;color:#17191E}
+.board{background-color:#111A24;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:20px 20px;border-radius:18px}
+.sch{position:absolute;inset:0;display:block;width:100%;height:100%}
+.w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ph{stroke:#E5533D}.ne{stroke:#4E8EF7}
+.cur{fill:none;stroke:#FFD84A;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 13;opacity:0;transition:opacity .25s}
+.cur.on{opacity:1;animation:pnflow 1s linear infinite;filter:drop-shadow(0 0 3px #FFD84A)}
+.i1 .cur.on{animation-duration:2.6s}.i2 .cur.on{animation-duration:1.6s}.i3 .cur.on{animation-duration:1s}.i4 .cur.on{animation-duration:.6s}.i5 .cur.on{animation-duration:.32s}
+@keyframes pnflow{to{stroke-dashoffset:-16}}
+.plate{stroke:#E8EDF2;stroke-width:3;stroke-linecap:round}
+.plate.fat{stroke-width:7}
+.res{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5}
+.lamp{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .25s}
+.b1 .lamp.on{fill:#3E3412}.b2 .lamp.on{fill:#6E5A1C}.b3 .lamp.on{fill:#A8882A}.b4 .lamp.on{fill:#E6C24A}.b5 .lamp.on{fill:#FFE58A}
+.lampx{stroke:#8E9BAA;stroke-width:2}
+.halo{fill:#FFD84A;opacity:0;transition:opacity .3s;filter:blur(14px)}
+.b1 .halo.on{opacity:.08}.b2 .halo.on{opacity:.18}.b3 .halo.on{opacity:.32}.b4 .halo.on{opacity:.48}.b5 .halo.on{opacity:.7}
+.lbl{fill:#9AABBD;font:500 13px 'IBM Plex Mono',monospace}
+.lbl.c{text-anchor:middle}.lbl.hi{fill:#E8EDF2}.lbl.big{font-size:16px;fill:#FFD84A}
+.sym{fill:none;stroke:#17191E;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.sym.dash{stroke-dasharray:4 4;stroke-width:1.8}
+.symdot{fill:#17191E}
+.ico{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.range{width:100%;height:44px;accent-color:#17191E;cursor:pointer;margin:0}
+.scard{display:flex;flex-direction:column;gap:10px;padding:20px;border:1.5px solid #D9D3C5;border-radius:16px;background:#FBF9F4}
+.mono{font-family:'IBM Plex Mono',monospace}
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th{text-align:left;font:500 13px 'IBM Plex Mono',monospace;color:#5B5F68;padding:10px 12px;border-bottom:1.5px solid #17191E}
+.tbl td{padding:12px;border-bottom:1px solid #D9D3C5}
+</style>
+</helmet>
+<div style="background: #F3EFE6; color: #17191E; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.55">
+
+<header style="border-bottom: 1px solid #D9D3C5">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #17191E">
+<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="#17191E"></rect><path d="M7 17 C10 8, 14 8, 17 17 S24 26, 27 17" fill="none" stroke="#FFD84A" class="ico"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.02em">Phase<span style="color: #C2412B">·</span>Neutre</span>
+</a>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="Bases.dc.html" class="nav on" aria-current="page">Les bases</a>
+<a href="Simulateur.dc.html" class="nav">Schémas</a>
+<a href="Editeur.dc.html" class="nav">Atelier</a>
+<a href="BacASable.dc.html" class="nav">Bac à sable</a>
+</nav>
+</div>
+</header>
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 56px 24px 0; display: flex; flex-direction: column; gap: 22px">
+<p style="margin: 0; font: 500 14px 'IBM Plex Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; color: #B5341F">Module 01 · Les bases</p>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(42px, 5.6vw, 72px); line-height: 0.98; letter-spacing: -0.035em; max-width: 900px; text-wrap: balance">Tension, intensité, résistance.</h1>
+<p style="margin: 0; font-size: 19px; color: #3B3F47; max-width: 680px; text-wrap: pretty">Trois grandeurs suffisent pour comprendre presque tout ce qui se passe dans une installation électrique. Pour les retenir, pense à un tuyau d’eau.</p>
+<nav aria-label="Sommaire de la leçon" style="display: flex; flex-wrap: wrap; gap: 4px; padding-top: 6px">
+<a href="#grandeurs" class="toc">1 · Les trois grandeurs</a>
+<a href="#ohm" class="toc">2 · La loi d’Ohm</a>
+<a href="#puissance" class="toc">3 · La puissance</a>
+<a href="#symboles" class="toc">4 · Les symboles</a>
+<a href="#couleurs" class="toc">5 · Les couleurs des fils</a>
+</nav>
+</div>
+
+<section id="grandeurs" style="max-width: 1200px; margin: 0 auto; padding: 56px 24px 0">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 20px">
+<div class="scard" style="padding: 28px; gap: 14px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 1; color: #B5341F">U</span><span class="mono" style="font-size: 14px; color: #5B5F68">volt · V</span></div>
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">La tension</h2>
+<p style="margin: 0; color: #3B3F47">La « poussée » qui met les charges en mouvement. C’est la pression dans le tuyau. Une prise de la maison délivre 230 V.</p>
+</div>
+<div class="scard" style="padding: 28px; gap: 14px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 1; color: #B5341F">I</span><span class="mono" style="font-size: 14px; color: #5B5F68">ampère · A</span></div>
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">L’intensité</h2>
+<p style="margin: 0; color: #3B3F47">La quantité de charges qui traverse le fil chaque seconde. C’est le débit d’eau. Elle n’existe que si le circuit est fermé.</p>
+</div>
+<div class="scard" style="padding: 28px; gap: 14px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 1; color: #B5341F">R</span><span class="mono" style="font-size: 14px; color: #5B5F68">ohm · Ω</span></div>
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">La résistance</h2>
+<p style="margin: 0; color: #3B3F47">Ce qui freine le passage du courant, comme un rétrécissement du tuyau. Une lampe, un radiateur, un grille-pain sont des résistances.</p>
+</div>
+</div>
+</section>
+
+<section id="ohm" style="max-width: 1200px; margin: 0 auto; padding: 88px 24px 0; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font: 500 14px 'IBM Plex Mono', monospace; color: #B5341F">2 · Expérience</p>
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(32px, 3.6vw, 46px); letter-spacing: -0.03em; line-height: 1">La loi d’Ohm : I = U ÷ R</h2>
+</div>
+<p style="margin: 0; max-width: 420px; color: #3B3F47">Fais varier la tension et la résistance. Plus l’intensité est forte, plus le courant défile vite et plus la lampe brille.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+<div class="board {{ic}} {{bc}}" style="position: relative; flex: 999 1 560px; min-width: 0; aspect-ratio: 640 / 360">
+<svg class="sch" viewBox="0 0 640 360" role="img" aria-label="Circuit : générateur, résistance et lampe en série">
+<path d="M80 166 V80 H250" class="w ph"></path>
+<path d="M390 80 H520 V156" class="w ph"></path>
+<path d="M520 204 V290 H80 V186" class="w ne"></path>
+<path d="M80 166 V80 H250" class="cur {{on}}"></path>
+<path d="M390 80 H520 V156" class="cur {{on}}"></path>
+<path d="M520 204 V290 H80 V186" class="cur {{on}}"></path>
+<line x1="54" y1="166" x2="106" y2="166" class="plate"></line>
+<line x1="68" y1="186" x2="92" y2="186" class="plate fat"></line>
+<text x="118" y="162" class="lbl hi">+</text>
+<text x="118" y="196" class="lbl hi">−</text>
+<text x="80" y="232" class="lbl c big">{{u}} V</text>
+<text x="80" y="250" class="lbl c">générateur</text>
+<rect x="250" y="66" width="140" height="28" rx="3" class="res"></rect>
+<text x="320" y="128" class="lbl c big">{{r}} Ω</text>
+<text x="320" y="146" class="lbl c">résistance</text>
+<circle cx="520" cy="180" r="52" class="halo {{on}}"></circle>
+<circle cx="520" cy="180" r="24" class="lamp {{on}}"></circle>
+<line x1="503" y1="163" x2="537" y2="197" class="lampx"></line>
+<line x1="537" y1="163" x2="503" y2="197" class="lampx"></line>
+<text x="560" y="185" class="lbl hi">lampe</text>
+<text x="300" y="278" class="lbl c big">I = {{iTxt}} A</text>
+</svg>
+</div>
+<div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 22px; padding: 28px; border: 1.5px solid #D9D3C5; border-radius: 18px; background: #FBF9F4">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><label for="u" style="font-weight: 600">Tension U</label><span class="mono" style="font-size: 18px">{{u}} V</span></div>
+<input id="u" type="range" min="0" max="24" step="1" value="{{u}}" onChange="{{setU}}" class="range">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><label for="r" style="font-weight: 600">Résistance R</label><span class="mono" style="font-size: 18px">{{r}} Ω</span></div>
+<input id="r" type="range" min="2" max="100" step="1" value="{{r}}" onChange="{{setR}}" class="range">
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="padding: 16px; border-radius: 12px; background: #17191E; color: #F3EFE6; display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 13px; color: #B7C3D0">Intensité I</span><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 30px">{{iTxt}} A</span></div>
+<div style="padding: 16px; border-radius: 12px; background: #17191E; color: #F3EFE6; display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 13px; color: #B7C3D0">Puissance P</span><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 30px">{{pTxt}} W</span></div>
+</div>
+<p class="mono" style="margin: 0; font-size: 14px; color: #3B3F47">{{u}} V ÷ {{r}} Ω = {{iTxt}} A</p>
+<p style="margin: 0; font-size: 14px; color: #5B5F68">Générateur en très basse tension, pour expérimenter sans danger. Dans un vrai fil, les charges avancent lentement : c’est l’énergie qui se propage presque instantanément.</p>
+</div>
+</div>
+</section>
+
+<section id="puissance" style="max-width: 1200px; margin: 0 auto; padding: 88px 24px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font: 500 14px 'IBM Plex Mono', monospace; color: #B5341F">3 · Puissance</p>
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(32px, 3.6vw, 46px); letter-spacing: -0.03em; line-height: 1">P = U × I</h2>
+<p style="margin: 0; color: #3B3F47">La puissance, en watts, mesure l’énergie consommée chaque seconde. À la maison, la tension est fixe (230 V) : plus un appareil est puissant, plus il tire d’intensité.</p>
+<p style="margin: 0; color: #3B3F47">Et plus l’intensité est grande, plus le fil doit être gros pour ne pas chauffer : 1,5 mm² pour l’éclairage, 2,5 mm² pour les prises.</p>
+</div>
+<div style="overflow-x: auto; border: 1.5px solid #D9D3C5; border-radius: 16px; background: #FBF9F4; padding: 8px 16px">
+<table class="tbl">
+<caption style="text-align: left; padding: 12px; font-weight: 600">Ordres de grandeur sous 230 V</caption>
+<thead><tr><th scope="col">Appareil</th><th scope="col">Puissance</th><th scope="col">Intensité</th></tr></thead>
+<tbody>
+<tr><td>Ampoule LED</td><td class="mono">8 W</td><td class="mono">0,03 A</td></tr>
+<tr><td>Ampoule classique</td><td class="mono">60 W</td><td class="mono">0,26 A</td></tr>
+<tr><td>Bouilloire</td><td class="mono">2 000 W</td><td class="mono">8,7 A</td></tr>
+<tr><td>Chauffe-eau</td><td class="mono">3 000 W</td><td class="mono">13 A</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="symboles" style="max-width: 1200px; margin: 0 auto; padding: 88px 24px 0; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font: 500 14px 'IBM Plex Mono', monospace; color: #B5341F">4 · Module 02 · Lire un schéma</p>
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(32px, 3.6vw, 46px); letter-spacing: -0.03em; line-height: 1">Les symboles à connaître</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px">
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole lampe"><path d="M10 36 H40 M80 36 H110" class="sym"></path><circle cx="60" cy="36" r="20" class="sym"></circle><path d="M46 22 L74 50 M74 22 L46 50" class="sym"></path></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Point lumineux</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Une lampe : le récepteur à alimenter.</p>
+</div>
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole interrupteur"><path d="M10 40 H42 M80 40 H110 M44 40 L76 18" class="sym"></path><circle cx="44" cy="40" r="3.5" class="symdot"></circle><circle cx="80" cy="40" r="3.5" class="symdot"></circle></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Interrupteur</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Ouvre ou ferme le circuit. Il coupe toujours la phase.</p>
+</div>
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole va-et-vient"><path d="M10 36 H38 M38 36 L74 20 M80 18 H110 M80 54 H110" class="sym"></path><circle cx="38" cy="36" r="3.5" class="symdot"></circle><circle cx="80" cy="18" r="3.5" class="symdot"></circle><circle cx="80" cy="54" r="3.5" class="symdot"></circle></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Va-et-vient</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Une borne commune, deux bornes de navettes.</p>
+</div>
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole bouton poussoir"><path d="M10 46 H44 M76 46 H110 M44 46 V40 M76 46 V40 M38 32 H82 M60 32 V14 M52 14 H68" class="sym"></path></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Bouton poussoir</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Ne ferme le circuit que pendant l’appui.</p>
+</div>
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole télérupteur"><rect x="12" y="20" width="36" height="32" class="sym"></rect><path d="M18 44 V30 H26 V44 H34 V30 H42" class="sym" style="stroke-width: 1.8"></path><path d="M48 36 H78" class="sym dash"></path><path d="M70 56 L88 30 M92 56 H110 M62 56 H70" class="sym"></path><circle cx="70" cy="56" r="3" class="symdot"></circle><circle cx="92" cy="56" r="3" class="symdot"></circle></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Télérupteur</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Une bobine qui fait basculer un contact à chaque impulsion.</p>
+</div>
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole prise de courant avec terre"><path d="M10 36 H52 M74 14 A22 22 0 0 0 74 58 M74 10 V62" class="sym"></path></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Prise de courant 2P+T</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Phase, neutre et terre. Le trait vertical indique la terre.</p>
+</div>
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole disjoncteur"><path d="M10 40 H42 M44 40 L76 18 M86 40 H110 M76 34 L88 46 M88 34 L76 46" class="sym"></path><circle cx="44" cy="40" r="3.5" class="symdot"></circle></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Disjoncteur</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Coupe le circuit en cas de surcharge ou de court-circuit.</p>
+</div>
+<div class="scard">
+<svg width="120" height="72" viewBox="0 0 120 72" role="img" aria-label="Symbole contacteur"><rect x="12" y="20" width="36" height="32" class="sym"></rect><path d="M18 46 L42 26" class="sym" style="stroke-width: 1.8"></path><path d="M48 36 H80" class="sym dash"></path><path d="M70 56 L88 30 M92 56 H110 M62 56 H70 M92 56 A6 6 0 0 1 92 44" class="sym"></path><circle cx="70" cy="56" r="3" class="symdot"></circle></svg>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Contacteur</h3>
+<p style="margin: 0; font-size: 15px; color: #3B3F47">Contact fermé tant que sa bobine est alimentée.</p>
+</div>
+</div>
+</section>
+
+<section id="couleurs" style="max-width: 1200px; margin: 0 auto; padding: 88px 24px 0; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font: 500 14px 'IBM Plex Mono', monospace; color: #B5341F">5 · Les conducteurs</p>
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(32px, 3.6vw, 46px); letter-spacing: -0.03em; line-height: 1">Une couleur, un rôle</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px">
+<div class="scard" style="padding: 0; overflow: hidden">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); height: 64px"><div style="background: #C8321F"></div><div style="background: #7A4A28"></div><div style="background: #1E1F22"></div></div>
+<div style="padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 20px; font-weight: 600">Phase</h3><p style="margin: 0; color: #3B3F47">Toute couleur sauf le bleu et le vert/jaune — le plus souvent rouge, marron ou noir. Les retours lampe et les navettes prennent une autre couleur (orange, violet…).</p></div>
+</div>
+<div class="scard" style="padding: 0; overflow: hidden">
+<div style="height: 64px; background: #5B9BD8"></div>
+<div style="padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 20px; font-weight: 600">Neutre</h3><p style="margin: 0; color: #3B3F47">Toujours bleu clair. Il ramène le courant au tableau et ne passe jamais par un interrupteur.</p></div>
+</div>
+<div class="scard" style="padding: 0; overflow: hidden">
+<div style="height: 64px; background: repeating-linear-gradient(115deg, #3E9A3A 0 22px, #F2CB2E 22px 44px)"></div>
+<div style="padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 20px; font-weight: 600">Terre</h3><p style="margin: 0; color: #3B3F47">Toujours vert et jaune. Elle protège les personnes en évacuant un défaut vers le sol.</p></div>
+</div>
+</div>
+</section>
+
+<section style="max-width: 1200px; margin: 0 auto; padding: 88px 24px 96px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding: 36px; border-radius: 20px; background: #17191E; color: #F3EFE6">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="mono" style="font-size: 14px; color: #FFD84A">Module 03 · Circuits de base</span>
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.02em">Prochaine étape : le simple allumage</h2>
+</div>
+<a href="Simulateur.dc.html" class="btn" style="background: #FFD84A; color: #17191E; border-color: #FFD84A">Ouvrir le simulateur
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"></path></svg>
+</a>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2750}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { u: 12, r: 24 };
+  }
+  renderVals() {
+    const u = this.state.u;
+    const r = this.state.r;
+    const i = u / r;
+    const p = u * i;
+    let ic = 'i0';
+    if (i > 0) ic = i < 0.25 ? 'i1' : i < 0.5 ? 'i2' : i < 1 ? 'i3' : i < 2 ? 'i4' : 'i5';
+    let bc = 'b0';
+    if (p > 0) bc = p < 2 ? 'b1' : p < 5 ? 'b2' : p < 10 ? 'b3' : p < 25 ? 'b4' : 'b5';
+    const fr = (n, d) => n.toFixed(d).replace('.', ',');
+    return {
+      u: u,
+      r: r,
+      iTxt: fr(i, 2),
+      pTxt: fr(p, 1),
+      on: i > 0 ? 'on' : '',
+      ic: ic,
+      bc: bc,
+      setU: (e) => this.setState({ u: Number(e.target.value) }),
+      setR: (e) => this.setState({ r: Number(e.target.value) })
+    };
+  }
+}
+</script>
+</body>
+</html>
