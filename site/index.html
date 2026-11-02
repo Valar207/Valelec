@@ -159,11 +159,22 @@ tr:last-child td{border-bottom:0}
 /* Schémas (simulateur) */
 .sim{display:grid;gap:28px;grid-template-columns:230px minmax(0,1fr);align-items:start;padding-block:32px 72px}
 .sim-nav{display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 80px)}
-.sim-nav h2{margin:0 0 6px 12px;font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.side{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:8px 12px;border:0;border-radius:10px;background:transparent;font-weight:500;font-size:15px;text-align:left;cursor:pointer;color:var(--ink)}
-.side:hover{background:var(--hover)}
-.side[aria-current="true"]{background:var(--inv-bg);color:var(--inv-fg)}
-.side .n{font:500 12px var(--f-mono);opacity:.7}
+.sim-nav h2{margin:4px 0 2px 4px;font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sim-nav>div{display:flex;flex-direction:column;gap:6px}
+.sim-hint{margin:0 0 -8px 4px;font-size:14px;color:var(--ink-2)}
+.side{display:flex;align-items:center;gap:10px;width:100%;min-height:54px;padding:8px 10px 8px 8px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper-2);font-weight:600;font-size:15px;line-height:1.25;text-align:left;cursor:pointer;color:var(--ink);transition:border-color .15s,transform .15s,box-shadow .15s}
+.side:hover{border-color:var(--ink);transform:translateX(3px);box-shadow:0 8px 18px -14px rgba(17,26,36,.55)}
+.side:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.side .ic{flex:none;width:42px;height:34px;padding:4px;border-radius:8px;background:var(--board);display:grid;place-items:center}
+.side .ic svg{width:100%;height:100%;display:block}
+.side .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.side .n{font:500 11px var(--f-mono);letter-spacing:.05em;color:var(--muted)}
+.side .go{flex:none;color:var(--muted);transition:transform .15s,color .15s}
+.side:hover .go{color:var(--accent);transform:translateX(2px)}
+.side[aria-current="true"]{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg);transform:none;box-shadow:none}
+.side[aria-current="true"] .n{color:var(--inv-muted)}
+.side[aria-current="true"] .go{color:var(--inv-accent)}
+.side[aria-current="true"] .ic{box-shadow:0 0 0 2px var(--yellow)}
 .sim-main{display:flex;flex-direction:column;gap:22px;min-width:0}
 .sim-main h1{margin:6px 0 8px;font-size:clamp(36px,4.4vw,54px)}
 .sim-cols{display:grid;gap:24px;grid-template-columns:minmax(0,1fr) 300px;align-items:start}
@@ -394,7 +405,8 @@ tr:last-child td{border-bottom:0}
 }
 @media (max-width: 820px){
   .sim{grid-template-columns:minmax(0,1fr)}
-  .sim-nav{position:static;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px 12px}
+  .sim-nav{position:static;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px 12px}
+  .sim-nav .sim-hint{grid-column:1/-1;margin:0}
   .sim-nav>div{display:contents}
   .sim-nav h2{grid-column:1/-1;margin-top:8px}
 }
@@ -1690,8 +1702,10 @@ const simC = new Circuit();
 const simB = new Board($('#sim-svg'), simC, {});
 let cur = PRESETS[0];
 function simNav() {
-  const g = (grp, label) => `<div><h2>${label}</h2>${PRESETS.filter((p) => p.group === grp).map((p) => `<button class="side" type="button" data-preset="${p.id}" aria-current="${p === cur}"><span class="n">${String(PRESETS.indexOf(p) + 1).padStart(2, '0')}</span>${p.title}</button>`).join('')}</div>`;
-  $('#sim-nav').innerHTML = g('base', 'Circuits de base') + g('adv', 'Circuits avancés');
+  const ICON = { simple: 'inter', double: 'inter', vav: 'vav', sonnette: 'sonnette', perm: 'perm', tele: 'tele', minu: 'minu', yokis: 'yokis', hc: 'cont', court: 'disj' };
+  const go = '<svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const g = (grp, label) => `<div><h2>${label}</h2>${PRESETS.filter((p) => p.group === grp).map((p) => `<button class="side" type="button" data-preset="${p.id}" aria-current="${p === cur}"><span class="ic">${symIcon(ICON[p.id] || 'lampe', 6)}</span><span class="tx"><span class="n">${String(PRESETS.indexOf(p) + 1).padStart(2, '0')}</span>${p.title}</span>${go}</button>`).join('')}</div>`;
+  $('#sim-nav').innerHTML = '<p class="sim-hint">Choisis un circuit à manipuler :</p>' + g('base', 'Circuits de base') + g('adv', 'Circuits avancés');
 }
 function simSet(p) {
   cur = p;
