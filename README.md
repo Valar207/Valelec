@@ -1,6 +1,6 @@
 # Valelec
 
-Site pédagogique pour apprendre l’électricité domestique : leçons, schémas animés, examen pratique interactif (titre pro électricien d’équipement du bâtiment, espaces de travail n°1 et n°2), bac à sable de schémas et comparaison des tableaux électriques français et américain. Thème clair ou sombre au choix.
+Site pédagogique pour apprendre l’électricité domestique : leçons, schémas animés, examen pratique interactif (titre pro électricien d’équipement du bâtiment, espaces de travail n°1, n°2 et n°3), bac à sable de schémas et comparaison des tableaux électriques français et américain. Thème clair ou sombre au choix.
 
 - Code source : https://github.com/Valar207/Valelec
 - Version en ligne (adresse fixe, GitHub Pages, mise à jour à chaque push) : https://valar207.github.io/Valelec/site/
@@ -41,13 +41,13 @@ Le fichier est découpé par des commentaires repères (chercher ces lignes) :
 | `<script>` juste après `<title>` | Applique le thème mémorisé (`pn-theme`) avant l’affichage, pour éviter un flash clair |
 | `<style>` en tête | Jetons de couleurs (thèmes clair et sombre : `prefers-color-scheme` ou `data-theme` sur `<html>`), styles des pages et des symboles |
 | `<!-- ============ ACCUEIL / LES BASES / SCHÉMAS / EXAMEN PRATIQUE / BAC À SABLE / TABLEAUX … ============ -->` | HTML de chaque page (une seule page HTML, routage par `#ancre`) |
-| `/* Symboles et règles */` | `DEF` : les 20 composants (option `volt` sur une source pour afficher une autre tension, `ops` / `sts` sur un interrupteur pour personnaliser ses libellés, comme les déclencheurs manuels) (dont `radio`, bouton poussoir émetteur radio relié à un récepteur Yokis par sa liste `to` de repères) (bornes, dimensions, description), `defSt`, `links` (contacts internes), `loadPair` (récepteurs) |
+| `/* Symboles et règles */` | `DEF` : les 22 composants (dont `detect`, détecteur de mouvement temporisé, et `baes`, bloc d’éclairage de sécurité qui s’allume quand il n’est plus alimenté) (option `volt` sur une source pour afficher une autre tension, `ops` / `sts` sur un interrupteur pour personnaliser ses libellés, comme les déclencheurs manuels) (dont `radio`, bouton poussoir émetteur radio relié à un récepteur Yokis par sa liste `to` de repères) (bornes, dimensions, description), `defSt`, `links` (contacts internes), `loadPair` (récepteurs) |
 | `solve()` / `simulate()` | Moteur électrique : réseaux équipotentiels (union-find), récepteurs alimentés, fils parcourus par le courant et sens, court-circuit et déclenchement des protections, bobines (télérupteur, contacteur, minuterie, micromodule Yokis, impulsions radio vers un Yokis alimenté) |
-| `/* Son de carillon */` | Synthèse Web Audio du « ding / dong » de la sonnette |
+| `/* Son de carillon */` | Synthèse Web Audio du « ding / dong » de la sonnette, et de l’alarme incendie (554 Hz puis 440 Hz en boucle) jouée tant qu’un composant marqué `alarm` est alimenté (voyant H1 de l’espace n°2) |
 | `/* Circuit */` | Classe `Circuit` : modèle, historique (annuler), actions sur les interrupteurs |
 | `/* Rendu SVG d’un circuit */` | Classe `Board` : dessin SVG, glisser-déposer, fils, rotation, copier-coller, déplacement et zoom tactile |
 | `/* Schémas prédéfinis */` | `PRESETS` : les 10 circuits de la page Schémas (aussi exemples du bac à sable) |
-| `/* Examen pratique (TP-00467, espace n°1) */` | `buildExam1()` : espace n°1, le logement (tableau TR avec ID1/ID2 et D1 à D6, R1/R2 Yokis commandés par S1, E1, E2, contacteur C1 heures creuses commandé par S2, chauffe-eau SC, prises PC1 et PC2). `buildExam2()` : espace n°2, les parties communes (minuterie KT1 commandée par S1 et S2 pour L1 et L2, prise PC1, circuit SSI 24 V avec DM1, DM2 et voyant H1). `ESPACES` : titre, texte et ordre des commandes de chaque espace ; dans le HTML, `data-espace` affiche les blocs propres à l’espace choisi |
+| `/* Examen pratique (TP-00467, espace n°1) */` | `buildExam1()` : espace n°1, le logement (tableau TR avec ID1/ID2 et D1 à D6, R1/R2 Yokis commandés par S1, E1, E2, contacteur C1 heures creuses commandé par S2, chauffe-eau SC, prises PC1 et PC2). `buildExam2()` : espace n°2, les parties communes (minuterie KT1 commandée par S1 et S2 pour L1 et L2, prise PC1, circuit SSI 24 V avec DM1, DM2 et voyant H1 qui déclenche l’alarme sonore). `buildExam3()` : espace n°3, les locaux tertiaires (détecteur S2 pour L1 et L2, BAES en aval de Q2 et en amont du détecteur, arrêt d’urgence S1 à manque de tension sur la bobine de KM1 qui coupe PC1). `ESPACES` : titre, texte et ordre des commandes de chaque espace ; dans le HTML, `data-espace` affiche les blocs propres à l’espace choisi |
 | `/* Bac à sable */` | Palette, barre d’outils, panneau de propriétés, diagnostic, raccourcis clavier |
 | `/* Tableaux France / États-Unis */` | Les deux tableaux comparés : données, logique de déclenchement, dessin, messages |
 | `/* Navigation */` | Routage par ancre : `#accueil`, `#bases`, `#schemas`, `#examen`, `#bac-a-sable`, `#tableaux` |
@@ -76,11 +76,13 @@ Toute modification de `site/index.html` est en ligne immédiatement.
 
 ## Examen pratique : hypothèses
 
-La page Examen pratique reprend le dossier candidat TP-00467 (espaces de travail n°1 et n°2).
+La page Examen pratique reprend le dossier candidat TP-00467 (espaces de travail n°1, n°2 et n°3).
 
 Espace n°1 : La page du schéma unifilaire du tableau TR n’était pas disponible : la répartition des circuits (D1 → PC1, D2 → L1 + L3, D3 → L2, D4 → PC2, D5 → commande de C1, D6 → chauffe-eau) est une proposition cohérente avec la NF C 15-100, à vérifier avec le dossier. Les différentiels sont dessinés sur la phase seulement, et l’interphone I1 (très basse tension) n’est pas représenté.
 
 Espace n°2 : la minuterie KT1 et les disjoncteurs Q1 (20 A, prise) et Q2 (16 A, éclairage) représentent l’armoire des services généraux, en amont de la boîte 5 ; leur calibre est une hypothèse. Le câble C9 (SSI) est représenté par un voyant H1 alimenté en 24 V, et les déclencheurs manuels par des contacts ouverts au repos : le câblage réel dépend de la centrale.
+
+Espace n°3 : Q1 (20 A, prise), Q2 (16 A, éclairage), Q3 (2 A, commande) et le contacteur KM1 représentent l’armoire tertiaire, en amont de la boîte 7 ; leur calibre et le fait que l’arrêt d’urgence coupe la prise PC1 sont des hypothèses. L’arrêt d’urgence est représenté à manque de tension, la télécommande du BAES par un bouton « mise au repos », et les prises RJ45 ne sont pas simulées.
 
 ## Avertissement
 
