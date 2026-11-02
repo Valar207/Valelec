@@ -196,6 +196,7 @@ tr:last-child td{border-bottom:0}
 .ex-table th,.ex-table td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--line)}
 .ex-table th{font:500 12px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .ex-table td:first-child{font-family:var(--f-mono);font-weight:500;white-space:nowrap}
+#page-examen [data-espace][hidden]{display:none!important}
 .ex-note{margin:0;padding:14px 16px;border-radius:12px;background:var(--warn-bg);color:var(--warn-fg);font-size:14px}
 .box ol.ex-steps li{display:list-item;margin-left:18px;list-style:decimal}
 
@@ -607,36 +608,41 @@ tr:last-child td{border-bottom:0}
 <div id="page-examen" data-page="examen" hidden>
   <div class="wrap wide ex">
     <div>
-      <p class="eyebrow">Titre pro électricien d’équipement du bâtiment · TP-00467 · Espace de travail n°1</p>
-      <h1 class="display">Examen pratique : le logement</h1>
-      <p class="lead">Mise en situation : l’installation électrique d’un logement, dans un centre de formation de plusieurs étages (logement du gardien, parking en sous-sol, espaces ouverts au public). Ce schéma reproduit le travail demandé : manipule-le pour comprendre chaque circuit avant l’épreuve.</p>
+      <p class="eyebrow">Titre pro électricien d’équipement du bâtiment · TP-00467</p>
+      <h1 class="display">Examen pratique</h1>
+      <p class="lead">Mise en situation : l’installation électrique d’un centre de formation de plusieurs étages (logement du gardien, parking en sous-sol, espaces ouverts au public), répartie en espaces de travail. Choisis un espace, puis manipule son schéma pour comprendre chaque circuit avant l’épreuve.</p>
     </div>
+    <div class="ctls" id="ex-tabs" role="group" aria-label="Espaces de travail">
+      <button class="ctl" type="button" data-espace="1" aria-pressed="true">Espace n°1 · Logement</button>
+      <button class="ctl" type="button" data-espace="2" aria-pressed="false">Espace n°2 · Parties communes</button>
+    </div>
+    <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p></div>
     <div class="sim-cols">
       <div class="stage">
         <div class="board">
-          <svg id="ex-svg" class="view" role="img" aria-label="Schéma développé de l’espace de travail n°1"></svg>
+          <svg id="ex-svg" class="view" role="img" aria-label="Schéma développé de l’espace de travail"></svg>
           <div class="statusbar">
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
         </div>
-        <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes du logement"></div>
+        <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
         <ul class="mini-legend" aria-label="Légende">
-          <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
-          <li><span class="lsw" style="background:#4E8EF7"></span>Neutre</li>
+          <li><span class="lsw" style="background:#E5533D"></span>Phase (ou + en très basse tension)</li>
+          <li><span class="lsw" style="background:#4E8EF7"></span>Neutre (ou −)</li>
           <li><span class="lsw" style="background:#B48CF2"></span>Retour, commande</li>
-          <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#8E9BAA 0 2px,transparent 2px 8px)"></span>Liaison radio</li>
+          <li data-espace="1"><span class="lsw" style="background:repeating-linear-gradient(90deg,#8E9BAA 0 2px,transparent 2px 8px)"></span>Liaison radio</li>
           <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
         </ul>
       </div>
       <div class="info">
-        <div class="box inv"><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
+        <div class="box inv" data-espace="1"><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
           <li>Appuie sur S1 (filaire), puis sur E1 (radio) : L1 et L3 s’allument puis s’éteignent ensemble.</li>
           <li>Appuie sur E2 : seule L2 change d’état.</li>
           <li>Bascule S2 : le contact heures creuses alimente la bobine de C1, qui fait chauffer le chauffe-eau.</li>
           <li>Branche la machine à laver sur PC2, puis déclenche ID1 : l’éclairage s’éteint, la machine continue (elle est sous ID2).</li>
         </ol></div>
-        <div class="box"><h2>Travail demandé</h2><ul>
+        <div class="box" data-espace="1"><h2>Travail demandé</h2><ul>
           <li>L1 et L3 commandées par S1 et E1 en télérupteur (récepteur R1 dans BD1).</li>
           <li>L2 commandée par le BP radio E2 en télérupteur (récepteur R2 dans BD1).</li>
           <li>Sortie de câble SC (chauffe-eau) par le contacteur C1, commandé par S2 qui simule le contact C1-C2 du compteur.</li>
@@ -645,11 +651,24 @@ tr:last-child td{border-bottom:0}
           <li>Poser le combiné d’interphone I1 dans la boîte repère 4.</li>
           <li>Câbler le tableau TR, puis le raccorder à la source consignée.</li>
         </ul></div>
+        <div class="box inv" data-espace="2"><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
+          <li>Appuie sur S1 : la minuterie KT1 allume L1 et L2 pendant 8 secondes, puis tout s’éteint seul.</li>
+          <li>Réappuie sur S2 pendant le décompte : la temporisation repart de zéro.</li>
+          <li>Branche un appareil sur PC1 : il est alimenté par son propre circuit (câble C3).</li>
+          <li>Actionne DM1 : le voyant d’alarme du circuit SSI s’allume. Réarme-le, puis essaie DM2.</li>
+        </ol></div>
+        <div class="box" data-espace="2"><h2>Travail demandé</h2><ul>
+          <li>Poser les canalisations C01 à C08 (conduits IRL).</li>
+          <li>Poser les boîtes de dérivation étanches BD1 et BD2, les patères L1 et L2, les boutons-poussoirs S1 et S2, la prise PC1 et les déclencheurs manuels DM1 et DM2.</li>
+          <li>Câbler la prise PC1 à partir de BD1, avec le câble C3.</li>
+          <li>Câbler L1 et L2, commandées par S1 et S2 en minuterie, à partir de BD2, avec le câble C4.</li>
+          <li>Câbler DM1 et DM2 avec le câble C9, dans la boîte de dérivation 8.</li>
+        </ul></div>
         <button class="btn" id="ex-open" type="button" style="justify-content:space-between;border-radius:12px">Modifier dans le bac à sable <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></button>
       </div>
     </div>
 
-    <div class="ex-grid">
+    <div class="ex-grid" data-espace="1">
       <div class="box"><h2>Tableau de répartition TR</h2>
         <table class="ex-table">
           <thead><tr><th>Repère</th><th>Appareil</th><th>Circuit</th></tr></thead>
@@ -684,6 +703,47 @@ tr:last-child td{border-bottom:0}
         <li>Conduits ICTA G01 à G07</li>
         <li>Liaison C2 vers la platine de rue, en attente dans la boîte repère 4</li>
       </ul></div>
+    </div>
+
+    <div class="ex-grid" data-espace="2" hidden>
+      <div class="box"><h2>Câbles et canalisations</h2>
+        <table class="ex-table">
+          <thead><tr><th>Repère</th><th>Matériel</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><td>C3</td><td>Câble U1000 R2V 3G2,5 mm²</td><td>Circuit prise PC1 (phase, neutre, terre), depuis la boîte étanche 5</td></tr>
+            <tr><td>C4</td><td>Câble U1000 R2V 5G1,5 mm²</td><td>Circuit minuterie depuis la boîte 5 : phase, neutre, terre, retour lampes, retour BP</td></tr>
+            <tr><td>C9</td><td>Câble C1 CR1, 1 paire 8/10 ou 9/10</td><td>Circuit SSI des déclencheurs DM1 et DM2, vers la boîte 8</td></tr>
+            <tr><td>—</td><td>U1000 R2V 3G1,5 · 4G1,5 · 2×1,5 mm²</td><td>Descentes vers les lampes et les boutons-poussoirs</td></tr>
+            <tr><td>C04, C05</td><td>Conduit IRL Ø 20 (~2 m)</td><td>Descentes vers S1, S2 et PC1</td></tr>
+            <tr><td>C01 à C03, C06 à C08</td><td>Conduit IRL Ø 16 (~6 m)</td><td>Autres liaisons</td></tr>
+          </tbody>
+        </table>
+        <p class="ex-note">Le raccordement des câbles C3 et C4 à la boîte 5, et du câble C9 à la boîte 8, est fait par le jury, hors de ta présence. Sur le schéma, la minuterie KT1 et les disjoncteurs Q1 et Q2 représentent l’armoire des services généraux, en amont de la boîte 5 : leur calibre est une hypothèse.</p>
+      </div>
+      <div class="box"><h2>À savoir pour l’épreuve</h2><ul>
+        <li>En minuterie, les boutons-poussoirs S1 et S2 sont <strong>en parallèle</strong> : n’importe lequel envoie une impulsion à la bobine de KT1.</li>
+        <li>Le câble C4 transporte deux retours distincts : le <strong>retour BP</strong> (vers la bobine) et le <strong>retour lampes</strong> (depuis le contact de la minuterie).</li>
+        <li>Le circuit SSI (sécurité incendie) est un circuit à part, en très basse tension : on ne le mélange jamais avec les câbles 230 V.</li>
+        <li>C9 est un câble <strong>CR1</strong>, résistant au feu (C1 = non propagateur de la flamme) : le circuit doit rester opérationnel pendant un incendie.</li>
+        <li>C9 sera relié à une centrale d’alarme incendie, à un voyant de signalisation, ou laissé en attente. Le schéma le représente par un voyant H1.</li>
+        <li>Le type de contact des déclencheurs (ouvert ou fermé au repos, résistance de fin de ligne) dépend de la centrale : suis le schéma de bornier de la boîte 8.</li>
+        <li>Parties communes : tout le matériel est <strong>étanche et en saillie</strong> (boîtes, patères, poussoirs, prise).</li>
+        <li>Documents remis au début : attestation de consignation, autorisation de travail, schéma de bornier des boîtes 5 et 8.</li>
+      </ul></div>
+      <div class="box"><h2>Matériel</h2>
+        <table class="ex-table">
+          <thead><tr><th>Repère</th><th>Désignation</th><th>Qté</th></tr></thead>
+          <tbody>
+            <tr><td>BD1, BD2</td><td>Boîte de dérivation saillie étanche, 7 entrées (conduits Ø 16 à 25)</td><td>2</td></tr>
+            <tr><td>L1, L2</td><td>Patère étanche saillie, avec lampe adaptée</td><td>2</td></tr>
+            <tr><td>S1, S2</td><td>Bouton-poussoir saillie étanche</td><td>2</td></tr>
+            <tr><td>PC1</td><td>Prise 2P+T saillie étanche</td><td>1</td></tr>
+            <tr><td>DM1, DM2</td><td>Déclencheur manuel saillie SSI</td><td>2</td></tr>
+            <tr><td>—</td><td>Fixations de conduit IRL Ø 16 et 20</td><td>16</td></tr>
+            <tr><td>—</td><td>Bornes sans vis ou barrettes, accessoires de fixation</td><td>lot</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -992,7 +1052,7 @@ function opLabel(c, on) {
   switch (c.type) {
     case 'disj': return s.closed ? 'Déclencher' : 'Réarmer';
     case 'fus': return s.ok ? '' : 'Remplacer le fusible';
-    case 'inter': return s.on ? 'Ouvrir' : 'Fermer';
+    case 'inter': return c.ops ? (s.on ? c.ops[1] : c.ops[0]) : (s.on ? 'Ouvrir' : 'Fermer');
     case 'vav': return 'Basculer (navette ' + s.pos + ')';
     case 'perm': return s.cross ? 'Décroiser' : 'Croiser';
     case 'bp': return 'Appuyer';
@@ -1007,7 +1067,7 @@ function stateText(c, on, power) {
     case 'src': return power ? 'Sous tension' : 'Hors tension';
     case 'disj': return s.closed ? 'Armé' : 'Déclenché';
     case 'fus': return s.ok ? 'En bon état' : 'Fondu';
-    case 'inter': return s.on ? 'Fermé' : 'Ouvert';
+    case 'inter': return c.sts ? (s.on ? c.sts[1] : c.sts[0]) : (s.on ? 'Fermé' : 'Ouvert');
     case 'vav': return 'Sur la navette ' + s.pos;
     case 'perm': return s.cross ? 'Position croisée' : 'Position droite';
     case 'bp': return s.pressed ? 'Enfoncé' : 'Relâché';
@@ -1031,7 +1091,7 @@ function sym(c, on, now) {
     return `<path d="M0 20H20M0 60H20M120 20H98M120 60H98" class="s"/><rect x="20" y="12" width="40" height="56" rx="3" class="coil${s.coil ? ' on' : ''}"/>${inner}<path d="M60 40H86" class="s dash"/>${dot(98, 20)}${dot(98, 60)}<line x1="98" y1="60" x2="${kx}" y2="${ky}" class="s"/><text x="2" y="12" class="t sm">A1</text><text x="2" y="76" class="t sm">A2</text>`;
   };
   switch (c.type) {
-    case 'src': return `<rect x="4" y="4" width="50" height="152" rx="8" class="srcb"/><path d="M54 20H80" class="stub ph"/><path d="M54 100H80" class="stub ne"/><path d="M54 140H80" class="stub pe"/><text x="29" y="72" class="t c">230</text><text x="29" y="90" class="t c">V ~</text><text x="62" y="13" class="t sm">L</text><text x="62" y="93" class="t sm">N</text><text x="60" y="133" class="t sm">PE</text>`;
+    case 'src': return `<rect x="4" y="4" width="50" height="152" rx="8" class="srcb"/><path d="M54 20H80" class="stub ph"/><path d="M54 100H80" class="stub ne"/><path d="M54 140H80" class="stub pe"/><text x="29" y="72" class="t c">${c.volt ? c.volt[0] : '230'}</text><text x="29" y="90" class="t c">${c.volt ? c.volt[1] : 'V ~'}</text><text x="62" y="13" class="t sm">L</text><text x="62" y="93" class="t sm">N</text><text x="60" y="133" class="t sm">PE</text>`;
     case 'disj': return `<path d="M0 20H20M62 20H80M56 14L68 26M68 14L56 26" class="s"/>${dot(20, 20)}<line x1="20" y1="20" x2="${s.closed ? 60 : 54}" y2="${s.closed ? 20 : 3}" class="s"/>`;
     case 'fus': return `<path d="M0 20H18M62 20H80" class="s"/><rect x="18" y="11" width="44" height="18" rx="2" class="fuse${s.ok ? '' : ' blown'}"/><path d="M18 20H62" class="s thin${s.ok ? '' : ' blown'}"/>`;
     case 'terre': return `<path d="M20 0V20M6 20H34M11 27H29M16 34H24" class="s pe2"/>`;
@@ -1568,7 +1628,7 @@ $$('a[data-preset]').forEach((a) => a.addEventListener('click', () => { const p 
 simSet(PRESETS[0]);
 
 /* ---------------- Examen pratique (TP-00467, espace n°1) ---------------- */
-function buildExam() {
+function buildExam1() {
   const src = mk('src', 80, 440, 0, 'AGCP'), xl = mk('borne', 160, 380, 0, 'XL'), xn0 = mk('borne', 160, 460, 0, 'XN');
   const id1 = mk('disj', 240, 120, 0, 'ID1', { lab: '40 A · 30 mA AC' }), id2 = mk('disj', 240, 660, 0, 'ID2', { lab: '40 A · 30 mA A' });
   const xa1 = mk('borne', 320, 120, 0, 'X1'), xa2 = mk('borne', 320, 260, 0, 'X2'), xa3 = mk('borne', 320, 460, 0, 'X3');
@@ -1609,27 +1669,73 @@ function buildExam() {
       wr(xn6, 'P', xn7, 'P'), wr(xn7, 'P', xn8, 'P'), wr(xn8, 'P', xn0, 'P'), wr(xn0, 'P', src, 'N')
     ] };
 }
+// Espace n°2 : parties communes (minuterie, prise, SSI)
+function buildExam2() {
+  const src = mk('src', 80, 280, 0, 'SG'), xl = mk('borne', 160, 220, 0, 'XL'), xn0 = mk('borne', 160, 300, 0, 'XN');
+  const q1 = mk('disj', 240, 120, 0, 'Q1', { lab: '20 A' }), q2 = mk('disj', 240, 220, 0, 'Q2', { lab: '16 A' });
+  const pc1 = mk('prise', 960, 140, 0, 'PC1', { lab: 'étanche · C3' });
+  const x1 = mk('borne', 360, 220, 0, 'X1'), s1 = mk('bp', 400, 300, 90, 'S1'), s2 = mk('bp', 480, 300, 90, 'S2'), xb = mk('borne', 520, 340, 0, 'XB');
+  const kt = mk('minu', 620, 300, 0, 'KT1', { lab: 'armoire SG' });
+  const l1 = mk('lampe', 740, 360, 90, 'L1'), l2 = mk('lampe', 820, 360, 90, 'L2');
+  const na = mk('borne', 880, 140, 0, 'N1'), nb = mk('borne', 880, 400, 0, 'N2'), nd = mk('borne', 880, 440, 0, 'N3'), nc = mk('borne', 560, 440, 0, 'N4'), ne = mk('borne', 160, 440, 0, 'N5');
+  // Circuit SSI en très basse tension : C9 vers la boîte 8 (voyant de signalisation)
+  const tbt = mk('src', 80, 620, 0, 'SSI'); tbt.volt = ['24', 'V ='];
+  const xs1 = mk('borne', 200, 560, 0, 'XS1'), xs2 = mk('borne', 420, 560, 0, 'XS2'), xs3 = mk('borne', 560, 700, 0, 'XS3'), xs4 = mk('borne', 160, 700, 0, 'XS4');
+  const dm1 = mk('inter', 300, 560, 0, 'DM1'), dm2 = mk('inter', 300, 640, 0, 'DM2');
+  [dm1, dm2].forEach((d) => { d.ops = ['Actionner', 'Réarmer']; d.sts = ['Au repos', 'Actionné']; });
+  const h1 = mk('voyant', 560, 600, 90, 'H1', { lab: 'alarme (C9)' });
+  return { comps: [src, xl, xn0, q1, q2, pc1, x1, s1, s2, xb, kt, l1, l2, na, nb, nd, nc, ne, tbt, xs1, xs2, xs3, xs4, dm1, dm2, h1],
+    wires: [
+      wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'),
+      wr(q1, '2', pc1, 'L'), wr(pc1, 'N', na, 'P'),
+      wr(q2, '2', x1, 'P'), wr(x1, 'P', kt, '1'), wr(x1, 'P', s1, '1'), wr(x1, 'P', s2, '1'),
+      wr(s1, '2', s2, '2'), wr(s2, '2', xb, 'P'), wr(xb, 'P', kt, 'A1', true),
+      wr(kt, '2', l1, '1'), wr(l1, '1', l2, '1'), wr(l1, '2', l2, '2'), wr(l2, '2', nb, 'P'),
+      wr(kt, 'A2', nc, 'P'), wr(na, 'P', nb, 'P'), wr(nb, 'P', nd, 'P'), wr(nd, 'P', nc, 'P'), wr(nc, 'P', ne, 'P'), wr(ne, 'P', xn0, 'P'),
+      wr(tbt, 'L', xs1, 'P'), wr(xs1, 'P', dm1, '1'), wr(xs1, 'P', dm2, '1'), wr(dm1, '2', xs2, 'P'), wr(dm2, '2', xs2, 'P'),
+      wr(xs2, 'P', h1, '1'), wr(h1, '2', xs3, 'P'), wr(xs3, 'P', xs4, 'P'), wr(xs4, 'P', tbt, 'N', true)
+    ] };
+}
+const ESPACES = {
+  1: { build: buildExam1, eyebrow: 'Espace de travail n°1', title: 'Installation électrique d’un logement',
+    sub: 'Le logement du gardien : tableau de répartition TR, éclairage en télérupteur avec des boutons poussoirs radio, chauffe-eau en heures creuses et prises.',
+    order: ['ID1', 'D1', 'D2', 'D3', 'ID2', 'D4', 'D5', 'D6', 'S1', 'E1', 'E2', 'S2', 'PC1', 'PC2'] },
+  2: { build: buildExam2, eyebrow: 'Espace de travail n°2', title: 'Parties communes d’un immeuble d’habitation',
+    sub: 'Un couloir d’immeuble : éclairage sur minuterie commandé par deux boutons-poussoirs, une prise de courant et deux déclencheurs manuels d’alarme incendie (SSI). Tout le matériel est étanche, en saillie.',
+    order: ['Q1', 'Q2', 'S1', 'S2', 'PC1', 'DM1', 'DM2'] }
+};
+let exN = store.get('pn-espace') === 2 ? 2 : 1;
 const exC = new Circuit();
 const exB = new Board($('#ex-svg'), exC, {});
-const EX_ORDER = ['ID1', 'D1', 'D2', 'D3', 'ID2', 'D4', 'D5', 'D6', 'S1', 'E1', 'E2', 'S2', 'PC1', 'PC2'];
-function exSet() { exC.power = true; exC.load(buildExam()); exB.fit(); exB.render(); exUpd(); }
+function exSet(n) {
+  if (n) exN = n;
+  const E = ESPACES[exN];
+  exC.power = true; exC.load(E.build()); exB.fit(); exB.render();
+  $('#ex-eyebrow').textContent = E.eyebrow; $('#ex-title').textContent = E.title; $('#ex-sub').textContent = E.sub;
+  $('#ex-svg').setAttribute('aria-label', 'Schéma développé : ' + E.eyebrow.toLowerCase());
+  $$('#ex-tabs [data-espace]').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.espace === exN)));
+  $$('#page-examen [data-espace]').forEach((el) => { if (!el.closest('#ex-tabs')) el.hidden = +el.dataset.espace !== exN; });
+  store.set('pn-espace', exN);
+  exUpd();
+}
 function exUpd() {
-  const s = summary(exC);
+  const s = summary(exC), order = ESPACES[exN].order;
   $('#ex-dot').className = 'sdot' + (s.dot ? ' ' + s.dot : '');
   $('#ex-st').textContent = s.title; $('#ex-sd').textContent = s.detail;
   $('#ex-metric').textContent = metricTxt(exC.res);
-  const ops = exC.comps.filter((c) => DEF[c.type].op && opLabel(c)).sort((a, b) => EX_ORDER.indexOf(a.ref) - EX_ORDER.indexOf(b.ref));
+  const ops = exC.comps.filter((c) => DEF[c.type].op && opLabel(c)).sort((a, b) => order.indexOf(a.ref) - order.indexOf(b.ref));
   $('#ex-ctls').innerHTML = ops.map((c) => {
-    const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug);
-    return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
+    const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug) || (c.type === 'inter' && c.st.on);
+    return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise', 'inter'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
   }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
 }
 exC.listeners.push(exUpd);
+$('#ex-tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-espace]'); if (b) exSet(+b.dataset.espace); });
 $('#ex-ctls').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.reset) exSet(); else exC.operate(b.dataset.op);
 });
-$('#ex-open').addEventListener('click', () => { editor.load(buildExam()); location.hash = 'bac-a-sable'; });
+$('#ex-open').addEventListener('click', () => { editor.load(ESPACES[exN].build()); location.hash = 'bac-a-sable'; });
 exSet();
 
 /* ---------------- Bac à sable ---------------- */
