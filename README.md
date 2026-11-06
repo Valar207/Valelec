@@ -1,6 +1,6 @@
 # Valelec
 
-Site pédagogique pour apprendre l’électricité domestique : leçons, schémas animés, examen pratique interactif (titre pro électricien d’équipement du bâtiment, espaces de travail n°1, n°2 et n°3), bac à sable de schémas et comparaison des tableaux électriques français et américain. Thème clair ou sombre au choix.
+Site pédagogique pour apprendre l’électricité domestique : leçons, schémas animés, examen pratique interactif (titre pro électricien d’équipement du bâtiment, espaces de travail n°1, n°2 et n°3), bac à sable de schémas, comparaison des tableaux électriques français et américain, et deux modules métier : panneaux photovoltaïques et bornes de recharge IRVE. Thème clair ou sombre au choix.
 
 - Code source : https://github.com/Valar207/Valelec
 - Version en ligne (adresse fixe, GitHub Pages, mise à jour à chaque push) : https://valar207.github.io/Valelec/site/
@@ -50,7 +50,9 @@ Le fichier est découpé par des commentaires repères (chercher ces lignes) :
 | `/* Examen pratique (TP-00467, espace n°1) */` | `buildExam1()` : espace n°1, le logement (tableau TR avec ID1/ID2 et D1 à D6, R1/R2 Yokis commandés par S1, E1, E2, contacteur C1 heures creuses commandé par S2, chauffe-eau SC, prises PC1 et PC2). `buildExam2()` : espace n°2, les parties communes (minuterie KT1 commandée par S1 et S2 pour L1 et L2, prise PC1, circuit SSI 24 V avec DM1, DM2 et voyant H1 qui déclenche l’alarme sonore). `buildExam3()` : espace n°3, les locaux tertiaires (détecteur S2 pour L1 et L2, BAES en aval de Q2 et en amont du détecteur, arrêt d’urgence S1 à manque de tension sur la bobine de KM1 qui coupe PC1). `ESPACES` : titre, texte et ordre des commandes de chaque espace ; dans le HTML, `data-espace` affiche les blocs propres à l’espace choisi |
 | `/* Bac à sable */` | Palette, barre d’outils, panneau de propriétés, diagnostic, raccourcis clavier |
 | `/* Tableaux France / États-Unis */` | Les deux tableaux comparés : données, logique de déclenchement, dessin, messages |
-| `/* Navigation */` | Routage par ancre : `#accueil`, `#bases`, `#schemas`, `#examen`, `#bac-a-sable`, `#tableaux` |
+| `<!-- ============ PANNEAUX PV ============ -->` et `/* ---------------- Panneaux PV ---------------- */` | Module 5 (`#pv`) : principe, courbe I-V interactive d’un module 430 Wc (modèle à une exponentielle), comparatif des onduleurs, estimation de production (productible par ville × coefficient orientation/inclinaison), dimensionnement des chaînes (Voc par grand froid, Vmpp par forte chaleur, plage MPPT, rapport kWc/onduleur), règles de protection DC (fusibles, sectionneur, parafoudre, terre), calcul de chute de tension, schéma animé (sectionneur DC, disjoncteur PV, coupure réseau et découplage), pose pas à pas, démarches de raccordement |
+| `<!-- ============ BORNES IRVE ============ -->` et `/* ---------------- Bornes IRVE ---------------- */` | Module 6 (`#irve`) : recharge AC/DC, modes 1 à 4 et connecteurs, calcul du temps de charge (borne × chargeur embarqué), simulateur du signal pilote CP (états A/B/C, rapport cyclique = I ÷ 0,6), dimensionnement du circuit (disjoncteur repère, section avec chute de tension ≤ 3 %, type de différentiel, marge d’abonnement), schéma animé d’une wallbox 7,4 kW avec défaut d’isolement, pose pas à pas, qualification IRVE P1/P2/P3 |
+| `/* Navigation */` | Routage par ancre : `#accueil`, `#bases`, `#schemas`, `#examen`, `#bac-a-sable`, `#tableaux`, `#pv`, `#irve` (les sous-sections `#pv-…` et `#irve-…` ouvrent la bonne page et défilent jusqu’à la section) |
 | `/* Bouton mode sombre */` | Bascule clair / sombre dans l’en-tête ; par défaut, le thème suit le réglage de l’appareil |
 
 ## Ajouter un composant
@@ -88,4 +90,4 @@ Espace n°3 : Q1 (20 A, prise), Q2 (16 A, éclairage), Q3 (2 A, commande) et le 
 
 ## Avertissement
 
-Schémas simplifiés à but pédagogique. Références : NF C 15-100 (France), National Electrical Code (États-Unis).
+Schémas simplifiés à but pédagogique. Références : NF C 15-100 (France), National Electrical Code (États-Unis), guide UTE C 15-712-1 (photovoltaïque), NF C 15-100 partie 7-722, IEC 61851, IEC 62196 et IEC 62955 (IRVE). Les valeurs des calculateurs PV et IRVE (productibles, disjoncteurs et sections repères) sont des ordres de grandeur : la notice du fabricant et l’étude de l’installation priment.
