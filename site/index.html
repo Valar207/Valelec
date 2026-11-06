@@ -424,6 +424,52 @@ tr:last-child td{border-bottom:0}
   .sim-nav>div{display:contents}
   .sim-nav h2{grid-column:1/-1;margin-top:8px}
 }
+/* Panneaux PV et bornes IRVE */
+.lesson{padding-top:80px;scroll-margin-top:90px}
+.two{display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));align-items:start}
+.prose h3{margin:0 0 8px;font-size:20px}
+.prose p{margin:0 0 12px;color:var(--ink-2)}
+.prose p:last-child{margin-bottom:0}
+.formula{font:500 14px/1.5 var(--f-mono);padding:10px 14px;border-radius:10px;background:var(--paper-3);color:var(--ink)!important;overflow-x:auto}
+.calc{display:flex;flex-wrap:wrap;gap:24px;align-items:stretch}
+.calc-in{flex:3 1 420px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(180px,100%),1fr));gap:14px 16px;align-content:start;padding:24px;border:1.5px solid var(--line);border-radius:18px;background:var(--paper-2)}
+.calc-in .eyebrow{margin-top:4px}
+.calc-out{flex:2 1 320px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:18px;background:var(--inv-bg);color:var(--inv-fg)}
+.calc-out .tile{background:transparent;border:1px solid var(--inv-muted)}
+.calc-out .tile b{font-size:24px}
+.fld{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;min-width:0}
+.fld input,.fld select{min-height:44px;width:100%;padding:0 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:500 15px var(--f-mono)}
+.fld select{font-family:var(--f-body)}
+.fld input:focus,.fld select:focus{border-color:var(--ink);outline:none}
+.fld small{font-weight:400;color:var(--muted);font-size:12px;line-height:1.35}
+.res-line{margin:0;font:500 13px/1.5 var(--f-mono);color:var(--inv-muted)}
+.verdict{padding:10px 12px;border-radius:10px;font-size:14px;font-weight:500;line-height:1.45}
+.verdict.ok{background:var(--ok-bg);color:var(--ok-fg)}
+.verdict.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.verdict.bad{background:var(--bad-bg);color:var(--bad-fg)}
+.verdict.info{background:var(--info-bg);color:var(--info-fg)}
+.callout{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-radius:14px;background:var(--warn-bg);color:var(--warn-fg)}
+.callout p{margin:0}
+.steps{counter-reset:st;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.steps li{counter-increment:st;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start;color:var(--ink-2)}
+.steps li::before{content:counter(st);width:38px;height:38px;border-radius:10px;background:var(--board);color:var(--yellow);font:800 17px/38px var(--f-display);text-align:center}
+.steps li b{display:block;color:var(--ink);margin-bottom:2px}
+.bx{fill:#0E151D;stroke:#5E6E80;stroke-width:1.5}
+.bx.hot{stroke:#FFD84A}
+.w.dcm{stroke:#9AA7B5}.w.cp{stroke:#B48CF2;stroke-width:2.5}
+.gridl{stroke:#22303F;stroke-width:1}
+.axis{stroke:#5E6E80;stroke-width:1.5;fill:none}
+.ivc{fill:none;stroke:#FFD84A;stroke-width:3;stroke-linejoin:round}
+.pvc{fill:none;stroke:#FF9A3D;stroke-width:2.5;stroke-dasharray:7 5}
+.mod{fill:#13304F;stroke:#6F8BA6;stroke-width:1.5}
+.modl{stroke:#2C4C6E;stroke-width:1}
+.sun{fill:#FFD84A;transition:opacity .3s}
+.bat{fill:#3E9A3A;transition:width .4s}
+.cpw{fill:none;stroke:#B48CF2;stroke-width:3;stroke-linejoin:round}
+.fld.wide{grid-column:1/-1}
+#page-pv .ctl:disabled,#page-irve .ctl:disabled{opacity:.45;cursor:default}
+#page-pv .lab .board,#page-irve .lab .board{display:flex;align-items:center}
+#page-pv .lab-ctl .tile b,#page-irve .lab-ctl .tile b{font-size:22px;white-space:nowrap}
 </style>
 
 <header class="top">
@@ -438,6 +484,8 @@ tr:last-child td{border-bottom:0}
       <a href="#examen" data-nav="examen">Examen pratique</a>
       <a href="#bac-a-sable" data-nav="bac-a-sable">Bac à sable</a>
       <a href="#tableaux" data-nav="tableaux">Tableaux FR / US</a>
+      <a href="#pv" data-nav="pv">Panneaux PV</a>
+      <a href="#irve" data-nav="irve">Bornes IRVE</a>
       <button class="snd" id="theme" type="button" aria-label="Mode sombre" title="Passer en mode sombre"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path id="theme-moon" d="M15.5 12.2 A6.5 6.5 0 0 1 7.8 4.5 A6.5 6.5 0 1 0 15.5 12.2 Z" class="ico"/><g id="theme-sun" style="display:none"><circle cx="10" cy="10" r="3.4" class="ico"/><path d="M10 2.5V4.3M10 15.7V17.5M2.5 10H4.3M15.7 10H17.5M4.7 4.7L6 6M14 14L15.3 15.3M4.7 15.3L6 14M14 6L15.3 4.7" class="ico"/></g></svg></button>
     </nav>
   </div>
@@ -474,6 +522,8 @@ tr:last-child td{border-bottom:0}
       <a class="card" href="#symboles"><span class="eyebrow">Module 2</span><h3>Lire un schéma</h3><p>Les symboles normalisés et le code couleur des conducteurs.</p><div class="chips"><span class="chip">Symboles</span><span class="chip">Phase · neutre · terre</span></div></a>
       <a class="card" href="#schemas"><span class="eyebrow">Module 3</span><h3>Circuits de base</h3><p>Les montages d’éclairage de la maison, à actionner toi-même.</p><div class="chips"><span class="chip">Simple allumage</span><span class="chip">Va-et-vient</span><span class="chip">Double allumage</span></div></a>
       <a class="card" href="#schemas" data-preset="tele"><span class="eyebrow">Module 4</span><h3>Circuits avancés</h3><p>Commande et puissance : télérupteur, minuterie, contacteur, protections.</p><div class="chips"><span class="chip">Télérupteur</span><span class="chip">Minuterie</span><span class="chip">Court-circuit</span></div></a>
+      <a class="card" href="#pv"><span class="eyebrow">Module 5</span><h3>Panneaux PV</h3><p>Du photon au compteur : principe, dimensionnement, câblage et raccordement d’une installation solaire.</p><div class="chips"><span class="chip">kWc</span><span class="chip">Chaînes</span><span class="chip">Onduleur</span></div></a>
+      <a class="card" href="#irve"><span class="eyebrow">Module 6</span><h3>Bornes IRVE</h3><p>Recharger une voiture électrique : modes, dialogue borne-voiture, protections et pose d’une wallbox.</p><div class="chips"><span class="chip">Mode 3</span><span class="chip">Type 2</span><span class="chip">Différentiel</span></div></a>
     </div>
   </div></section>
 
@@ -927,9 +977,463 @@ tr:last-child td{border-bottom:0}
     <div class="tnote"><p style="margin:0">Clique sur un disjoncteur, un différentiel ou un appareil dans les schémas pour l’actionner. Les schémas sont simplifiés et pédagogiques : en France, la référence est la norme NF C 15-100 ; aux États-Unis, le National Electrical Code (NEC), adopté et complété différemment selon les États.</p></div>
   </section>
 </div>
+<!-- ============ PANNEAUX PV ============ -->
+<div id="page-pv" data-page="pv" hidden>
+  <div class="wrap" style="padding-top:52px;display:flex;flex-direction:column;gap:20px">
+    <p class="eyebrow">Module 5 · Photovoltaïque</p>
+    <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:17ch">Les panneaux photovoltaïques.</h1>
+    <p class="lead">Du photon au compteur : comment un panneau produit du courant, comment choisir et dimensionner une installation, puis la câbler, la protéger et la raccorder au réseau.</p>
+    <nav class="toc" aria-label="Sommaire du module photovoltaïque">
+      <a href="#pv-principe">1 · Le principe</a><a href="#pv-fiche">2 · La fiche technique</a><a href="#pv-materiel">3 · Le matériel</a><a href="#pv-production">4 · Estimer la production</a><a href="#pv-chaine">5 · Dimensionner les chaînes</a><a href="#pv-protections">6 · Protections et câbles</a><a href="#pv-schema">7 · Le schéma</a><a href="#pv-pose">8 · La pose pas à pas</a><a href="#pv-demarches">9 · Raccordement et démarches</a>
+    </nav>
+  </div>
+
+  <section id="pv-principe" class="wrap lesson" style="padding-top:44px">
+    <div class="sec-head"><div><p class="eyebrow">1 · Théorie</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">De la lumière au courant continu</h2></div><p>Une cellule de silicium transforme la lumière en courant continu. On les assemble pour obtenir la tension et la puissance voulues.</p></div>
+    <div class="grid">
+      <div class="card"><div class="kv"><span class="qty">~0,6</span><span class="mono muted" style="font-size:14px">volt · cellule</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">La cellule</h3><p>Une plaquette de silicium. La lumière arrache des électrons, qui circulent si le circuit est fermé : c’est l’effet photovoltaïque. La tension d’une cellule est faible, son courant dépend de la lumière reçue.</p></div>
+      <div class="card"><div class="kv"><span class="qty">~40</span><span class="mono muted" style="font-size:14px">volts · module</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">Le module</h3><p>Le « panneau » : une soixantaine de cellules (ou 120 demi-cellules) en série. Un module résidentiel actuel fait environ 1,7 × 1,1 m et 400 à 500 Wc.</p></div>
+      <div class="card"><div class="kv"><span class="qty">×N</span><span class="mono muted" style="font-size:14px">en série · chaîne</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">La chaîne (string)</h3><p>Des modules en série : les tensions s’additionnent, le courant reste celui d’un module. Dix modules donnent environ 320 V en fonctionnement.</p></div>
+      <div class="card"><div class="kv"><span class="qty">=/~</span><span class="mono muted" style="font-size:14px">onduleur</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">L’onduleur</h3><p>Il transforme le courant continu des panneaux en courant alternatif 230 V synchronisé avec le réseau. Il cherche en permanence le point de puissance maximale (MPPT).</p></div>
+    </div>
+    <div class="two" style="margin-top:28px">
+      <div class="prose">
+        <h3>Watt-crête (Wc) et kilowatt-crête (kWc)</h3>
+        <p>La puissance d’un module est donnée aux <b>conditions standard de test (STC)</b> : 1 000 W/m² d’ensoleillement, cellules à 25 °C, spectre AM 1,5. C’est la puissance « crête » : un module de 430 Wc produit rarement 430 W sur un toit, car il est rarement à la fois en plein soleil et à 25 °C.</p>
+        <p>Une installation de 10 modules de 430 Wc fait 4,3 kWc. Sa production annuelle se compte en kWh : environ 1 000 à 1 500 kWh par kWc selon la région et l’orientation.</p>
+      </div>
+      <div class="prose">
+        <h3>Ce que la lumière et la chaleur changent</h3>
+        <p><b>Plus de lumière = plus de courant.</b> Le courant est presque proportionnel à l’ensoleillement. La tension, elle, varie peu.</p>
+        <p><b>Plus de chaleur = moins de tension.</b> Chaque degré au-dessus de 25 °C fait perdre environ 0,3 % de tension et de puissance. À l’inverse, par grand froid, la tension monte : c’est ce qui fixe le nombre maximal de modules en série.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pv-fiche" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">2 · Expérience</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La courbe courant-tension d’un module</h2></div><p>Fais varier l’ensoleillement et la température des cellules. Le point jaune est le point de puissance maximale que l’onduleur cherche à suivre.</p></div>
+    <div class="lab">
+      <div class="board">
+        <svg id="pv-iv" viewBox="0 0 640 380" role="img" aria-label="Courbes courant-tension et puissance-tension d’un module de 430 Wc"></svg>
+      </div>
+      <div class="lab-ctl">
+        <div><div class="kv"><label for="pv-g">Ensoleillement</label><span class="mono" style="font-size:18px" id="pv-g-v">1 000 W/m²</span></div><input id="pv-g" type="range" min="100" max="1100" step="50" value="1000"></div>
+        <div><div class="kv"><label for="pv-t">Température des cellules</label><span class="mono" style="font-size:18px" id="pv-t-v">25 °C</span></div><input id="pv-t" type="range" min="-10" max="75" step="5" value="25"></div>
+        <div class="tiles"><div class="tile"><small>Puissance max</small><b id="pv-pm">430 W</b></div><div class="tile"><small>Tension à vide Voc</small><b id="pv-voc">38,6 V</b></div><div class="tile"><small>Courant Impp</small><b id="pv-im">13,4 A</b></div><div class="tile"><small>Tension Vmpp</small><b id="pv-vm">32,2 V</b></div></div>
+        <p style="margin:0;font-size:14px;color:var(--muted)">Modèle simplifié d’un module de 430 Wc. Essaie −10 °C : la tension à vide dépasse 42 V. Multipliée par le nombre de modules en série, c’est elle qui doit rester sous la tension maximale de l’onduleur.</p>
+      </div>
+    </div>
+    <div class="tbl-box" style="margin-top:28px"><table>
+      <caption>Lire la fiche technique d’un module (exemple : 430 Wc)</caption>
+      <thead><tr><th scope="col">Grandeur</th><th scope="col">Exemple</th><th scope="col">À quoi elle sert</th></tr></thead>
+      <tbody>
+        <tr><td><b>Pmax</b> · puissance crête</td><td class="mono">430 Wc</td><td>Puissance aux conditions STC. Sert à calculer la puissance crête de l’installation.</td></tr>
+        <tr><td><b>Voc</b> · tension à vide</td><td class="mono">38,6 V</td><td>Tension sans charge, la plus haute. Corrigée par grand froid, elle fixe le <b>nombre maximal</b> de modules en série.</td></tr>
+        <tr><td><b>Vmpp</b> · tension au point de puissance max</td><td class="mono">32,2 V</td><td>Tension de fonctionnement. Corrigée par forte chaleur, elle fixe le <b>nombre minimal</b> de modules pour rester dans la plage MPPT.</td></tr>
+        <tr><td><b>Isc</b> · courant de court-circuit</td><td class="mono">14,1 A</td><td>Courant le plus fort. Sert à choisir câbles, fusibles, sectionneurs et entrée de l’onduleur.</td></tr>
+        <tr><td><b>Impp</b> · courant au point de puissance max</td><td class="mono">13,36 A</td><td>Courant de fonctionnement, utilisé pour la chute de tension.</td></tr>
+        <tr><td><b>Coefficient de température de Voc</b></td><td class="mono">−0,26 %/°C</td><td>Variation de la tension avec la température des cellules.</td></tr>
+        <tr><td><b>Coefficient de température de Pmax</b></td><td class="mono">−0,30 %/°C</td><td>Perte de puissance quand les cellules chauffent.</td></tr>
+        <tr><td><b>Courant inverse max</b> (IRM, « max series fuse »)</td><td class="mono">25 A</td><td>Courant que le module supporte à l’envers. Décide s’il faut des fusibles de chaîne.</td></tr>
+        <tr><td><b>Tension max du système</b></td><td class="mono">1&nbsp;000 ou 1&nbsp;500&nbsp;V</td><td>La chaîne ne doit jamais la dépasser, même par grand froid.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="pv-materiel" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">3 · Le matériel</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Onduleur central, micro-onduleurs ou optimiseurs</h2></div><p>Trois architectures pour la même fonction : transformer le continu des modules en alternatif.</p></div>
+    <div class="tbl-box"><table>
+      <thead><tr><th scope="col"></th><th scope="col">Onduleur « string »</th><th scope="col">Micro-onduleurs</th><th scope="col">Optimiseurs + onduleur</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Principe</th><td>Un onduleur pour une ou plusieurs chaînes, souvent dans le garage ou près du tableau.</td><td>Un petit onduleur sous chaque module (ou pour deux). Le courant alternatif part directement du toit.</td><td>Un boîtier par module qui optimise sa puissance, puis un onduleur central.</td></tr>
+        <tr><th scope="row">Tension sur le toit</th><td>Plusieurs centaines de volts en continu.</td><td>Environ 40 à 60 V continu par module, 230 V alternatif ensuite.</td><td>Réduite à un niveau sûr quand l’onduleur s’arrête (selon le fabricant).</td></tr>
+        <tr><th scope="row">Ombrage</th><td>Un module ombré freine toute la chaîne (diodes de dérivation mises à part).</td><td>Chaque module travaille seul.</td><td>Chaque module travaille seul.</td></tr>
+        <tr><th scope="row">Coût et maintenance</th><td>Le moins cher. Un seul appareil à remplacer.</td><td>Plus cher. Une panne oblige à monter sur le toit.</td><td>Intermédiaire.</td></tr>
+        <tr><th scope="row">Usage typique</th><td>Toit bien exposé, sans ombre.</td><td>Petits systèmes, toits ombrés ou orientés de plusieurs côtés.</td><td>Toits complexes, besoin de suivi par module.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="grid" style="margin-top:20px">
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Câble solaire</h3><p>Câble DC double isolation résistant aux UV, de type <b>H1Z2Z2-K</b>, en 4 ou 6 mm² le plus souvent. Un câble rouge pour le +, un noir pour le −, ou un repérage clair aux extrémités.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Connecteurs MC4</h3><p>Ne relier entre eux que des connecteurs de <b>même fabricant et même modèle</b>, sertis avec l’outil prévu. Un mauvais contact en continu chauffe et peut créer un arc électrique : c’est la première cause d’incendie sur les installations PV.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Coffret DC et coffret AC</h3><p>Le coffret DC regroupe l’interrupteur-sectionneur DC, les parafoudres DC et, si besoin, les fusibles de chaîne. Le coffret AC regroupe le disjoncteur, le différentiel 30 mA et le parafoudre AC.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Pose sur le toit</h3><p><b>Surimposition</b> : rails fixés au-dessus de la couverture, la solution la plus courante. <b>Intégration</b> : les modules remplacent une partie de la toiture, plus délicat pour l’étanchéité.</p></div>
+    </div>
+  </section>
+
+  <section id="pv-production" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">4 · Dimensionnement · étape 1</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Estimer la production</h2></div><p>Production annuelle ≈ puissance crête × productible de la ville × coefficient d’orientation et d’inclinaison.</p></div>
+    <div class="calc">
+      <div class="calc-in">
+        <label class="fld wide">Ville de référence<select id="pp-city">
+          <option value="1030">Lille · 1 030 kWh/kWc</option><option value="1120" selected>Paris · 1 120 kWh/kWc</option><option value="1100">Strasbourg · 1 100 kWh/kWc</option><option value="1100">Brest · 1 100 kWh/kWc</option><option value="1200">Nantes · 1 200 kWh/kWc</option><option value="1250">Lyon · 1 250 kWh/kWc</option><option value="1300">Bordeaux · 1 300 kWh/kWc</option><option value="1350">Toulouse · 1 350 kWh/kWc</option><option value="1500">Marseille · 1 500 kWh/kWc</option>
+        </select><small>Valeurs approchées, pertes du système comprises.</small></label>
+        <label class="fld">Orientation<select id="pp-ori"><option value="0" selected>Sud</option><option value="1">Sud-est ou sud-ouest</option><option value="2">Est ou ouest</option></select></label>
+        <label class="fld">Inclinaison<select id="pp-inc"><option value="0">0° (à plat)</option><option value="15">15°</option><option value="30" selected>30°</option><option value="45">45°</option><option value="60">60°</option><option value="90">90° (façade)</option></select></label>
+        <label class="fld">Puissance d’un module (Wc)<input id="pp-wc" type="number" min="100" max="800" step="5" value="430"></label>
+        <label class="fld">Nombre de modules<input id="pp-n" type="number" min="1" max="200" step="1" value="10"></label>
+        <label class="fld">Consommation annuelle (kWh)<input id="pp-conso" type="number" min="0" max="100000" step="100" value="4500"><small>Sur tes factures ou ton espace Linky.</small></label>
+        <label class="fld">Part consommée en journée (%)<input id="pp-jour" type="number" min="5" max="100" step="5" value="40"><small>Environ 30 à 50 % sans pilotage.</small></label>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <div class="tiles"><div class="tile"><small>Puissance crête</small><b id="pp-kwc">4,3 kWc</b></div><div class="tile"><small>Production par an</small><b id="pp-prod">4 820 kWh</b></div><div class="tile"><small>Surface de toit</small><b id="pp-surf">≈ 20 m²</b></div><div class="tile"><small>Coefficient orientation</small><b id="pp-coef">1,00</b></div></div>
+        <p class="res-line" id="pp-eq"></p>
+        <div class="verdict" id="pp-reco"></div>
+        <p style="margin:0;font-size:14px;color:var(--inv-muted)">Pour un projet réel, affine avec <a href="https://re.jrc.ec.europa.eu/pvg_tools/fr/" target="_blank" rel="noopener" style="color:var(--inv-accent)">PVGIS</a>, l’outil gratuit de la Commission européenne, qui tient compte de l’adresse exacte et des ombres de l’horizon.</p>
+      </div>
+    </div>
+    <div class="tbl-box" style="margin-top:20px"><table>
+      <caption>Coefficients d’orientation et d’inclinaison (France)</caption>
+      <thead><tr><th scope="col">Inclinaison</th><th scope="col">Est / Ouest</th><th scope="col">Sud-est / Sud-ouest</th><th scope="col">Sud</th></tr></thead>
+      <tbody><tr><td>0°</td><td class="mono">0,93</td><td class="mono">0,93</td><td class="mono">0,93</td></tr><tr><td>30°</td><td class="mono">0,90</td><td class="mono">0,96</td><td class="mono">1,00</td></tr><tr><td>60°</td><td class="mono">0,78</td><td class="mono">0,88</td><td class="mono">0,91</td></tr><tr><td>90°</td><td class="mono">0,55</td><td class="mono">0,66</td><td class="mono">0,68</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <section id="pv-chaine" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">5 · Dimensionnement · étape 2</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Combien de modules par chaîne ?</h2></div><p>La chaîne doit rester sous la tension maximale de l’onduleur par grand froid, et dans sa plage MPPT par forte chaleur.</p></div>
+    <div class="two" style="margin-bottom:24px">
+      <div class="prose">
+        <h3>Le maximum : par grand froid, à vide</h3>
+        <p>Le matin d’hiver, cellules gelées, onduleur pas encore démarré : la chaîne est à vide et sa tension est la plus haute.</p>
+        <p class="formula">Voc froid = Voc × (1 + coef × (Tmin − 25))</p>
+        <p class="formula">N max = arrondi inférieur de (Umax onduleur ÷ Voc froid)</p>
+        <p>Sans donnée de température, le guide UTE C 15-712-1 admet de multiplier Voc par 1,2.</p>
+      </div>
+      <div class="prose">
+        <h3>Le minimum : par forte chaleur, en fonctionnement</h3>
+        <p>En plein été, les cellules dépassent souvent 70 °C. La tension de fonctionnement baisse et ne doit pas sortir de la plage MPPT, sinon l’onduleur décroche.</p>
+        <p class="formula">Vmpp chaud = Vmpp × (1 + coef × (Tcellule max − 25))</p>
+        <p class="formula">N min = arrondi supérieur de (Umppt min ÷ Vmpp chaud)</p>
+        <p>On vérifie aussi que le courant de la chaîne (Isc) reste sous le courant d’entrée maximal de l’onduleur.</p>
+      </div>
+    </div>
+    <div class="calc">
+      <div class="calc-in">
+        <p class="eyebrow" style="grid-column:1/-1">Module</p>
+        <label class="fld">Voc (V)<input id="pc-voc" type="number" step="0.1" value="38.6"></label>
+        <label class="fld">Vmpp (V)<input id="pc-vmp" type="number" step="0.1" value="32.2"></label>
+        <label class="fld">Isc (A)<input id="pc-isc" type="number" step="0.1" value="14.1"></label>
+        <label class="fld">Puissance (Wc)<input id="pc-wc" type="number" step="5" value="430"></label>
+        <label class="fld">Coef. température Voc (%/°C)<input id="pc-coef" type="number" step="0.01" value="-0.26"></label>
+        <p class="eyebrow" style="grid-column:1/-1">Onduleur et site</p>
+        <label class="fld">Tension DC max (V)<input id="pc-umax" type="number" step="10" value="600"></label>
+        <label class="fld">Plage MPPT min (V)<input id="pc-mmin" type="number" step="10" value="90"></label>
+        <label class="fld">Plage MPPT max (V)<input id="pc-mmax" type="number" step="10" value="560"></label>
+        <label class="fld">Courant d’entrée max (A)<input id="pc-imax" type="number" step="0.5" value="16"><small>Par entrée MPPT. Comparé à Isc.</small></label>
+        <label class="fld">Puissance AC onduleur (kW)<input id="pc-pac" type="number" step="0.1" value="4.6"></label>
+        <label class="fld">Température min du site (°C)<input id="pc-tmin" type="number" step="1" value="-10"><small>Île-de-France : −10 °C est une valeur prudente.</small></label>
+        <label class="fld">Température cellule max (°C)<input id="pc-tmax" type="number" step="1" value="70"></label>
+        <label class="fld">Modules dans ta chaîne<input id="pc-n" type="number" min="1" step="1" value="10"></label>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <div class="tiles"><div class="tile"><small>Modules en série · mini</small><b id="pc-nmin">4</b></div><div class="tile"><small>Modules en série · maxi</small><b id="pc-nmax">14</b></div><div class="tile"><small>Tension à vide par grand froid</small><b id="pc-uoc">421 V</b></div><div class="tile"><small>Tension MPP par forte chaleur</small><b id="pc-ump">284 V</b></div></div>
+        <p class="res-line" id="pc-eq"></p>
+        <div id="pc-checks" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pv-protections" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">6 · Dimensionnement · étape 3</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Protections et sections de câble</h2></div><p>Côté continu, le courant de court-circuit d’un module est à peine supérieur à son courant normal : un disjoncteur classique ne verrait pas le défaut. Les règles sont donc différentes.</p></div>
+    <div class="grid">
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Fusibles de chaîne</h3><p>Si une chaîne est en défaut, les chaînes saines en parallèle lui renvoient du courant à l’envers. Tant que ce courant reste sous l’IRM du module, pas besoin de fusible.</p><p class="formula" style="white-space:normal">Sans fusible si : nombre de chaînes en parallèle ≤ 1 + IRM ÷ Isc</p><p>Sinon, fusible gPV sur chaque chaîne, avec 1,1 × 1,25 × Isc ≤ calibre ≤ IRM. Avec 1 ou 2 chaînes, c’est presque toujours inutile.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Interrupteur-sectionneur DC</h3><p>Obligatoire pour isoler l’onduleur côté continu (il est souvent intégré à l’onduleur). Il doit être prévu pour le courant continu, pour une tension au moins égale à la Voc par grand froid et un courant d’au moins 1,25 × Isc par chaîne raccordée.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Parafoudres</h3><p>Côté DC, un parafoudre est exigé quand la longueur de câble entre modules et onduleur dépasse une <b>longueur critique</b> (environ 115 ÷ Ng mètres pour une maison, Ng étant la densité de foudroiement locale), ou si le bâtiment a un paratonnerre. Côté AC, un parafoudre au tableau selon la NF C 15-100.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Côté AC</h3><p>Un circuit dédié depuis le tableau : disjoncteur calibré selon le courant de sortie de l’onduleur, et différentiel 30 mA du type demandé par le fabricant (souvent type A). La chute de tension AC doit rester sous 3 %, 1 % étant recommandé.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Mise à la terre</h3><p>Les cadres des modules et les rails sont reliés à la terre par un conducteur vert/jaune, d’au moins <b>6 mm²</b> en cuivre, avec des pièces de liaison adaptées à l’aluminium. On le fait cheminer au plus près des câbles DC.</p></div>
+    </div>
+    <div class="calc" style="margin-top:24px">
+      <div class="calc-in">
+        <p class="eyebrow" style="grid-column:1/-1">Chute de tension d’un câble</p>
+        <label class="fld wide">Côté<select id="pd-side"><option value="dc" selected>Continu (chaîne → onduleur)</option><option value="ac">Alternatif 230 V (onduleur → tableau)</option></select></label>
+        <label class="fld">Longueur (aller simple, m)<input id="pd-l" type="number" min="1" step="1" value="25"></label>
+        <label class="fld">Courant (A)<input id="pd-i" type="number" min="0.1" step="0.1" value="13.36"><small>DC : Impp. AC : courant de sortie de l’onduleur.</small></label>
+        <label class="fld">Tension (V)<input id="pd-u" type="number" min="1" step="1" value="322"><small>DC : N × Vmpp. AC : 230.</small></label>
+        <label class="fld">Section (mm²)<select id="pd-s"><option>1.5</option><option>2.5</option><option selected>4</option><option>6</option><option>10</option><option>16</option></select></label>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <div class="tiles"><div class="tile"><small>Chute de tension</small><b id="pd-du">0,60 V</b></div><div class="tile"><small>En pourcentage</small><b id="pd-pc">0,19 %</b></div></div>
+        <p class="res-line">ΔU = 2 × ρ × L × I ÷ S, avec ρ = 0,023 Ω·mm²/m pour le cuivre. Le facteur 2 compte l’aller et le retour.</p>
+        <div class="verdict" id="pd-v"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pv-schema" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">7 · Schéma animé</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Une installation en autoconsommation</h2></div><p>Dix modules en série, un onduleur string monophasé, raccordés au tableau de la maison. Coupe le réseau ou le sectionneur DC pour voir ce qui reste sous tension.</p></div>
+    <div class="stage">
+      <div class="board">
+        <svg id="pv-svg" viewBox="0 0 1000 420" role="img" aria-label="Schéma d’une installation photovoltaïque : modules, coffret DC, onduleur, coffret AC, tableau et compteur"></svg>
+        <div class="statusbar">
+          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvs-dot"></span><div style="min-width:0"><strong id="pvs-st"></strong><span class="d" id="pvs-sd"></span></div></div>
+          <span class="metric" id="pvs-m">0 W</span>
+        </div>
+      </div>
+      <div class="ctls" role="group" aria-label="Commandes de l’installation">
+        <label class="ctl" style="cursor:default">Soleil <input id="pvs-g" type="range" min="0" max="1000" step="50" value="800" style="width:140px;accent-color:var(--ink)" aria-label="Ensoleillement"></label>
+        <button class="ctl" id="pvs-dc" type="button" aria-pressed="false">Ouvrir le sectionneur DC</button>
+        <button class="ctl" id="pvs-ac" type="button" aria-pressed="false">Couper le disjoncteur PV</button>
+        <button class="ctl" id="pvs-grid" type="button" aria-pressed="false">Coupure du réseau</button>
+      </div>
+      <ul class="mini-legend" aria-label="Légende">
+        <li><span class="lsw" style="background:#E5533D"></span>DC + / phase</li>
+        <li><span class="lsw" style="background:#9AA7B5"></span>DC −</li>
+        <li><span class="lsw" style="background:#4E8EF7"></span>Neutre</li>
+        <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#3E9A3A 0 5px,#F2CB2E 5px 10px)"></span>Terre</li>
+        <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
+        <li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
+      </ul>
+    </div>
+    <div class="callout" style="margin-top:20px"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><path d="M24 5 L44 41 H4 Z" class="ico"/><path d="M24 19 V29 M24 34 V35" class="ico"/></svg><p><b>On ne peut pas éteindre un panneau.</b> Tant qu’il reçoit de la lumière, la chaîne est sous tension, même onduleur arrêté et sectionneur ouvert : plusieurs centaines de volts en continu côté toit. Couvre les modules ou travaille hors ensoleillement, et ne débranche jamais un MC4 en charge.</p></div>
+  </section>
+
+  <section id="pv-pose" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">8 · Pratique</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La pose pas à pas</h2></div><p>L’ordre de chantier d’une installation sur toiture avec onduleur string.</p></div>
+    <div class="two">
+      <ol class="steps">
+        <li><div><b>Préparer et sécuriser</b>Protections antichute (harnais, ligne de vie ou échafaudage), étude de la charpente et du plan de calepinage : position des rails et des modules, distance aux bords du toit.</div></li>
+        <li><div><b>Poser la structure</b>Crochets fixés dans les chevrons, sous les tuiles, puis rails. L’étanchéité de la couverture doit rester intacte.</div></li>
+        <li><div><b>Relier la structure à la terre</b>Conducteur vert/jaune d’au moins 6 mm² Cu entre rails, cadres et barrette de terre, avec des pièces adaptées à l’aluminium.</div></li>
+        <li><div><b>Poser et câbler les modules en série</b>Le + d’un module sur le − du suivant. Garder les câbles + et − de la chaîne côte à côte : une grande boucle capterait les surtensions de la foudre.</div></li>
+        <li><div><b>Mesurer chaque chaîne avant de la raccorder</b>Au multimètre DC : la tension à vide doit valoir à peu près N × Voc corrigée de la température. Vérifier la polarité. Un écart d’un module signale un connecteur mal serti ou un module inversé.</div></li>
+      </ol>
+      <ol class="steps" start="6" style="counter-reset:st 5">
+        <li><div><b>Câbler le coffret DC</b>Interrupteur-sectionneur DC, parafoudres DC et fusibles si besoin. Étiquette « Attention : câbles DC sous tension » sur le coffret et le long du cheminement.</div></li>
+        <li><div><b>Poser l’onduleur</b>Dans un endroit ventilé, à l’abri du soleil direct, au plus près du champ pour limiter la longueur DC.</div></li>
+        <li><div><b>Câbler le coffret AC et le tableau</b>Circuit dédié : disjoncteur et différentiel 30 mA, parafoudre AC, raccordement en aval du disjoncteur de branchement (AGCP).</div></li>
+        <li><div><b>Mesurer et contrôler</b>Continuité des terres, isolement des câbles DC et AC, test du différentiel. Remplir le dossier : schéma, fiches techniques, étiquetage.</div></li>
+        <li><div><b>Mettre en service</b>Fermer d’abord le côté AC (l’onduleur voit le réseau), puis le côté DC. Configurer l’onduleur (pays, norme de raccordement) et vérifier la production sur son afficheur.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="pv-demarches" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">9 · Réglementation</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Raccordement et démarches</h2></div><p>Pour une maison (jusqu’à 36 kVA), du projet à la mise en service.</p></div>
+    <div class="tbl-box"><table>
+      <thead><tr><th scope="col">Étape</th><th scope="col">Auprès de qui</th><th scope="col">Ce qu’il faut savoir</th></tr></thead>
+      <tbody>
+        <tr><td><b>Déclaration préalable de travaux</b></td><td>Mairie</td><td>Obligatoire pour poser des modules sur un toit. Délai d’instruction d’un mois en général, plus long près d’un monument historique.</td></tr>
+        <tr><td><b>Choix du mode de valorisation</b></td><td>—</td><td><b>Autoconsommation totale</b> : rien n’est vendu (contrat CACSI avec Enedis). <b>Autoconsommation avec vente du surplus</b> : l’excédent est acheté par EDF OA. <b>Vente totale</b> : toute la production est vendue.</td></tr>
+        <tr><td><b>Demande de raccordement</b></td><td>Enedis (en ligne)</td><td>Même sans vente, Enedis doit être prévenu dès qu’un producteur est relié au réseau. Le Linky compte ensuite l’énergie injectée.</td></tr>
+        <tr><td><b>Attestation de conformité</b></td><td>Consuel</td><td>Visa exigé pour la vente du surplus ou la vente totale. Recommandé dans tous les cas.</td></tr>
+        <tr><td><b>Contrat d’achat</b></td><td>EDF OA</td><td>Contrat de 20 ans pour le surplus. Le tarif est fixé chaque trimestre par les pouvoirs publics et a beaucoup baissé depuis 2025 : vérifie le tarif en vigueur avant de chiffrer un projet.</td></tr>
+        <tr><td><b>Qualification</b></td><td>QualiPV (Qualit’EnR)</td><td>Un installateur RGE QualiPV est nécessaire pour la prime à l’autoconsommation et le contrat d’achat aidé.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="tnote" style="margin-top:16px">Références : guide UTE C 15-712-1 (installations PV raccordées au réseau), NF C 15-100. Sources : <a href="https://energypedia.info/images/a/ab/Dimensionnement_Sujet_composant_DC_et_AC.pdf" target="_blank" rel="noopener">présentation du guide UTE C 15-712-1 (energypedia)</a>, <a href="https://www.photovoltaique.info/" target="_blank" rel="noopener">photovoltaique.info</a>, <a href="https://re.jrc.ec.europa.eu/pvg_tools/fr/" target="_blank" rel="noopener">PVGIS</a>.</p>
+  </section>
+
+  <div class="wrap" style="padding-block:80px 96px">
+    <div class="cta">
+      <div><span class="mono" style="font-size:14px;color:var(--inv-accent)">Module 6 · Bornes IRVE</span><h2>Prochaine étape : recharger une voiture électrique</h2></div>
+      <a class="btn yel" href="#irve">Ouvrir le module IRVE <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BORNES IRVE ============ -->
+<div id="page-irve" data-page="irve" hidden>
+  <div class="wrap" style="padding-top:52px;display:flex;flex-direction:column;gap:20px">
+    <p class="eyebrow">Module 6 · Infrastructure de recharge pour véhicules électriques</p>
+    <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:17ch">Les bornes de recharge IRVE.</h1>
+    <p class="lead">Comment une voiture se recharge, comment la borne et le véhicule se parlent, puis comment dimensionner, protéger, câbler et mettre en service un point de recharge.</p>
+    <nav class="toc" aria-label="Sommaire du module IRVE">
+      <a href="#irve-bases">1 · Les bases</a><a href="#irve-modes">2 · Modes et prises</a><a href="#irve-puissance">3 · Puissance et temps de charge</a><a href="#irve-dialogue">4 · Le dialogue borne-voiture</a><a href="#irve-dim">5 · Dimensionner et protéger</a><a href="#irve-schema">6 · Le schéma</a><a href="#irve-pose">7 · La pose pas à pas</a><a href="#irve-regles">8 · Qualification et aides</a>
+    </nav>
+  </div>
+
+  <section id="irve-bases" class="wrap lesson" style="padding-top:44px">
+    <div class="sec-head"><div><p class="eyebrow">1 · Théorie</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Qui recharge vraiment la batterie ?</h2></div><p>Une batterie se charge en courant continu. La question est de savoir où se fait la conversion de l’alternatif vers le continu.</p></div>
+    <div class="grid">
+      <div class="card"><div class="kv"><span class="qty">AC</span><span class="mono muted" style="font-size:14px">charge normale</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">Recharge en alternatif</h3><p>La borne ne fait que fournir le 230 V ou le 400 V en sécurité. C’est le <b>chargeur embarqué</b> de la voiture qui convertit en continu. La puissance est limitée par le plus faible des deux : borne, chargeur embarqué ou installation.</p></div>
+      <div class="card"><div class="kv"><span class="qty">DC</span><span class="mono muted" style="font-size:14px">charge rapide</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">Recharge en continu</h3><p>Le convertisseur est dans la borne, qui envoie directement du continu à la batterie : 50 à plus de 300 kW sur les aires d’autoroute. Matériel lourd, raccordé en triphasé, voire en haute tension.</p></div>
+      <div class="card"><div class="kv"><span class="qty">IRVE</span><span class="mono muted" style="font-size:14px">vocabulaire</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">Les mots du métier</h3><p><b>Point de recharge</b> : une prise où un seul véhicule se charge à la fois. <b>Borne</b> : l’appareil, qui peut porter plusieurs points. <b>Wallbox</b> : borne murale. <b>VE / VHR</b> : véhicule électrique / hybride rechargeable.</p></div>
+    </div>
+  </section>
+
+  <section id="irve-modes" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">2 · Normes IEC 61851 et IEC 62196</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les 4 modes de recharge</h2></div><p>Le mode décrit le niveau de sécurité et de communication entre l’installation et la voiture.</p></div>
+    <div class="tbl-box"><table>
+      <thead><tr><th scope="col">Mode</th><th scope="col">Branchement</th><th scope="col">Communication</th><th scope="col">Usage</th></tr></thead>
+      <tbody>
+        <tr><td><b>Mode 1</b></td><td>Prise domestique, câble simple</td><td>Aucune</td><td>Vélos, trottinettes. Pas utilisé pour les voitures.</td></tr>
+        <tr><td><b>Mode 2</b></td><td>Prise domestique ou renforcée, câble avec boîtier de contrôle intégré</td><td>Le boîtier dialogue avec la voiture et contient une protection</td><td>Recharge d’appoint : 8 à 10 A sur une prise classique, jusqu’à 16 A sur une prise renforcée (≈ 3,7 kW).</td></tr>
+        <tr><td><b>Mode 3</b></td><td>Borne ou wallbox, connecteur Type 2</td><td>Signal pilote complet, contacteur dans la borne</td><td>La recharge normale à domicile et en voirie : 3,7 à 22 kW.</td></tr>
+        <tr><td><b>Mode 4</b></td><td>Borne rapide, câble attaché, Combo CCS2</td><td>Communication numérique avec la batterie</td><td>Recharge rapide en courant continu.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="grid" style="margin-top:20px">
+      <div class="card"><span class="eyebrow">AC · mode 3</span><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Type 2 (Mennekes)</h3><p>Le standard européen. 7 broches : L1, L2, L3, N, PE et deux broches de signal, CP (pilote) et PP (proximité). Fonctionne en mono ou en triphasé.</p></div>
+      <div class="card"><span class="eyebrow">DC · mode 4</span><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Combo CCS2</h3><p>Un Type 2 avec deux grosses broches DC en dessous. La même prise côté voiture accepte la charge lente et la charge rapide.</p></div>
+      <div class="card"><span class="eyebrow">Mode 2</span><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Prise renforcée</h3><p>Une prise 2P+T conçue pour un usage prolongé à 14 ou 16 A, sur son propre circuit. Une prise classique n’est pas faite pour débiter 10 A pendant 10 heures : ses contacts chauffent.</p></div>
+      <div class="card"><span class="eyebrow">DC · en voie de disparition</span><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">CHAdeMO</h3><p>Standard japonais de charge rapide, encore présent sur d’anciens modèles. Les nouveaux véhicules vendus en Europe utilisent le Combo CCS2.</p></div>
+    </div>
+  </section>
+
+  <section id="irve-puissance" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">3 · Calcul</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Puissance et temps de charge</h2></div><p>P = U × I en monophasé, P = 3 × 230 × I en triphasé. Le temps de charge, c’est l’énergie à remettre divisée par la puissance réellement reçue.</p></div>
+    <div class="tbl-box"><table>
+      <caption>Les puissances courantes en recharge AC</caption>
+      <thead><tr><th scope="col">Puissance</th><th scope="col">Alimentation</th><th scope="col">Courant</th><th scope="col">Usage typique</th></tr></thead>
+      <tbody>
+        <tr><td class="mono"><b>3,7 kW</b></td><td>Monophasé 230 V</td><td class="mono">16 A</td><td>Prise renforcée ou petite borne, recharge de nuit.</td></tr>
+        <tr><td class="mono"><b>7,4 kW</b></td><td>Monophasé 230 V</td><td class="mono">32 A</td><td>La wallbox la plus courante en maison.</td></tr>
+        <tr><td class="mono"><b>11 kW</b></td><td>Triphasé 400 V</td><td class="mono">3 × 16 A</td><td>Maison en triphasé, entreprise, copropriété.</td></tr>
+        <tr><td class="mono"><b>22 kW</b></td><td>Triphasé 400 V</td><td class="mono">3 × 32 A</td><td>Voirie, parkings. Peu de voitures acceptent 22 kW en AC.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="calc" style="margin-top:24px">
+      <div class="calc-in">
+        <label class="fld">Batterie (kWh utiles)<input id="ic-bat" type="number" min="5" max="200" step="1" value="60"></label>
+        <label class="fld">Charge de départ (%)<input id="ic-from" type="number" min="0" max="100" step="5" value="20"></label>
+        <label class="fld">Charge d’arrivée (%)<input id="ic-to" type="number" min="0" max="100" step="5" value="80"></label>
+        <label class="fld">Point de recharge<select id="ic-borne"><option value="2.3">Prise classique 10 A · 2,3 kW</option><option value="3.7">3,7 kW mono</option><option value="7.4" selected>7,4 kW mono</option><option value="11">11 kW tri</option><option value="22">22 kW tri</option></select></label>
+        <label class="fld">Chargeur embarqué de la voiture<select id="ic-obc"><option value="m3.7">3,7 kW monophasé</option><option value="m7.4">7,4 kW monophasé</option><option value="t11" selected>11 kW triphasé</option><option value="t22">22 kW triphasé</option></select></label>
+        <label class="fld">Consommation (kWh/100 km)<input id="ic-cons" type="number" min="8" max="40" step="0.5" value="17"></label>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <div class="tiles"><div class="tile"><small>Puissance reçue</small><b id="ic-p">7,4 kW</b></div><div class="tile"><small>Temps de charge</small><b id="ic-t">5 h 24</b></div><div class="tile"><small>Énergie prise au réseau</small><b id="ic-e">40 kWh</b></div><div class="tile"><small>Autonomie gagnée par heure</small><b id="ic-km">39 km</b></div></div>
+        <p class="res-line" id="ic-eq"></p>
+        <p style="margin:0;font-size:14px;color:var(--inv-muted)" id="ic-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="irve-dialogue" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">4 · Expérience</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Le dialogue entre la borne et la voiture</h2></div><p>En mode 3, la borne ne met jamais le câble sous tension tant que la voiture ne l’a pas demandé. Tout passe par deux petits fils de signal : CP et PP.</p></div>
+    <div class="lab">
+      <div class="board">
+        <svg id="cp-svg" viewBox="0 0 640 380" role="img" aria-label="Signal pilote entre la borne et la voiture"></svg>
+      </div>
+      <div class="lab-ctl">
+        <div class="ctls" role="group" aria-label="Actions sur la voiture" style="flex-direction:column;align-items:stretch">
+          <button class="ctl" id="cp-plug" type="button" aria-pressed="false">Brancher le câble</button>
+          <button class="ctl" id="cp-ask" type="button" aria-pressed="false" disabled>La voiture demande la charge</button>
+        </div>
+        <div><div class="kv"><label for="cp-a">Courant autorisé par la borne</label><span class="mono" style="font-size:18px" id="cp-a-v">32 A</span></div><input id="cp-a" type="range" min="6" max="32" step="1" value="32"></div>
+        <div class="tiles"><div class="tile"><small>État</small><b id="cp-st">A</b></div><div class="tile"><small>Tension CP</small><b id="cp-u">+12 V</b></div><div class="tile"><small>Rapport cyclique</small><b id="cp-d">—</b></div><div class="tile"><small>Puissance</small><b id="cp-p">0 kW</b></div></div>
+        <p class="mono" style="margin:0;font-size:14px;color:var(--ink-2)" id="cp-eq"></p>
+      </div>
+    </div>
+    <div class="two" style="margin-top:28px">
+      <div class="tbl-box"><table>
+        <caption>Les états du signal pilote (CP)</caption>
+        <thead><tr><th scope="col">État</th><th scope="col">Tension CP</th><th scope="col">Signification</th></tr></thead>
+        <tbody>
+          <tr><td class="mono"><b>A</b></td><td class="mono">+12 V</td><td>Pas de véhicule branché.</td></tr>
+          <tr><td class="mono"><b>B</b></td><td class="mono">+9 V</td><td>Véhicule branché, pas de demande de charge.</td></tr>
+          <tr><td class="mono"><b>C</b></td><td class="mono">+6 V</td><td>Charge demandée : la borne ferme son contacteur.</td></tr>
+          <tr><td class="mono"><b>D</b></td><td class="mono">+3 V</td><td>Charge avec ventilation demandée (anciennes batteries, rare).</td></tr>
+          <tr><td class="mono"><b>E / F</b></td><td class="mono">0 V / −12 V</td><td>Défaut : court-circuit du CP ou borne indisponible.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="prose">
+        <h3>Comment la voiture connaît le courant autorisé</h3>
+        <p>La borne envoie sur le CP un signal carré ±12 V à 1 kHz. Son <b>rapport cyclique</b> (le pourcentage du temps à +12 V) annonce le courant maximal : entre 10 % et 85 %, <b>I max = rapport cyclique × 0,6 A</b>. 53 % annonce 32 A, 10 % annonce 6 A.</p>
+        <p>La voiture abaisse la tension du CP avec des résistances vers la terre : 2,74 kΩ pour l’état B, puis 1,3 kΩ ajoutée en parallèle pour l’état C. C’est ce qui fait passer de +12 à +9 puis +6 V.</p>
+        <p><b>PP</b> : une résistance dans la fiche indique le courant que supporte le câble : 1,5 kΩ pour 13 A, 680 Ω pour 20 A, 220 Ω pour 32 A, 100 Ω pour 63 A. La borne ne dépasse jamais ce que le câble accepte.</p>
+        <p>C’est ce principe qu’utilisent les <b>gestionnaires d’énergie</b> : pour éviter de faire disjoncter la maison, ils baissent le rapport cyclique et la voiture réduit aussitôt son courant.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="irve-dim" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">5 · Dimensionnement</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Dimensionner et protéger le circuit</h2></div><p>Une voiture tire sa pleine puissance pendant des heures : le circuit travaille à fond, longtemps. Les marges doivent être sérieuses.</p></div>
+    <div class="grid">
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Un circuit dédié</h3><p>Chaque point de recharge a son propre circuit depuis le tableau, avec son propre disjoncteur. Rien d’autre ne doit être branché dessus.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Un différentiel 30 mA par point</h3><p>Chaque point de recharge AC est protégé par son propre différentiel 30 mA. Le réenclenchement automatique est interdit.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Le bon type de différentiel</h3><p>Une voiture peut créer des fuites en courant continu qui « aveuglent » un différentiel classique. <b>Mode 2 monophasé</b> : type A ou F. <b>Mode 2 triphasé</b> : type B. <b>Mode 3</b> : type B, ou type A ou F si la borne intègre une détection de courant continu 6 mA (IEC 62955).</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">La puissance souscrite</h3><p>Avec un abonnement 9 kVA, une borne 7,4 kW ne laisse presque rien au reste de la maison. Il faut augmenter l’abonnement, régler la borne plus bas, ou ajouter un délestage qui réduit la charge quand la maison consomme.</p></div>
+    </div>
+    <div class="calc" style="margin-top:24px">
+      <div class="calc-in">
+        <label class="fld wide">Point de recharge<select id="id-type"><option value="pr">Prise renforcée · 3,7 kW mono (mode 2)</option><option value="m7" selected>Wallbox · 7,4 kW mono (mode 3)</option><option value="t11">Wallbox · 11 kW tri (mode 3)</option><option value="t22">Borne · 22 kW tri (mode 3)</option></select></label>
+        <label class="fld">Longueur du câble (m)<input id="id-l" type="number" min="1" max="200" step="1" value="20"><small>Du tableau à la borne, aller simple.</small></label>
+        <label class="fld">Abonnement (kVA)<select id="id-kva"><option>6</option><option selected>9</option><option>12</option><option>15</option><option>18</option><option>24</option><option>36</option></select></label>
+        <label class="fld">Alimentation du logement<select id="id-res"><option value="m" selected>Monophasée</option><option value="t">Triphasée</option></select></label>
+        <label class="fld">Borne détecte le continu 6 mA ?<select id="id-dc"><option value="1" selected>Oui (RDC-DD intégré)</option><option value="0">Non ou ne sait pas</option></select></label>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <div class="tiles"><div class="tile"><small>Courant de charge</small><b id="id-i">32 A</b></div><div class="tile"><small>Disjoncteur repère</small><b id="id-dj">40 A</b></div><div class="tile"><small>Câble conseillé</small><b id="id-s">3G10</b></div><div class="tile"><small>Chute de tension</small><b id="id-du">1,2 %</b></div></div>
+        <div id="id-checks" style="display:flex;flex-direction:column;gap:8px"></div>
+        <p style="margin:0;font-size:14px;color:var(--inv-muted)">Valeurs repères en câble cuivre. Le calibre et la section indiqués dans la notice du fabricant de la borne priment toujours, comme la NF C 15-100 pour le mode de pose.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="irve-schema" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">6 · Schéma animé</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Une wallbox 7,4 kW en maison</h2></div><p>Du compteur à la batterie. Lance une charge, puis provoque un défaut d’isolement dans le câble.</p></div>
+    <div class="stage">
+      <div class="board">
+        <svg id="ir-svg" viewBox="0 95 1000 240" role="img" aria-label="Schéma d’une wallbox : compteur, disjoncteur de branchement, protections au tableau, câble, borne et voiture"></svg>
+        <div class="statusbar">
+          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irs-dot"></span><div style="min-width:0"><strong id="irs-st"></strong><span class="d" id="irs-sd"></span></div></div>
+          <span class="metric" id="irs-m">0 kW</span>
+        </div>
+      </div>
+      <div class="ctls" role="group" aria-label="Commandes de la borne">
+        <button class="ctl" id="irs-go" type="button" aria-pressed="false">Lancer la charge</button>
+        <button class="ctl" id="irs-fault" type="button">Provoquer un défaut</button>
+        <button class="ctl" id="irs-reset" type="button" disabled>Réarmer le différentiel</button>
+      </div>
+      <ul class="mini-legend" aria-label="Légende">
+        <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
+        <li><span class="lsw" style="background:#4E8EF7"></span>Neutre</li>
+        <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#3E9A3A 0 5px,#F2CB2E 5px 10px)"></span>Terre</li>
+        <li><span class="lsw" style="background:#B48CF2"></span>Signal CP</li>
+        <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
+        <li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="irve-pose" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">7 · Pratique</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La pose pas à pas</h2></div><p>L’ordre de chantier d’une wallbox en maison individuelle.</p></div>
+    <div class="two">
+      <ol class="steps">
+        <li><div><b>Faire le bilan de puissance</b>Abonnement, consommation de la maison, alimentation mono ou tri, chargeur embarqué de la voiture. On en déduit la puissance de la borne et le besoin de délestage.</div></li>
+        <li><div><b>Choisir l’emplacement</b>Près de la place de stationnement, câble de charge qui atteint la trappe sans tension. Indices IP et IK adaptés à l’extérieur, à l’abri des chocs de véhicule.</div></li>
+        <li><div><b>Vérifier le tableau</b>Place pour un différentiel et un disjoncteur dédiés, valeur de la prise de terre (en TT, mesurée et compatible avec le 30 mA, 100 Ω au plus en pratique).</div></li>
+        <li><div><b>Tirer le câble</b>Section calculée, mode de pose respecté : sous conduit, goulotte ou enterré (gaine rouge, grillage avertisseur). Éviter les longueurs inutiles qui augmentent la chute de tension.</div></li>
+      </ol>
+      <ol class="steps" style="counter-reset:st 4">
+        <li><div><b>Raccorder hors tension</b>Consigner le circuit (couper, condamner, vérifier l’absence de tension au VAT). Raccorder au tableau puis à la borne, aux couples de serrage de la notice.</div></li>
+        <li><div><b>Configurer la borne</b>Courant maximal (sélecteur ou application), mono ou tri, tore de mesure ou compteur pour le délestage, contrôle d’accès éventuel.</div></li>
+        <li><div><b>Mesurer et essayer</b>Continuité de la terre, isolement, test du différentiel. Puis essai avec un boîtier simulateur de véhicule : états A, B, C, défaut de terre.</div></li>
+        <li><div><b>Livrer</b>Charge réelle avec la voiture, explication au client, remise de l’attestation de conformité, du schéma et de la notice.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="irve-regles" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">8 · Réglementation</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Qualification IRVE et aides</h2></div><p>Au-delà de 3,7 kW, ou dès qu’un point est accessible au public, l’installateur doit être qualifié IRVE (article D. 353-2 du code de l’énergie, issu du décret n° 2017-26).</p></div>
+    <div class="tbl-box"><table>
+      <caption>Les niveaux de qualification IRVE</caption>
+      <thead><tr><th scope="col">Niveau</th><th scope="col">Ce qu’il couvre</th><th scope="col">Formation</th></tr></thead>
+      <tbody>
+        <tr><td><b>P1</b></td><td>Bornes AC autonomes, sans pilotage ni supervision à distance.</td><td class="mono">1 jour</td></tr>
+        <tr><td><b>P2</b></td><td>Bornes AC communicantes, en grappe, avec pilotage énergétique (copropriété, entreprise).</td><td class="mono">2 jours après P1</td></tr>
+        <tr><td><b>P3</b></td><td>Recharge rapide en courant continu.</td><td class="mono">2 jours après P1</td></tr>
+      </tbody>
+    </table></div>
+    <div class="grid" style="margin-top:20px">
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Habilitation électrique</h3><p>Toujours exigée pour intervenir, quelle que soit la puissance. La qualification IRVE s’ajoute à l’habilitation, elle ne la remplace pas.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Prime Advenir et TVA réduite</h3><p>La prime Advenir et la TVA à 5,5 % en logement supposent une pose par un installateur qualifié IRVE. Les montants changent régulièrement : vérifie-les sur le site du programme Advenir.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Contrôle Consuel</h3><p>La liste de contrôle Consuel pour les IRVE reprend les points de ce module : circuit dédié, différentiel 30 mA du bon type par point, protection contre les surintensités, coupure omnipolaire, IP et IK, obturateurs sur les socles.</p></div>
+    </div>
+    <p class="tnote" style="margin-top:16px">Références : NF C 15-100 partie 7-722, IEC 61851, IEC 62196, IEC 62955. Sources : <a href="https://www.consuel.com/wp-content/uploads/2025/11/DRE148_3.pdf" target="_blank" rel="noopener">Consuel, rapport de vérification IRVE (DRE 148)</a>, <a href="https://www.tesla-mag.com/comment-devenir-un-installateur-certifie-irve/" target="_blank" rel="noopener">qualification IRVE P1, P2, P3</a>.</p>
+  </section>
+
+  <div class="wrap" style="padding-block:80px 96px">
+    <div class="cta">
+      <div><span class="mono" style="font-size:14px;color:var(--inv-accent)">Module 5 · Panneaux PV</span><h2>Et si la voiture se rechargeait au soleil ?</h2></div>
+      <a class="btn yel" href="#pv">Revoir le photovoltaïque <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></a>
+    </div>
+  </div>
+</div>
+
 </main>
 
-<footer><div class="wrap"><span>Valelec · apprendre l’électricité par le schéma</span><nav class="row" style="gap:18px" aria-label="Pied de page"><a href="#bases">Les bases</a><a href="#schemas">Schémas</a><a href="#bac-a-sable">Bac à sable</a><a href="#tableaux">Tableaux FR / US</a></nav></div></footer>
+<footer><div class="wrap"><span>Valelec · apprendre l’électricité par le schéma</span><nav class="row" style="gap:18px" aria-label="Pied de page"><a href="#bases">Les bases</a><a href="#schemas">Schémas</a><a href="#bac-a-sable">Bac à sable</a><a href="#tableaux">Tableaux FR / US</a><a href="#pv">Panneaux PV</a><a href="#irve">Bornes IRVE</a></nav></div></footer>
 
 <script>
 (() => {
@@ -2583,8 +3087,365 @@ const tableaux = (() => {
   upd();
 })();
 
+/* ---------------- Panneaux PV ---------------- */
+(() => {
+  const num = (id) => { const v = parseFloat(String($(id).value).replace(',', '.')); return isFinite(v) ? v : 0; };
+  const kfmt = (n) => Math.round(n).toLocaleString('fr-FR');
+  const verdict = (cls, html) => `<div class="verdict ${cls}">${html}</div>`;
+
+  /* Courbe I-V d’un module 430 Wc (modèle simplifié à une exponentielle) */
+  const M = { voc: 38.6, isc: 14.1, bv: -0.0026, bi: 0.0005 };
+  const A = 0.057 * M.voc;
+  function ivPoint(g, t) {
+    const isc = M.isc * g / 1000 * (1 + M.bi * (t - 25));
+    const voc = Math.max(1, M.voc * (1 + M.bv * (t - 25)) + A * 0.8 * Math.log(g / 1000));
+    const I = (v) => Math.max(0, isc * (1 - Math.exp((v - voc) / A)));
+    let best = { v: 0, i: 0, p: 0 };
+    for (let v = 0; v <= voc; v += 0.02) { const p = v * I(v); if (p > best.p) best = { v, i: I(v), p }; }
+    return { isc, voc, I, best };
+  }
+  function drawIV() {
+    const g = +$('#pv-g').value, t = +$('#pv-t').value;
+    const r = ivPoint(g, t);
+    const X0 = 64, X1 = 590, Y0 = 320, Y1 = 34, VM = 48, IM = 16, PM = 520;
+    const x = (v) => X0 + v / VM * (X1 - X0), yi = (i) => Y0 - i / IM * (Y0 - Y1), yp = (p) => Y0 - p / PM * (Y0 - Y1);
+    let h = '';
+    for (let v = 0; v <= VM; v += 8) h += `<line x1="${x(v)}" y1="${Y1}" x2="${x(v)}" y2="${Y0}" class="gridl"/><text x="${x(v)}" y="${Y0 + 20}" class="t c sm">${v}</text>`;
+    for (let i = 0; i <= IM; i += 4) h += `<line x1="${X0}" y1="${yi(i)}" x2="${X1}" y2="${yi(i)}" class="gridl"/><text x="${X0 - 10}" y="${yi(i) + 4}" class="t sm" text-anchor="end">${i}</text><text x="${X1 + 8}" y="${yi(i) + 4}" class="t sm" style="fill:#FF9A3D">${Math.round(i / IM * PM)}</text>`;
+    h += `<path d="M${X0} ${Y1} V${Y0} H${X1}" class="axis"/>`;
+    h += `<text x="${(X0 + X1) / 2}" y="${Y0 + 44}" class="t c sm">tension (V)</text><text x="${X0 - 40}" y="${Y1 - 12}" class="t sm" style="fill:#FFD84A">courant (A)</text><text x="${X1 + 30}" y="${Y1 - 12}" class="t sm" style="fill:#FF9A3D;text-anchor:end">puissance (W)</text>`;
+    let di = '', dp = '';
+    for (let v = 0; v <= r.voc + 0.001; v += r.voc / 120) { const i = r.I(v); di += (di ? 'L' : 'M') + x(v).toFixed(1) + ' ' + yi(i).toFixed(1); dp += (dp ? 'L' : 'M') + x(v).toFixed(1) + ' ' + yp(v * i).toFixed(1); }
+    h += `<path d="${dp}" class="pvc"/><path d="${di}" class="ivc"/>`;
+    const b = r.best;
+    h += `<line x1="${x(b.v)}" y1="${yi(b.i)}" x2="${x(b.v)}" y2="${Y0}" stroke="#FFD84A" stroke-dasharray="3 4" opacity=".6"/>`;
+    h += `<circle cx="${x(b.v)}" cy="${yp(b.p)}" r="5" fill="#FF9A3D"/><circle cx="${x(b.v)}" cy="${yi(b.i)}" r="7" fill="#FFD84A" style="filter:drop-shadow(0 0 6px #FFD84A)"/>`;
+    h += `<text x="${x(b.v) - 10}" y="${yi(b.i) - 24}" class="t" text-anchor="end" style="fill:#FFD84A">MPP · ${Math.round(b.p)} W</text>`;
+    $('#pv-iv').innerHTML = h;
+    $('#pv-g-v').textContent = g.toLocaleString('fr-FR') + '\u00a0W/m²';
+    $('#pv-t-v').textContent = t + '\u00a0°C';
+    $('#pv-pm').textContent = Math.round(b.p) + ' W';
+    $('#pv-voc').textContent = fr(r.voc, 1) + ' V';
+    $('#pv-im').textContent = fr(b.i, 1) + ' A';
+    $('#pv-vm').textContent = fr(b.v, 1) + ' V';
+  }
+  ['#pv-g', '#pv-t'].forEach((s) => $(s).addEventListener('input', drawIV));
+  drawIV();
+
+  /* Estimation de la production */
+  const COEF = { 0: [0.93, 0.93, 0.93], 15: [0.965, 0.945, 0.915], 30: [1, 0.96, 0.90], 45: [0.955, 0.92, 0.84], 60: [0.91, 0.88, 0.78], 90: [0.68, 0.66, 0.55] };
+  function prod() {
+    const pr = num('#pp-city'), c = COEF[$('#pp-inc').value][+$('#pp-ori').value];
+    const wc = num('#pp-wc'), n = Math.max(0, Math.round(num('#pp-n'))), kwc = wc * n / 1000;
+    const e = kwc * pr * c, conso = num('#pp-conso'), jour = num('#pp-jour') / 100;
+    $('#pp-kwc').textContent = fr(kwc, 2).replace(/,?0+$/, '') + ' kWc';
+    $('#pp-prod').textContent = kfmt(e) + ' kWh';
+    $('#pp-surf').textContent = '≈ ' + Math.round(n * wc / 215) + ' m²';
+    $('#pp-coef').textContent = fr(c, 2);
+    $('#pp-eq').textContent = `${fr(kwc, 2)} kWc × ${kfmt(pr)} kWh/kWc × ${fr(c, 2)} = ${kfmt(e)} kWh par an`;
+    const day = conso * jour, kwcReco = pr * c > 0 ? day / (pr * c) : 0;
+    const nReco = wc > 0 ? Math.max(1, Math.round(kwcReco * 1000 / wc)) : 0;
+    let cls = 'info', txt = '';
+    if (conso <= 0) txt = 'Indique ta consommation annuelle pour comparer.';
+    else {
+      const ratio = e / conso;
+      txt = `Ta consommation de journée est d’environ <b>${kfmt(day)} kWh</b> par an. Pour la couvrir sans trop revendre, vise environ <b>${fr(kwcReco, 1)} kWc</b>, soit ${nReco} module${nReco > 1 ? 's' : ''}. `;
+      if (e > day * 1.6) { cls = 'warn'; txt += `Ici la production dépasse largement ce besoin : une grande part sera injectée sur le réseau, payée bien moins cher que l’électricité achetée.`; }
+      else if (e < day * 0.6) { cls = 'info'; txt += `Ici l’installation est modeste : presque tout sera consommé sur place.`; }
+      else { cls = 'ok'; txt += `Ton installation est bien proportionnée.`; }
+      txt += ` Elle produit l’équivalent de ${Math.round(ratio * 100)} % de ta consommation annuelle.`;
+    }
+    $('#pp-reco').className = 'verdict ' + cls; $('#pp-reco').innerHTML = txt;
+  }
+  ['#pp-city', '#pp-ori', '#pp-inc', '#pp-wc', '#pp-n', '#pp-conso', '#pp-jour'].forEach((s) => $(s).addEventListener('input', prod));
+  prod();
+
+  /* Dimensionnement des chaînes */
+  function chain() {
+    const voc = num('#pc-voc'), vmp = num('#pc-vmp'), isc = num('#pc-isc'), wc = num('#pc-wc'), k = num('#pc-coef') / 100;
+    const umax = num('#pc-umax'), mmin = num('#pc-mmin'), mmax = num('#pc-mmax'), imax = num('#pc-imax'), pac = num('#pc-pac');
+    const tmin = num('#pc-tmin'), tmax = num('#pc-tmax'), n = Math.max(1, Math.round(num('#pc-n')));
+    const vocCold = voc * (1 + k * (tmin - 25)), vmpCold = vmp * (1 + k * (tmin - 25)), vmpHot = vmp * (1 + k * (tmax - 25));
+    const nMaxV = vocCold > 0 ? Math.floor(umax / vocCold) : 0, nMaxM = vmpCold > 0 ? Math.floor(mmax / vmpCold) : 0;
+    const nMax = Math.min(nMaxV, nMaxM), nMin = vmpHot > 0 ? Math.ceil(mmin / vmpHot) : 0;
+    $('#pc-nmin').textContent = nMin; $('#pc-nmax').textContent = nMax;
+    $('#pc-uoc').textContent = Math.round(n * vocCold) + ' V';
+    $('#pc-ump').textContent = Math.round(n * vmpHot) + ' V';
+    $('#pc-eq').innerHTML = `Voc froid = ${fr(voc, 1)} × (1 ${k < 0 ? '−' : '+'} ${fr(Math.abs(k * 100), 2)} % × ${fr(25 - tmin, 0)}) = ${fr(vocCold, 2)} V par module<br>Vmpp chaud = ${fr(vmp, 1)} × (1 − ${fr(Math.abs(k * 100), 2)} % × ${fr(tmax - 25, 0)}) = ${fr(vmpHot, 2)} V par module`;
+    const ch = [];
+    if (n * vocCold > umax) ch.push(verdict('bad', `<b>${n} modules : trop.</b> Par grand froid, la chaîne atteint ${Math.round(n * vocCold)} V à vide, au-delà des ${kfmt(umax)} V de l’onduleur. Risque de le détruire : ${nMaxV} modules au plus.`));
+    else ch.push(verdict('ok', `Tension max : ${Math.round(n * vocCold)} V à vide par grand froid, sous les ${kfmt(umax)} V de l’onduleur.`));
+    if (n * vmpHot < mmin) ch.push(verdict('bad', `Par forte chaleur, la chaîne descend à ${Math.round(n * vmpHot)} V, sous le seuil MPPT de ${kfmt(mmin)} V : l’onduleur décrocherait. Il faut au moins ${nMin} modules.`));
+    else if (n * vmpCold > mmax) ch.push(verdict('warn', `Par grand froid, la tension de fonctionnement (${Math.round(n * vmpCold)} V) dépasse le haut de la plage MPPT (${kfmt(mmax)} V) : l’onduleur bridera la production ces jours-là.`));
+    else ch.push(verdict('ok', `Plage MPPT respectée : de ${Math.round(n * vmpHot)} V (chaud) à ${Math.round(n * vmpCold)} V (froid).`));
+    if (isc > imax) ch.push(verdict('warn', `Isc du module (${fr(isc, 1)} A) supérieur au courant d’entrée max (${fr(imax, 1)} A) : vérifie la notice, beaucoup d’onduleurs limitent sans risque, d’autres non.`));
+    else ch.push(verdict('ok', `Courant : ${fr(isc, 1)} A de court-circuit pour ${fr(imax, 1)} A admis par entrée.`));
+    if (pac > 0) {
+      const kwc = n * wc / 1000, ratio = kwc / pac;
+      const cls = ratio < 0.8 || ratio > 1.3 ? 'warn' : 'ok';
+      ch.push(verdict(cls, `Rapport puissance crête / onduleur : ${fr(kwc, 2)} kWc ÷ ${fr(pac, 1)} kW = <b>${fr(ratio, 2)}</b>. ${cls === 'ok' ? 'Dans la zone habituelle (0,8 à 1,3).' : ratio < 0.8 ? 'Onduleur surdimensionné : il travaillera souvent à faible charge.' : 'Onduleur trop petit : il écrêtera les pics de production.'}`));
+    }
+    $('#pc-checks').innerHTML = ch.join('');
+  }
+  $$('#pv-chaine input').forEach((el) => el.addEventListener('input', chain));
+  chain();
+
+  /* Chute de tension PV */
+  function drop() {
+    const ac = $('#pd-side').value === 'ac', L = num('#pd-l'), I = num('#pd-i'), U = num('#pd-u'), S = num('#pd-s');
+    const rho = ac ? 0.0225 : 0.023, du = S > 0 ? 2 * rho * L * I / S : 0, pc = U > 0 ? du / U * 100 : 0;
+    $('#pd-du').textContent = fr(du, 2) + ' V'; $('#pd-pc').textContent = fr(pc, 2) + ' %';
+    let best = null; for (const s of [1.5, 2.5, 4, 6, 10, 16, 25]) { if (2 * rho * L * I / s / U * 100 <= 1) { best = s; break; } }
+    const sTxt = best ? fr(best, 1).replace(',0', '') + ' mm²' : 'plus de 25 mm²';
+    const el = $('#pd-v');
+    if (pc > 3) { el.className = 'verdict bad'; el.innerHTML = `Au-delà de la limite de 3 %. Augmente la section : ${sTxt} pour rester sous 1 %.`; }
+    else if (pc > 1) { el.className = 'verdict warn'; el.innerHTML = `Admis (moins de 3 %), mais au-dessus du 1 % recommandé : ${sTxt} ferait mieux.`; }
+    else { el.className = 'verdict ok'; el.innerHTML = `Sous le 1 % recommandé. Section suffisante pour la chute de tension.`; }
+  }
+  $('#pd-side').addEventListener('change', () => {
+    const ac = $('#pd-side').value === 'ac';
+    $('#pd-u').value = ac ? 230 : 322; $('#pd-i').value = ac ? 20 : 13.36; $('#pd-s').value = ac ? '6' : '4'; drop();
+  });
+  ['#pd-l', '#pd-i', '#pd-u', '#pd-s'].forEach((s) => $(s).addEventListener('input', drop));
+  drop();
+
+  /* Schéma animé de l’installation */
+  const S = { g: 800, dcOpen: false, acOff: false, gridOff: false };
+  const segs = {
+    dcp1: ['M470 80 H500 V170 H215 V240 H262', 'w ph'], dcp2: ['M284 240 H340', 'w ph'],
+    dcm1: ['M120 80 H90 V170 H150 V280 H262', 'w dcm'], dcm2: ['M284 280 H340', 'w dcm'],
+    acl1: ['M460 240 H562', 'w ph'], acl2: ['M584 240 H820', 'w ph'], acn1: ['M460 280 H562', 'w ne'], acn2: ['M584 280 H840', 'w ne'],
+    gl: ['M820 240 H900', 'w ph'], gn: ['M840 280 H900', 'w ne'], nl: ['M960 240 H996', 'w ph'], nn: ['M960 280 H996', 'w ne'],
+    hl: ['M820 240 V340', 'w ph'], hn: ['M840 280 V340', 'w ne']
+  };
+  function pvSvg() {
+    let h = '<defs><radialGradient id="pvsun"><stop offset="0" stop-color="#FFE98A"/><stop offset="1" stop-color="#FFD84A" stop-opacity="0"/></radialGradient></defs>';
+    h += `<circle id="pvs-halo" cx="52" cy="46" r="40" fill="url(#pvsun)"/><circle id="pvs-sun" cx="52" cy="46" r="16" class="sun"/>`;
+    for (let k = 0; k < 5; k++) { const x = 120 + k * 72; h += `<rect x="${x}" y="46" width="62" height="70" rx="3" class="mod"/><path d="M${x + 21} 46 V116 M${x + 41} 46 V116 M${x} 69 H${x + 62} M${x} 93 H${x + 62}" class="modl"/>`; }
+    h += `<path d="M182 81 H192 M254 81 H264 M326 81 H336 M398 81 H408" class="w ph" style="stroke-width:2"/>`;
+    h += `<text x="290" y="34" class="t c">10 modules de 430 Wc en série · 4,3 kWc</text>`;
+    h += `<rect x="120" y="196" width="180" height="120" rx="8" class="bx"/><text x="210" y="334" class="t c">Coffret DC</text>`;
+    h += `<rect x="340" y="196" width="120" height="120" rx="8" class="bx" id="pvs-ond"/><text x="400" y="334" class="t c">Onduleur</text><path d="M350 306 L450 206" class="s" style="stroke-width:1.5;opacity:.5"/><text x="372" y="236" class="t c" style="font-size:20px">=</text><text x="428" y="294" class="t c" style="font-size:20px">~</text>`;
+    h += `<rect x="520" y="196" width="180" height="120" rx="8" class="bx"/><text x="610" y="334" class="t c">Coffret AC</text><text x="640" y="214" class="t sm">disj. 20 A</text><text x="640" y="228" class="t sm">+ 30 mA</text>`;
+    h += `<rect x="760" y="196" width="110" height="120" rx="8" class="bx"/><text x="815" y="214" class="t c sm">Tableau</text><text x="815" y="228" class="t c sm">AGCP</text>`;
+    h += `<rect x="900" y="210" width="60" height="90" rx="6" class="bx"/><text x="930" y="258" class="t c sm">Linky</text><text x="978" y="226" class="t c sm">réseau</text>`;
+    h += `<rect x="780" y="340" width="100" height="44" rx="6" class="bx" id="pvs-house"/><text x="830" y="367" class="t c sm" id="pvs-house-t">maison</text>`;
+    Object.entries(segs).forEach(([k, [d, c]]) => { h += `<path d="${d}" class="${c}"/><path d="${d}" class="cur" id="pvc-${k}"/>`; });
+    ['240', '280'].forEach((y) => { h += `<path class="s pvs-dcsw" data-y="${y}"/>`; h += `<path class="s pvs-acsw" data-y="${y}"/>`; });
+    h += `<circle cx="262" cy="240" r="2.5" fill="#E8EDF2"/><circle cx="262" cy="280" r="2.5" fill="#E8EDF2"/><circle cx="562" cy="240" r="2.5" fill="#E8EDF2"/><circle cx="562" cy="280" r="2.5" fill="#E8EDF2"/>`;
+    h += `<rect x="204" y="250" width="22" height="20" rx="3" class="bx" style="stroke:#E8EDF2"/><path d="M215 240 V250 M215 270 V280" class="s" style="stroke-width:1.5"/><text x="215" y="300" class="t c sm">parafoudre</text><text x="273" y="226" class="t c sm">sect.</text>`;
+    h += `<path d="M70 400 H720" class="w pe"/><path d="M70 400 H720" class="w pey"/><path d="M120 110 H70 V400 M285 316 V400 M445 316 V400 M685 316 V400" class="w pe" style="stroke-width:2.5"/><path d="M120 110 H70 V400 M285 316 V400 M445 316 V400 M685 316 V400" class="w pey" style="stroke-width:2.5"/><text x="80" y="390" class="t sm">terre</text>`;
+    $('#pv-svg').innerHTML = h;
+  }
+  function pvUpdate() {
+    const sun = S.g > 0, dcOk = sun && !S.dcOpen, run = dcOk && !S.acOff && !S.gridOff;
+    const P = run ? Math.round(4300 * S.g / 1000 * 0.93 * 0.96 / 10) * 10 : 0, house = 900;
+    const set = (k, cls) => { const el = $('#pvc-' + k); el.setAttribute('class', 'cur' + (cls ? ' ' + cls : '')); };
+    const dcCls = run ? 'on' : sun ? 'live' : '';
+    set('dcp1', dcCls); set('dcm1', dcCls ? dcCls + (run ? ' rev' : '') : '');
+    const dc2 = run ? 'on' : (sun && !S.dcOpen ? 'live' : '');
+    set('dcp2', dc2); set('dcm2', dc2 ? dc2 + (run ? ' rev' : '') : '');
+    const gridLive = !S.gridOff;
+    set('acl1', run ? 'on' : gridLive && !S.acOff ? 'live' : ''); set('acn1', run ? 'on rev' : '');
+    set('acl2', run ? 'on' : gridLive ? 'live' : ''); set('acn2', run ? 'on rev' : '');
+    const exp = P - house;
+    set('hl', gridLive ? 'on' : ''); set('hn', gridLive ? 'on rev' : '');
+    const gCls = !gridLive ? '' : exp > 0 ? 'on' : 'on rev', gnCls = !gridLive ? '' : exp > 0 ? 'on rev' : 'on';
+    ['gl', 'nl'].forEach((k) => set(k, gCls)); ['gn', 'nn'].forEach((k) => set(k, gnCls));
+    $$('.pvs-dcsw').forEach((p) => { const y = +p.dataset.y; p.setAttribute('d', S.dcOpen ? `M262 ${y} L280 ${y - 12}` : `M262 ${y} H284`); });
+    $$('.pvs-acsw').forEach((p) => { const y = +p.dataset.y; p.setAttribute('d', S.acOff ? `M562 ${y} L580 ${y - 12}` : `M562 ${y} H584`); });
+    $('#pvs-sun').style.opacity = 0.15 + 0.85 * S.g / 1000; $('#pvs-halo').style.opacity = S.g / 1000;
+    $('#pvs-ond').setAttribute('class', 'bx' + (run ? ' hot' : ''));
+    $('#pvs-house').setAttribute('class', 'bx' + (gridLive ? ' hot' : ''));
+    $('#pvs-house-t').textContent = gridLive ? 'maison · 900 W' : 'maison · coupée';
+    const dot = $('#pvs-dot'); dot.className = 'sdot' + (run ? ' on' : sun && (S.dcOpen || S.acOff || S.gridOff) ? ' bad' : '');
+    let st, sd;
+    if (!sun) { st = 'Nuit : pas de production'; sd = gridLive ? 'La maison est alimentée par le réseau. Les câbles DC ne sont plus sous tension.' : 'Coupure réseau : plus rien n’est alimenté.'; }
+    else if (S.gridOff) { st = 'Réseau coupé : l’onduleur s’arrête'; sd = 'Protection de découplage : il ne doit pas réalimenter le réseau pendant que des techniciens y travaillent. Les câbles DC restent sous tension.'; }
+    else if (S.dcOpen) { st = 'Sectionneur DC ouvert'; sd = 'L’onduleur est isolé, mais tout le côté toit, jusqu’au sectionneur, reste sous tension.'; }
+    else if (S.acOff) { st = 'Disjoncteur PV ouvert'; sd = 'Sans réseau en sortie, l’onduleur s’arrête. Le côté DC reste sous tension.'; }
+    else if (exp > 0) { st = 'Production et injection du surplus'; sd = `La maison consomme ${house} W, le surplus de ${(exp).toLocaleString('fr-FR')} W part sur le réseau à travers le Linky.`; }
+    else { st = 'Production consommée sur place'; sd = `La production ne couvre pas les ${house} W de la maison : le réseau fournit le complément de ${(-exp).toLocaleString('fr-FR')} W.`; }
+    $('#pvs-st').textContent = st; $('#pvs-sd').textContent = ' ' + sd;
+    const vdc = sun ? (run ? Math.round(10 * 32.2 * (S.g > 200 ? 1 : 0.95)) : Math.round(10 * (38.6 + 0.057 * 38.6 * 0.8 * Math.log(S.g / 1000)))) : 0;
+    $('#pvs-m').textContent = `${P.toLocaleString('fr-FR')} W · ${vdc} V DC`;
+    $('#pvs-dc').setAttribute('aria-pressed', S.dcOpen); $('#pvs-dc').textContent = S.dcOpen ? 'Fermer le sectionneur DC' : 'Ouvrir le sectionneur DC';
+    $('#pvs-ac').setAttribute('aria-pressed', S.acOff); $('#pvs-ac').textContent = S.acOff ? 'Réarmer le disjoncteur PV' : 'Couper le disjoncteur PV';
+    $('#pvs-grid').setAttribute('aria-pressed', S.gridOff); $('#pvs-grid').textContent = S.gridOff ? 'Rétablir le réseau' : 'Coupure du réseau';
+  }
+  pvSvg();
+  $('#pvs-g').addEventListener('input', (e) => { S.g = +e.target.value; pvUpdate(); });
+  $('#pvs-dc').addEventListener('click', () => { S.dcOpen = !S.dcOpen; pvUpdate(); });
+  $('#pvs-ac').addEventListener('click', () => { S.acOff = !S.acOff; pvUpdate(); });
+  $('#pvs-grid').addEventListener('click', () => { S.gridOff = !S.gridOff; pvUpdate(); });
+  pvUpdate();
+})();
+
+/* ---------------- Bornes IRVE ---------------- */
+(() => {
+  const num = (id) => { const v = parseFloat(String($(id).value).replace(',', '.')); return isFinite(v) ? v : 0; };
+  const verdict = (cls, html) => `<div class="verdict ${cls}">${html}</div>`;
+  const sfmt = (s) => fr(s, 1).replace(',0', '');
+
+  /* Temps de charge */
+  function charge() {
+    const bat = num('#ic-bat'), from = num('#ic-from'), to = num('#ic-to'), borne = num('#ic-borne'), cons = num('#ic-cons');
+    const obc = $('#ic-obc').value, obcTri = obc[0] === 't', obcP = parseFloat(obc.slice(1));
+    const borneTri = borne >= 11;
+    let P, note = '';
+    if (borneTri && !obcTri) { P = Math.min(borne / 3, obcP); note = 'Le chargeur embarqué est monophasé : sur une borne triphasée, il n’utilise qu’une phase.'; }
+    else if (!borneTri && obcTri) { P = Math.min(borne, 7.4); note = 'Chargeur triphasé sur une alimentation monophasée : selon le modèle de voiture, la puissance peut être limitée à 3,7 kW.'; }
+    else P = Math.min(borne, obcP);
+    if (P < borne && !note) note = `La voiture limite la charge à ${fr(P, 1)} kW : une borne plus puissante ne servirait à rien.`;
+    const e = Math.max(0, bat * (to - from) / 100), eg = e / 0.9, h = P > 0 ? eg / P : 0;
+    const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+    $('#ic-p').textContent = fr(P, 1) + ' kW';
+    $('#ic-t').textContent = e > 0 ? `${hh} h ${String(mm === 60 ? 0 : mm).padStart(2, '0')}` : '—';
+    $('#ic-e').textContent = Math.round(eg) + ' kWh';
+    $('#ic-km').textContent = cons > 0 ? Math.round(P * 0.9 / cons * 100) + ' km' : '—';
+    $('#ic-eq').textContent = `${fr(e, 1)} kWh à remettre ÷ 90 % de rendement = ${fr(eg, 1)} kWh ; ${fr(eg, 1)} ÷ ${fr(P, 1)} kW = ${fr(h, 2)} h`;
+    $('#ic-note').textContent = note || 'La charge ralentit au-delà de 80 % environ : le temps réel jusqu’à 100 % est un peu plus long.';
+  }
+  $$('#irve-puissance input, #irve-puissance select').forEach((el) => el.addEventListener('input', charge));
+  charge();
+
+  /* Signal pilote */
+  const CP = { plugged: false, ask: false, amps: 32 };
+  function cpDraw() {
+    const st = !CP.plugged ? 'A' : CP.ask ? 'C' : 'B';
+    const hi = { A: 12, B: 9, C: 6 }[st], duty = CP.amps / 0.6;
+    const X0 = 60, X1 = 600, y = (v) => 170 - v / 12 * 110;
+    let h = '';
+    [12, 9, 6, 0, -12].forEach((v) => { h += `<line x1="${X0}" y1="${y(v)}" x2="${X1}" y2="${y(v)}" class="gridl"/><text x="${X0 - 10}" y="${y(v) + 4}" class="t sm" text-anchor="end">${v > 0 ? '+' : ''}${v} V</text>`; });
+    let d = '';
+    if (st === 'A') d = `M${X0} ${y(12)} H${X1}`;
+    else {
+      const per = 180, on = per * duty / 100; d = `M${X0} ${y(-12)}`;
+      for (let x = X0; x < X1 - 1; x += per) d += ` V${y(hi)} H${x + on} V${y(-12)} H${Math.min(x + per, X1)}`;
+    }
+    h += `<path d="${d}" class="cpw"/>`;
+    h += `<text x="${X0}" y="26" class="t">Signal CP vu par la borne · 1 kHz</text>`;
+    if (st !== 'A') h += `<path d="M${X0} 300 H${X0 + 180 * duty / 100}" stroke="#FFD84A" stroke-width="2"/><path d="M${X0} 294 V306 M${X0 + 180 * duty / 100} 294 V306 M${X0 + 180} 294 V306" stroke="#FFD84A" stroke-width="2"/><text x="${X0 + 186}" y="304" class="t sm" style="fill:#FFD84A">${fr(duty, 1)} % de 1 ms</text>`;
+    const ctc = st === 'C';
+    h += `<rect x="60" y="322" width="240" height="40" rx="8" class="bx${ctc ? ' hot' : ''}"/><text x="180" y="347" class="t c">Borne · contacteur ${ctc ? 'fermé' : 'ouvert'}</text>`;
+    h += `<path d="M300 342 H360" class="w ${CP.plugged ? 'cp' : 'cm'}" style="${CP.plugged ? '' : 'stroke-dasharray:4 6'}"/>`;
+    h += `<rect x="360" y="322" width="240" height="40" rx="8" class="bx${CP.plugged ? ' hot' : ''}"/><text x="480" y="347" class="t c">${CP.plugged ? (ctc ? 'Voiture · en charge' : 'Voiture · branchée') : 'Voiture · débranchée'}</text>`;
+    $('#cp-svg').innerHTML = h;
+    $('#cp-st').textContent = st;
+    $('#cp-u').textContent = '+' + hi + ' V';
+    $('#cp-d').textContent = st === 'A' ? '—' : fr(duty, 1) + ' %';
+    $('#cp-p').textContent = ctc ? fr(CP.amps * 230 / 1000, 1) + ' kW' : '0 kW';
+    $('#cp-a-v').textContent = CP.amps + '\u00a0A';
+    $('#cp-eq').textContent = st === 'A' ? 'État A : la borne attend un véhicule, pas de signal carré.' : `${CP.amps} A ÷ 0,6 = ${fr(duty, 1)} % de rapport cyclique`;
+    $('#cp-plug').textContent = CP.plugged ? 'Débrancher le câble' : 'Brancher le câble';
+    $('#cp-plug').setAttribute('aria-pressed', CP.plugged);
+    $('#cp-ask').disabled = !CP.plugged;
+    $('#cp-ask').textContent = CP.ask ? 'La voiture arrête la charge' : 'La voiture demande la charge';
+    $('#cp-ask').setAttribute('aria-pressed', CP.ask);
+  }
+  $('#cp-plug').addEventListener('click', () => { CP.plugged = !CP.plugged; if (!CP.plugged) CP.ask = false; cpDraw(); });
+  $('#cp-ask').addEventListener('click', () => { CP.ask = !CP.ask; cpDraw(); });
+  $('#cp-a').addEventListener('input', (e) => { CP.amps = +e.target.value; cpDraw(); });
+  cpDraw();
+
+  /* Dimensionnement du circuit */
+  const TYPES = {
+    pr: { p: 3.7, i: 16, tri: false, dj: 20, smin: 2.5, mode: 2 },
+    m7: { p: 7.4, i: 32, tri: false, dj: 40, smin: 10, mode: 3 },
+    t11: { p: 11, i: 16, tri: true, dj: 20, smin: 2.5, mode: 3 },
+    t22: { p: 22, i: 32, tri: true, dj: 40, smin: 10, mode: 3 }
+  };
+  function dim() {
+    const t = TYPES[$('#id-type').value], L = num('#id-l'), kva = num('#id-kva'), resTri = $('#id-res').value === 't', rdc = $('#id-dc').value === '1';
+    const dpc = (s) => (t.tri ? 1 : 2) * 0.0225 * L * t.i / s / 230 * 100;
+    let s = null; for (const x of [2.5, 4, 6, 10, 16, 25, 35]) { if (x >= t.smin && dpc(x) <= 3) { s = x; break; } }
+    if (!s) s = 35;
+    $('#id-i').textContent = (t.tri ? '3 × ' : '') + t.i + ' A';
+    $('#id-dj').textContent = t.dj + ' A' + (t.tri ? ' 4P' : '');
+    $('#id-s').textContent = (t.tri ? '5G' : '3G') + sfmt(s);
+    $('#id-du').textContent = fr(dpc(s), 1) + ' %';
+    const ch = [];
+    if (t.tri && !resTri) ch.push(verdict('bad', 'Une borne triphasée demande une alimentation triphasée. En monophasé, choisis une borne 3,7 ou 7,4 kW.'));
+    if (s > t.smin) ch.push(verdict('info', `La longueur impose ${sfmt(s)} mm² au lieu de ${sfmt(t.smin)} mm² pour garder la chute de tension sous 3 %.`));
+    const ddr = t.mode === 2 ? 'type A ou F' : rdc ? 'type A ou F (la borne détecte elle-même le continu 6 mA)' : 'type B (la borne ne détecte pas le continu)';
+    ch.push(verdict('ok', `Différentiel 30 mA ${ddr}, dédié à ce point de recharge, calibre au moins égal au disjoncteur.`));
+    if (!(t.tri && !resTri)) {
+      const phase = resTri ? (t.tri ? t.p / 3 : t.p) : t.p, cap = resTri ? kva / 3 : kva, left = cap - phase;
+      const okT = resTri ? 1.5 : 3, badT = resTri ? 0.5 : 1;
+      const where = resTri ? ' sur la phase la plus chargée' : '';
+      if (left < badT) ch.push(verdict('bad', `Avec ${kva} kVA, il ne reste que ${fr(Math.max(0, left), 1)} kVA pour la maison${where} pendant la charge. Augmente l’abonnement, règle la borne plus bas ou ajoute un délestage.`));
+      else if (left < okT) ch.push(verdict('warn', `Avec ${kva} kVA, il reste ${fr(left, 1)} kVA pour la maison${where} pendant la charge : un délestage est conseillé pour éviter de disjoncter.`));
+      else ch.push(verdict('ok', `Avec ${kva} kVA, il reste ${fr(left, 1)} kVA pour la maison${where} pendant la charge.`));
+    }
+    ch.push(verdict(t.p > 3.7 ? 'warn' : 'info', t.p > 3.7 ? 'Plus de 3,7 kW : pose par un installateur qualifié IRVE obligatoire.' : 'Jusqu’à 3,7 kW en logement privé, la qualification IRVE n’est pas obligatoire. L’habilitation électrique, si.'));
+    $('#id-checks').innerHTML = ch.join('');
+  }
+  $$('#irve-dim input, #irve-dim select').forEach((el) => el.addEventListener('input', dim));
+  dim();
+
+  /* Schéma animé de la wallbox */
+  const W = { on: false, trip: false, leak: false };
+  const seg = {
+    l0: ['M20 180 H60', 'w ph'], n0: ['M20 220 H60', 'w ne'], l1: ['M130 180 H330', 'w ph'], n1: ['M130 220 H330', 'w ne'],
+    l2: ['M352 180 H450', 'w ph'], n2: ['M352 220 H450', 'w ne'], l3: ['M472 180 H728', 'w ph'], n3: ['M472 220 H728', 'w ne'],
+    l4: ['M750 180 H930', 'w ph'], n4: ['M750 220 H930', 'w ne']
+  };
+  function irSvg() {
+    let h = '';
+    h += `<text x="20" y="166" class="t sm">réseau</text>`;
+    h += `<rect x="60" y="150" width="70" height="100" rx="6" class="bx"/><text x="95" y="205" class="t c sm">Linky</text>`;
+    h += `<rect x="150" y="150" width="120" height="100" rx="6" class="bx"/><text x="210" y="204" class="t c sm">AGCP</text><text x="210" y="243" class="t c sm">500 mA</text><text x="210" y="272" class="t c sm">branchement</text>`;
+    h += `<rect x="300" y="120" width="210" height="170" rx="8" class="bx"/><text x="405" y="112" class="t c">Tableau</text>`;
+    h += `<text x="341" y="146" class="t c sm">ID 40 A</text><text x="341" y="160" class="t c sm">30 mA type B</text><text x="461" y="146" class="t c sm">disj. 40 A</text>`;
+    h += `<text x="600" y="166" class="t c sm">câble 3G10 · 20 m</text>`;
+    h += `<rect x="690" y="120" width="110" height="200" rx="10" class="bx" id="irs-box"/><text x="745" y="112" class="t c">Wallbox 7,4 kW</text><text x="739" y="146" class="t c sm">contacteur</text><circle cx="745" cy="300" r="7" id="irs-led" fill="#4E8EF7"/>`;
+    h += `<rect x="930" y="150" width="60" height="160" rx="10" class="bx"/><text x="960" y="142" class="t c sm">voiture</text><text x="960" y="178" class="t c sm">chargeur</text><rect x="942" y="230" width="36" height="58" rx="4" fill="none" stroke="#9AABBD" stroke-width="1.5"/><rect x="946" y="234" width="28" height="0" id="irs-bat" class="bat"/>`;
+    h += `<text x="860" y="166" class="t c sm">Type 2</text>`;
+    Object.entries(seg).forEach(([k, [d, c]]) => { h += `<path d="${d}" class="${c}"/><path d="${d}" class="cur" id="irc-${k}"/>`; });
+    ['180', '220'].forEach((y) => { h += `<path class="s irs-sw" data-x="330" data-y="${y}"/><path class="s irs-sw" data-x="450" data-y="${y}"/><path class="s irs-sw" data-x="728" data-y="${y}"/>`; });
+    [330, 450, 728].forEach((x) => { h += `<circle cx="${x}" cy="180" r="2.5" fill="#E8EDF2"/><circle cx="${x}" cy="220" r="2.5" fill="#E8EDF2"/>`; });
+    h += `<path d="M320 260 H930" class="w pe"/><path d="M320 260 H930" class="w pey"/><text x="330" y="282" class="t sm">terre</text>`;
+    h += `<path d="M800 300 H930" class="w cp"/><path d="M800 300 H930" class="cur" id="irc-cp"/><text x="865" y="320" class="t c sm">CP · PP</text>`;
+    h += `<path d="M600 180 V260" class="cur" id="irc-leak"/><text x="606" y="236" class="t sm" id="irs-leak-t" style="fill:#F2CB2E;display:none">défaut</text>`;
+    $('#ir-svg').innerHTML = h;
+  }
+  function irUpdate() {
+    const pw = !W.trip, chg = pw && W.on;
+    const set = (k, c) => $('#irc-' + k).setAttribute('class', 'cur' + (c ? ' ' + c : ''));
+    ['l0', 'l1'].forEach((k) => set(k, chg ? 'on' : 'live')); ['n0', 'n1'].forEach((k) => set(k, chg ? 'on rev' : ''));
+    ['l2', 'l3'].forEach((k) => set(k, chg ? 'on' : pw ? 'live' : '')); ['n2', 'n3'].forEach((k) => set(k, chg ? 'on rev' : ''));
+    set('l4', chg ? 'on' : ''); set('n4', chg ? 'on rev' : '');
+    set('cp', pw ? 'on' : '');
+    set('leak', W.leak && pw ? 'leak' : '');
+    $('#irs-leak-t').style.display = W.leak && pw ? '' : 'none';
+    $$('.irs-sw').forEach((p) => {
+      const x = +p.dataset.x, y = +p.dataset.y, open = (x === 330 && W.trip) || (x === 728 && !chg);
+      p.setAttribute('d', open ? `M${x} ${y} L${x + 18} ${y - 12}` : `M${x} ${y} H${x + 22}`);
+    });
+    $('#irs-led').setAttribute('fill', W.trip ? '#5E6E80' : chg ? '#3E9A3A' : '#4E8EF7');
+    $('#irs-box').setAttribute('class', 'bx' + (chg ? ' hot' : ''));
+    $('#irs-bat').setAttribute('height', chg ? 40 : 18); $('#irs-bat').setAttribute('y', chg ? 244 : 266);
+    $('#irs-dot').className = 'sdot' + (chg ? ' on' : W.trip || W.leak ? ' bad' : '');
+    let st, sd;
+    if (W.leak && pw) { st = 'Défaut d’isolement dans le câble'; sd = 'Un courant fuit vers la terre : le différentiel mesure une différence entre phase et neutre.'; }
+    else if (W.trip) { st = 'Le différentiel 30 mA a déclenché'; sd = 'Phase et neutre sont coupés en aval : plus aucun risque d’électrocution. Répare le défaut avant de réarmer.'; }
+    else if (chg) { st = 'Charge en cours · état C'; sd = 'La voiture a demandé la charge, la borne a fermé son contacteur. 32 A circulent dans le câble pendant des heures.'; }
+    else { st = 'Borne prête · état B'; sd = 'Le câble jusqu’à la borne est sous tension, mais le contacteur garde la prise hors tension tant que la voiture ne demande rien.'; }
+    $('#irs-st').textContent = st; $('#irs-sd').textContent = ' ' + sd;
+    $('#irs-m').textContent = chg ? '7,4 kW · 32 A' : '0 kW';
+    $('#irs-go').textContent = W.on ? 'Arrêter la charge' : 'Lancer la charge';
+    $('#irs-go').setAttribute('aria-pressed', W.on); $('#irs-go').disabled = W.trip;
+    $('#irs-fault').disabled = W.trip || W.leak; $('#irs-reset').disabled = !W.trip;
+  }
+  irSvg();
+  $('#irs-go').addEventListener('click', () => { W.on = !W.on; irUpdate(); });
+  $('#irs-fault').addEventListener('click', () => { W.leak = true; irUpdate(); setTimeout(() => { W.trip = true; W.on = false; irUpdate(); }, 900); });
+  $('#irs-reset').addEventListener('click', () => { W.trip = false; W.leak = false; irUpdate(); });
+  irUpdate();
+})();
+
 /* ---------------- Navigation ---------------- */
-const PAGES = ['accueil', 'bases', 'schemas', 'examen', 'bac-a-sable', 'tableaux'];
+const PAGES = ['accueil', 'bases', 'schemas', 'examen', 'bac-a-sable', 'tableaux', 'pv', 'irve'];
 function route() {
   let h = decodeURIComponent(location.hash.slice(1)) || 'accueil';
   let target = null;
@@ -2595,7 +3456,7 @@ function route() {
   }
   $$('[data-page]').forEach((p) => { p.hidden = p.dataset.page !== h; });
   $$('[data-nav]').forEach((a) => { if (a.dataset.nav === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
-  document.title = { accueil: 'Valelec', bases: 'Les bases · Valelec', schemas: 'Schémas · Valelec', examen: 'Examen pratique · Valelec', 'bac-a-sable': 'Bac à sable · Valelec', tableaux: 'Tableaux France / États-Unis · Valelec' }[h];
+  document.title = { accueil: 'Valelec', bases: 'Les bases · Valelec', schemas: 'Schémas · Valelec', examen: 'Examen pratique · Valelec', 'bac-a-sable': 'Bac à sable · Valelec', tableaux: 'Tableaux France / États-Unis · Valelec', pv: 'Panneaux photovoltaïques · Valelec', irve: 'Bornes de recharge IRVE · Valelec' }[h];
   if (target) requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
   else window.scrollTo(0, 0);
   document.body.classList.toggle('ed-mode', h === 'bac-a-sable');
