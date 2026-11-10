@@ -248,6 +248,17 @@ tr:last-child td{border-bottom:0}
 .v3d-circ{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
 .v3d-circ[hidden]{display:none}
 .v3d-circ .ctl{padding:7px 12px;font-size:13px}
+.v3d-steps .stp-go{align-self:flex-start;background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
+.v3d-steps .stp-go svg{flex:none}
+.v3d-wrap.stepping .v3d-circ,.v3d-wrap.stepping .v3d-leg{display:none}
+.stp{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper-2)}
+.stp-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.stp-n{font:500 12px var(--f-mono);color:var(--muted)}
+.stp-t{font-size:17px}
+.stp-p{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink-2);min-height:3em}
+.stp-r{width:100%;accent-color:var(--ink)}
+.v3d-steps .stp-nx{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
+.stp .ctl:disabled{opacity:.4;cursor:default}
 .wire.dimmed{opacity:.32}
 .comp.dimmed{opacity:.45}
 .wire.lit .w{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 7px rgba(255,255,255,.75))}
@@ -763,7 +774,7 @@ tr:last-child td{border-bottom:0}
             <li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
           </ul>
           <button class="btn" id="sim-next" type="button" style="justify-content:space-between;border-radius:12px" hidden></button>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour tourner, molette pour zoomer, Maj + glisser pour déplacer.</li></ul></details></div><div class="v3d" id="sim-3d"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>« Construire pas à pas » : pars du mur vide et ajoute chaque élément avec Suivant.</li><li>À la souris : glisser pour tourner, molette pour zoomer, Maj + glisser pour déplacer.</li></ul></details></div><div class="v3d" id="sim-3d"></div><div class="v3d-steps" id="sim-steps"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
         </div>
         <div class="info">
           <div class="box"><h2>À retenir</h2><ol id="sim-ret"></ol></div>
@@ -807,7 +818,7 @@ tr:last-child td{border-bottom:0}
           <li data-espace="1"><span class="lsw" style="background:repeating-linear-gradient(90deg,#8E9BAA 0 2px,transparent 2px 8px)"></span>Liaison radio</li>
           <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
         </ul>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour tourner, molette pour zoomer, Maj + glisser pour déplacer.</li></ul></details></div><div class="v3d" id="ex-3d"></div><div class="v3d-circ" id="ex-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>« Construire pas à pas » : pars du mur vide et ajoute chaque élément avec Suivant.</li><li>À la souris : glisser pour tourner, molette pour zoomer, Maj + glisser pour déplacer.</li></ul></details></div><div class="v3d" id="ex-3d"></div><div class="v3d-steps" id="ex-steps"></div><div class="v3d-circ" id="ex-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
       </div>
       <div class="info">
         <div class="box inv" data-espace="1"><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
@@ -2453,7 +2464,7 @@ function makeHL(C, B, V, el) {
   const set = (c) => { cur = c || null; B.hl = cur; B.render(); V.setCircuit(cur); paint(); };
   const hl = {
     refresh() { list = circuitsOf(C); cur = null; B.hl = null; V.setCircuit(null); el.hidden = list.length < 2; el.innerHTML = '<span>Suivre un circuit :</span>' + list.map((c) => `<button class="ctl" type="button" data-c="${c.key}" aria-pressed="false">${c.text}</button>`).join('') + '<button class="ctl ghost" type="button" data-c="" aria-pressed="true">Tous</button>'; },
-    pick(c) { if (list.length > 1) set(c && cur && c.key === cur.key ? null : c); },
+    pick(c) { if (V.stepOn) return; if (list.length > 1) set(c && cur && c.key === cur.key ? null : c); },
     byWire(id) { this.pick(id ? list.find((c) => c.wires.has(id)) : null); },
     tap(r) { if (!r) { this.pick(null); return; } this.pick(r.wid ? list.find((c) => c.wires.has(r.wid)) : list.find((c) => c.key === r.key)); }
   };
@@ -2481,7 +2492,25 @@ const V3D = (() => {
     return out;
   }
   class Builder {
-    constructor(T, ops, plan) { this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); this.wires = []; this.runLabs = []; this.geo = {}; this.tex = {}; }
+    constructor(T, ops, plan, circ) { this.circ = circ || { list: [], ctx: null }; this.groups = {}; this.curK = 'sup'; this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); this.wires = []; this.runLabs = []; this.geo = {}; this.tex = {}; }
+    /* étapes de construction : chaque objet créé dans fn rejoint le groupe de l'étape key */
+    stepG(key) { if (!this.groups[key]) { const G = new this.T.Group(); G.userData.isG = true; this.groups[key] = G; this.g.add(G); } return this.groups[key]; }
+    grp(key, fn) {
+      const n0 = this.g.children.length, prev = this.curK; this.curK = key;
+      const r = fn(), G = this.stepG(key); this.curK = prev;
+      this.g.children.slice(n0).filter((o) => o !== G && !o.userData.isG).forEach((o) => G.add(o));
+      return r;
+    }
+    devKey(ref) {
+      const C = this.circ.ctx, c0 = C && C.comps.find((q) => q.ref === ref), to = c0 && c0.to && c0.to[0], c = this.circ.list.find((x) => x.refs.has(to || ref));
+      return (c ? c.key : 'COM') + ':dev';
+    }
+    finish() { this.g.children.filter((o) => !o.userData.isG).forEach((o) => this.stepG('sup').add(o)); }
+    wall(W, H, cx, cy) { return this.grp('base', () => this._wall(W, H, cx, cy)); }
+    rail(x0, x1, y) { return this.grp('sup', () => this._rail(x0, x1, y)); }
+    jbox(id, x, y, o) { return this.grp('box', () => this._jbox(id, x, y, o)); }
+    tableau(...a) { return this.grp('tab', () => this._tableau(...a)); }
+    dev(id, kind, x, y, o) { return this.grp(this.devKey((o && o.ref) || id), () => this._dev(id, kind, x, y, o)); }
     /* pavé aux angles arrondis, de z à z + d */
     rb(w, h, d, r, m, x, y, z) {
       const T = this.T, key = 'rb' + [w, h, d, r].map((v) => v.toFixed(4)).join();
@@ -2529,7 +2558,7 @@ const V3D = (() => {
       return hd;
     }
     /* conducteur rattaché à un circuit : key (scènes de l'énoncé) ou wid (scènes générées) */
-    wire(P, c, key, wid, rad) { const m = this.tube(P, 0.0034, this.wmat(c), rad === undefined ? 0.03 : rad); if (m) this.wires.push({ mesh: m, mat: m.material, key, wid, pts: P }); return m; }
+    wire(P, c, key, wid, rad) { const m = this.tube(P, 0.0034, this.wmat(c), rad === undefined ? 0.03 : rad); if (m) this.wires.push({ mesh: m, mat: m.material, key, wid, pts: P, sk: this.curK, cls: c === 'vj' ? 2 : c === 'bleu' ? 1 : c === 'rouge' || c === 'marron' ? 0 : 3 }); return m; }
     /* voyant vert d'un appareil alimenté : caché tant que l'appareil ne fonctionne pas */
     led(x, y, z) { const m = new this.T.Mesh(new this.T.SphereGeometry(0.011, 10, 8), new this.T.MeshBasicMaterial({ color: 0x4ade80 })); m.position.set(x, y, z); m.visible = false; this.g.add(m); return m; }
     mat(c, o) { const k = c + JSON.stringify(o || {}); if (!this.mats[k]) this.mats[k] = new this.T.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.62, metalness: 0.02 }, o || {})); return this.mats[k]; }
@@ -2543,7 +2572,7 @@ const V3D = (() => {
       const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = typeof hot === 'string' ? hot : hot ? 'rgba(13,120,100,.96)' : 'rgba(17,26,36,.88)'; q.beginPath(); if (q.roundRect) q.roundRect(0, 0, c.width, c.height, 7 * s); else q.rect(0, 0, c.width, c.height); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
       const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'wago' ? 0.015 : big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; this.g.add(sp); if (big !== 'wago') this.labels.push(sp); return sp;
     }
-    wall(W, H, cx, cy) {
+    _wall(W, H, cx, cy) {
       if (!this.tex.wall) { const c = document.createElement('canvas'); c.width = c.height = 256; const q = c.getContext('2d'); q.fillStyle = '#ffffff'; q.fillRect(0, 0, 256, 256); let sd = 73; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647; for (let i = 0; i < 5200; i++) { q.fillStyle = 'rgba(90,80,60,' + (0.015 + rnd() * 0.05) + ')'; q.fillRect(rnd() * 256, rnd() * 256, 1 + rnd() * 2.4, 1 + rnd() * 2.4); } this.tex.wall = new this.T.CanvasTexture(c); this.tex.wall.wrapS = this.tex.wall.wrapT = this.T.RepeatWrapping; this.tex.wall.repeat.set(5, 5); }
       this.box(W, H, 0.04, this.mat(0xdcd6ca, { roughness: 0.95, map: this.tex.wall }), cx, cy, -0.02);
       this.box(W + 0.2, 0.05, 0.5, 0xa98f6d, cx, cy - H / 2 - 0.025, 0.22);
@@ -2553,7 +2582,7 @@ const V3D = (() => {
       this.label('Trait 1 m', cx + W / 2 - 0.22, 1.05, 0.02);
     }
     /* boîte de dérivation ouverte : les connexions se voient */
-    jbox(id, x, y, o) {
+    _jbox(id, x, y, o) {
       o = o || {}; const w = o.w || 0.2, h = o.h || 0.2, d = 0.056, m = this.mat(o.c || 0xa9b0b7);
       this.soft(w, h, x, y); this.rb(w + 0.012, h + 0.012, 0.008, 0.012, o.c || 0xb4bac1, x, y, 0);
       this.box(w - 0.006, h - 0.006, 0.002, this.mat(o.c ? 0xe9dcd8 : 0xd5d9dd), x, y, 0.009);
@@ -2580,7 +2609,7 @@ const V3D = (() => {
       this.nodes[id] = N; return N;
     }
     /* appareil : modèle réaliste, bornes sur le bord où arrivent les fils */
-    dev(id, kind, x, y, o) {
+    _dev(id, kind, x, y, o) {
       o = o || {}; const T = this.T, n0 = this.g.children.length, z0 = o.z || 0; const N = { x, y, nets: {}, n: 0, kind, ref: o.ref || id }; let part = null, plug = null, face = null, led = null;
       const W = o.w || 0.11, H = o.h || 0.11, side = o.side === undefined ? 1 : o.side, white = 0xf4f3ec, grey = 0x8d939a, PI = Math.PI;
       let dz = 0.045, lz = 0.05;
@@ -2669,6 +2698,8 @@ const V3D = (() => {
       if (pts.length > 1) { clip(o.from, pts[0], pts[1]); clip(o.to, pts[pts.length - 1], pts[pts.length - 2]); }
       const c = o.cond || [], R = o.k === 'cable' ? 0.0072 : o.r ? o.r - 0.01 : 0.0095;
       const conduit = { icta: [o.r || 0.019, this.glass(0x7c8894, 0.34)], irl: [o.r || 0.019, this.glass(0x6f7a85, 0.38)], cable: [0.012, this.glass(0x1a1a1c, 0.5)] }[o.k];
+      const wkey = (w) => (w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null) || 'COM') + ':w', ck0 = o.k === 'cable' && c[0] ? wkey(c[0]) : 'sup';
+      this.grp(ck0, () => {
       if (conduit) {
         let cm = conduit[1];
         if (o.k === 'icta') {
@@ -2680,16 +2711,17 @@ const V3D = (() => {
         this.tube(pts, conduit[0], cm, o.k === 'icta' ? 0.12 : 0.04);
       }
       if (o.k === 'dlp' || o.k === 'mou') this.gaine(pts, o.k, o.wd);
+      });
       const keys = new Set();
-      c.forEach((w, i) => {
+      c.forEach((w, i) => this.grp(wkey(w), () => {
         const of = ring(i, c.length, R), mid = pts.map((p) => [p[0] + of[0], p[1] + of[1], p[2] + of[2]]);
         const P = mid.slice();
         const A = o.from && this.nodes[o.from] ? this.nodes[o.from].at(w.a || w.n) : null, B = o.to && this.nodes[o.to] ? this.nodes[o.to].at(w.b || w.n) : null;
         if (w.via) w.via.slice().reverse().forEach((v) => P.unshift(v)); if (A) { if (this.nodes[o.from].kind === 'jbox') P.unshift([A.x, A.y - 0.028, A.z + 0.02]); P.unshift([A.x, A.y, A.z]); } if (B) { if (this.nodes[o.to].kind === 'jbox') P.push([B.x, B.y - 0.028, B.z + 0.02]); P.push([B.x, B.y, B.z]); }
         keys.add(w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null));
         this.wire(P, w.c, w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null));
-      });
-      if (o.label) { const p = pts[Math.floor(pts.length / 2)], q = pts[Math.max(0, Math.floor(pts.length / 2) - 1)], at = o.at || [(p[0] + q[0]) / 2 + 0.05, (p[1] + q[1]) / 2 + 0.04]; this.runLabs.push({ sp: this.label(o.label, at[0], at[1], 0.12), keys }); }
+      }));
+      if (o.label) { const p = pts[Math.floor(pts.length / 2)], q = pts[Math.max(0, Math.floor(pts.length / 2) - 1)], at = o.at || [(p[0] + q[0]) / 2 + 0.05, (p[1] + q[1]) / 2 + 0.04]; this.runLabs.push({ sp: this.grp(ck0, () => this.label(o.label, at[0], at[1], 0.12)), keys }); }
     }
     gaine(pts, k, W) {
       const lid = this.glass(k === 'dlp' ? 0xf7f5ef : 0xf4f4f0, 0.28), base = this.mat(0xf0ede6), wd = W || (k === 'dlp' ? 0.13 : 0.075), dp = k === 'dlp' ? 0.055 : 0.03;
@@ -2699,14 +2731,14 @@ const V3D = (() => {
         this.box(hz ? len + wd : wd, hz ? wd : len + wd, dp, lid, cx, cy, dp / 2 + 0.002);
       }
     }
-    rail(x0, x1, y) {
+    _rail(x0, x1, y) {
       const m = this.mat(0xb6bcc2, { metalness: 0.3, roughness: 0.5 }), cx = (x0 + x1) / 2, L = x1 - x0, wd = 0.09;
       [wd / 2, -wd / 2].forEach((q) => { this.box(L, 0.005, 0.05, m, cx, y + q, 0.03); this.box(L, 0.008, 0.008, m, cx, y + q, 0.056); });
       [0.02, -0.02].forEach((q) => this.box(L, 0.005, 0.005, m, cx, y + q, 0.008));
       for (let x = x0 + 0.02; x < x1; x += 0.05) this.box(0.005, wd, 0.005, m, x, y, 0.006);
     }
     /* tableau : rangées de modules, peignes, bornes par net */
-    tableau(id, x, y, W, H, rows, label) {
+    _tableau(id, x, y, W, H, rows, label) {
       const T = this.T; this.soft(W, H, x, y); this.rb(W, H, 0.014, 0.014, 0xf3f2ec, x, y, 0);
       [[W, 0.012, 0.062, 0, H / 2], [W, 0.012, 0.062, 0, -H / 2], [0.012, H, 0.062, -W / 2, 0], [0.012, H, 0.062, W / 2, 0]].forEach((s) => this.box(s[0], s[1], s[2], 0xe8e6df, x + s[3], y + s[4], 0.031));
       this.label(label || id, x - W / 2 + 0.07, y + H / 2 - 0.05, 0.15, 1);
@@ -2732,7 +2764,7 @@ const V3D = (() => {
       for (let i = -7; i <= 7; i++) this.cyl(0.0055, 0.004, this.mat(0x8c7433, { metalness: 0.3 }), x + i * W * 0.046, py, 0.032, 10);
       this.nodes[id] = N; return N;
     }
-    link(a, na, b, nb, c) { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.wire([[A.x, A.y, A.z]].concat(this.nodes[a].kind === 'jbox' ? [[A.x, A.y - 0.028, A.z + 0.02]] : [], [mid, [B.x, B.y, B.z]]), c, this.cmap ? this.cmap(na) : null); }
+    link(a, na, b, nb, c) { return this.grp(((this.cmap && this.cmap(na)) || 'COM') + ':w', () => { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.wire([[A.x, A.y, A.z]].concat(this.nodes[a].kind === 'jbox' ? [[A.x, A.y - 0.028, A.z + 0.02]] : [], [mid, [B.x, B.y, B.z]]), c, this.cmap ? this.cmap(na) : null); }); }
   }
   /* ---- Espace 1 : implantation de l'énoncé (TR, BD1, ICTA G01 à G07, moulure M1) ---- */
   function esp1(B) {
@@ -2780,9 +2812,9 @@ const V3D = (() => {
     B.run({ pts: [[mA[0] + 0.015, mA[1], 0.03], [mB[0] + 0.015, mB[1] - 0.012, 0.03], [mPC[0], mB[1] - 0.012, 0.03]], from: 'TR', to: 'PC2', ck: 'D1', cond: [{ n: 'L.D1', b: 'L', c: 'rouge', via: [[nT.nets['L.D1'].x, yU, 0.1], [nT.nets['L.D1'].x, yB, 0.1]] }, { n: 'N.D1', b: 'N', c: 'bleu', via: [[nT.nets['N.D1'].x, yU, 0.1], [nT.nets['N.D1'].x, yB, 0.1]] }, { n: 'PE', a: 'PE', b: 'PE', c: 'vj' }] });
     // Câbles d'arrivée
     const ag = B.nodes.AGCP;
-    B.run({ k: 'cable', pts: [[-1.45, 2.46, 0.05], [ag.x - 0.02, 2.46, 0.05], [ag.x - 0.02, ag.y + 0.08, 0.05]], to: 'AGCP', at: [-0.9, 2.52], label: 'C1 · U1000 R2V', cond: [{ n: 'L', c: 'noir' }, { n: 'N', c: 'bleu' }, { n: 'PE', c: 'vj' }] });
-    B.run({ pts: [[ag.x - 0.05, ag.y - 0.1, 0.05], [tl + 0.024, ag.y - 0.2, 0.09], [tl + 0.024, yU, 0.09]], from: 'AGCP', to: 'TR', cond: [{ n: 'L', b: 'L.ID1', c: 'rouge' }, { n: 'N', b: 'N.ID1', c: 'bleu' }, { a: 'PE', n: 'PE', c: 'vj' }] });
-    B.run({ pts: [[tl + 0.024, yU, 0.09], [tl + 0.024, yB + 0.04, 0.09]], from: 'TR', to: 'TR', cond: [{ a: 'L.ID1', b: 'L.ID2', n: 'L', c: 'rouge' }, { a: 'N.ID1', b: 'N.ID2', n: 'N', c: 'bleu' }] });
+    B.run({ k: 'cable', pts: [[-1.45, 2.46, 0.05], [ag.x - 0.02, 2.46, 0.05], [ag.x - 0.02, ag.y + 0.08, 0.05]], to: 'AGCP', ck: 'ALIM', at: [-0.9, 2.52], label: 'C1 · U1000 R2V', cond: [{ n: 'L', c: 'noir' }, { n: 'N', c: 'bleu' }, { n: 'PE', c: 'vj' }] });
+    B.run({ pts: [[ag.x - 0.05, ag.y - 0.1, 0.05], [tl + 0.024, ag.y - 0.2, 0.09], [tl + 0.024, yU, 0.09]], from: 'AGCP', to: 'TR', ck: 'ALIM', cond: [{ n: 'L', b: 'L.ID1', c: 'rouge' }, { n: 'N', b: 'N.ID1', c: 'bleu' }, { a: 'PE', n: 'PE', c: 'vj' }] });
+    B.run({ pts: [[tl + 0.024, yU, 0.09], [tl + 0.024, yB + 0.04, 0.09]], from: 'TR', to: 'TR', ck: 'ALIM', cond: [{ a: 'L.ID1', b: 'L.ID2', n: 'L', c: 'rouge' }, { a: 'N.ID1', b: 'N.ID2', n: 'N', c: 'bleu' }] });
     B.run({ k: 'icta', pts: [y0(893, 400), y0(895, 475)], from: '4', to: 'I1', label: 'G07', cond: [{ n: 'A', c: 'blanc' }, { n: 'B', c: 'orange' }, { n: 'C', c: 'gris' }] });
     B.run({ k: 'icta', pts: [[-1.45, 2.6, 0.04], [B.nodes['4'].x, 2.6, 0.04], [B.nodes['4'].x, B.nodes['4'].y + 0.05, 0.04]], to: '4', at: [-0.9, 2.66], label: 'C2 · SYT1', cond: [{ n: 'A', c: 'blanc' }, { n: 'B', c: 'orange' }] });
     // Liaisons internes du tableau (phase + neutre séparés par circuit)
@@ -2865,12 +2897,12 @@ const V3D = (() => {
     const Y = { lampe: 2.0, voyant: 2.0, sonnette: 1.9, detect: 2.0, prise: 0.4, rad: 0.55, moteur: 0.55, baes: 2.05, tele: 1.65, tele2: 1.65, cont: 1.65, minu: 1.65, yokis: 1.65 };
     const pos = {};
     const panel = C.comps.filter((c) => ['src', 'disj', 'dpn', 'fus'].includes(c.type));
-    B.soft(0.6, 0.9, -W / 2 + 0.42, 1.55); B.rb(0.6, 0.9, 0.018, 0.014, 0xf3f2ec, -W / 2 + 0.42, 1.55, 0); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
-    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; if (isSrc) B.rb(0.3, 0.13, 0.05, 0.008, 0x59626d, row.x, row.y, 0.018); else { const hd = B.module(row.x, row.y, 0.2, { n: 2 }); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } const lb = B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); if (!isSrc) B.ctl[c.ref].lab = lb; tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.075 + i * 0.05, row.y + 0.056, 0.074); pos[c.id + ':' + t] = p; }); py -= 0.27; });
+    B.grp('tab', () => { B.soft(0.6, 0.9, -W / 2 + 0.42, 1.55); B.rb(0.6, 0.9, 0.018, 0.014, 0xf3f2ec, -W / 2 + 0.42, 1.55, 0); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
+    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; if (isSrc) B.rb(0.3, 0.13, 0.05, 0.008, 0x59626d, row.x, row.y, 0.018); else { const hd = B.module(row.x, row.y, 0.2, { n: 2 }); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } const lb = B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); if (!isSrc) B.ctl[c.ref].lab = lb; tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.075 + i * 0.05, row.y + 0.056, 0.074); pos[c.id + ':' + t] = p; }); py -= 0.27; }); });
     sorted.filter((c) => !panel.includes(c)).forEach((c, i) => {
       const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'micro';
       B.dev(c.id, k, x, y, { ref: c.ref, label: c.ref, side: 1, w: 0.14, h: 0.14 });
-      DEF[c.type].t.forEach((t) => { pos[c.id + ':' + t[0]] = B.nodes[c.id].at(t[0]); });
+      B.grp(B.devKey(c.ref), () => DEF[c.type].t.forEach((t) => { pos[c.id + ':' + t[0]] = B.nodes[c.id].at(t[0]); }));
     });
     // couleur de chaque fil, d'après le réseau
     const par = {}; const fd = (a) => { if (par[a] === undefined) par[a] = a; while (par[a] !== a) { par[a] = par[par[a]]; a = par[a]; } return a; };
@@ -2881,11 +2913,11 @@ const V3D = (() => {
     // bornes : une boîte par équipotentielle, sous la goulotte
     C.comps.filter((c) => c.type === 'borne').forEach((c, i) => { const r = fd(c.id + ':P'), net = L.has(r) ? 'L' : N2.has(r) ? 'N' : E.has(r) ? 'PE' : 'Ret', x = x0 + (i % n) * dx * 0.9; B.jbox(c.id, x, yG - 0.17, { w: 0.18, h: 0.12, label: c.ref, ly: -0.26 }); pos[c.id + ':P'] = () => B.nodes[c.id].at(net); });
     const pt = (k) => (typeof pos[k] === 'function' ? pos[k]() : pos[k]);
-    C.wires.forEach((w, i) => {
+    C.wires.forEach((w, i) => B.grp(((B.circ.list.find((q) => q.wires.has(w.id)) || { key: 'ALIM' }).key) + ':w', () => {
       const A = pt(w.a), Bb = pt(w.b); if (!A || !Bb) return;
       const lane = yG + 0.05 - (i % 8) * 0.012, zz = 0.012 + (i % 4) * 0.012, ox = ((i % 7) - 3) * 0.006;
       B.wire([[A.x, A.y, A.z], [A.x + ox, Math.min(lane, A.y + 0.12), 0.04 + zz], [A.x + ox, lane, 0.04 + zz], [Bb.x + ox, lane, 0.04 + zz], [Bb.x + ox, Math.min(lane, Bb.y + 0.12), 0.04 + zz], [Bb.x, Bb.y, Bb.z]], col(w), null, w.id, 0.04);
-    });
+    }));
     return { cx: 0, cy: 1.43, r: Math.max(5.35, W * 1.75) };
   }
   const free = (g) => g.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material && o.material.map) o.material.map.dispose(); });
@@ -2974,16 +3006,16 @@ const V3D = (() => {
       if (!(await this.init()) || this.pending !== q) return;
       this.done = q; const [make, ctx] = q;
       if (this.b) { this.scene.remove(this.b.g); free(this.b.g); }
-      const T = window.THREE, ops = new Set(ctx.comps.filter((c) => DEF[c.type].op && opLabel(c)).map((c) => c.ref)), dry = new Builder(T, ops, null), plan = {}; make(dry, ctx); Object.keys(dry.nodes).forEach((k) => { if (dry.nodes[k].cnt) plan[k] = dry.nodes[k].cnt; }); free(dry.g); const b = new Builder(T, ops, plan); this.b = b; this.ctx = ctx; this.closeZone(true); const v = make(b, ctx); this.scene.add(b.g);
+      const T = window.THREE, ops = new Set(ctx.comps.filter((c) => DEF[c.type].op && opLabel(c)).map((c) => c.ref)), circ = { list: circuitsOf(ctx), ctx }, dry = new Builder(T, ops, null, circ), plan = {}; make(dry, ctx); Object.keys(dry.nodes).forEach((k) => { if (dry.nodes[k].cnt) plan[k] = dry.nodes[k].cnt; }); free(dry.g); const b = new Builder(T, ops, plan, circ); this.b = b; this.ctx = ctx; this.closeZone(true); const v = make(b, ctx); b.finish(); this.stopAnim(); this.stepOn = false; this.scene.add(b.g);
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
-      this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.draw();
+      this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.renderSteps(); this.draw();
     }
-    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.1 : 0; L.pt.intensity = on ? 0.38 : 0; if (L.glow) L.glow.visible = !!on; });
+    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = !this.stepOn && c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.1 : 0; L.pt.intensity = on ? 0.38 : 0; if (L.glow) L.glow.visible = !!on; });
       Object.keys(this.b.ctl).forEach((ref) => {
         const k = this.b.ctl[ref], c = C.comps.find((x) => x.ref === ref); if (!c) return;
-        const s = c.st, on = !!C.res.loadsOn[c.id];
+        const s = c.st, on = !this.stepOn && !!C.res.loadsOn[c.id];
         if (k.led) k.led.visible = on && c.type !== 'detect';
-        if (k.plug) k.plug.visible = c.type === 'prise' && !!s.plug;
+        if (k.plug) k.plug.visible = !this.stepOn && c.type === 'prise' && !!s.plug;
         if (k.face) { const sec = c.type === 'baes' && !on && !s.rest; k.face.material.emissive.setHex(sec ? 0x7dff9a : 0); k.face.material.emissiveIntensity = sec ? 0.9 : 0; }
         if (!k.part) return;
         const p = k.part, b = k.base;
@@ -2996,17 +3028,84 @@ const V3D = (() => {
     }
     /* appareil actionnable le plus proche d'un point de l'écran (zone large pour le doigt) */
     near(x, y) {
-      if (!this.b || this.zone) return null;
+      if (!this.b || this.zone || this.stepOn) return null;
       const rc = this.r.domElement.getBoundingClientRect(), v = new window.THREE.Vector3(); let best = null, bd = 26;
       this.b.ops.forEach((ref) => { const k = this.b.ctl[ref]; if (!k) return; v.copy(k.pos).project(this.cam); const d = Math.hypot((v.x + 1) / 2 * rc.width + rc.left - x, (1 - v.y) / 2 * rc.height + rc.top - y); if (d < bd) { bd = d; best = ref; } });
       return best;
     }
     pick(x, y) {
+      if (this.stepOn) { const z0 = this.zoneAt(x, y); if (z0) this.openZone(z0); return; }
       if (this.hlC) { this.hl.pick(null); return; } // un circuit est en surbrillance : le toucher suivant le relâche
       const ref = this.near(x, y), c = ref && this.ctx.comps.find((q) => q.ref === ref);
       if (c) { this.ctx.operate(c.id); return; }
       const z = this.zoneAt(x, y); if (z) { this.openZone(z); return; }
       if (this.hl) this.hl.tap(this.wireAt(x, y));
+    }
+    /* ---- construction pas à pas ---- */
+    buildSteps() {
+      const b = this.b, list = b.circ.list, S = [], add = (k, title, text) => { if (b.groups[k] && b.groups[k].children.length) S.push({ k: [k], title, text }); };
+      add('base', 'Le mur', 'On part d’un mur vide. Le trait marque la hauteur de 1 m : il sert de repère pour placer chaque appareil.');
+      add('sup', 'Les supports', 'On fixe d’abord ce qui porte les câbles : conduits, goulottes, moulure et chemin de câble.');
+      add('box', 'Les boîtes', 'On pose les boîtes de dérivation et de connexion. C’est là que les fils seront raccordés.');
+      add('tab', 'Le tableau', 'On installe le tableau : protections, peignes phase et neutre, barrette de terre. Tout reste hors tension.');
+      add('ALIM:w', 'L’arrivée', 'On raccorde l’alimentation du tableau : phase, neutre et terre.');
+      list.forEach((c) => {
+        const devs = [...c.refs].filter((r) => b.ctl[r] && b.ctl[r].kind !== 'mod');
+        add(c.key + ':dev', 'Circuit ' + c.key + ' : les appareils', 'On pose ' + (devs.join(', ') || 'les appareils') + ', aux hauteurs prévues.');
+        add(c.key + ':w', 'Circuit ' + c.key + ' : les fils', 'On tire les fils depuis ' + c.key + ' : la phase, le neutre, la terre, puis les retours et la commande. Chaque connexion arrive sur son connecteur.');
+      });
+      add('COM:dev', 'Courants faibles : les appareils', 'On pose les appareils de communication, à l’écart des circuits de puissance.');
+      add('COM:w', 'Courants faibles : les câbles', 'On tire les câbles de communication, séparés du courant fort.');
+      const last = S[S.length - 1];
+      S.push({ k: [], title: 'Le contrôle', text: 'Tout est câblé. Vérifie les serrages et les continuités avant de mettre sous tension, puis termine pour essayer l’installation.' });
+      return last ? S : [];
+    }
+    stopAnim() { clearInterval(this.anT); this.anT = 0; (this.anR || []).forEach((r) => r.mesh.geometry.setDrawRange(0, Infinity)); this.anR = []; }
+    /* les fils de l'étape se déroulent : phase, puis neutre, terre et retours */
+    animWires(keys) {
+      this.stopAnim(); if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const R = this.b.wires.filter((r) => keys.includes(r.sk)); if (!R.length) return;
+      this.anR = R; const t0 = performance.now(), D = 420, gap = 260, end = 3 * gap + D;
+      const tick = () => {
+        const t = performance.now() - t0;
+        R.forEach((r) => { const k = Math.max(0, Math.min(1, (t - r.cls * gap) / D)), g = r.mesh.geometry, n = g.index ? g.index.count : 0; g.setDrawRange(0, k >= 1 ? Infinity : Math.floor(n * k / 6) * 6); });
+        this.draw(); if (t >= end) this.stopAnim();
+      };
+      tick(); this.anT = setInterval(tick, 33);
+    }
+    stepGo(i, anim) {
+      const b = this.b, S = this.steps; i = Math.max(0, Math.min(S.length - 1, i)); const fw = anim && i > this.si; this.si = i;
+      const on = new Set(); for (let j = 0; j <= i; j++) S[j].k.forEach((k) => on.add(k));
+      Object.keys(b.groups).forEach((k) => { b.groups[k].visible = on.has(k); });
+      if (fw) this.animWires(S[i].k); else this.stopAnim();
+      this.updateBar(); this.draw();
+    }
+    stepStart() {
+      if (this.hl) this.hl.pick(null);
+      this.steps = this.buildSteps(); if (!this.steps.length) return;
+      this.closeZone(); this.stepOn = true; this.si = -1; this.sync(this.ctx); this.renderSteps(); this.stepGo(0);
+    }
+    stepExit() {
+      this.stopAnim(); this.stepOn = false; Object.values(this.b.groups).forEach((g) => { g.visible = true; }); this.sync(this.ctx); this.renderSteps(); this.draw();
+    }
+    renderSteps() {
+      const el = this.stepEl; if (!el) return;
+      el.closest('.v3d-wrap').classList.toggle('stepping', !!this.stepOn);
+      el.innerHTML = this.stepOn
+        ? '<div class="stp"><div class="stp-h"><span class="stp-n"></span><b class="stp-t"></b></div><p class="stp-p"></p><input class="stp-r" type="range" min="0" step="1" aria-label="Choisir une étape"><div class="ctls"><button class="ctl" type="button" data-s="prev">← Précédent</button><button class="ctl stp-nx" type="button" data-s="next">Suivant →</button><button class="ctl ghost" type="button" data-s="exit">Quitter</button></div></div>'
+        : (this.b ? '<button class="ctl stp-go" type="button" data-s="start"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Construire pas à pas</button>' : '');
+      if (!this.stepBound) {
+        this.stepBound = true;
+        el.addEventListener('click', (e) => { const b = e.target.closest('[data-s]'); if (!b) return; const a = b.dataset.s; if (a === 'start') this.stepStart(); else if (a === 'exit') this.stepExit(); else if (a === 'prev') this.stepGo(this.si - 1); else if (a === 'next') { if (this.si >= this.steps.length - 1) this.stepExit(); else this.stepGo(this.si + 1, true); } });
+        el.addEventListener('input', (e) => { if (e.target.classList.contains('stp-r')) this.stepGo(+e.target.value); });
+      }
+    }
+    updateBar() {
+      const el = this.stepEl, S = this.steps, s = S[this.si], q = (c) => el.querySelector(c);
+      q('.stp-n').textContent = 'Étape ' + (this.si + 1) + ' / ' + S.length; q('.stp-t').textContent = s.title; q('.stp-p').textContent = s.text;
+      const r = q('.stp-r'); r.max = S.length - 1; r.value = this.si;
+      el.querySelector('[data-s="prev"]').disabled = this.si === 0;
+      q('.stp-nx').textContent = this.si === S.length - 1 ? 'Terminer et essayer' : 'Suivant →';
     }
     /* conducteur le plus proche du point touché */
     wireAt(x, y) {
@@ -3050,6 +3149,7 @@ const V3D = (() => {
       if (!this.b) return null;
       const rc = this.r.domElement.getBoundingClientRect(), T = window.THREE, sc = (v) => { v.project(this.cam); return [(v.x + 1) / 2 * rc.width + rc.left, (1 - v.y) / 2 * rc.height + rc.top]; };
       let best = null, bd = 1e9;
+      if (this.stepOn && !(this.b.groups.box && this.b.groups.box.visible)) return null;
       this.b.zones.forEach((z) => { if (z === this.zone) return; const a = sc(z.c.clone()), e = sc(new T.Vector3(z.c.x + z.w / 2, z.c.y + z.h / 2, z.c.z)), rx = Math.max(16, Math.abs(e[0] - a[0]) * 1.1), ry = Math.max(16, Math.abs(e[1] - a[1]) * 1.1), d = Math.hypot(x - a[0], y - a[1]); if (Math.abs(x - a[0]) <= rx && Math.abs(y - a[1]) <= ry && d < bd) { bd = d; best = z; } });
       return best;
     }
@@ -3118,6 +3218,7 @@ const simC = new Circuit();
 const simB = new Board($('#sim-svg'), simC, {});
 const sim3d = new V3D.View($('#sim-3d'));
 const simHL = makeHL(simC, simB, sim3d, $('#sim-circ'));
+sim3d.stepEl = $('#sim-steps');
 $('#sim-next').addEventListener('click', () => { const n = PRESETS[PRESETS.indexOf(cur) + 1]; if (!n) return; simSet(n); window.scrollTo({ top: $('#sim-title').getBoundingClientRect().top + window.scrollY - 90 }); });
 let cur = PRESETS[0];
 function simNav() {
@@ -3264,6 +3365,7 @@ const exC = new Circuit();
 const exB = new Board($('#ex-svg'), exC, {});
 const ex3d = new V3D.View($('#ex-3d'));
 const exHL = makeHL(exC, exB, ex3d, $('#ex-circ'));
+ex3d.stepEl = $('#ex-steps');
 function exSet(n) {
   if (n) exN = n;
   const E = ESPACES[exN];
