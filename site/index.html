@@ -345,6 +345,11 @@ tr:last-child td{border-bottom:0}
 .hitbox{fill:transparent;cursor:pointer}
 .comp.op .hitbox:hover{fill:rgba(255,216,74,.08)}
 .edit .comp .hitbox{cursor:grab}
+.trash{cursor:pointer}
+.trash circle{fill:#D8362A;stroke:#111A24;stroke-width:2;transition:fill .15s}
+.trash .thit2{fill:transparent;stroke:none}
+.trash:hover circle:not(.thit2){fill:#F0604F}
+.trash .tico{fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .roth{cursor:pointer}
 .roth circle{fill:#FFD84A;stroke:#111A24;stroke-width:2;transition:fill .15s}
 .roth:hover circle{fill:#FFF0A8}
@@ -2012,6 +2017,7 @@ class Board {
     const C = this.C, ui = this.ui, res = C.res, now = Date.now();
     const t = performance.now() / 1000;
     const dFlow = -(t % 0.7).toFixed(3), dLive = -(t % 1.8).toFixed(3);
+    let selMid = null;
     const pos = {};
     C.comps.forEach((c) => DEF[c.type].t.forEach((tt) => { pos[c.id + ':' + tt[0]] = tp(c, tt[0]); }));
     // couleur automatique : réseaux vus interrupteurs ouverts
@@ -2041,6 +2047,7 @@ class Board {
       const pts = RT && RT[w.id] ? (fwd ? RT[w.id] : RT[w.id].slice().reverse()) : this.route(A, B, w.flip, fwd);
       const d = 'M' + pts.map((q) => q.x + ' ' + q.y).join('L');
       const sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === w.id ? ' sel' : '';
+      if (sel) { let best = -1; for (let i = 1; i < pts.length; i++) { const l = Math.abs(pts[i].x - pts[i - 1].x) + Math.abs(pts[i].y - pts[i - 1].y); if (l > best) { best = l; selMid = { x: (pts[i].x + pts[i - 1].x) / 2, y: (pts[i].y + pts[i - 1].y) / 2 }; } } }
       const delay = r.s === 'live' ? dLive : dFlow;
       h += `<g class="wire${sel}${this.hl ? (this.hl.wires.has(w.id) ? ' lit' : ' dimmed') : ''}" data-wire="${w.id}">${this.edit || this.opts.onWire ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
     });
@@ -2074,6 +2081,9 @@ class Board {
         h += `<g class="${cls}" data-term="${k}"><circle class="thit" cx="${p.x}" cy="${p.y}" r="11"/><circle class="tdot" cx="${p.x}" cy="${p.y}" r="5"/><title>Borne ${esc(k.split(':')[1])} de ${esc(refOf[k.split(':')[0]])}</title></g>`;
       });
       const rsc = ui.sel && ui.sel.k === 'c' && !ui.place && !ui.drag && !ui.pending ? C.find(ui.sel.id) : null;
+      const trash = (x, y) => `<g class="trash" data-del="1" transform="translate(${x} ${y})"><title>Supprimer</title><circle class="thit2" r="21"/><circle r="14"/><path d="M-6.5 -4H6.5M-2.5 -4V-6.5H2.5V-4M-5 -4L-4 7H4L5 -4M-1.8 -1V4.5M1.8 -1V4.5" class="tico"/></g>`;
+      if (rsc) { const bx = boxOf(rsc); h += trash(rsc.x, Math.max(18, rsc.y - bx.H / 2 - 24)); }
+      else if (selMid && ui.sel && ui.sel.k === 'w' && !ui.place && !ui.pending) h += trash(selMid.x, selMid.y);
       if (rsc && !DEF[rsc.type].norot) {
         const bx = boxOf(rsc), ty = Math.max(16, rsc.y - bx.H / 2 - 24);
         const hd = (x, dir) => `<g class="roth" data-rot="${rsc.id}" data-dir="${dir}" transform="translate(${x} ${ty})"><title>Pivoter de 90° ${dir > 0 ? 'dans le sens horaire' : 'dans le sens antihoraire'}</title><circle r="13"/><path d="${dir > 0 ? 'M-6 0A6 6 0 1 1 0 6M3 3L0 6L3 9' : 'M6 0A6 6 0 1 0 0 6M-3 3L0 6L-3 9'}" class="rarc"/></g>`;
@@ -2112,6 +2122,7 @@ class Board {
       e.preventDefault(); return;
     }
     const p = this.pt(e);
+    if (e.target.closest('[data-del]')) { e.preventDefault(); this.delSel(); return; }
     const rEl = e.target.closest('[data-rot]');
     if (rEl) { e.preventDefault(); this.rotate(rEl.dataset.rot, +rEl.dataset.dir); return; }
     if (tEl) { e.preventDefault(); this.termClick(tEl.dataset.term); return; }
@@ -2212,6 +2223,12 @@ class Board {
     c.rot = ((c.rot || 0) + (dir < 0 ? 270 : 90)) % 360;
     this.ui.sel = { k: 'c', id };
     this.C.update();
+  }
+  /* supprime l'élément sélectionné (composant ou fil) ; annulable */
+  delSel() {
+    const C = this.C, s = this.ui.sel; if (!s) return;
+    if (s.k === 'c') { this.removeComp(s.id); return; }
+    C.snapshot(); C.wires = C.wires.filter((w) => w.id !== s.id); this.ui.sel = null; C.update();
   }
   removeComp(id) {
     const C = this.C; C.snapshot();
