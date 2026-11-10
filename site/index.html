@@ -2393,7 +2393,53 @@ const V3D = (() => {
     return out;
   }
   class Builder {
-    constructor(T, ops, plan) { this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); this.wires = []; this.runLabs = []; }
+    constructor(T, ops, plan) { this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); this.wires = []; this.runLabs = []; this.geo = {}; this.tex = {}; }
+    /* pavé aux angles arrondis, de z à z + d */
+    rb(w, h, d, r, m, x, y, z) {
+      const T = this.T, key = 'rb' + [w, h, d, r].map((v) => v.toFixed(4)).join();
+      if (!this.geo[key]) {
+        const s = new T.Shape(), a = w / 2 - r, b = h / 2 - r, P = Math.PI;
+        s.moveTo(-a, -h / 2); s.lineTo(a, -h / 2); s.absarc(a, -b, r, -P / 2, 0, false); s.lineTo(w / 2, b); s.absarc(a, b, r, 0, P / 2, false); s.lineTo(-a, h / 2); s.absarc(-a, b, r, P / 2, P, false); s.lineTo(-w / 2, -b); s.absarc(-a, -b, r, P, 1.5 * P, false);
+        const v = Math.min(d * 0.3, r * 0.6, 0.004), g = new T.ExtrudeGeometry(s, { depth: d - v * 2, bevelEnabled: true, bevelThickness: v, bevelSize: v, bevelOffset: -v, bevelSegments: 2, curveSegments: 4 });
+        g.translate(0, 0, v); this.geo[key] = g;
+      }
+      const o = new T.Mesh(this.geo[key], typeof m === 'number' ? this.mat(m) : m); o.position.set(x, y, z || 0); this.g.add(o); return o;
+    }
+    /* cylindre d'axe z, centré en z */
+    cyl(r, len, m, x, y, z, seg) {
+      const T = this.T, key = 'cy' + r + '_' + len + '_' + (seg || 20);
+      if (!this.geo[key]) { this.geo[key] = new T.CylinderGeometry(r, r, len, seg || 20); this.geo[key].rotateX(Math.PI / 2); }
+      const o = new T.Mesh(this.geo[key], typeof m === 'number' ? this.mat(m) : m); o.position.set(x, y, z); this.g.add(o); return o;
+    }
+    /* demi-sphère tournée vers l'avant, aplatie selon k */
+    dome(r, m, x, y, z, k) {
+      const T = this.T, g = new T.SphereGeometry(r, 22, 10, 0, Math.PI * 2, 0, Math.PI / 2); g.rotateX(Math.PI / 2);
+      const o = new T.Mesh(g, typeof m === 'number' ? this.mat(m) : m); o.position.set(x, y, z); o.scale.z = k || 1; this.g.add(o); return o;
+    }
+    /* petite image plaquée (pictogramme) */
+    decal(key, w, h, x, y, z, draw) {
+      const T = this.T;
+      if (!this.tex[key]) { const c = document.createElement('canvas'); c.width = 256; c.height = Math.round(256 * h / w); draw(c.getContext('2d'), c.width, c.height); this.tex[key] = new T.CanvasTexture(c); this.tex[key].anisotropy = 4; }
+      const o = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshStandardMaterial({ map: this.tex[key], roughness: 0.5 })); o.position.set(x, y, z); this.g.add(o); return o;
+    }
+    /* ombre douce derrière un appareil */
+    soft(w, h, x, y, round) {
+      if (!this.sm) this.sm = new this.T.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.17, depthWrite: false });
+      const o = new this.T.Mesh(round ? new this.T.CircleGeometry(w / 2 + 0.007, 28) : new this.T.PlaneGeometry(w + 0.014, h + 0.014), this.sm); o.position.set(x + 0.005, y - 0.008, 0.0015); this.g.add(o);
+    }
+    /* module sur rail DIN : corps, nez, vis, manette ; renvoie la manette quand il y en a une */
+    module(mx, yr, w, o) {
+      o = o || {}; const h = 0.135, n = Math.max(2, o.n || 2);
+      this.rb(w - 0.004, h, 0.04, 0.004, 0xe6e6df, mx, yr, 0.028);
+      this.rb(w - 0.004, h * 0.62, 0.016, 0.003, o.k === 'id' ? 0xf4f4ec : 0xf9f9f4, mx, yr, 0.068);
+      [-1, 1].forEach((sg) => { for (let j = 0; j < n; j++) this.cyl(0.0055, 0.003, this.mat(0x7a7f86, { metalness: 0.35, roughness: 0.45 }), mx + (j - (n - 1) / 2) * 0.026, yr + sg * 0.056, 0.0695, 12); });
+      if (o.k === 'prise') { this.cyl(0.024, 0.004, 0xdcd9cf, mx, yr, 0.086); [-1, 1].forEach((sg) => this.cyl(0.0035, 0.002, 0x222222, mx + sg * 0.009, yr, 0.0885, 10)); return null; }
+      if (o.k === 'cont') { this.box(w * 0.5, 0.034, 0.003, 0x3a3d42, mx, yr + 0.018, 0.0855); this.cyl(0.006, 0.004, 0xd8362a, mx + w * 0.32, yr + 0.018, 0.086, 12); return null; }
+      this.box(w * 0.52, 0.036, 0.003, 0x2a2c30, mx, yr + 0.024, 0.0855);
+      const hd = this.box(w * 0.4, 0.026, 0.018, this.mat(o.k === 'id' ? 0x2b6be0 : 0x24272b), mx, yr + 0.024, 0.09);
+      if (o.k === 'id') this.cyl(0.008, 0.005, 0xe6b422, mx + w * 0.34, yr + 0.024, 0.086, 14);
+      return hd;
+    }
     /* conducteur rattaché à un circuit : key (scènes de l'énoncé) ou wid (scènes générées) */
     wire(P, c, key, wid, rad) { const m = this.tube(P, 0.0034, this.wmat(c), rad === undefined ? 0.03 : rad); if (m) this.wires.push({ mesh: m, mat: m.material, key, wid, pts: P }); return m; }
     /* voyant vert d'un appareil alimenté : caché tant que l'appareil ne fonctionne pas */
@@ -2410,16 +2456,19 @@ const V3D = (() => {
       const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'wago' ? 0.015 : big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; this.g.add(sp); if (big !== 'wago') this.labels.push(sp); return sp;
     }
     wall(W, H, cx, cy) {
-      this.box(W, H, 0.04, this.mat(0xd8d2c5, { roughness: 0.95 }), cx, cy, -0.02);
-      this.box(W + 0.2, 0.05, 0.5, 0xb9ac97, cx, cy - H / 2 - 0.025, 0.22);
+      if (!this.tex.wall) { const c = document.createElement('canvas'); c.width = c.height = 256; const q = c.getContext('2d'); q.fillStyle = '#ffffff'; q.fillRect(0, 0, 256, 256); let sd = 73; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647; for (let i = 0; i < 5200; i++) { q.fillStyle = 'rgba(90,80,60,' + (0.015 + rnd() * 0.05) + ')'; q.fillRect(rnd() * 256, rnd() * 256, 1 + rnd() * 2.4, 1 + rnd() * 2.4); } this.tex.wall = new this.T.CanvasTexture(c); this.tex.wall.wrapS = this.tex.wall.wrapT = this.T.RepeatWrapping; this.tex.wall.repeat.set(5, 5); }
+      this.box(W, H, 0.04, this.mat(0xdcd6ca, { roughness: 0.95, map: this.tex.wall }), cx, cy, -0.02);
+      this.box(W + 0.2, 0.05, 0.5, 0xa98f6d, cx, cy - H / 2 - 0.025, 0.22);
+      this.box(W, 0.08, 0.014, 0xf4f2ec, cx, cy - H / 2 + 0.04, 0.007);
       // trait de référence à 1 m
       for (let x = cx - W / 2 + 0.05; x < cx + W / 2; x += 0.1) this.box(0.06, 0.006, 0.002, 0x55606b, x, 1, 0.002);
       this.label('Trait 1 m', cx + W / 2 - 0.22, 1.05, 0.02);
     }
     /* boîte de dérivation ouverte : les connexions se voient */
     jbox(id, x, y, o) {
-      o = o || {}; const w = o.w || 0.2, h = o.h || 0.2, d = 0.07, m = this.glass(o.c || 0xcfd4d9, 0.42);
-      this.box(w, h, 0.006, this.mat(o.c || 0xc9ced3), x, y, 0.005);
+      o = o || {}; const w = o.w || 0.2, h = o.h || 0.2, d = 0.056, m = this.mat(o.c || 0xa9b0b7);
+      this.soft(w, h, x, y); this.rb(w + 0.012, h + 0.012, 0.008, 0.012, o.c || 0xb4bac1, x, y, 0);
+      this.box(w - 0.006, h - 0.006, 0.002, this.mat(o.c ? 0xe9dcd8 : 0xd5d9dd), x, y, 0.009);
       [[w, 0.008, d, 0, h / 2], [w, 0.008, d, 0, -h / 2], [0.008, h, d, -w / 2, 0], [0.008, h, d, w / 2, 0]].forEach((s) => this.box(s[0], s[1], s[2], m, x + s[3], y + s[4], d / 2));
       this.label(o.label || id, x + (o.lx || 0), y + h / 2 + 0.07 + (o.ly || 0), 0.1, undefined, 'rgba(37,99,235,.96)');
       const N = { x, y, nets: {}, n: 0, kind: 'jbox', cnt: {}, w, h }, Z = { c: new this.T.Vector3(x, y, 0.03), w, h, title: o.label || id, tags: [] }, inner = w * 0.88, pitch = 0.012; let cur = 0, line = 0; this.zones.push(Z);
@@ -2442,33 +2491,77 @@ const V3D = (() => {
       };
       this.nodes[id] = N; return N;
     }
-    /* appareil : façade pleine, bornes visibles sur le bord où arrivent les fils */
+    /* appareil : modèle réaliste, bornes sur le bord où arrivent les fils */
     dev(id, kind, x, y, o) {
       o = o || {}; const T = this.T, n0 = this.g.children.length, z0 = o.z || 0; const N = { x, y, nets: {}, n: 0, kind, ref: o.ref || id }; let part = null, plug = null, face = null, led = null;
-      const W = o.w || 0.11, H = o.h || 0.11, side = o.side === undefined ? 1 : o.side;
-      const col = { etanche: 0x8a9096, poussoir: 0x8a9096, dm: 0xc8302a, rj: 0xdfe1e4, au: 0xf0c419, baes: 0xf4f4f0 }[kind] || 0xf3f1ea;
-      const dz = kind === 'lampe' ? 0.03 : 0.045;
+      const W = o.w || 0.11, H = o.h || 0.11, side = o.side === undefined ? 1 : o.side, white = 0xf4f3ec, grey = 0x8d939a, PI = Math.PI;
+      let dz = 0.045, lz = 0.05;
+      if (kind === 'lampe') this.soft(0.084, 0.084, x, y, true); else this.soft(W, H, x, y, kind === 'hublot');
+      const plate = () => { dz = 0.014; lz = 0.018; this.rb(W, H, 0.014, 0.009, white, x, y, 0); };
+      const screws = (r, c) => [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach((s) => this.cyl(0.0045, 0.003, c || 0x4b5158, x + s[0] * r, y + s[1] * r, dz + 0.001, 10));
       if (kind === 'lampe' || kind === 'hublot') {
-        this.box(W, H, dz, kind === 'hublot' ? 0x8a9096 : 0xf1efe9, x, y, dz / 2);
-        const m = new T.MeshStandardMaterial({ color: 0xf6eecf, emissive: 0xffc94d, emissiveIntensity: 0, roughness: 0.3 });
-        const b = new T.Mesh(new T.SphereGeometry(0.052, 20, 14), m); b.position.set(x, y, dz + 0.04); this.g.add(b);
+        const m = new T.MeshStandardMaterial({ color: kind === 'hublot' ? 0xdedcd2 : 0xefeadb, emissive: 0xffc94d, emissiveIntensity: 0, roughness: 0.28 });
+        if (kind === 'hublot') {
+          dz = 0.024; const r = Math.min(W, H) / 2;
+          this.cyl(r, 0.024, grey, x, y, 0.012, 28); this.cyl(r * 0.84, 0.006, 0x70767d, x, y, 0.026, 28);
+          this.dome(r * 0.8, m, x, y, 0.028, 0.72);
+          for (let i = -1; i <= 1; i++) this.box(i ? r * 1.42 : r * 1.62, 0.006, 0.005, grey, x, y + i * r * 0.36, 0.028 + r * 0.8 * 0.72 * (i ? 0.84 : 1));
+        } else {
+          dz = 0.03; this.cyl(0.042, 0.012, white, x, y, 0.006, 28); this.cyl(0.02, 0.03, 0xe6e3d8, x, y, 0.027, 18);
+          const g = new T.LatheGeometry([[0.012, 0], [0.0135, 0.006], [0.0195, 0.022], [0.03, 0.041], [0.0345, 0.06], [0.03, 0.079], [0.019, 0.092], [0, 0.098]].map((q) => new T.Vector2(q[0], q[1])), 22); g.rotateX(PI / 2);
+          const b = new T.Mesh(g, m); b.position.set(x, y, 0.04); this.g.add(b);
+        }
         const pt = new T.PointLight(0xffd27a, 0, 1.4); pt.position.set(x, y, 0.2); this.g.add(pt);
-        this.lamps[N.ref] = { m, pt };
+        if (!this.tex.glow) { const c = document.createElement('canvas'); c.width = c.height = 128; const q = c.getContext('2d'), gr = q.createRadialGradient(64, 64, 4, 64, 64, 64); gr.addColorStop(0, 'rgba(255,215,130,.5)'); gr.addColorStop(0.35, 'rgba(255,200,110,.16)'); gr.addColorStop(1, 'rgba(255,190,90,0)'); q.fillStyle = gr; q.fillRect(0, 0, 128, 128); this.tex.glow = new T.CanvasTexture(c); }
+        const glow = new T.Sprite(new T.SpriteMaterial({ map: this.tex.glow, transparent: true, depthWrite: false, blending: T.AdditiveBlending })); glow.scale.set(0.36, 0.36, 1); glow.position.set(x, y, 0.13); glow.visible = false; glow.renderOrder = 8; this.g.add(glow);
+        this.lamps[N.ref] = { m, pt, glow };
+      } else if (kind === 'inter') {
+        plate(); this.rb(W * 0.74, H * 0.74, 0.006, 0.005, 0xe6e4db, x, y, 0.014);
+        part = this.rb(W * 0.6, H * 0.64, 0.012, 0.005, 0xfcfcf8, x, y, 0.018); dz = 0.024;
+      } else if (kind === 'bp') {
+        plate(); this.rb(W * 0.74, H * 0.74, 0.006, 0.005, 0xe6e4db, x, y, 0.014);
+        part = this.rb(W * 0.56, H * 0.56, 0.012, 0.012, 0xfcfcf8, x, y, 0.018); dz = 0.024;
+        this.cyl(0.005, 0.002, 0xf0b429, x, y - H * 0.31, 0.021, 12);
+      } else if (kind === 'poussoir') {
+        dz = 0.056; this.rb(W, H, 0.05, 0.014, grey, x, y, 0); this.rb(W * 0.92, H * 0.92, 0.006, 0.012, 0xa9afb6, x, y, 0.05); screws(W * 0.36);
+        this.cyl(0.037, 0.006, 0x6b7178, x, y, 0.059, 26); part = this.cyl(0.03, 0.012, white, x, y, 0.067, 26); dz = 0.07;
+      } else if (kind === 'dm') {
+        dz = 0.05; this.rb(W, H, 0.05, 0.012, 0xc8302a, x, y, 0); this.rb(W * 0.72, H * 0.72, 0.003, 0.004, 0x96211c, x, y, 0.05);
+        part = this.rb(W * 0.6, H * 0.6, 0.009, 0.004, 0xf7f7f2, x, y, 0.053);
+        const d = this.decal('dm', W * 0.5, H * 0.5, 0, 0, 0, (q, a, b) => { q.fillStyle = '#f7f7f2'; q.fillRect(0, 0, a, b); q.strokeStyle = q.fillStyle = '#16181b'; q.lineWidth = 12; q.lineJoin = 'round'; q.beginPath(); q.moveTo(a * 0.2, b * 0.52); q.lineTo(a * 0.5, b * 0.2); q.lineTo(a * 0.8, b * 0.52); q.lineTo(a * 0.8, b * 0.84); q.lineTo(a * 0.2, b * 0.84); q.closePath(); q.stroke(); q.beginPath(); q.arc(a * 0.5, b * 0.6, b * 0.1, 0, 7); q.fill(); });
+        part.add(d); d.position.set(0, 0, 0.0095);
+      } else if (kind === 'au') {
+        dz = 0.05; this.rb(W, H, 0.05, 0.012, 0xe8bd16, x, y, 0); screws(W * 0.38); this.cyl(0.042, 0.012, 0x33363a, x, y, 0.056, 26);
+        part = this.cyl(0.033, 0.016, 0xc8302a, x, y, 0.07, 26); const d = this.dome(0.033, 0xd6362e, 0, 0, 0, 0.42); part.add(d); d.position.set(0, 0, 0.008); dz = 0.075;
+      } else if (kind === 'prise' || kind === 'pc') {
+        plate();
+        if (kind === 'prise') {
+          this.cyl(0.04, 0.004, 0xcfccc1, x, y, 0.015, 26); this.cyl(0.035, 0.003, 0xe7e5db, x, y, 0.0165, 26);
+          [-1, 1].forEach((s) => this.cyl(0.0048, 0.002, 0x1d1d1f, x + s * 0.0125, y, 0.0185, 12));
+          this.cyl(0.0032, 0.012, this.mat(0xc9ccd0, { metalness: 0.4, roughness: 0.4 }), x, y + 0.024, 0.022, 10);
+          plug = this.cyl(0.031, 0.034, 0x2a2d31, x, y, 0.036, 22);
+          const fl = new T.Mesh(new T.CylinderGeometry(0.0055, 0.0055, 0.18, 10), this.mat(0x1e2023)); fl.position.set(0, -0.09, 0.012); plug.add(fl); plug.visible = false;
+        } else { this.cyl(0.03, 0.004, 0xd5d2c7, x, y, 0.015, 24); this.cyl(0.011, 0.012, 0x33363a, x, y, 0.02, 16); }
+      } else if (kind === 'rj') {
+        plate(); this.rb(W * 0.5, H * 0.46, 0.006, 0.004, 0xe9e7df, x, y, 0.014); this.box(0.032, 0.026, 0.003, 0x1c1d20, x, y, 0.0205);
+        for (let i = 0; i < 4; i++) this.box(0.0028, 0.008, 0.002, 0xd8b24a, x + (i - 1.5) * 0.0062, y + 0.006, 0.0225);
+      } else if (kind === 'baes') {
+        dz = 0.045; this.rb(W, H, 0.045, 0.012, 0xf6f5f0, x, y, 0);
+        face = this.decal('baes', W * 0.76, H * 0.62, x, y, 0.0458, (q, a, b) => { q.fillStyle = '#1f9d48'; q.fillRect(0, 0, a, b); q.strokeStyle = q.fillStyle = '#fff'; q.lineWidth = b * 0.075; q.lineCap = 'round'; q.lineJoin = 'round'; const m = a * 0.45, h = b; q.strokeRect(a * 0.73, h * 0.15, a * 0.17, h * 0.7); q.beginPath(); q.arc(m, h * 0.22, h * 0.09, 0, 7); q.fill(); q.beginPath(); q.moveTo(m, h * 0.34); q.lineTo(m - a * 0.02, h * 0.58); q.lineTo(m + a * 0.08, h * 0.8); q.moveTo(m - a * 0.02, h * 0.58); q.lineTo(m - a * 0.1, h * 0.82); q.moveTo(m, h * 0.4); q.lineTo(m + a * 0.1, h * 0.5); q.moveTo(m, h * 0.4); q.lineTo(m - a * 0.1, h * 0.5); q.stroke(); q.beginPath(); q.moveTo(a * 0.08, h * 0.5); q.lineTo(a * 0.26, h * 0.5); q.moveTo(a * 0.14, h * 0.36); q.lineTo(a * 0.07, h * 0.5); q.lineTo(a * 0.14, h * 0.64); q.stroke(); });
+      } else if (kind === 'detect') {
+        plate(); this.rb(W * 0.74, H * 0.74, 0.006, 0.005, 0xe6e4db, x, y, 0.014); this.dome(0.034, this.mat(0xf6f4ec, { roughness: 0.35 }), x, y, 0.02, 0.85); dz = 0.05;
+      } else if (kind === 'bell') {
+        dz = 0.03; this.rb(W, H, 0.03, 0.012, white, x, y, 0); for (let i = -2; i <= 2; i++) this.box(W * 0.6 - Math.abs(i) * 0.012, 0.005, 0.002, 0x6b7178, x, y + i * 0.016, 0.031);
       } else {
-        this.box(W, H, dz, this.mat(col), x, y, dz / 2);
-        if (kind === 'dm') part = this.box(W * 0.6, H * 0.6, 0.006, 0xf4f4f0, x, y, dz + 0.003);
-        if (kind === 'au') { const b = new T.Mesh(new T.CylinderGeometry(0.03, 0.03, 0.03, 20), this.mat(0xc8302a)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.015); this.g.add(b); part = b; }
-        if (kind === 'prise' || kind === 'pc') { const b = new T.Mesh(new T.CylinderGeometry(0.034, 0.034, 0.01, 24), this.mat(0xdedbd2)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.005); this.g.add(b); plug = new T.Mesh(new T.CylinderGeometry(0.03, 0.03, 0.05, 20), this.mat(0x2a2d31)); plug.rotation.x = Math.PI / 2; plug.position.set(x, y, dz + 0.035); plug.visible = false; this.g.add(plug); }
-        if (kind === 'poussoir' || kind === 'inter') part = this.box(W * 0.62, H * 0.62, 0.012, this.mat(0xfafaf6), x, y, dz + 0.006);
-        if (kind === 'baes') face = this.box(W * 0.75, H * 0.5, 0.004, new T.MeshStandardMaterial({ color: 0x2f9e44, roughness: 0.5 }), x, y, dz + 0.002);
-        if (kind === 'rj') this.box(0.03, 0.022, 0.004, 0x333333, x, y, dz + 0.002);
+        // module ou micromodule encastré
+        dz = 0.026; this.rb(W, H, 0.024, 0.006, 0x2d3036, x, y, 0); this.rb(W * 0.82, H * 0.62, 0.003, 0.003, 0x3c4047, x, y, 0.024);
       }
-      if (kind !== 'lampe' && kind !== 'hublot') led = this.led(x + W / 2 - 0.02, y + H / 2 - 0.02, dz + 0.006);
+      if (kind !== 'lampe' && kind !== 'hublot') led = this.led(x + W / 2 - 0.016, y + H / 2 - 0.016, lz);
       for (let i = n0; i < this.g.children.length; i++) this.g.children[i].position.z += z0;
       this.ctl[N.ref] = { pos: new T.Vector3(x, y, dz + z0), part, base: part ? part.position.clone() : null, plug, face, led, kind };
       if (o.label !== false) this.ctl[N.ref].lab = this.label(o.label || id, x, y + H / 2 + 0.07, 0.1, undefined, this.ops.has(N.ref));
       N.at = (net) => {
-        if (!N.nets[net]) { const i = N.n++, offs = (i - 1.5) * 0.024; const p = side === 'l' || side === 'r' ? new T.Vector3(x + (side === 'r' ? W : -W) / 2, y - offs, 0.022 + z0) : new T.Vector3(x + offs, y + side * H / 2, 0.022 + z0); N.nets[net] = p; const b = new T.Mesh(new T.SphereGeometry(0.008, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); b.position.copy(p); this.g.add(b); }
+        if (!N.nets[net]) { const i = N.n++, offs = (i - 1.5) * 0.024; const p = side === 'l' || side === 'r' ? new T.Vector3(x + (side === 'r' ? W : -W) / 2, y - offs, 0.022 + z0) : new T.Vector3(x + offs, y + side * H / 2, 0.022 + z0); N.nets[net] = p; const b = new T.Mesh(new T.SphereGeometry(0.0055, 8, 6), this.mat(0x8f9398, { metalness: 0.3 })); b.position.copy(p); this.g.add(b); }
         return N.nets[net];
       };
       this.nodes[id] = N; return N;
@@ -2488,7 +2581,16 @@ const V3D = (() => {
       if (pts.length > 1) { clip(o.from, pts[0], pts[1]); clip(o.to, pts[pts.length - 1], pts[pts.length - 2]); }
       const c = o.cond || [], R = o.k === 'cable' ? 0.0072 : o.r ? o.r - 0.01 : 0.0095;
       const conduit = { icta: [o.r || 0.019, this.glass(0x7c8894, 0.34)], irl: [o.r || 0.019, this.glass(0x6f7a85, 0.38)], cable: [0.012, this.glass(0x1a1a1c, 0.5)] }[o.k];
-      if (conduit) this.tube(pts, conduit[0], conduit[1], o.k === 'icta' ? 0.12 : 0.04);
+      if (conduit) {
+        let cm = conduit[1];
+        if (o.k === 'icta') {
+          if (!this.tex.rib) { const q = document.createElement('canvas'); q.width = 16; q.height = 2; const g = q.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, 16, 2); g.fillStyle = '#6d7680'; g.fillRect(9, 0, 7, 2); this.tex.rib = new this.T.CanvasTexture(q); this.tex.rib.wrapS = this.T.RepeatWrapping; }
+          let len = 0; for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+          const tx = this.tex.rib.clone(); tx.needsUpdate = true; tx.repeat.set(Math.max(8, len / 0.011), 1);
+          cm = new this.T.MeshStandardMaterial({ color: 0x98a2ac, map: tx, transparent: true, opacity: 0.42, depthWrite: false, roughness: 0.55 }); this.mats['icta' + Object.keys(this.mats).length] = cm;
+        }
+        this.tube(pts, conduit[0], cm, o.k === 'icta' ? 0.12 : 0.04);
+      }
       if (o.k === 'dlp' || o.k === 'mou') this.gaine(pts, o.k, o.wd);
       const keys = new Set();
       c.forEach((w, i) => {
@@ -2509,34 +2611,37 @@ const V3D = (() => {
         this.box(hz ? len + wd : wd, hz ? wd : len + wd, dp, lid, cx, cy, dp / 2 + 0.002);
       }
     }
-    rail(x0, x1, y) { const m = this.mat(0xb4b9be, { metalness: 0.5 }); this.box(x1 - x0, 0.09, 0.008, m, (x0 + x1) / 2, y, 0.03); for (let x = x0 + 0.05; x < x1 - 0.04; x += 0.14) this.box(0.08, 0.03, 0.01, 0x7f858b, x, y, 0.03); }
+    rail(x0, x1, y) {
+      const m = this.mat(0xb6bcc2, { metalness: 0.3, roughness: 0.5 }), cx = (x0 + x1) / 2, L = x1 - x0, wd = 0.09;
+      [wd / 2, -wd / 2].forEach((q) => { this.box(L, 0.005, 0.05, m, cx, y + q, 0.03); this.box(L, 0.008, 0.008, m, cx, y + q, 0.056); });
+      [0.02, -0.02].forEach((q) => this.box(L, 0.005, 0.005, m, cx, y + q, 0.008));
+      for (let x = x0 + 0.02; x < x1; x += 0.05) this.box(0.005, wd, 0.005, m, x, y, 0.006);
+    }
     /* tableau : rangées de modules, peignes, bornes par net */
     tableau(id, x, y, W, H, rows, label) {
-      const T = this.T; this.box(W, H, 0.012, 0xf4f2ec, x, y, 0.006);
-      [[W, 0.012, 0.09, 0, H / 2], [W, 0.012, 0.09, 0, -H / 2], [0.012, H, 0.09, -W / 2, 0], [0.012, H, 0.09, W / 2, 0]].forEach((s) => this.box(s[0], s[1], s[2], this.glass(0xe6e3dc, 0.5), x + s[3], y + s[4], 0.045));
+      const T = this.T; this.soft(W, H, x, y); this.rb(W, H, 0.014, 0.014, 0xf3f2ec, x, y, 0);
+      [[W, 0.012, 0.062, 0, H / 2], [W, 0.012, 0.062, 0, -H / 2], [0.012, H, 0.062, -W / 2, 0], [0.012, H, 0.062, W / 2, 0]].forEach((s) => this.box(s[0], s[1], s[2], 0xe8e6df, x + s[3], y + s[4], 0.031));
       this.label(label || id, x - W / 2 + 0.07, y + H / 2 - 0.05, 0.15, 1);
       const N = { x, y, nets: {}, kind: 'tab', at: (n) => N.nets[n] || (N.nets[n] = new T.Vector3(x, y, 0.06)) };
       const mw = (W - 0.1) / 10, rowH = (H - 0.2) / rows.length;
       rows.forEach((r, i) => {
         const yr = y + H / 2 - 0.1 - rowH * (i + 0.5);
-        this.box(W - 0.06, 0.03, 0.01, 0x9aa0a6, x, yr, 0.018);
+        this.box(W - 0.06, 0.035, 0.01, this.mat(0xb4b9be, { metalness: 0.3, roughness: 0.45 }), x, yr, 0.02);
         let cx = x - W / 2 + 0.08, first = cx;
         r.items.forEach((m) => {
-          const w = mw * (m.m || 1), mx = cx + w / 2 - mw / 2, col = m.k === 'id' ? 0xf0f0e8 : 0xf7f7f2, h = 0.135;
-          this.box(w - 0.006, h, 0.05, this.mat(col), mx, yr, 0.05);
-          const hd = this.box(w * 0.5, 0.026, 0.02, this.mat(m.k === 'id' ? 0x2b6be0 : 0x24272b), mx, yr + 0.028, 0.082);
-          this.ctl[m.id] = { pos: new T.Vector3(mx, yr, 0.08), part: hd, base: hd.position.clone(), led: this.led(mx + w / 2 - 0.016, yr + 0.054, 0.08), kind: 'mod' };
-          this.ctl[m.id].lab = this.label(m.id, mx, yr - 0.03, 0.12, 'tiny', this.ops.has(m.id));
-          const tb = yr - h / 2 - 0.004;
-          (m.t || []).forEach((tn, j) => { const tx = mx + (j - (m.t.length - 1) / 2) * 0.026; const p = new T.Vector3(tx, tb, 0.075); N.nets[tn] = p; const s = new T.Mesh(new T.SphereGeometry(0.007, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); s.position.copy(p); this.g.add(s); });
+          const w = mw * (m.m || 1), mx = cx + w / 2 - mw / 2, hd = this.module(mx, yr, w, { k: m.k, n: (m.t || []).length });
+          this.ctl[m.id] = { pos: new T.Vector3(mx, yr, 0.08), part: hd, base: hd ? hd.position.clone() : null, led: this.led(mx + w / 2 - 0.014, yr + 0.036, 0.0855), kind: 'mod' };
+          this.ctl[m.id].lab = this.label(m.id, mx, yr - 0.016, 0.12, 'tiny', this.ops.has(m.id));
+          (m.t || []).forEach((tn, j) => { N.nets[tn] = new T.Vector3(mx + (j - (m.t.length - 1) / 2) * 0.026, yr - 0.056, 0.074); });
           cx += w;
         });
         // peignes phase et neutre de la rangée (séparés d'une rangée à l'autre)
-        this.box(cx - first + 0.0 - mw * 0.4, 0.008, 0.006, this.mat(0xc23a2c), (first + cx) / 2 - mw / 2, yr + 0.085, 0.08);
-        this.box(cx - first + 0.0 - mw * 0.4, 0.008, 0.006, this.mat(0x2b6be0), (first + cx) / 2 - mw / 2, yr + 0.097, 0.08);
+        this.box(cx - first - mw * 0.4, 0.007, 0.006, this.mat(0xc23a2c), (first + cx) / 2 - mw / 2, yr + 0.056, 0.074);
+        this.box(cx - first - mw * 0.4, 0.007, 0.006, this.mat(0x2b6be0), (first + cx) / 2 - mw / 2, yr + 0.046, 0.074);
       });
       // barrette de terre
-      const py = y - H / 2 + 0.06; this.box(W * 0.7, 0.024, 0.02, this.mat(0xc9a44a, { metalness: 0.6 }), x, py, 0.03); N.nets.PE = new T.Vector3(x, py, 0.045);
+      const py = y - H / 2 + 0.06; this.box(W * 0.7, 0.024, 0.016, this.mat(0xc9a44a, { metalness: 0.3, roughness: 0.45 }), x, py, 0.022); N.nets.PE = new T.Vector3(x, py, 0.036);
+      for (let i = -7; i <= 7; i++) this.cyl(0.0055, 0.004, this.mat(0x8c7433, { metalness: 0.3 }), x + i * W * 0.046, py, 0.032, 10);
       this.nodes[id] = N; return N;
     }
     link(a, na, b, nb, c) { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.wire([[A.x, A.y, A.z]].concat(this.nodes[a].kind === 'jbox' ? [[A.x, A.y - 0.028, A.z + 0.02]] : [], [mid, [B.x, B.y, B.z]]), c, this.cmap ? this.cmap(na) : null); }
@@ -2551,8 +2656,8 @@ const V3D = (() => {
     L('L1', 195, 420); L('L2', 350, 375); L('L3', 480, 445);
     const bd = B.jbox('BD1', ...p(340, 560), { w: 0.36, h: 0.36, label: 'BD1', lx: -0.29, ly: -0.2 });
     // Micromodules dans BD1
-    B.dev('R1', 'inter', bd.x - 0.08, bd.y - 0.11, { w: 0.09, h: 0.06, side: 1, label: 'R1' }); B.dev('R2', 'inter', bd.x + 0.08, bd.y - 0.11, { w: 0.09, h: 0.06, side: 1, label: 'R2' });
-    B.dev('S1', 'poussoir', ...p(290, 760), { side: 1 }); B.dev('E1', 'inter', ...p(335, 840), { label: 'E1 (radio)', side: 1 }); B.dev('E2', 'inter', ...p(400, 760), { label: 'E2 (radio)', side: 1 });
+    B.dev('R1', 'micro', bd.x - 0.08, bd.y - 0.11, { w: 0.09, h: 0.06, side: 1, label: 'R1' }); B.dev('R2', 'micro', bd.x + 0.08, bd.y - 0.11, { w: 0.09, h: 0.06, side: 1, label: 'R2' });
+    B.dev('S1', 'bp', ...p(290, 760), { side: 1 }); B.dev('E1', 'inter', ...p(335, 840), { label: 'E1 (radio)', side: 1 }); B.dev('E2', 'inter', ...p(400, 760), { label: 'E2 (radio)', side: 1 });
     B.dev('SC', 'pc', ...[p(330, 965)[0], 0.32], { label: 'SC · chauffe-eau', side: 1 });
     const P = (id, kind, x, y, o) => B.dev(id, kind, ...p(x, y), o);
     P('S2', 'inter', 785, 835, { side: -1, label: 'S2 (HC)' }); P('PC2', 'prise', 895, 835, { side: -1, label: 'PC2' });
@@ -2562,7 +2667,7 @@ const V3D = (() => {
     const dpn = (id) => ({ id, t: ['L.' + id, 'N.' + id] });
     const tx = p(700, 640)[0], tl = tx - 0.38, nT = B.tableau('TR', ...p(700, 640), 0.76, 0.7, [
       { items: [{ id: 'ID1', k: 'id', m: 2, t: ['L.ID1', 'N.ID1'] }, dpn('D1'), dpn('D2'), dpn('D3')] },
-      { items: [{ id: 'ID2', k: 'id', m: 2, t: ['L.ID2', 'N.ID2'] }, dpn('D4'), dpn('D5'), dpn('D6'), { id: 'C1', t: ['C1.1', 'C1.2', 'C1.A1', 'C1.A2'], m: 2 }, { id: 'PC1', t: ['PC1.L', 'PC1.N', 'PE.PC1'], m: 2 }] }
+      { items: [{ id: 'ID2', k: 'id', m: 2, t: ['L.ID2', 'N.ID2'] }, dpn('D4'), dpn('D5'), dpn('D6'), { id: 'C1', k: 'cont', t: ['C1.1', 'C1.2', 'C1.A1', 'C1.A2'], m: 2 }, { id: 'PC1', k: 'prise', t: ['PC1.L', 'PC1.N', 'PE.PC1'], m: 2 }] }
     ], 'TR');
     const TR = (...q) => q.map((v) => v);
     const cTR = y0(640, 785), wTR = y0(560, 700, 0.05), yU = nT.nets['L.ID1'].y - 0.02, yB = nT.nets['L.ID2'].y - 0.035;
@@ -2644,7 +2749,7 @@ const V3D = (() => {
     const D = (id, k, x, y, o) => B.dev(id, k, ...p(x, y), Object.assign({ w: 0.13, h: 0.13 }, o || {})), ZD = 0.06;
     D('L1', 'hublot', 485, 765); D('L2', 'hublot', 655, 770); D('BAES', 'baes', 935, 585, { w: 0.28, h: 0.12, side: 'l' });
     D('RJ45', 'rj', 795, 930, { label: 'RJ45' });
-    D('S1', 'au', 152, 905, { z: ZD, label: 'S1 · AU' }); D('S2', 'inter', 368, 1110, { z: ZD, label: 'S2 · détecteur' }); D('PC1', 'prise', 630, 1110, { z: ZD }); D('RJ2', 'rj', 912, 1130, { z: ZD, side: 'l', label: 'RJ45' });
+    D('S1', 'au', 152, 905, { z: ZD, label: 'S1 · AU' }); D('S2', 'detect', 368, 1110, { z: ZD, label: 'S2 · détecteur' }); D('PC1', 'prise', 630, 1110, { z: ZD }); D('RJ2', 'rj', 912, 1130, { z: ZD, side: 'l', label: 'RJ45' });
     const ph = (n, b) => ({ n, b, c: 'marron' }), ne = (n, b) => ({ n, b, c: 'bleu' }), pe = (n, b) => ({ n: n || 'PE', b, c: 'vj' }), lamp = [ph('RL', 'L'), ne('N', 'N'), pe('PE', 'PE')];
     const cab = (o) => B.run(Object.assign({ k: 'cable' }, o)), ZC = 0.016;
     cab({ pts: [q(190, 492), q(120, 610), q(120, 1084), q(630, 1084)], from: '7', to: 'PC1', at: p(70, 720), label: 'C6 · 3G2,5', cond: [ph('L.PC', 'L'), ne('N.PC', 'N'), pe('PE.PC', 'PE')] });
@@ -2668,14 +2773,14 @@ const V3D = (() => {
     B.wall(W + 0.2, 2.85, 0, 1.43);
     const yG = 2.42; B.run({ k: 'dlp', pts: [[-W / 2 + 0.05, yG, 0.03], [W / 2 - 0.05, yG, 0.03]] }); B.label('Goulotte', W / 2 - 0.3, yG + 0.12, 0.1);
     // Parafoudre mis à part, tableau : alimentation + protection
-    const KIND = { inter: 'inter', vav: 'inter', perm: 'inter', bp: 'poussoir', radio: 'inter', lampe: 'lampe', voyant: 'lampe', prise: 'prise', rad: 'pc', sonnette: 'inter', moteur: 'pc', baes: 'baes', detect: 'inter' };
+    const KIND = { inter: 'inter', vav: 'inter', perm: 'inter', bp: 'bp', radio: 'bp', lampe: 'lampe', voyant: 'lampe', prise: 'prise', rad: 'pc', sonnette: 'bell', moteur: 'pc', baes: 'baes', detect: 'detect' };
     const Y = { lampe: 2.0, voyant: 2.0, sonnette: 1.9, detect: 2.0, prise: 0.4, rad: 0.55, moteur: 0.55, baes: 2.05, tele: 1.65, tele2: 1.65, cont: 1.65, minu: 1.65, yokis: 1.65 };
     const pos = {};
     const panel = C.comps.filter((c) => ['src', 'disj', 'dpn', 'fus'].includes(c.type));
-    B.box(0.6, 0.9, 0.02, 0xf4f2ec, -W / 2 + 0.42, 1.55, 0.01); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
-    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; B.box(0.3, 0.13, 0.05, isSrc ? 0x59626d : 0xffffff, row.x, row.y, 0.03); if (!isSrc) { const hd = B.box(0.1, 0.03, 0.02, 0x24272b, row.x, row.y + 0.015, 0.065); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } const lb = B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); if (!isSrc) B.ctl[c.ref].lab = lb; tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.1 + i * 0.05, row.y + 0.07, 0.06); pos[c.id + ':' + t] = p; }); py -= 0.27; });
+    B.soft(0.6, 0.9, -W / 2 + 0.42, 1.55); B.rb(0.6, 0.9, 0.018, 0.014, 0xf3f2ec, -W / 2 + 0.42, 1.55, 0); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
+    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; if (isSrc) B.rb(0.3, 0.13, 0.05, 0.008, 0x59626d, row.x, row.y, 0.018); else { const hd = B.module(row.x, row.y, 0.2, { n: 2 }); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } const lb = B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); if (!isSrc) B.ctl[c.ref].lab = lb; tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.075 + i * 0.05, row.y + 0.056, 0.074); pos[c.id + ':' + t] = p; }); py -= 0.27; });
     sorted.filter((c) => !panel.includes(c)).forEach((c, i) => {
-      const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'inter';
+      const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'micro';
       B.dev(c.id, k, x, y, { ref: c.ref, label: c.ref, side: 1, w: 0.14, h: 0.14 });
       DEF[c.type].t.forEach((t) => { pos[c.id + ':' + t[0]] = B.nodes[c.id].at(t[0]); });
     });
@@ -2779,7 +2884,7 @@ const V3D = (() => {
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.draw();
     }
-    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.5 : 0; L.pt.intensity = on ? 0.8 : 0; });
+    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.1 : 0; L.pt.intensity = on ? 0.38 : 0; if (L.glow) L.glow.visible = !!on; });
       Object.keys(this.b.ctl).forEach((ref) => {
         const k = this.b.ctl[ref], c = C.comps.find((x) => x.ref === ref); if (!c) return;
         const s = c.st, on = !!C.res.loadsOn[c.id];
@@ -2788,10 +2893,10 @@ const V3D = (() => {
         if (k.face) { const sec = c.type === 'baes' && !on && !s.rest; k.face.material.emissive.setHex(sec ? 0x7dff9a : 0); k.face.material.emissiveIntensity = sec ? 0.9 : 0; }
         if (!k.part) return;
         const p = k.part, b = k.base;
-        if (c.type === 'disj' || c.type === 'dpn') { p.position.y = b.y - (s.closed ? 0 : 0.03); return; }
+        if (c.type === 'disj' || c.type === 'dpn') { p.position.y = b.y - (s.closed ? 0 : 0.012); p.rotation.x = s.closed ? -0.6 : 0.6; return; }
         const act = c.type === 'inter' ? s.on !== !!c.inv : c.type === 'vav' ? s.pos === 2 : c.type === 'perm' ? !!s.cross : c.type === 'bp' || c.type === 'radio' ? !!s.pressed : c.type === 'tele2' ? !!s.k : false;
         if (k.kind === 'au' || k.kind === 'dm' || c.type === 'bp' || c.type === 'radio') p.position.z = b.z - (act ? 0.012 : 0);
-        else p.rotation.x = act ? -0.3 : 0.3;
+        else p.rotation.x = act ? -0.16 : 0.16;
       });
       this.draw();
     }
