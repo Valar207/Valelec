@@ -288,6 +288,26 @@ tr:last-child td{border-bottom:0}
 .sim-cols{display:grid;gap:24px;grid-template-columns:minmax(0,1fr) 300px;align-items:start}
 .stage{display:flex;flex-direction:column;gap:14px;min-width:0}
 .dual{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));align-items:start}
+:is(#page-pv,#page-irve) .lesson{padding-top:52px}
+:is(#page-pv,#page-irve) .sec-head{margin-bottom:20px;gap:10px 28px}
+:is(#page-pv,#page-irve) .sec-head h2{font-size:clamp(24px,2.8vw,34px) !important}
+:is(#page-pv,#page-irve) .sec-head p{font-size:15px;line-height:1.5}
+:is(#page-pv,#page-irve) :is(.prose p,.card p,.steps li,.tnote){font-size:15px;line-height:1.55}
+:is(#page-pv,#page-irve) .prose h3{font-size:17px}
+:is(#page-pv,#page-irve) .card{padding:18px;gap:8px;border-radius:14px}
+:is(#page-pv,#page-irve) .card h3{font-size:19px !important}
+:is(#page-pv,#page-irve) .tbl-box table{font-size:14px}
+:is(#page-pv,#page-irve) .tbl-box :is(td,th){padding-top:7px;padding-bottom:7px}
+:is(#page-pv,#page-irve) .steps{gap:10px}
+:is(#page-pv,#page-irve) .two,:is(#page-pv,#page-irve) .grid{gap:16px}
+:is(#page-pv,#page-irve) .lead{font-size:16.5px}
+.lab-view{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.lab-view .ctl{min-height:40px;border-radius:999px;font-size:14px}
+details.more>summary{cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper-2);font-weight:600;font-size:14px;list-style:none}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::before{content:"+";font:700 16px var(--f-mono)}
+details.more[open]>summary{margin-bottom:16px}
+details.more[open]>summary::before{content:"−"}
 .lab-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .lab-tabs .ctl{min-height:44px}
 .lab-note{margin-top:16px;padding:13px 15px;gap:6px;border-radius:12px;border-width:1px}
@@ -1238,7 +1258,7 @@ tr:last-child td{border-bottom:0}
     <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:17ch">Les panneaux photovoltaïques.</h1>
     <p class="lead">Du photon au compteur : comment un panneau produit du courant, comment choisir et dimensionner une installation, puis la câbler, la protéger et la raccorder au réseau.</p>
     <nav class="toc" aria-label="Sommaire du module photovoltaïque">
-      <a href="#pv-principe">1 · Le principe</a><a href="#pv-fiche">2 · La fiche technique</a><a href="#pv-materiel">3 · Le matériel</a><a href="#pv-production">4 · Estimer la production</a><a href="#pv-chaine">5 · Dimensionner les chaînes</a><a href="#pv-protections">6 · Protections et câbles</a><a href="#pv-schema">7 · Le schéma</a><a href="#pv-cablage">7 bis · Câblage 2D et 3D</a><a href="#pv-pose">8 · La pose pas à pas</a><a href="#pv-demarches">9 · Raccordement et démarches</a>
+      <a href="#pv-principe">1 · Le principe</a><a href="#pv-fiche">2 · La fiche technique</a><a href="#pv-materiel">3 · Le matériel</a><a href="#pv-production">4 · Estimer la production</a><a href="#pv-chaine">5 · Dimensionner les chaînes</a><a href="#pv-protections">6 · Protections et câbles</a><a href="#pv-cablage">7 · Le schéma (2D et 3D)</a><a href="#pv-pose">8 · La pose pas à pas</a><a href="#pv-demarches">9 · Raccordement et démarches</a>
     </nav>
   </div>
 
@@ -1412,9 +1432,24 @@ tr:last-child td{border-bottom:0}
     </div>
   </section>
 
-  <section id="pv-schema" class="wrap lesson">
-    <div class="sec-head"><div><p class="eyebrow">7 · Schéma animé</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Une installation en autoconsommation</h2></div><p>Dix modules en série, un onduleur string monophasé, raccordés au tableau de la maison. Coupe le réseau ou le sectionneur DC pour voir ce qui reste sous tension.</p></div>
-    <div class="stage">
+  
+  <section id="pv-cablage" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">7 · Le schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Le câblage en 2D et en 3D</h2></div><p>Du champ de modules au tableau : coupe le soleil, ouvre le sectionneur ou l’AGCP, et regarde l’onduleur réagir. Il ne produit que si le réseau est là.</p></div>
+    
+    <div class="lab-view" role="group" aria-label="Choisir la vue"><button class="ctl" type="button" data-v="lab" aria-pressed="true">Câblage 2D et 3D</button><button class="ctl" type="button" data-v="sim" aria-pressed="false">Schéma de principe animé</button></div>
+    <div data-lv="lab"><div class="stage">
+      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+        <svg id="pvl-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
+        <div class="statusbar">
+          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvl-dot"></span><div style="min-width:0"><strong id="pvl-st"></strong><span class="d" id="pvl-sd"></span></div></div>
+          <span class="metric" id="pvl-metric">0 W</span>
+        </div>
+      </div>
+          <div class="ctls cgrid" id="pvl-ctls" role="group" aria-label="Commandes"></div>
+          <ul class="mini-legend" aria-label="Légende"><li><span class="lsw" style="background:#E5533D"></span>Phase ou +</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li></ul>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="pvl-3d"></div><div class="v3d-steps" id="pvl-steps"></div><div class="v3d-circ" id="pvl-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase ou +</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
+    </div></div>
+    <div data-lv="sim" hidden><div class="stage">
       <div class="board">
         <svg id="pv-svg" viewBox="0 0 1000 420" role="img" aria-label="Schéma d’une installation photovoltaïque : modules, coffret DC, onduleur, coffret AC, tableau et compteur"></svg>
         <div class="statusbar">
@@ -1437,23 +1472,7 @@ tr:last-child td{border-bottom:0}
         <li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
       </ul>
     </div>
-    <div class="callout" style="margin-top:20px"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><path d="M24 5 L44 41 H4 Z" class="ico"/><path d="M24 19 V29 M24 34 V35" class="ico"/></svg><p><b>On ne peut pas éteindre un panneau.</b> Tant qu’il reçoit de la lumière, la chaîne est sous tension, même onduleur arrêté et sectionneur ouvert : plusieurs centaines de volts en continu côté toit. Couvre les modules ou travaille hors ensoleillement, et ne débranche jamais un MC4 en charge.</p></div>
-  </section>
-  <section id="pv-cablage" class="wrap lesson">
-    <div class="sec-head"><div><p class="eyebrow">7 bis · Schéma de câblage</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Le câblage en 2D et en 3D</h2></div><p>Du champ de modules au tableau : coupe le soleil, ouvre le sectionneur ou l’AGCP, et regarde l’onduleur réagir. Il ne produit que si le réseau est là.</p></div>
-    
-    <div class="stage">
-      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
-        <svg id="pvl-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
-        <div class="statusbar">
-          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvl-dot"></span><div style="min-width:0"><strong id="pvl-st"></strong><span class="d" id="pvl-sd"></span></div></div>
-          <span class="metric" id="pvl-metric">0 W</span>
-        </div>
-      </div>
-          <div class="ctls cgrid" id="pvl-ctls" role="group" aria-label="Commandes"></div>
-          <ul class="mini-legend" aria-label="Légende"><li><span class="lsw" style="background:#E5533D"></span>Phase ou +</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li></ul>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="pvl-3d"></div><div class="v3d-steps" id="pvl-steps"></div><div class="v3d-circ" id="pvl-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase ou +</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
-    </div>
+<div class="callout" style="margin-top:20px"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><path d="M24 5 L44 41 H4 Z" class="ico"/><path d="M24 19 V29 M24 34 V35" class="ico"/></svg><p><b>On ne peut pas éteindre un panneau.</b> Tant qu’il reçoit de la lumière, la chaîne est sous tension, même onduleur arrêté et sectionneur ouvert : plusieurs centaines de volts en continu côté toit. Couvre les modules ou travaille hors ensoleillement, et ne débranche jamais un MC4 en charge.</p></div></div>
     <div class="box lab-note" id="pvl-note"></div>
   </section>
 
@@ -1480,6 +1499,7 @@ tr:last-child td{border-bottom:0}
 
   <section id="pv-demarches" class="wrap lesson">
     <div class="sec-head"><div><p class="eyebrow">9 · Réglementation</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Raccordement et démarches</h2></div><p>Pour une maison (jusqu’à 36 kVA), du projet à la mise en service.</p></div>
+    <details class="more"><summary>Voir les démarches, tarifs et qualifications</summary>
     <div class="tbl-box"><table>
       <thead><tr><th scope="col">Étape</th><th scope="col">Auprès de qui</th><th scope="col">Ce qu’il faut savoir</th></tr></thead>
       <tbody>
@@ -1492,6 +1512,7 @@ tr:last-child td{border-bottom:0}
       </tbody>
     </table></div>
     <p class="tnote" style="margin-top:16px">Références : guide UTE C 15-712-1 (installations PV raccordées au réseau), NF C 15-100. Sources : <a href="https://energypedia.info/images/a/ab/Dimensionnement_Sujet_composant_DC_et_AC.pdf" target="_blank" rel="noopener">présentation du guide UTE C 15-712-1 (energypedia)</a>, <a href="https://www.photovoltaique.info/" target="_blank" rel="noopener">photovoltaique.info</a>, <a href="https://re.jrc.ec.europa.eu/pvg_tools/fr/" target="_blank" rel="noopener">PVGIS</a>.</p>
+  </details>
   </section>
 
   <div class="wrap" style="padding-block:80px 96px">
@@ -1509,7 +1530,7 @@ tr:last-child td{border-bottom:0}
     <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:17ch">Les bornes de recharge IRVE.</h1>
     <p class="lead">Comment une voiture se recharge, comment la borne et le véhicule se parlent, puis comment dimensionner, protéger, câbler et mettre en service un point de recharge.</p>
     <nav class="toc" aria-label="Sommaire du module IRVE">
-      <a href="#irve-bases">1 · Les bases</a><a href="#irve-modes">2 · Modes et prises</a><a href="#irve-puissance">3 · Puissance et temps de charge</a><a href="#irve-dialogue">4 · Le dialogue borne-voiture</a><a href="#irve-dim">5 · Dimensionner et protéger</a><a href="#irve-schema">6 · Le schéma</a><a href="#irve-cablage">6 bis · Câblage 2D et 3D</a><a href="#irve-pose">7 · La pose pas à pas</a><a href="#irve-regles">8 · Qualification et aides</a>
+      <a href="#irve-bases">1 · Les bases</a><a href="#irve-modes">2 · Modes et prises</a><a href="#irve-puissance">3 · Puissance et temps de charge</a><a href="#irve-dialogue">4 · Le dialogue borne-voiture</a><a href="#irve-dim">5 · Dimensionner et protéger</a><a href="#irve-cablage">6 · Le schéma (2D et 3D)</a><a href="#irve-pose">7 · La pose pas à pas</a><a href="#irve-regles">8 · Qualification et aides</a>
     </nav>
   </div>
 
@@ -1632,9 +1653,24 @@ tr:last-child td{border-bottom:0}
     </div>
   </section>
 
-  <section id="irve-schema" class="wrap lesson">
-    <div class="sec-head"><div><p class="eyebrow">6 · Schéma animé</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Une wallbox 7,4 kW en maison</h2></div><p>Du compteur à la batterie. Lance une charge, puis provoque un défaut d’isolement dans le câble.</p></div>
-    <div class="stage">
+  
+  <section id="irve-cablage" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">6 · Le schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les 4 modes de recharge en 2D et en 3D</h2></div><p>De la simple prise domestique à la borne rapide en courant continu : choisis un mode, branche la voiture et lance la charge.</p></div>
+    <div class="lab-tabs" id="irvel-tabs" role="group" aria-label="Choisir le mode de recharge"></div>
+    <div class="lab-view" role="group" aria-label="Choisir la vue"><button class="ctl" type="button" data-v="lab" aria-pressed="true">Câblage 2D et 3D</button><button class="ctl" type="button" data-v="sim" aria-pressed="false">Schéma de principe animé</button></div>
+    <div data-lv="lab"><div class="stage">
+      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+        <svg id="irvel-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
+        <div class="statusbar">
+          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irvel-dot"></span><div style="min-width:0"><strong id="irvel-st"></strong><span class="d" id="irvel-sd"></span></div></div>
+          <span class="metric" id="irvel-metric">0 W</span>
+        </div>
+      </div>
+          <div class="ctls cgrid" id="irvel-ctls" role="group" aria-label="Commandes"></div>
+          <ul class="mini-legend" aria-label="Légende"><li><span class="lsw" style="background:#E5533D"></span>Phase ou +</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li></ul>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="irvel-3d"></div><div class="v3d-steps" id="irvel-steps"></div><div class="v3d-circ" id="irvel-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase ou +</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
+    </div></div>
+    <div data-lv="sim" hidden><div class="stage">
       <div class="board">
         <svg id="ir-svg" viewBox="0 95 1000 240" role="img" aria-label="Schéma d’une wallbox : compteur, disjoncteur de branchement, protections au tableau, câble, borne et voiture"></svg>
         <div class="statusbar">
@@ -1655,23 +1691,7 @@ tr:last-child td{border-bottom:0}
         <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
         <li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
       </ul>
-    </div>
-  </section>
-  <section id="irve-cablage" class="wrap lesson">
-    <div class="sec-head"><div><p class="eyebrow">6 bis · Schéma de câblage</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les 4 modes de recharge en 2D et en 3D</h2></div><p>De la simple prise domestique à la borne rapide en courant continu : choisis un mode, branche la voiture et lance la charge.</p></div>
-    <div class="lab-tabs" id="irvel-tabs" role="group" aria-label="Choisir le mode de recharge"></div>
-    <div class="stage">
-      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
-        <svg id="irvel-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
-        <div class="statusbar">
-          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irvel-dot"></span><div style="min-width:0"><strong id="irvel-st"></strong><span class="d" id="irvel-sd"></span></div></div>
-          <span class="metric" id="irvel-metric">0 W</span>
-        </div>
-      </div>
-          <div class="ctls cgrid" id="irvel-ctls" role="group" aria-label="Commandes"></div>
-          <ul class="mini-legend" aria-label="Légende"><li><span class="lsw" style="background:#E5533D"></span>Phase ou +</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li></ul>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="irvel-3d"></div><div class="v3d-steps" id="irvel-steps"></div><div class="v3d-circ" id="irvel-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase ou +</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
-    </div>
+    </div></div>
     <div class="box lab-note" id="irvel-note"></div>
   </section>
 
@@ -1696,6 +1716,7 @@ tr:last-child td{border-bottom:0}
 
   <section id="irve-regles" class="wrap lesson">
     <div class="sec-head"><div><p class="eyebrow">8 · Réglementation</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Qualification IRVE et aides</h2></div><p>Au-delà de 3,7 kW, ou dès qu’un point est accessible au public, l’installateur doit être qualifié IRVE (article D. 353-2 du code de l’énergie, issu du décret n° 2017-26).</p></div>
+    <details class="more"><summary>Voir les niveaux de qualification et les aides</summary>
     <div class="tbl-box"><table>
       <caption>Les niveaux de qualification IRVE</caption>
       <thead><tr><th scope="col">Niveau</th><th scope="col">Ce qu’il couvre</th><th scope="col">Formation</th></tr></thead>
@@ -1711,6 +1732,7 @@ tr:last-child td{border-bottom:0}
       <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Contrôle Consuel</h3><p>La liste de contrôle Consuel pour les IRVE reprend les points de ce module : circuit dédié, différentiel 30 mA du bon type par point, protection contre les surintensités, coupure omnipolaire, IP et IK, obturateurs sur les socles.</p></div>
     </div>
     <p class="tnote" style="margin-top:16px">Références : NF C 15-100 partie 7-722, IEC 61851, IEC 62196, IEC 62955. Sources : <a href="https://www.consuel.com/wp-content/uploads/2025/11/DRE148_3.pdf" target="_blank" rel="noopener">Consuel, rapport de vérification IRVE (DRE 148)</a>, <a href="https://www.tesla-mag.com/comment-devenir-un-installateur-certifie-irve/" target="_blank" rel="noopener">qualification IRVE P1, P2, P3</a>.</p>
+  </details>
   </section>
 
   <div class="wrap" style="padding-block:80px 96px">
@@ -4743,6 +4765,11 @@ function makeLab(p, presets) {
   return { C, B, V };
 }
 const pvLab = makeLab('pv', LAB_PV), irveLab = makeLab('irve', LAB_IRVE);
+document.querySelectorAll('.lab-view').forEach((g) => g.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-v]'); if (!b) return; const sec = g.closest('section');
+  g.querySelectorAll('[data-v]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  sec.querySelectorAll('[data-lv]').forEach((d) => { d.hidden = d.dataset.lv !== b.dataset.v; });
+}));
 
 /* ---------------- Navigation ---------------- */
 const NAV_NAMES = { bases: 'Les bases', schemas: 'Schémas', examen: 'Examen pratique', qcm: 'Examen théorique', 'bac-a-sable': 'Bac à sable', tableaux: 'Tableaux FR / US', pv: 'Panneaux PV', irve: 'Bornes IRVE' };
