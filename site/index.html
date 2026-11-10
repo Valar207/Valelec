@@ -1297,7 +1297,7 @@ details.more[open]>summary::before{content:"−"}
         <p style="margin:0;font-size:14px;color:var(--muted)">Modèle simplifié d’un module de 430 Wc. Essaie −10 °C : la tension à vide dépasse 42 V. Multipliée par le nombre de modules en série, c’est elle qui doit rester sous la tension maximale de l’onduleur.</p>
       </div>
     </div>
-    <div class="tbl-box" style="margin-top:28px"><table>
+    <details class="more"><summary>Voir le tableau : lire la fiche technique d’un module</summary><div class="tbl-box" style="margin-top:28px"><table>
       <caption>Lire la fiche technique d’un module (exemple : 430 Wc)</caption>
       <thead><tr><th scope="col">Grandeur</th><th scope="col">Exemple</th><th scope="col">À quoi elle sert</th></tr></thead>
       <tbody>
@@ -1311,7 +1311,7 @@ details.more[open]>summary::before{content:"−"}
         <tr><td><b>Courant inverse max</b> (IRM, « max series fuse »)</td><td class="mono">25 A</td><td>Courant que le module supporte à l’envers. Décide s’il faut des fusibles de chaîne.</td></tr>
         <tr><td><b>Tension max du système</b></td><td class="mono">1&nbsp;000 ou 1&nbsp;500&nbsp;V</td><td>La chaîne ne doit jamais la dépasser, même par grand froid.</td></tr>
       </tbody>
-    </table></div>
+    </table></div></details>
   </section>
 
   <section id="pv-materiel" class="wrap lesson">
@@ -1355,11 +1355,11 @@ details.more[open]>summary::before{content:"−"}
         <p style="margin:0;font-size:14px;color:var(--inv-muted)">Pour un projet réel, affine avec <a href="https://re.jrc.ec.europa.eu/pvg_tools/fr/" target="_blank" rel="noopener" style="color:var(--inv-accent)">PVGIS</a>, l’outil gratuit de la Commission européenne, qui tient compte de l’adresse exacte et des ombres de l’horizon.</p>
       </div>
     </div>
-    <div class="tbl-box" style="margin-top:20px"><table>
+    <details class="more"><summary>Voir le tableau : coefficients d’orientation et d’inclinaison</summary><div class="tbl-box" style="margin-top:20px"><table>
       <caption>Coefficients d’orientation et d’inclinaison (France)</caption>
       <thead><tr><th scope="col">Inclinaison</th><th scope="col">Est / Ouest</th><th scope="col">Sud-est / Sud-ouest</th><th scope="col">Sud</th></tr></thead>
       <tbody><tr><td>0°</td><td class="mono">0,93</td><td class="mono">0,93</td><td class="mono">0,93</td></tr><tr><td>30°</td><td class="mono">0,90</td><td class="mono">0,96</td><td class="mono">1,00</td></tr><tr><td>60°</td><td class="mono">0,78</td><td class="mono">0,88</td><td class="mono">0,91</td></tr><tr><td>90°</td><td class="mono">0,55</td><td class="mono">0,66</td><td class="mono">0,68</td></tr></tbody>
-    </table></div>
+    </table></div></details>
   </section>
 
   <section id="pv-chaine" class="wrap lesson">
@@ -1564,7 +1564,7 @@ details.more[open]>summary::before{content:"−"}
 
   <section id="irve-puissance" class="wrap lesson">
     <div class="sec-head"><div><p class="eyebrow">3 · Calcul</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Puissance et temps de charge</h2></div><p>P = U × I en monophasé, P = 3 × 230 × I en triphasé. Le temps de charge, c’est l’énergie à remettre divisée par la puissance réellement reçue.</p></div>
-    <div class="tbl-box"><table>
+    <details class="more"><summary>Voir le tableau : puissances courantes en recharge AC</summary><div class="tbl-box"><table>
       <caption>Les puissances courantes en recharge AC</caption>
       <thead><tr><th scope="col">Puissance</th><th scope="col">Alimentation</th><th scope="col">Courant</th><th scope="col">Usage typique</th></tr></thead>
       <tbody>
@@ -1573,7 +1573,7 @@ details.more[open]>summary::before{content:"−"}
         <tr><td class="mono"><b>11 kW</b></td><td>Triphasé 400 V</td><td class="mono">3 × 16 A</td><td>Maison en triphasé, entreprise, copropriété.</td></tr>
         <tr><td class="mono"><b>22 kW</b></td><td>Triphasé 400 V</td><td class="mono">3 × 32 A</td><td>Voirie, parkings. Peu de voitures acceptent 22 kW en AC.</td></tr>
       </tbody>
-    </table></div>
+    </table></div></details>
     <div class="calc" style="margin-top:24px">
       <div class="calc-in">
         <label class="fld">Batterie (kWh utiles)<input id="ic-bat" type="number" min="5" max="200" step="1" value="60"></label>
@@ -1608,7 +1608,7 @@ details.more[open]>summary::before{content:"−"}
       </div>
     </div>
     <div class="two" style="margin-top:28px">
-      <div class="tbl-box"><table>
+      <details class="more"><summary>Voir le tableau : états du signal pilote (CP)</summary><div class="tbl-box"><table>
         <caption>Les états du signal pilote (CP)</caption>
         <thead><tr><th scope="col">État</th><th scope="col">Tension CP</th><th scope="col">Signification</th></tr></thead>
         <tbody>
@@ -1618,7 +1618,7 @@ details.more[open]>summary::before{content:"−"}
           <tr><td class="mono"><b>D</b></td><td class="mono">+3 V</td><td>Charge avec ventilation demandée (anciennes batteries, rare).</td></tr>
           <tr><td class="mono"><b>E / F</b></td><td class="mono">0 V / −12 V</td><td>Défaut : court-circuit du CP ou borne indisponible.</td></tr>
         </tbody>
-      </table></div>
+      </table></div></details>
       <div class="prose">
         <h3>Comment la voiture connaît le courant autorisé</h3>
         <p>La borne envoie sur le CP un signal carré ±12 V à 1 kHz. Son <b>rapport cyclique</b> (le pourcentage du temps à +12 V) annonce le courant maximal : entre 10 % et 85 %, <b>I max = rapport cyclique × 0,6 A</b>. 53 % annonce 32 A, 10 % annonce 6 A.</p>
