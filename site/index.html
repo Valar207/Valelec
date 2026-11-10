@@ -202,6 +202,11 @@ tr:last-child td{border-bottom:0}
 .v3d canvas{display:block;cursor:grab}
 .v3d canvas:active{cursor:grabbing}
 .v3d-msg{color:#cfd6df;padding:24px;margin:0}
+.v3d-circ{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+.v3d-circ[hidden]{display:none}
+.v3d-circ .ctl{padding:7px 12px;font-size:13px}
+.wire.dimmed{opacity:.12}
+.comp.dimmed{opacity:.28}
 .v3d-zoom{position:absolute;left:10px;top:10px;right:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;color:#fff;pointer-events:none}
 .v3d-zoom[hidden]{display:none}
 .v3d-zoom button{pointer-events:auto;font:inherit;font-weight:600;color:#fff;background:#111a24;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:8px 14px;cursor:pointer}
@@ -675,7 +680,7 @@ tr:last-child td{border-bottom:0}
               <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
               <span class="metric" id="sim-metric">0 W</span>
             </div>
-          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="sim-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche un fil pour suivre son circuit · une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="sim-3d"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
           <div class="ctls" id="sim-ctls" role="group" aria-label="Commandes du circuit"></div>
           <ul class="mini-legend" aria-label="Légende">
             <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
@@ -718,7 +723,7 @@ tr:last-child td{border-bottom:0}
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="ex-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche un fil pour suivre son circuit · une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="ex-3d"></div><div class="v3d-circ" id="ex-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
         <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
         <ul class="mini-legend" aria-label="Légende">
           <li><span class="lsw" style="background:#E5533D"></span>Phase (ou + en très basse tension)</li>
@@ -1889,6 +1894,8 @@ class Board {
     this.ptrs = new Map(); this.pan = null; this.pinch = null;
     circuit.listeners.push(() => this.render());
     svg.addEventListener('pointerdown', (e) => this.down(e));
+    svg.addEventListener('pointerup', (e) => { const t = this.tap; this.tap = null; if (t && Math.hypot(e.clientX - t.x, e.clientY - t.y) < 8) this.opts.onWire(t.id); });
+    svg.addEventListener('pointercancel', () => { this.tap = null; });
     if (this.edit) {
       svg.addEventListener('pointermove', (e) => this.move(e));
       svg.addEventListener('pointerup', (e) => this.up(e));
@@ -2031,7 +2038,7 @@ class Board {
       const d = 'M' + pts.map((q) => q.x + ' ' + q.y).join('L');
       const sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === w.id ? ' sel' : '';
       const delay = r.s === 'live' ? dLive : dFlow;
-      h += `<g class="wire${sel}" data-wire="${w.id}">${this.edit ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
+      h += `<g class="wire${sel}${this.hl && !this.hl.wires.has(w.id) ? ' dimmed' : ''}" data-wire="${w.id}">${this.edit || this.opts.onWire ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
     });
     C.comps.forEach((c) => {
       if (c.type !== 'radio' || !c.to) return;
@@ -2040,7 +2047,7 @@ class Board {
     C.comps.forEach((c) => {
       const d = DEF[c.type], on = !!res.loadsOn[c.id];
       const sel = ui.sel && ui.sel.k === 'c' && ui.sel.id === c.id;
-      h += `<g class="comp${d.op ? ' op' : ''}" data-comp="${c.id}" transform="translate(${c.x} ${c.y}) rotate(${c.rot || 0})">`;
+      h += `<g class="comp${d.op ? ' op' : ''}${this.hl && !this.hl.comps.has(c.id) ? ' dimmed' : ''}" data-comp="${c.id}" transform="translate(${c.x} ${c.y}) rotate(${c.rot || 0})">`;
       h += `<rect class="hitbox" x="${-d.w / 2 - 4}" y="${-d.h / 2 - 4}" width="${d.w + 8}" height="${d.h + 8}" rx="6"/>`;
       if (sel) h += `<rect class="selbox" x="${-d.w / 2 - 8}" y="${-d.h / 2 - 8}" width="${d.w + 16}" height="${d.h + 16}" rx="8"/>`;
       h += `<g transform="translate(${-d.w / 2} ${-d.h / 2})">${sym(c, on, now)}</g></g>`;
@@ -2088,7 +2095,7 @@ class Board {
   down(e) {
     const C = this.C, ui = this.ui;
     const tEl = e.target.closest('[data-term]'), cEl = e.target.closest('[data-comp]'), wEl = e.target.closest('[data-wire]');
-    if (!this.edit) { if (cEl) C.operate(cEl.dataset.comp); return; }
+    if (!this.edit) { if (cEl) C.operate(cEl.dataset.comp); else if (this.opts.onWire) this.tap = { id: wEl ? wEl.dataset.wire : null, x: e.clientX, y: e.clientY }; return; }
     if (e.button !== undefined && e.button !== 0) return;
     const fz = this.svg.closest('[tabindex]');
     if (fz && document.activeElement !== fz) fz.focus({ preventScroll: true });
@@ -2322,6 +2329,46 @@ function metricTxt(res) { return res.watts > 0 ? res.watts.toLocaleString('fr-FR
 /* ---------------- Vue 3D (three.js, chargé à la demande depuis vendor/three.min.js) ----------------
    Une scène = un mur, des boîtes, des appareils, des conduits et des fils.
    Chaque fil porte un « net » : il finit toujours sur le connecteur de ce net (Wago ou borne). */
+/* Découpe un schéma en circuits : tout ce qui se trouve en aval d'une même protection.
+   Bobines A1/A2 à part : un contacteur peut être commandé par un autre circuit que celui qu'il coupe. */
+function circuitsOf(C) {
+  const P = {}, f = (a) => { if (P[a] === undefined) P[a] = a; while (P[a] !== a) { P[a] = P[P[a]]; a = P[a]; } return a; }, u = (a, b) => { P[f(a)] = f(b); };
+  const brk = (c) => c.type === 'disj' || c.type === 'dpn' || c.type === 'fus', isSrc = {}; C.comps.forEach((c) => { if (c.type === 'src') isSrc[c.id] = c; });
+  const src = (k) => isSrc[k.split(':')[0]];
+  C.wires.forEach((w) => { if (!src(w.a) && !src(w.b)) u(w.a, w.b); });
+  C.comps.forEach((c) => {
+    if (c.type === 'src') return;
+    if (brk(c)) { if (c.type === 'dpn') u(c.id + ':2', c.id + ':N2'); return; }
+    const tn = DEF[c.type].t.map((x) => x[0]), coil = tn.filter((n) => n === 'A1' || n === 'A2'), rest = tn.filter((n) => !coil.includes(n));
+    [coil, rest].forEach((g) => g.forEach((n) => u(c.id + ':' + g[0], c.id + ':' + n)));
+  });
+  const G = {}, get = (r) => G[r] || (G[r] = { root: r, key: '', wires: new Set(), comps: new Set(), refs: new Set(), real: false, loads: [], others: [] });
+  C.comps.forEach((c) => { if (brk(c)) { const g = get(f(c.id + ':2')); if (!g.key) g.key = c.ref; g.comps.add(c.id); g.refs.add(c.ref); } });
+  C.comps.forEach((c) => {
+    if (c.type === 'src' || brk(c)) return;
+    new Set(DEF[c.type].t.map((x) => f(c.id + ':' + x[0]))).forEach((r) => {
+      const g = get(r); g.comps.add(c.id); g.refs.add(c.ref);
+      if (c.type !== 'borne') { g.real = true; (ON_WORD[c.type] || c.type === 'baes' ? g.loads : g.others).push(c.ref); }
+    });
+  });
+  C.wires.forEach((w) => { [w.a, w.b].forEach((k) => { if (!src(k) && G[f(k)]) G[f(k)].wires.add(w.id); }); if (src(w.a) !== undefined || src(w.b) !== undefined) { const k = src(w.a) ? w.b : w.a, s = src(w.a) || src(w.b); if (G[f(k)] && !G[f(k)].key && !src(k)) G[f(k)].key = s.ref; } });
+  return Object.values(G).filter((g) => g.real && g.key).map((g) => Object.assign(g, { text: g.key + ' · ' + (g.loads.length ? g.loads : g.others.slice(0, 2)).join(', ') }));
+}
+/* Boutons « suivre un circuit », reliés au schéma 2D et à la vue 3D */
+function makeHL(C, B, V, el) {
+  let list = [], cur = null;
+  const paint = () => { el.querySelectorAll('[data-c]').forEach((b) => b.setAttribute('aria-pressed', String((cur ? cur.key : '') === b.dataset.c))); };
+  const set = (c) => { cur = c || null; B.hl = cur; B.render(); V.setCircuit(cur); paint(); };
+  const hl = {
+    refresh() { list = circuitsOf(C); cur = null; B.hl = null; V.setCircuit(null); el.hidden = list.length < 2; el.innerHTML = '<span>Suivre un circuit :</span>' + list.map((c) => `<button class="ctl" type="button" data-c="${c.key}" aria-pressed="false">${c.text}</button>`).join('') + '<button class="ctl ghost" type="button" data-c="" aria-pressed="true">Tous</button>'; },
+    pick(c) { if (list.length > 1) set(c && cur && c.key === cur.key ? null : c); },
+    byWire(id) { this.pick(id ? list.find((c) => c.wires.has(id)) : null); },
+    tap(r) { if (!r) { this.pick(null); return; } this.pick(r.wid ? list.find((c) => c.wires.has(r.wid)) : list.find((c) => c.key === r.key)); }
+  };
+  el.addEventListener('click', (e) => { const b = e.target.closest('[data-c]'); if (b) set(list.find((c) => c.key === b.dataset.c)); });
+  B.opts.onWire = (id) => hl.byWire(id); V.hl = hl;
+  return hl;
+}
 const V3D = (() => {
   let loading = null;
   const loadThree = () => { if (window.THREE) return Promise.resolve(); if (!loading) loading = new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'vendor/three.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s); }); return loading; };
@@ -2340,7 +2387,9 @@ const V3D = (() => {
     return out;
   }
   class Builder {
-    constructor(T, ops, plan) { this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); }
+    constructor(T, ops, plan) { this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); this.wires = []; this.runLabs = []; }
+    /* conducteur rattaché à un circuit : key (scènes de l'énoncé) ou wid (scènes générées) */
+    wire(P, c, key, wid, rad) { const m = this.tube(P, 0.0034, this.wmat(c), rad === undefined ? 0.03 : rad); if (m) this.wires.push({ mesh: m, mat: m.material, key, wid, pts: P }); return m; }
     /* voyant vert d'un appareil alimenté : caché tant que l'appareil ne fonctionne pas */
     led(x, y, z) { const m = new this.T.Mesh(new this.T.SphereGeometry(0.011, 10, 8), new this.T.MeshBasicMaterial({ color: 0x4ade80 })); m.position.set(x, y, z); m.visible = false; this.g.add(m); return m; }
     mat(c, o) { const k = c + JSON.stringify(o || {}); if (!this.mats[k]) this.mats[k] = new this.T.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.62, metalness: 0.02 }, o || {})); return this.mats[k]; }
@@ -2411,7 +2460,7 @@ const V3D = (() => {
       if (kind !== 'lampe' && kind !== 'hublot') led = this.led(x + W / 2 - 0.02, y + H / 2 - 0.02, dz + 0.006);
       for (let i = n0; i < this.g.children.length; i++) this.g.children[i].position.z += z0;
       this.ctl[N.ref] = { pos: new T.Vector3(x, y, dz + z0), part, base: part ? part.position.clone() : null, plug, face, led, kind };
-      if (o.label !== false) this.label(o.label || id, x, y + H / 2 + 0.07, 0.1, undefined, this.ops.has(N.ref));
+      if (o.label !== false) this.ctl[N.ref].lab = this.label(o.label || id, x, y + H / 2 + 0.07, 0.1, undefined, this.ops.has(N.ref));
       N.at = (net) => {
         if (!N.nets[net]) { const i = N.n++, offs = (i - 1.5) * 0.024; const p = side === 'l' || side === 'r' ? new T.Vector3(x + (side === 'r' ? W : -W) / 2, y - offs, 0.022 + z0) : new T.Vector3(x + offs, y + side * H / 2, 0.022 + z0); N.nets[net] = p; const b = new T.Mesh(new T.SphereGeometry(0.008, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); b.position.copy(p); this.g.add(b); }
         return N.nets[net];
@@ -2435,14 +2484,16 @@ const V3D = (() => {
       const conduit = { icta: [o.r || 0.019, this.glass(0x7c8894, 0.34)], irl: [o.r || 0.019, this.glass(0x6f7a85, 0.38)], cable: [0.012, this.glass(0x1a1a1c, 0.5)] }[o.k];
       if (conduit) this.tube(pts, conduit[0], conduit[1], o.k === 'icta' ? 0.12 : 0.04);
       if (o.k === 'dlp' || o.k === 'mou') this.gaine(pts, o.k, o.wd);
+      const keys = new Set();
       c.forEach((w, i) => {
         const of = ring(i, c.length, R), mid = pts.map((p) => [p[0] + of[0], p[1] + of[1], p[2] + of[2]]);
         const P = mid.slice();
         const A = o.from && this.nodes[o.from] ? this.nodes[o.from].at(w.a || w.n) : null, B = o.to && this.nodes[o.to] ? this.nodes[o.to].at(w.b || w.n) : null;
         if (w.via) w.via.slice().reverse().forEach((v) => P.unshift(v)); if (A) { if (this.nodes[o.from].kind === 'jbox') P.unshift([A.x, A.y - 0.028, A.z + 0.02]); P.unshift([A.x, A.y, A.z]); } if (B) { if (this.nodes[o.to].kind === 'jbox') P.push([B.x, B.y - 0.028, B.z + 0.02]); P.push([B.x, B.y, B.z]); }
-        this.tube(P, 0.0034, this.wmat(w.c), 0.03);
+        keys.add(w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null));
+        this.wire(P, w.c, w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null));
       });
-      if (o.label) { const p = pts[Math.floor(pts.length / 2)], q = pts[Math.max(0, Math.floor(pts.length / 2) - 1)], at = o.at || [(p[0] + q[0]) / 2 + 0.05, (p[1] + q[1]) / 2 + 0.04]; this.label(o.label, at[0], at[1], 0.12); }
+      if (o.label) { const p = pts[Math.floor(pts.length / 2)], q = pts[Math.max(0, Math.floor(pts.length / 2) - 1)], at = o.at || [(p[0] + q[0]) / 2 + 0.05, (p[1] + q[1]) / 2 + 0.04]; this.runLabs.push({ sp: this.label(o.label, at[0], at[1], 0.12), keys }); }
     }
     gaine(pts, k, W) {
       const lid = this.glass(k === 'dlp' ? 0xf7f5ef : 0xf4f4f0, 0.28), base = this.mat(0xf0ede6), wd = W || (k === 'dlp' ? 0.13 : 0.075), dp = k === 'dlp' ? 0.055 : 0.03;
@@ -2469,7 +2520,7 @@ const V3D = (() => {
           this.box(w - 0.006, h, 0.05, this.mat(col), mx, yr, 0.05);
           const hd = this.box(w * 0.5, 0.026, 0.02, this.mat(m.k === 'id' ? 0x2b6be0 : 0x24272b), mx, yr + 0.028, 0.082);
           this.ctl[m.id] = { pos: new T.Vector3(mx, yr, 0.08), part: hd, base: hd.position.clone(), led: this.led(mx + w / 2 - 0.016, yr + 0.054, 0.08), kind: 'mod' };
-          this.label(m.id, mx, yr - 0.03, 0.12, 'tiny', this.ops.has(m.id));
+          this.ctl[m.id].lab = this.label(m.id, mx, yr - 0.03, 0.12, 'tiny', this.ops.has(m.id));
           const tb = yr - h / 2 - 0.004;
           (m.t || []).forEach((tn, j) => { const tx = mx + (j - (m.t.length - 1) / 2) * 0.026; const p = new T.Vector3(tx, tb, 0.075); N.nets[tn] = p; const s = new T.Mesh(new T.SphereGeometry(0.007, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); s.position.copy(p); this.g.add(s); });
           cx += w;
@@ -2482,10 +2533,11 @@ const V3D = (() => {
       const py = y - H / 2 + 0.06; this.box(W * 0.7, 0.024, 0.02, this.mat(0xc9a44a, { metalness: 0.6 }), x, py, 0.03); N.nets.PE = new T.Vector3(x, py, 0.045);
       this.nodes[id] = N; return N;
     }
-    link(a, na, b, nb, c) { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.tube([[A.x, A.y, A.z]].concat(this.nodes[a].kind === 'jbox' ? [[A.x, A.y - 0.028, A.z + 0.02]] : [], [mid, [B.x, B.y, B.z]]), 0.0034, this.wmat(c), 0.03); }
+    link(a, na, b, nb, c) { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.wire([[A.x, A.y, A.z]].concat(this.nodes[a].kind === 'jbox' ? [[A.x, A.y - 0.028, A.z + 0.02]] : [], [mid, [B.x, B.y, B.z]]), c, this.cmap ? this.cmap(na) : null); }
   }
   /* ---- Espace 1 : implantation de l'énoncé (TR, BD1, ICTA G01 à G07, moulure M1) ---- */
   function esp1(B) {
+    B.cmap = (n) => { const m = /\.(D\d)$/.exec(n); return m ? m[1] : ({ 'S.R1': 'D2', 'BP.R1': 'D2', 'S.R2': 'D3', 'C1.1': 'D4', 'C1.2': 'D4', 'S.C1': 'D4', 'C1.A1': 'D5', 'C1.A2': 'D5', 'PC1.L': 'D6', 'PC1.N': 'D6', 'PE.PC1': 'D6' })[n] || null; };
     const p = (x, y) => [(x - 580) / 420, 1 + (890 - y) / 420];
     B.wall(3.0, 2.75, 0, 1.38);
     const y0 = (x, y, z) => { const q = p(x, y); return [q[0], q[1], z === undefined ? 0.035 : z]; };
@@ -2520,13 +2572,13 @@ const V3D = (() => {
     [['L.D2', 'L', 'rouge'], ['N.D2', 'N', 'bleu'], ['BP.R1', 'BP', 'ivoire'], ['S.R1', 'S', 'marron']].forEach((q) => B.link('BD1', q[0], 'R1', q[1], q[2]));
     [['L.D3', 'L', 'rouge'], ['N.D3', 'N', 'bleu'], ['S.R2', 'S', 'marron']].forEach((q) => B.link('BD1', q[0], 'R2', q[1], q[2]));
     // G06 : sortie de câble du chauffe-eau
-    const sc = B.nodes.SC; B.run({ k: 'icta', pts: [cTR, [cTR[0] - 0.3, 0.72, 0.05], [sc.x + 0.32, 0.55, 0.05], [sc.x, sc.y + 0.1, 0.05]], from: 'TR', to: 'SC', at: p(560, 900), label: 'G06 · Ø20', cond: [{ n: 'S.C1', a: 'C1.2', b: 'L', c: 'rouge' }, { n: 'N.D4', b: 'N', c: 'bleu' }, { a: 'PE', n: 'PE', c: 'vj' }] });
+    const sc = B.nodes.SC; B.run({ k: 'icta', pts: [cTR, [cTR[0] - 0.3, 0.72, 0.05], [sc.x + 0.32, 0.55, 0.05], [sc.x, sc.y + 0.1, 0.05]], from: 'TR', to: 'SC', ck: 'D4', at: p(560, 900), label: 'G06 · Ø20', cond: [{ n: 'S.C1', a: 'C1.2', b: 'L', c: 'rouge' }, { n: 'N.D4', b: 'N', c: 'bleu' }, { a: 'PE', n: 'PE', c: 'vj' }] });
     // Moulure M1 : S2 puis PC2
     const mA = y0(700, 765, 0.03), mB = y0(700, 880, 0.03), mS2 = y0(785, 880, 0.03), mPC = y0(895, 880, 0.03);
     B.run({ k: 'mou', pts: [mA, mB, [y0(960, 880)[0], mB[1], 0.03]] });
     B.label('M1 · moulure', mS2[0] + 0.05, mB[1] - 0.09, 0.1);
     B.run({ pts: [[mA[0] - 0.015, mA[1], 0.03], [mB[0] - 0.015, mB[1] + 0.01, 0.03], [mS2[0], mB[1] + 0.01, 0.03]], from: 'TR', to: 'S2', cond: [{ n: 'L.D5', b: 'C', c: 'noir' }, { n: 'C1.A1', b: '1', c: 'violet' }] });
-    B.run({ pts: [[mA[0] + 0.015, mA[1], 0.03], [mB[0] + 0.015, mB[1] - 0.012, 0.03], [mPC[0], mB[1] - 0.012, 0.03]], from: 'TR', to: 'PC2', cond: [{ n: 'L.D1', b: 'L', c: 'rouge', via: [[nT.nets['L.D1'].x, yU, 0.1], [nT.nets['L.D1'].x, yB, 0.1]] }, { n: 'N.D1', b: 'N', c: 'bleu', via: [[nT.nets['N.D1'].x, yU, 0.1], [nT.nets['N.D1'].x, yB, 0.1]] }, { n: 'PE', a: 'PE', b: 'PE', c: 'vj' }] });
+    B.run({ pts: [[mA[0] + 0.015, mA[1], 0.03], [mB[0] + 0.015, mB[1] - 0.012, 0.03], [mPC[0], mB[1] - 0.012, 0.03]], from: 'TR', to: 'PC2', ck: 'D1', cond: [{ n: 'L.D1', b: 'L', c: 'rouge', via: [[nT.nets['L.D1'].x, yU, 0.1], [nT.nets['L.D1'].x, yB, 0.1]] }, { n: 'N.D1', b: 'N', c: 'bleu', via: [[nT.nets['N.D1'].x, yU, 0.1], [nT.nets['N.D1'].x, yB, 0.1]] }, { n: 'PE', a: 'PE', b: 'PE', c: 'vj' }] });
     // Câbles d'arrivée
     const ag = B.nodes.AGCP;
     B.run({ k: 'cable', pts: [[-1.45, 2.46, 0.05], [ag.x - 0.02, 2.46, 0.05], [ag.x - 0.02, ag.y + 0.08, 0.05]], to: 'AGCP', at: [-0.9, 2.52], label: 'C1 · U1000 R2V', cond: [{ n: 'L', c: 'noir' }, { n: 'N', c: 'bleu' }, { n: 'PE', c: 'vj' }] });
@@ -2540,6 +2592,7 @@ const V3D = (() => {
   }
   /* ---- Espace 2 : chemin de câble, BD1, BD2, IRL C01 à C08 ---- */
   function esp2(B) {
+    B.cmap = (n) => (/\.PC$/.test(n) ? 'Q1' : ['L', 'N', 'PE', 'RL', 'BP'].includes(n) ? 'Q2' : ['S1', 'S2'].includes(n) ? 'SSI' : null);
     const p = (x, y) => [(x - 580) / 350, 1 + (1140 - y) / 350], z = 0.05, q = (x, y, zz) => [...p(x, y), zz === undefined ? z : zz];
     B.wall(3.0, 2.85, 0, 1.43); B.rail(p(260, 0)[0], p(905, 0)[0], p(0, 745)[1]);
     B.jbox('5', ...p(222, 617), { w: 0.18, h: 0.18, label: 'Boîte 5' }); B.jbox('8', ...p(895, 618), { w: 0.18, h: 0.18, label: 'Boîte 8', c: 0xcc3b32 });
@@ -2575,6 +2628,7 @@ const V3D = (() => {
   }
   /* ---- Espace 3 : goulotte DLP, chemin de câble, BD1, BAES, RJ45 ---- */
   function esp3(B) {
+    B.cmap = (n) => (/\.PC$/.test(n) ? 'Q1' : /^AU/.test(n) ? 'Q3' : ['L', 'N', 'PE', 'RL', 'TC'].includes(n) ? 'Q2' : null);
     const p = (x, y) => [(x - 560) / 350, 1 + (1035 - y) / 350], z = 0.05, q = (x, y, zz) => [...p(x, y), zz === undefined ? z : zz];
     B.wall(3.0, 2.85, 0, 1.43); B.rail(p(250, 0)[0], p(860, 0)[0], p(0, 595)[1]);
     B.jbox('7', ...p(205, 467), { w: 0.18, h: 0.18, label: 'Boîte 7' }); B.jbox('BD1', ...p(615, 590), { w: 0.2, h: 0.2 });
@@ -2613,7 +2667,7 @@ const V3D = (() => {
     const pos = {};
     const panel = C.comps.filter((c) => ['src', 'disj', 'dpn', 'fus'].includes(c.type));
     B.box(0.6, 0.9, 0.02, 0xf4f2ec, -W / 2 + 0.42, 1.55, 0.01); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
-    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; B.box(0.3, 0.13, 0.05, isSrc ? 0x59626d : 0xffffff, row.x, row.y, 0.03); if (!isSrc) { const hd = B.box(0.1, 0.03, 0.02, 0x24272b, row.x, row.y + 0.015, 0.065); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.1 + i * 0.05, row.y + 0.07, 0.06); pos[c.id + ':' + t] = p; }); py -= 0.27; });
+    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; B.box(0.3, 0.13, 0.05, isSrc ? 0x59626d : 0xffffff, row.x, row.y, 0.03); if (!isSrc) { const hd = B.box(0.1, 0.03, 0.02, 0x24272b, row.x, row.y + 0.015, 0.065); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } const lb = B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); if (!isSrc) B.ctl[c.ref].lab = lb; tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.1 + i * 0.05, row.y + 0.07, 0.06); pos[c.id + ':' + t] = p; }); py -= 0.27; });
     sorted.filter((c) => !panel.includes(c)).forEach((c, i) => {
       const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'inter';
       B.dev(c.id, k, x, y, { ref: c.ref, label: c.ref, side: 1, w: 0.14, h: 0.14 });
@@ -2631,7 +2685,7 @@ const V3D = (() => {
     C.wires.forEach((w, i) => {
       const A = pt(w.a), Bb = pt(w.b); if (!A || !Bb) return;
       const lane = yG + 0.05 - (i % 8) * 0.012, zz = 0.012 + (i % 4) * 0.012, ox = ((i % 7) - 3) * 0.006;
-      B.tube([[A.x, A.y, A.z], [A.x + ox, Math.min(lane, A.y + 0.12), 0.04 + zz], [A.x + ox, lane, 0.04 + zz], [Bb.x + ox, lane, 0.04 + zz], [Bb.x + ox, Math.min(lane, Bb.y + 0.12), 0.04 + zz], [Bb.x, Bb.y, Bb.z]], 0.0034, B.wmat(col(w)), 0.04);
+      B.wire([[A.x, A.y, A.z], [A.x + ox, Math.min(lane, A.y + 0.12), 0.04 + zz], [A.x + ox, lane, 0.04 + zz], [Bb.x + ox, lane, 0.04 + zz], [Bb.x + ox, Math.min(lane, Bb.y + 0.12), 0.04 + zz], [Bb.x, Bb.y, Bb.z]], col(w), null, w.id, 0.04);
     });
     return { cx: 0, cy: 1.43, r: Math.max(5.35, W * 1.75) };
   }
@@ -2673,7 +2727,10 @@ const V3D = (() => {
       if (h) { t.x = Math.max(h.x - m, Math.min(h.x + m, t.x)); t.y = Math.max(h.y - m, Math.min(h.y + m, t.y)); t.z = Math.max(h.z - m, Math.min(h.z + m, t.z)); }
       this.draw();
     }
-    zoom(f) { this.rad = Math.max(0.35, Math.min(this.fitR ? this.fitR * 1.6 : 12, this.rad * f)); this.draw(); }
+    zoom(f) { this.rad = Math.max(0.35, Math.min(this.fitR ? this.fitR * 1.6 : 12, this.rad * f));
+      /* dézoom à la main depuis une boîte : on quitte le mode zoom */
+      if (this.zone && this.rad > this.zoneR * 1.6) { this.zone = null; this.tags(null); this.ui.hidden = true; }
+      this.draw(); }
     size() { const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h || !this.r) return; this.r.setSize(w, h, false); this.r.domElement.style.width = '100%'; this.r.domElement.style.height = '100%'; this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.draw(); }
     draw() { if (!this.r || !this.b) return; const t = this.target, cp = Math.cos(this.pitch); this.cam.position.set(t.x + this.rad * Math.sin(this.yaw) * cp, t.y + this.rad * Math.sin(this.pitch), t.z + this.rad * Math.cos(this.yaw) * cp); this.cam.lookAt(t); this.r.render(this.scene, this.cam); }
     show(make, ctx) {
@@ -2689,7 +2746,7 @@ const V3D = (() => {
       if (this.b) { this.scene.remove(this.b.g); free(this.b.g); }
       const T = window.THREE, ops = new Set(ctx.comps.filter((c) => DEF[c.type].op && opLabel(c)).map((c) => c.ref)), dry = new Builder(T, ops, null), plan = {}; make(dry, ctx); Object.keys(dry.nodes).forEach((k) => { if (dry.nodes[k].cnt) plan[k] = dry.nodes[k].cnt; }); free(dry.g); const b = new Builder(T, ops, plan); this.b = b; this.ctx = ctx; this.closeZone(true); const v = make(b, ctx); this.scene.add(b.g);
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
-      this.size(); this.sync(ctx); this.draw();
+      this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.draw();
     }
     sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.5 : 0; L.pt.intensity = on ? 0.8 : 0; });
       Object.keys(this.b.ctl).forEach((ref) => {
@@ -2717,14 +2774,41 @@ const V3D = (() => {
     pick(x, y) {
       const ref = this.near(x, y), c = ref && this.ctx.comps.find((q) => q.ref === ref);
       if (c) { this.ctx.operate(c.id); return; }
-      const z = this.zoneAt(x, y); if (z) this.openZone(z);
+      const z = this.zoneAt(x, y); if (z) { this.openZone(z); return; }
+      if (this.hl) this.hl.tap(this.wireAt(x, y));
+    }
+    /* conducteur le plus proche du point touché */
+    wireAt(x, y) {
+      if (!this.b) return null;
+      const rc = this.r.domElement.getBoundingClientRect(), v = new window.THREE.Vector3(); let best = null, bd = 14;
+      const sc = (p) => { v.set(p[0], p[1], p[2]).project(this.cam); return [(v.x + 1) / 2 * rc.width + rc.left, (1 - v.y) / 2 * rc.height + rc.top]; };
+      this.b.wires.forEach((r) => {
+        if (!r.key && !r.wid) return;
+        let a = sc(r.pts[0]);
+        for (let i = 1; i < r.pts.length; i++) {
+          const b = sc(r.pts[i]), dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy, k = l ? Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / l)) : 0, d = Math.hypot(a[0] + dx * k - x, a[1] + dy * k - y);
+          if (d < bd) { bd = d; best = r; }
+          a = b;
+        }
+      });
+      return best;
+    }
+    /* met un circuit en évidence (c : entrée de circuitsOf, ou null pour tout réafficher) */
+    setCircuit(c) {
+      this.hlC = c || null; if (!this.b) return;
+      const b = this.b; if (!b.dimMat) b.dimMat = new window.THREE.MeshStandardMaterial({ color: 0x8a8f96, transparent: true, opacity: 0.2, depthWrite: false });
+      b.wires.forEach((r) => { r.mesh.material = !c || (r.wid ? c.wires.has(r.wid) : r.key === c.key) ? r.mat : b.dimMat; });
+      Object.values(b.mats).forEach((m) => { if (!m.transparent) return; if (m.userData.o === undefined) m.userData.o = m.opacity; m.opacity = c ? m.userData.o * 0.4 : m.userData.o; });
+      Object.keys(b.ctl).forEach((ref) => { const k = b.ctl[ref]; if (k.lab) k.lab.material.opacity = !c || c.refs.has(ref) ? 1 : 0.3; });
+      b.runLabs.forEach((r) => { r.sp.material.opacity = !c || r.keys.has(c.key) ? 1 : 0.3; });
+      this.draw();
     }
     /* boîte située sous un point de l'écran */
     zoneAt(x, y) {
-      if (!this.b || this.zone) return null;
+      if (!this.b) return null;
       const rc = this.r.domElement.getBoundingClientRect(), T = window.THREE, sc = (v) => { v.project(this.cam); return [(v.x + 1) / 2 * rc.width + rc.left, (1 - v.y) / 2 * rc.height + rc.top]; };
       let best = null, bd = 1e9;
-      this.b.zones.forEach((z) => { const a = sc(z.c.clone()), e = sc(new T.Vector3(z.c.x + z.w / 2, z.c.y + z.h / 2, z.c.z)), rx = Math.max(16, Math.abs(e[0] - a[0]) * 1.1), ry = Math.max(16, Math.abs(e[1] - a[1]) * 1.1), d = Math.hypot(x - a[0], y - a[1]); if (Math.abs(x - a[0]) <= rx && Math.abs(y - a[1]) <= ry && d < bd) { bd = d; best = z; } });
+      this.b.zones.forEach((z) => { if (z === this.zone) return; const a = sc(z.c.clone()), e = sc(new T.Vector3(z.c.x + z.w / 2, z.c.y + z.h / 2, z.c.z)), rx = Math.max(16, Math.abs(e[0] - a[0]) * 1.1), ry = Math.max(16, Math.abs(e[1] - a[1]) * 1.1), d = Math.hypot(x - a[0], y - a[1]); if (Math.abs(x - a[0]) <= rx && Math.abs(y - a[1]) <= ry && d < bd) { bd = d; best = z; } });
       return best;
     }
     fly(t, r, yaw, pitch) {
@@ -2738,7 +2822,7 @@ const V3D = (() => {
     openZone(z) {
       this.zone = z; this.tags(z);
       this.ui.lastChild.textContent = z.title + ' · L phase, N neutre, PE terre, Ret retour'; this.ui.hidden = false;
-      this.fly(z.c, (Math.max(z.w, z.h) * 1.25 + 0.1) / 0.61, 0.12, 0.06);
+      this.zoneR = (Math.max(z.w, z.h) * 1.25 + 0.1) / 0.61; this.fly(z.c, this.zoneR, 0.12, 0.06);
     }
     closeZone(now) {
       const was = this.zone; this.zone = null; if (this.ui) this.ui.hidden = true;
@@ -2791,6 +2875,7 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
 const simC = new Circuit();
 const simB = new Board($('#sim-svg'), simC, {});
 const sim3d = new V3D.View($('#sim-3d'));
+const simHL = makeHL(simC, simB, sim3d, $('#sim-circ'));
 let cur = PRESETS[0];
 function simNav() {
   const ICON = { simple: 'inter', double: 'inter', vav: 'vav', sonnette: 'sonnette', perm: 'perm', tele: 'tele', tele412: 'tele2', minu: 'minu', yokis: 'yokis', hc: 'cont', court: 'dpn' };
@@ -2800,7 +2885,7 @@ function simNav() {
 }
 function simSet(p) {
   cur = p;
-  simC.power = true; simC.load(p.build()); simB.fit(); simB.render();
+  simC.power = true; simC.load(p.build()); simHL.refresh(); simB.fit(); simB.render();
   $('#sim-group').textContent = p.group === 'base' ? 'Module 3 · Circuits de base' : 'Module 4 · Circuits avancés';
   $('#sim-title').textContent = p.title; $('#sim-sub').textContent = p.sub;
   $('#sim-svg').setAttribute('aria-label', 'Schéma développé : ' + p.title);
@@ -2929,10 +3014,11 @@ let exN = [2, 3].includes(store.get('pn-espace')) ? store.get('pn-espace') : 1;
 const exC = new Circuit();
 const exB = new Board($('#ex-svg'), exC, {});
 const ex3d = new V3D.View($('#ex-3d'));
+const exHL = makeHL(exC, exB, ex3d, $('#ex-circ'));
 function exSet(n) {
   if (n) exN = n;
   const E = ESPACES[exN];
-  exC.power = true; exC.load(E.build()); exB.fit(); exB.render();
+  exC.power = true; exC.load(E.build()); exHL.refresh(); exB.fit(); exB.render();
   $('#ex-eyebrow').textContent = E.eyebrow; $('#ex-title').textContent = E.title; $('#ex-sub').textContent = E.sub;
   $('#ex-svg').setAttribute('aria-label', 'Schéma développé : ' + E.eyebrow.toLowerCase());
   $$('#ex-tabs [data-espace]').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.espace === exN)));
