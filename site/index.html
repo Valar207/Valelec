@@ -1121,7 +1121,7 @@ tr:last-child td{border-bottom:0}
       <h3 id="qz-errh">Questions ratées</h3>
       <ol class="qz-errs" id="qz-errs"></ol>
     </section>
-    <p class="tnote">Questions et corrigé tirés du questionnaire professionnel TP-00467 (épreuve n°2). Les propositions des questions 10 à 21 sont reconstituées, car ces pages manquaient au scan : seule la bonne réponse vient du corrigé. Une mention orange signale les réponses qui peuvent varier selon le corrigé de ton centre.</p>
+    <p class="tnote">Questions et corrigé tirés du questionnaire professionnel TP-00467 (épreuve n°2). Les propositions des questions 10 à 21 sont reconstituées, car ces pages manquaient au scan : seule la bonne réponse vient du corrigé.</p>
   </div>
 </div>
 
@@ -4521,7 +4521,7 @@ function qzDraw() {
   if (done) {
     const ok = qz.ans[n] === q.a;
     fb.className = 'qz-fb ' + (ok ? 'ok' : 'ko');
-    fb.innerHTML = `<strong>${ok ? 'Bonne réponse&nbsp;!' : 'Raté : la bonne réponse est la ' + L[q.a] + '.'}</strong><p><b>Réponse ${L[q.a]}</b> : ${esc(q.o[q.a])}</p><p>${esc(q.e)}</p>` + (q.w ? '<p class="qz-w">À vérifier avec ton formateur : la réponse attendue peut varier selon le corrigé du centre.</p>' : '') + (q.r ? '<p class="qz-r">Propositions reconstituées : cette page manquait au questionnaire scanné.</p>' : '');
+    fb.innerHTML = `<strong>${ok ? 'Bonne réponse&nbsp;!' : 'Raté : la bonne réponse est la ' + L[q.a] + '.'}</strong><p><b>Réponse ${L[q.a]}</b> : ${esc(q.o[q.a])}</p><p>${esc(q.e)}</p>`;
   }
   $('#qz-ok').hidden = done; $('#qz-ok').disabled = qz.sel === null;
   $('#qz-next').hidden = !done; $('#qz-next').textContent = qz.i === qz.list.length - 1 ? 'Voir ma note →' : 'Question suivante →';
