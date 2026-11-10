@@ -288,6 +288,11 @@ tr:last-child td{border-bottom:0}
 .sim-cols{display:grid;gap:24px;grid-template-columns:minmax(0,1fr) 300px;align-items:start}
 .stage{display:flex;flex-direction:column;gap:14px;min-width:0}
 .dual{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));align-items:start}
+.lab-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.lab-tabs .ctl{min-height:44px}
+.lab-note{margin-top:16px;padding:13px 15px;gap:6px;border-radius:12px;border-width:1px}
+.lab-note h3{margin:0;font:600 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lab-note p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
 .col2d{display:flex;flex-direction:column;gap:14px;min-width:0}
 .d2-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .d2-head strong,.v3d-head strong{color:var(--ink,inherit);font-size:15px}
@@ -491,6 +496,10 @@ tr:last-child td{border-bottom:0}
 .hitbox{fill:transparent;cursor:pointer}
 .comp.op .hitbox:hover{fill:rgba(255,216,74,.08)}
 .edit .comp .hitbox{cursor:grab}
+.pvb{fill:#1d3557;stroke:#9fb3c8;stroke-width:2}
+.pvc{fill:#24497a;stroke:#4c6a8f;stroke-width:1}
+.pvc.on{fill:#2f64a8}
+.pvsun{fill:#FFD84A;stroke:#E0A800;stroke-width:1.5}
 .trash{cursor:pointer}
 .trash circle{fill:#D8362A;stroke:#111A24;stroke-width:2;transition:fill .15s}
 .trash .thit2{fill:transparent;stroke:none}
@@ -1229,7 +1238,7 @@ tr:last-child td{border-bottom:0}
     <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:17ch">Les panneaux photovoltaïques.</h1>
     <p class="lead">Du photon au compteur : comment un panneau produit du courant, comment choisir et dimensionner une installation, puis la câbler, la protéger et la raccorder au réseau.</p>
     <nav class="toc" aria-label="Sommaire du module photovoltaïque">
-      <a href="#pv-principe">1 · Le principe</a><a href="#pv-fiche">2 · La fiche technique</a><a href="#pv-materiel">3 · Le matériel</a><a href="#pv-production">4 · Estimer la production</a><a href="#pv-chaine">5 · Dimensionner les chaînes</a><a href="#pv-protections">6 · Protections et câbles</a><a href="#pv-schema">7 · Le schéma</a><a href="#pv-pose">8 · La pose pas à pas</a><a href="#pv-demarches">9 · Raccordement et démarches</a>
+      <a href="#pv-principe">1 · Le principe</a><a href="#pv-fiche">2 · La fiche technique</a><a href="#pv-materiel">3 · Le matériel</a><a href="#pv-production">4 · Estimer la production</a><a href="#pv-chaine">5 · Dimensionner les chaînes</a><a href="#pv-protections">6 · Protections et câbles</a><a href="#pv-schema">7 · Le schéma</a><a href="#pv-cablage">7 bis · Câblage 2D et 3D</a><a href="#pv-pose">8 · La pose pas à pas</a><a href="#pv-demarches">9 · Raccordement et démarches</a>
     </nav>
   </div>
 
@@ -1430,6 +1439,24 @@ tr:last-child td{border-bottom:0}
     </div>
     <div class="callout" style="margin-top:20px"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><path d="M24 5 L44 41 H4 Z" class="ico"/><path d="M24 19 V29 M24 34 V35" class="ico"/></svg><p><b>On ne peut pas éteindre un panneau.</b> Tant qu’il reçoit de la lumière, la chaîne est sous tension, même onduleur arrêté et sectionneur ouvert : plusieurs centaines de volts en continu côté toit. Couvre les modules ou travaille hors ensoleillement, et ne débranche jamais un MC4 en charge.</p></div>
   </section>
+  <section id="pv-cablage" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">7 bis · Schéma de câblage</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Le câblage en 2D et en 3D</h2></div><p>Du champ de modules au tableau : coupe le soleil, ouvre le sectionneur ou l’AGCP, et regarde l’onduleur réagir. Il ne produit que si le réseau est là.</p></div>
+    
+    <div class="stage">
+      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+        <svg id="pvl-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
+        <div class="statusbar">
+          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvl-dot"></span><div style="min-width:0"><strong id="pvl-st"></strong><span class="d" id="pvl-sd"></span></div></div>
+          <span class="metric" id="pvl-metric">0 W</span>
+        </div>
+      </div>
+          <div class="ctls cgrid" id="pvl-ctls" role="group" aria-label="Commandes"></div>
+          <ul class="mini-legend" aria-label="Légende"><li><span class="lsw" style="background:#E5533D"></span>Phase ou +</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li></ul>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="pvl-3d"></div><div class="v3d-steps" id="pvl-steps"></div><div class="v3d-circ" id="pvl-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase ou +</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
+    </div>
+    <div class="box lab-note" id="pvl-note"></div>
+  </section>
+
 
   <section id="pv-pose" class="wrap lesson">
     <div class="sec-head"><div><p class="eyebrow">8 · Pratique</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La pose pas à pas</h2></div><p>L’ordre de chantier d’une installation sur toiture avec onduleur string.</p></div>
@@ -1482,7 +1509,7 @@ tr:last-child td{border-bottom:0}
     <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:17ch">Les bornes de recharge IRVE.</h1>
     <p class="lead">Comment une voiture se recharge, comment la borne et le véhicule se parlent, puis comment dimensionner, protéger, câbler et mettre en service un point de recharge.</p>
     <nav class="toc" aria-label="Sommaire du module IRVE">
-      <a href="#irve-bases">1 · Les bases</a><a href="#irve-modes">2 · Modes et prises</a><a href="#irve-puissance">3 · Puissance et temps de charge</a><a href="#irve-dialogue">4 · Le dialogue borne-voiture</a><a href="#irve-dim">5 · Dimensionner et protéger</a><a href="#irve-schema">6 · Le schéma</a><a href="#irve-pose">7 · La pose pas à pas</a><a href="#irve-regles">8 · Qualification et aides</a>
+      <a href="#irve-bases">1 · Les bases</a><a href="#irve-modes">2 · Modes et prises</a><a href="#irve-puissance">3 · Puissance et temps de charge</a><a href="#irve-dialogue">4 · Le dialogue borne-voiture</a><a href="#irve-dim">5 · Dimensionner et protéger</a><a href="#irve-schema">6 · Le schéma</a><a href="#irve-cablage">6 bis · Câblage 2D et 3D</a><a href="#irve-pose">7 · La pose pas à pas</a><a href="#irve-regles">8 · Qualification et aides</a>
     </nav>
   </div>
 
@@ -1630,6 +1657,24 @@ tr:last-child td{border-bottom:0}
       </ul>
     </div>
   </section>
+  <section id="irve-cablage" class="wrap lesson">
+    <div class="sec-head"><div><p class="eyebrow">6 bis · Schéma de câblage</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les 4 modes de recharge en 2D et en 3D</h2></div><p>De la simple prise domestique à la borne rapide en courant continu : choisis un mode, branche la voiture et lance la charge.</p></div>
+    <div class="lab-tabs" id="irvel-tabs" role="group" aria-label="Choisir le mode de recharge"></div>
+    <div class="stage">
+      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+        <svg id="irvel-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
+        <div class="statusbar">
+          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irvel-dot"></span><div style="min-width:0"><strong id="irvel-st"></strong><span class="d" id="irvel-sd"></span></div></div>
+          <span class="metric" id="irvel-metric">0 W</span>
+        </div>
+      </div>
+          <div class="ctls cgrid" id="irvel-ctls" role="group" aria-label="Commandes"></div>
+          <ul class="mini-legend" aria-label="Légende"><li><span class="lsw" style="background:#E5533D"></span>Phase ou +</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li></ul>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="irvel-3d"></div><div class="v3d-steps" id="irvel-steps"></div><div class="v3d-circ" id="irvel-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase ou +</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre ou −</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
+    </div>
+    <div class="box lab-note" id="irvel-note"></div>
+  </section>
+
 
   <section id="irve-pose" class="wrap lesson">
     <div class="sec-head"><div><p class="eyebrow">7 · Pratique</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La pose pas à pas</h2></div><p>L’ordre de chantier d’une wallbox en maison individuelle.</p></div>
@@ -1720,10 +1765,16 @@ const DEF = {
   rad: { name: 'Radiateur', pre: 'R', w: 80, h: 40, t: T2, desc: 'Résistance chauffante de 1 000 W.' },
   moteur: { name: 'Moteur', pre: 'M', w: 80, h: 40, t: T2, desc: 'Moteur de 250 W (ventilation, volet roulant…).' },
   sonnette: { name: 'Sonnette', pre: 'B', w: 80, h: 40, t: T2, desc: 'Sonnette de 8 W.' },
+  pv: { name: 'Champ photovoltaïque', pre: 'PV', w: 120, h: 120, t: [['+', 120, 20], ['-', 120, 60], ['PE', 120, 100]], desc: 'Les modules en série : une tension continue (+ et −) tant qu’il y a du soleil. Le cadre est relié à la terre.', op: true },
+  ond: { name: 'Onduleur', pre: 'OND', w: 120, h: 120, t: [['+', 0, 20], ['-', 0, 60], ['L', 120, 20], ['N', 120, 60], ['PE', 120, 100]], desc: 'Transforme le continu des panneaux en 230 V alternatif. Il ne produit que si le réseau est présent (protection de découplage, anti-îlotage).' },
+  cpt: { name: 'Compteur', pre: 'CPT', w: 80, h: 80, t: [['L1', 0, 20], ['N1', 0, 60], ['L2', 80, 20], ['N2', 80, 60]], desc: 'Le compteur communicant : il compte l’énergie soutirée au réseau et celle qui y est injectée.' },
+  spd: { name: 'Parafoudre', pre: 'F', w: 80, h: 80, t: [['L', 0, 20], ['N', 0, 40], ['PE', 0, 60]], desc: 'Écoule vers la terre les surtensions dues à la foudre. Il ne laisse passer aucun courant en temps normal.' },
+  evse: { name: 'Borne de recharge', pre: 'IRVE', w: 120, h: 120, t: [['L', 0, 20], ['N', 0, 60], ['PE', 0, 100], ['L2', 120, 20], ['N2', 120, 60], ['PE2', 120, 100]], desc: 'Dialogue avec la voiture (fil pilote) et ferme son contacteur pour lancer la charge. La terre passe toujours.', op: true },
+  ev: { name: 'Véhicule électrique', pre: 'VE', w: 160, h: 120, t: [['L', 0, 20], ['N', 0, 60], ['PE', 0, 100]], desc: 'La voiture et son chargeur embarqué. Branche-la pour qu’elle demande de l’énergie.', op: true },
   prise: { name: 'Prise 2P+T', pre: 'P', w: 80, h: 80, t: [['L', 0, 20], ['N', 0, 40], ['PE', 0, 60]], desc: 'Prise de courant. Actionne-la pour brancher un appareil de 2 000 W.', op: true },
   borne: { name: 'Borne de connexion', pre: 'X', w: 40, h: 40, t: [['P', 20, 20]], desc: 'Point de raccordement pour relier plusieurs fils.', norot: true }
 };
-const WATT = { tele2: 3, detect: 1, baes: 1, lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3, yokis: 1 };
+const WATT = { ev: 7400, tele2: 3, detect: 1, baes: 1, lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3, yokis: 1 };
 const MINU_MS = 8000;
 const ED_W = 1400, ED_H = 1000; // taille du plan du bac à sable
 
@@ -1738,6 +1789,9 @@ function defSt(type) {
     case 'detect': return { k: false, until: 0 };
     case 'baes': return { rest: false };
     case 'prise': return { plug: false };
+    case 'pv': return { sun: true };
+    case 'evse': return { charge: true };
+    case 'ev': return { plug: true };
     case 'tele': case 'tele2': case 'cont': case 'yokis': return { k: false, coil: false };
     case 'minu': return { k: false, coil: false, until: 0 };
     default: return {};
@@ -1764,6 +1818,8 @@ function links(c) {
     case 'tele': case 'cont': case 'minu': return s.k ? [['1', '2']] : [];
     case 'tele2': return s.k ? [['1', '2'], ['3', '4']] : [];
     case 'yokis': case 'detect': return s.k ? [['L', 'S']] : [];
+    case 'cpt': return [['L1', 'L2'], ['N1', 'N2']];
+    case 'evse': return s.charge ? [['L', 'L2'], ['N', 'N2'], ['PE', 'PE2']] : [['PE', 'PE2']];
     default: return [];
   }
 }
@@ -1774,6 +1830,8 @@ function loadPair(c) {
   if (c.type === 'yokis') return ['BP', 'N'];
   if (c.type === 'detect') return ['L', 'N'];
   if (c.type === 'baes') return ['1', '2'];
+  if (c.type === 'ond') return ['+', '-'];
+  if (c.type === 'ev') return c.st.plug ? ['L', 'N'] : null;
   return null;
 }
 const wattOf = (c) => c.watt || WATT[c.type] || 0;
@@ -1790,6 +1848,7 @@ function solve(comps, wires, power) {
   const Ls = [], Ns = [], Es = [];
   comps.forEach((c) => {
     if (c.type === 'src') { if (power) { Ls.push(c.id + ':L'); Ns.push(c.id + ':N'); } Es.push(c.id + ':PE'); }
+    if (c.type === 'pv') { if (power && c.st.sun) { Ls.push(c.id + ':+'); Ns.push(c.id + ':-'); } Es.push(c.id + ':PE'); }
     if (c.type === 'terre') Es.push(c.id + ':PE');
   });
   const LN = new Set(Ls.map(f)), NN = new Set(Ns.map(f)), EN = new Set(Es.map(f));
@@ -1844,7 +1903,11 @@ function solve(comps, wires, power) {
   });
   const sup = {};
   if (!short) comps.forEach((c) => { if (c.type === 'yokis' && LN.has(f(c.id + ':L')) && NN.has(f(c.id + ':N'))) sup[c.id] = true; });
-  return { ws, loadsOn, short, earth, nsw, watts, onCount, sup };
+  // onduleur : il ne produit que si le continu arrive et que le réseau est présent côté alternatif
+  const grid = {}; let prod = 0;
+  comps.forEach((c) => { if (c.type !== 'ond') return; grid[c.id] = LN.has(f(c.id + ':L')) && NN.has(f(c.id + ':N')); if (grid[c.id] && loadsOn[c.id]) prod += c.watt || 3000; });
+  const tri = comps.some((c) => c.type === 'src' && c.tri);
+  return { ws, loadsOn, short, earth, nsw, watts, onCount, sup, grid, prod, tri };
 }
 
 /* Simulation avec les bobines (télérupteur, contacteur, minuterie) et les protections */
@@ -1909,6 +1972,9 @@ function opLabel(c, on) {
     case 'detect': return 'Simuler un passage';
     case 'baes': return s.rest ? 'Sortir du repos' : 'Mettre au repos (télécommande)';
     case 'prise': return s.plug ? 'Débrancher l’appareil' : 'Brancher un appareil';
+    case 'pv': return s.sun ? 'Faire passer un nuage' : 'Faire revenir le soleil';
+    case 'evse': return s.charge ? 'Arrêter la charge' : 'Lancer la charge';
+    case 'ev': return s.plug ? 'Débrancher la voiture' : 'Brancher la voiture';
     default: return '';
   }
 }
@@ -1916,6 +1982,12 @@ function stateText(c, on, power) {
   const s = c.st;
   switch (c.type) {
     case 'src': return power ? 'Sous tension' : 'Hors tension';
+    case 'pv': return s.sun ? 'Au soleil : tension continue présente' : 'Nuage : pas de production';
+    case 'ond': return on ? 'Continu reçu' : 'Pas de continu (nuit ou sectionneur ouvert)';
+    case 'cpt': return 'Compte soutirage et injection';
+    case 'spd': return 'En veille';
+    case 'evse': return s.charge ? 'Contacteur fermé : charge autorisée' : 'Contacteur ouvert';
+    case 'ev': return s.plug ? (on ? 'Branchée, en charge' : 'Branchée, sans courant') : 'Débranchée';
     case 'disj': case 'dpn': return s.closed ? 'Armé' : 'Déclenché';
     case 'fus': return s.ok ? 'En bon état' : 'Fondu';
     case 'inter': return c.sts ? (s.on ? c.sts[1] : c.sts[0]) : (s.on ? 'Fermé' : 'Ouvert');
@@ -1932,7 +2004,7 @@ function stateText(c, on, power) {
     default: return on ? 'Alimenté · ' + wattOf(c).toLocaleString('fr-FR') + ' W' : 'Non alimenté';
   }
 }
-const ON_WORD = { lampe: 'allumée', voyant: 'allumé', rad: 'chauffe', moteur: 'tourne', sonnette: 'sonne', prise: 'appareil en marche' };
+const ON_WORD = { ev: 'en charge', lampe: 'allumée', voyant: 'allumé', rad: 'chauffe', moteur: 'tourne', sonnette: 'sonne', prise: 'appareil en marche' };
 
 /* Dessin d’un symbole dans son repère local (0..w, 0..h) */
 function sym(c, on, now) {
@@ -1977,6 +2049,12 @@ function sym(c, on, now) {
     case 'baes': { const lit = !on && !s.rest; return `<path d="M0 20H8M72 20H80" class="s"/><rect x="8" y="4" width="64" height="32" rx="4" class="baesb${lit ? ' lit' : ''}"/><path d="M18 20H44M36 13L44 20L36 27" class="baesa${lit ? ' lit' : ''}"/><circle cx="60" cy="20" r="4" class="baesv${on ? ' on' : ''}"/>`; }
     case 'radio': { const o2 = s.pressed ? ' on' : ''; return `<rect x="14" y="4" width="32" height="32" rx="6" class="rbox${o2}"/><circle cx="30" cy="20" r="5" class="rw${o2}"/><path d="M52 12A12 12 0 0 1 52 28M59 6A20 20 0 0 1 59 34" class="rw${o2}"/>`; }
     case 'borne': return `<circle cx="20" cy="20" r="8" class="sf"/>`;
+    case 'pv': { let g = ''; for (let i = 0; i < 3; i++) for (let j = 0; j < 4; j++) g += `<rect x="${14 + i * 24}" y="${12 + j * 25}" width="21" height="22" rx="2" class="pvc${s.sun ? ' on' : ''}"/>`; return `<rect x="6" y="6" width="86" height="108" rx="6" class="pvb"/>${g}<path d="M92 20H120" class="stub ph"/><path d="M92 60H120" class="stub ne"/><path d="M92 100H120" class="stub pe"/><text x="104" y="14" class="t sm">+</text><text x="104" y="54" class="t sm">−</text>${s.sun ? '<circle cx="104" cy="82" r="7" class="pvsun"/>' : ''}`; }
+    case 'ond': return `<rect x="16" y="6" width="88" height="108" rx="8" class="coil${on ? ' on' : ''}"/><path d="M0 20H16M0 60H16M104 20H120M104 60H120M104 100H120" class="s"/><path d="M24 104L96 16" class="s"/><path d="M28 36H52M28 44H52" class="s"/><path d="M68 84q6-9 12 0t12 0" class="s"/><text x="2" y="14" class="t sm">+</text><text x="2" y="54" class="t sm">−</text>`;
+    case 'cpt': return `<rect x="10" y="6" width="60" height="68" rx="6" class="coil"/><rect x="18" y="16" width="44" height="18" rx="2" class="pvb"/><text x="40" y="58" class="t sm c">kWh</text><path d="M0 20H10M0 60H10M70 20H80M70 60H80" class="s"/>`;
+    case 'spd': return `<path d="M0 20H26M0 40H26M0 60H26" class="s"/><rect x="26" y="8" width="34" height="64" rx="5" class="coil"/><path d="M47 18L37 40H47L39 62" class="s"/><path d="M60 40H72M72 30V50M76 34V46M80 38V42" class="s"/>`;
+    case 'evse': return `<rect x="16" y="6" width="88" height="108" rx="12" class="coil${s.charge ? ' on' : ''}"/><path d="M0 20H16M0 60H16M0 100H16M104 20H120M104 60H120M104 100H120" class="s"/><path d="M64 26L50 58H62L54 90L76 52H63L72 26Z" class="${on || s.charge ? 'pvsun' : 's'}"/>${c.dc ? '<text x="60" y="108" class="t sm c">DC</text>' : ''}`;
+    case 'ev': return `<path d="M24 92V70Q24 56 40 54L58 34Q64 28 74 28H116Q126 28 132 36L146 54Q156 56 156 68V92Z" class="coil${on ? ' on' : ''}"/><path d="M62 52L74 38H112L122 52Z" class="pvb"/><circle cx="54" cy="94" r="12" class="pvb"/><circle cx="128" cy="94" r="12" class="pvb"/><path d="M0 20H24V58M0 60H24M0 100H24V86" class="s"/>${on ? '<path d="M94 58L86 72H94L88 86L102 68H94L100 58Z" class="pvsun"/>' : ''}`;
     case 'yokis': return `<rect x="8" y="6" width="64" height="68" rx="10" class="coil${s.coil ? ' on' : ''}"/><path d="M0 20H18M62 20H80M0 60H8M72 60H80" class="s"/>${dot(18, 20)}${dot(62, 20)}<line x1="18" y1="20" x2="${s.k ? 62 : 56}" y2="${s.k ? 20 : 8}" class="s"/><text x="40" y="46" class="t c">μTR</text><text x="13" y="34" class="t sm">L</text><text x="13" y="66" class="t sm">BP</text><text x="60" y="34" class="t sm">S</text><text x="61" y="66" class="t sm">N</text>`;
   }
   return '';
@@ -2103,6 +2181,9 @@ class Circuit {
     else if (c.type === 'detect') s.until = Date.now() + MINU_MS;
     else if (c.type === 'tele2') s.k = !s.k;
     else if (c.type === 'baes') s.rest = !s.rest;
+    else if (c.type === 'pv') s.sun = !s.sun;
+    else if (c.type === 'evse') s.charge = !s.charge;
+    else if (c.type === 'ev') s.plug = !s.plug;
     else return;
     this.update();
   }
@@ -2246,10 +2327,11 @@ class Board {
     C.wires.forEach((w) => { if (P2[w.a] !== undefined && P2[w.b] !== undefined) u2(w.a, w.b); });
     C.comps.forEach((c) => { if (c.type === 'disj' || c.type === 'fus' || c.type === 'dpn') u2(c.id + ':1', c.id + ':2'); if (c.type === 'dpn') u2(c.id + ':N1', c.id + ':N2'); });
     const kind = {};
-    C.comps.forEach((c) => { if (c.type === 'src') kind[f2(c.id + ':L')] = 'ph'; });
+    C.comps.forEach((c) => { if (c.type === 'src') kind[f2(c.id + ':L')] = 'ph'; if (c.type === 'pv') kind[f2(c.id + ':+')] = 'ph'; });
     C.comps.forEach((c) => {
       const setk = (k, v) => { const r = f2(k); if (!kind[r]) kind[r] = v; };
       if (c.type === 'src') { setk(c.id + ':N', 'ne'); setk(c.id + ':PE', 'pe'); }
+      if (c.type === 'pv') { setk(c.id + ':-', 'ne'); setk(c.id + ':PE', 'pe'); }
       if (c.type === 'terre') setk(c.id + ':PE', 'pe');
     });
     const refOf = {}; C.comps.forEach((c) => { refOf[c.id] = c.ref; });
@@ -2559,12 +2641,16 @@ function summary(C) {
   if (res.short) return { dot: 'bad', title: 'Court-circuit !', detail: 'La phase touche le neutre sans récepteur et rien ne protège le circuit.' };
   const ons = C.comps.filter((c) => res.loadsOn[c.id] && ON_WORD[c.type]).map((c) => c.ref + ' ' + ON_WORD[c.type])
     .concat(C.comps.filter((c) => c.type === 'baes' && !res.loadsOn[c.id] && !c.st.rest).map((c) => c.ref + ' allumé (secours)'));
-  const ops = C.comps.filter((c) => ['inter', 'vav', 'perm', 'disj', 'dpn', 'bp'].includes(c.type) || (c.type === 'fus' && !c.st.ok)).map((c) => c.ref + ' ' + stateText(c, false, C.power).toLowerCase());
+  const ops = C.comps.filter((c) => ['inter', 'vav', 'perm', 'disj', 'dpn', 'bp', 'pv', 'evse'].includes(c.type) || (c.type === 'fus' && !c.st.ok)).map((c) => c.ref + ' ' + stateText(c, false, C.power).toLowerCase());
   if (C.events.length) return { dot: 'bad', title: ons.length ? ons.join(' · ') : 'Circuit coupé', detail: C.events[0] };
+  C.comps.filter((c) => c.type === 'ond').forEach((c) => { ons.push(res.loadsOn[c.id] ? (res.grid[c.id] ? c.ref + ' produit' : c.ref + ' à l’arrêt : pas de réseau') : c.ref + ' sans soleil'); });
   if (!C.power) return { dot: '', title: 'Hors tension', detail: ops.join(' · ') };
   return { dot: ons.length ? 'on' : '', title: ons.length ? ons.join(' · ') : 'Aucun récepteur alimenté', detail: ops.join(' · ') };
 }
-function metricTxt(res) { return res.watts > 0 ? res.watts.toLocaleString('fr-FR') + ' W · ' + fr(res.watts / 230, 2) + ' A' : '0 W · 0 A'; }
+function metricTxt(res) {
+  const p = res.prod ? ' · production ' + res.prod.toLocaleString('fr-FR') + ' W' : '';
+  return (res.watts > 0 ? res.watts.toLocaleString('fr-FR') + ' W · ' + fr(res.watts / (res.tri ? 400 * Math.sqrt(3) : 230), res.tri ? 1 : 2) + ' A' + (res.tri ? ' par phase' : '') : '0 W · 0 A') + p;
+}
 
 /* ---------------- Vue 3D (three.js, chargé à la demande depuis vendor/three.min.js) ----------------
    Une scène = un mur, des boîtes, des appareils, des conduits et des fils.
@@ -2573,19 +2659,19 @@ function metricTxt(res) { return res.watts > 0 ? res.watts.toLocaleString('fr-FR
    Bobines A1/A2 à part : un contacteur peut être commandé par un autre circuit que celui qu'il coupe. */
 function circuitsOf(C) {
   const P = {}, f = (a) => { if (P[a] === undefined) P[a] = a; while (P[a] !== a) { P[a] = P[P[a]]; a = P[a]; } return a; }, u = (a, b) => { P[f(a)] = f(b); };
-  const brk = (c) => c.type === 'disj' || c.type === 'dpn' || c.type === 'fus', isSrc = {}; C.comps.forEach((c) => { if (c.type === 'src') isSrc[c.id] = c; });
+  const brk = (c) => c.type === 'disj' || c.type === 'dpn' || c.type === 'fus', isSrc = {}; C.comps.forEach((c) => { if (c.type === 'src' || c.type === 'pv') isSrc[c.id] = c; });
   const src = (k) => isSrc[k.split(':')[0]];
   C.wires.forEach((w) => { if (!src(w.a) && !src(w.b)) u(w.a, w.b); });
   C.comps.forEach((c) => {
-    if (c.type === 'src') return;
+    if (c.type === 'src' || c.type === 'pv') return;
     if (brk(c)) { if (c.type === 'dpn') u(c.id + ':2', c.id + ':N2'); return; }
-    const tn = DEF[c.type].t.map((x) => x[0]), coil = tn.filter((n) => n === 'A1' || n === 'A2'), rest = tn.filter((n) => !coil.includes(n));
-    [coil, rest].forEach((g) => g.forEach((n) => u(c.id + ':' + g[0], c.id + ':' + n)));
+    const tn = DEF[c.type].t.map((x) => x[0]), coil = tn.filter((n) => n === 'A1' || n === 'A2'), dc = tn.filter((n) => n === '+' || n === '-'), rest = tn.filter((n) => !coil.includes(n) && !dc.includes(n));
+    [coil, dc, rest].forEach((g) => g.forEach((n) => u(c.id + ':' + g[0], c.id + ':' + n)));
   });
   const G = {}, get = (r) => G[r] || (G[r] = { root: r, key: '', wires: new Set(), comps: new Set(), refs: new Set(), real: false, loads: [], others: [] });
   C.comps.forEach((c) => { if (brk(c)) { const g = get(f(c.id + ':2')); if (!g.key) g.key = c.ref; g.comps.add(c.id); g.refs.add(c.ref); } });
   C.comps.forEach((c) => {
-    if (c.type === 'src' || brk(c)) return;
+    if (c.type === 'src' || c.type === 'pv' || brk(c)) return;
     new Set(DEF[c.type].t.map((x) => f(c.id + ':' + x[0]))).forEach((r) => {
       const g = get(r); g.comps.add(c.id); g.refs.add(c.ref);
       if (c.type !== 'borne') { g.real = true; (ON_WORD[c.type] || c.type === 'baes' ? g.loads : g.others).push(c.ref); }
@@ -2750,7 +2836,7 @@ const V3D = (() => {
       o = o || {}; const T = this.T, n0 = this.g.children.length, z0 = o.z || 0; const N = { x, y, nets: {}, n: 0, kind, ref: o.ref || id }; let part = null, plug = null, face = null, led = null;
       const W = o.w || 0.11, H = o.h || 0.11, side = o.side === undefined ? 1 : o.side, white = 0xf4f3ec, grey = 0x8d939a, PI = Math.PI;
       let dz = 0.045, lz = 0.05;
-      if (kind === 'lampe') this.soft(0.084, 0.084, x, y, true); else this.soft(W, H, x, y, kind === 'hublot');
+      if (kind === 'lampe') this.soft(0.084, 0.084, x, y, true); else if (kind !== 'car') this.soft(W, H, x, y, kind === 'hublot');
       const plate = () => { dz = 0.014; lz = 0.018; this.rb(W, H, 0.014, 0.009, white, x, y, 0); };
       const screws = (r, c) => [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach((s) => this.cyl(0.0045, 0.003, c || 0x4b5158, x + s[0] * r, y + s[1] * r, dz + 0.001, 10));
       if (kind === 'lampe' || kind === 'hublot') {
@@ -2804,6 +2890,29 @@ const V3D = (() => {
         face = this.decal('baes', W * 0.76, H * 0.62, x, y, 0.0458, (q, a, b) => { q.fillStyle = '#1f9d48'; q.fillRect(0, 0, a, b); q.strokeStyle = q.fillStyle = '#fff'; q.lineWidth = b * 0.075; q.lineCap = 'round'; q.lineJoin = 'round'; const m = a * 0.45, h = b; q.strokeRect(a * 0.73, h * 0.15, a * 0.17, h * 0.7); q.beginPath(); q.arc(m, h * 0.22, h * 0.09, 0, 7); q.fill(); q.beginPath(); q.moveTo(m, h * 0.34); q.lineTo(m - a * 0.02, h * 0.58); q.lineTo(m + a * 0.08, h * 0.8); q.moveTo(m - a * 0.02, h * 0.58); q.lineTo(m - a * 0.1, h * 0.82); q.moveTo(m, h * 0.4); q.lineTo(m + a * 0.1, h * 0.5); q.moveTo(m, h * 0.4); q.lineTo(m - a * 0.1, h * 0.5); q.stroke(); q.beginPath(); q.moveTo(a * 0.08, h * 0.5); q.lineTo(a * 0.26, h * 0.5); q.moveTo(a * 0.14, h * 0.36); q.lineTo(a * 0.07, h * 0.5); q.lineTo(a * 0.14, h * 0.64); q.stroke(); });
       } else if (kind === 'detect') {
         plate(); this.rb(W * 0.74, H * 0.74, 0.006, 0.005, 0xe6e4db, x, y, 0.014); this.dome(0.034, this.mat(0xf6f4ec, { roughness: 0.35 }), x, y, 0.02, 0.85); dz = 0.05;
+      } else if (kind === 'pvpanel') {
+        dz = 0.04; this.rb(W, H, 0.035, 0.006, this.mat(0xb8c0c8, { metalness: 0.35, roughness: 0.4 }), x, y, 0);
+        this.box(W - 0.03, H - 0.03, 0.004, this.mat(0x1c2f52, { roughness: 0.25, metalness: 0.2 }), x, y, 0.037);
+        for (let i = 1; i < 6; i++) this.box(0.003, H - 0.03, 0.002, 0x8fa3bb, x - (W - 0.03) / 2 + i * (W - 0.03) / 6, y, 0.04);
+        for (let j = 1; j < 4; j++) this.box(W - 0.03, 0.003, 0.002, 0x8fa3bb, x, y - (H - 0.03) / 2 + j * (H - 0.03) / 4, 0.04);
+      } else if (kind === 'ond') {
+        dz = 0.09; this.rb(W, H, 0.09, 0.018, 0xe9ecef, x, y, 0); this.rb(W * 0.7, H * 0.2, 0.004, 0.006, 0x22262b, x, y + H * 0.2, 0.09);
+        for (let i = 0; i < 5; i++) this.box(W * 0.6, 0.008, 0.006, 0xc8ccd0, x, y - H * 0.12 - i * 0.03, 0.09);
+        this.cyl(0.008, 0.004, 0x2f9e44, x + W * 0.28, y + H * 0.2, 0.093, 12);
+      } else if (kind === 'cpt') {
+        dz = 0.06; this.rb(W, H, 0.06, 0.014, 0xd5e283, x, y, 0); this.rb(W * 0.7, H * 0.22, 0.004, 0.004, 0x31402a, x, y + H * 0.18, 0.06);
+        this.cyl(0.012, 0.006, 0xf4f4f0, x, y - H * 0.18, 0.062, 16);
+      } else if (kind === 'wallbox') {
+        dz = 0.08; this.rb(W, H, 0.08, 0.04, 0xf4f4f0, x, y, 0); this.rb(W * 0.78, H * 0.62, 0.006, 0.03, 0x1e2125, x, y + H * 0.08, 0.08);
+        this.cyl(0.03, 0.006, this.mat(0x4ade80, { emissive: 0x2f9e44, emissiveIntensity: 0.5 }), x, y + H * 0.12, 0.088, 26); this.cyl(0.022, 0.008, 0x1e2125, x, y + H * 0.12, 0.09, 26);
+        this.rb(0.06, 0.07, 0.05, 0.02, 0x2b2f34, x, y - H * 0.36, 0.06);
+      } else if (kind === 'car') {
+        dz = 0.42; const body = 0x2b6be0;
+        this.rb(W, H * 0.48, 0.38, 0.07, this.mat(body, { roughness: 0.35, metalness: 0.25 }), x, y - H * 0.08, 0.02);
+        this.rb(W * 0.56, H * 0.36, 0.32, 0.08, this.mat(body, { roughness: 0.35, metalness: 0.25 }), x + W * 0.04, y + H * 0.3, 0.05);
+        this.box(W * 0.5, H * 0.26, 0.004, this.mat(0x1b2733, { roughness: 0.15, metalness: 0.4 }), x + W * 0.04, y + H * 0.31, 0.372);
+        [-1, 1].forEach((k) => { this.cyl(H * 0.2, 0.06, 0x1a1a1a, x + k * W * 0.32, y - H * 0.3, 0.39, 24); this.cyl(H * 0.2, 0.06, 0x1a1a1a, x + k * W * 0.32, y - H * 0.3, 0.05, 24); this.cyl(H * 0.1, 0.064, 0xb8c0c8, x + k * W * 0.32, y - H * 0.3, 0.39, 18); });
+        this.box(0.05, 0.035, 0.01, 0x22262b, x - W * 0.4, y + H * 0.05, 0.402);
       } else if (kind === 'bell') {
         dz = 0.03; this.rb(W, H, 0.03, 0.012, white, x, y, 0); for (let i = -2; i <= 2; i++) this.box(W * 0.6 - Math.abs(i) * 0.012, 0.005, 0.002, 0x6b7178, x, y + i * 0.016, 0.031);
       } else {
@@ -3026,36 +3135,39 @@ const V3D = (() => {
   function auto(B, C) {
     const comps = C.comps.filter((c) => !['src', 'borne', 'terre'].includes(c.type));
     const sorted = comps.slice().sort((a, b) => a.x - b.x || a.y - b.y), n = sorted.length;
-    const W = Math.max(3.0, 0.62 * n + 1.5), x0 = -W / 2 + 1.05, dx = n > 1 ? (W - 1.35) / (n - 1) : 0;
+    const hasCar = comps.some((c) => c.type === 'ev'), W = Math.max(3.0, 0.62 * n + 1.5 + (hasCar ? 0.7 : 0)), x0 = -W / 2 + 1.05, dx = n > 1 ? (W - 1.35) / (n - 1) : 0;
     B.wall(W + 0.2, 2.85, 0, 1.43);
     const yG = 2.42; B.run({ k: 'dlp', pts: [[-W / 2 + 0.05, yG, 0.03], [W / 2 - 0.05, yG, 0.03]] }); B.label('Goulotte', W / 2 - 0.3, yG + 0.12, 0.1);
     // Parafoudre mis à part, tableau : alimentation + protection
-    const KIND = { inter: 'inter', vav: 'inter', perm: 'inter', bp: 'bp', radio: 'bp', lampe: 'lampe', voyant: 'lampe', prise: 'prise', rad: 'pc', sonnette: 'bell', moteur: 'pc', baes: 'baes', detect: 'detect' };
-    const Y = { lampe: 2.0, voyant: 2.0, sonnette: 1.9, detect: 2.0, prise: 0.4, rad: 0.55, moteur: 0.55, baes: 2.05, tele: 1.65, tele2: 1.65, cont: 1.65, minu: 1.65, yokis: 1.65 };
+    const KIND = { pv: 'pvpanel', ond: 'ond', cpt: 'cpt', evse: 'wallbox', ev: 'car', inter: 'inter', vav: 'inter', perm: 'inter', bp: 'bp', radio: 'bp', lampe: 'lampe', voyant: 'lampe', prise: 'prise', rad: 'pc', sonnette: 'bell', moteur: 'pc', baes: 'baes', detect: 'detect' };
+    const Y = { pv: 2.66, ond: 1.55, cpt: 1.75, spd: 1.5, evse: 1.25, ev: 0.24, lampe: 2.0, voyant: 2.0, sonnette: 1.9, detect: 2.0, prise: 0.4, rad: 0.55, moteur: 0.55, baes: 2.05, tele: 1.65, tele2: 1.65, cont: 1.65, minu: 1.65, yokis: 1.65 };
     const pos = {};
     const panel = C.comps.filter((c) => ['src', 'disj', 'dpn', 'fus'].includes(c.type));
-    B.grp('tab', () => { B.soft(0.6, 0.9, -W / 2 + 0.42, 1.55); B.rb(0.6, 0.9, 0.018, 0.014, 0xf3f2ec, -W / 2 + 0.42, 1.55, 0); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
+    B.grp('tab', () => { const PH = Math.max(0.9, panel.length * 0.27 + 0.2), PY = 2.02 - PH / 2; B.soft(0.6, PH, -W / 2 + 0.42, PY); B.rb(0.6, PH, 0.018, 0.014, 0xf3f2ec, -W / 2 + 0.42, PY, 0); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
     let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; if (isSrc) B.rb(0.3, 0.13, 0.05, 0.008, 0x59626d, row.x, row.y, 0.018); else { const hd = B.module(row.x, row.y, 0.2, { n: 2 }); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } const lb = B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); if (!isSrc) B.ctl[c.ref].lab = lb; tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.075 + i * 0.05, row.y + 0.056, 0.074); pos[c.id + ':' + t] = p; }); py -= 0.27; }); });
     sorted.filter((c) => !panel.includes(c)).forEach((c, i) => {
       const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'micro';
-      B.dev(c.id, k, x, y, { ref: c.ref, label: c.ref, side: 1, w: 0.14, h: 0.14 });
+      const SZ = { pvpanel: [0.5, 0.32], ond: [0.3, 0.38], cpt: [0.18, 0.26], wallbox: [0.24, 0.32], car: [0.95, 0.42] }[k] || [0.14, 0.14];
+      B.dev(c.id, k, x + (k === 'car' ? 0.3 : 0), y, { ref: c.ref, label: c.ref, side: k === 'car' ? 'l' : 1, w: SZ[0], h: SZ[1], z: k === 'car' ? 0.16 : 0 });
       B.grp(B.devKey(c.ref), () => DEF[c.type].t.forEach((t) => { pos[c.id + ':' + t[0]] = B.nodes[c.id].at(t[0]); }));
     });
     // couleur de chaque fil, d'après le réseau
     const par = {}; const fd = (a) => { if (par[a] === undefined) par[a] = a; while (par[a] !== a) { par[a] = par[par[a]]; a = par[a]; } return a; };
     C.wires.forEach((w) => { par[fd(w.a)] = fd(w.b); });
-    C.comps.forEach((c) => { if (c.type === 'disj' || c.type === 'fus' || c.type === 'dpn') par[fd(c.id + ':1')] = fd(c.id + ':2'); if (c.type === 'dpn') par[fd(c.id + ':N1')] = fd(c.id + ':N2'); });
-    const srcs = C.comps.filter((c) => c.type === 'src'), L = new Set(srcs.map((c) => fd(c.id + ':L'))), N2 = new Set(srcs.map((c) => fd(c.id + ':N'))), E = new Set(srcs.map((c) => fd(c.id + ':PE')));
+    C.comps.forEach((c) => { if (c.type === 'disj' || c.type === 'fus' || c.type === 'dpn') par[fd(c.id + ':1')] = fd(c.id + ':2'); if (c.type === 'dpn') par[fd(c.id + ':N1')] = fd(c.id + ':N2'); if (c.type === 'cpt') { par[fd(c.id + ':L1')] = fd(c.id + ':L2'); par[fd(c.id + ':N1')] = fd(c.id + ':N2'); } if (c.type === 'evse') { par[fd(c.id + ':L')] = fd(c.id + ':L2'); par[fd(c.id + ':N')] = fd(c.id + ':N2'); par[fd(c.id + ':PE')] = fd(c.id + ':PE2'); } });
+    const srcs = C.comps.filter((c) => c.type === 'src'), pvs = C.comps.filter((c) => c.type === 'pv'), L = new Set(srcs.map((c) => fd(c.id + ':L')).concat(pvs.map((c) => fd(c.id + ':+')))), N2 = new Set(srcs.map((c) => fd(c.id + ':N')).concat(pvs.map((c) => fd(c.id + ':-')))), E = new Set(srcs.concat(pvs).map((c) => fd(c.id + ':PE')));
     const col = (w) => { const r = fd(w.a); return L.has(r) ? 'rouge' : N2.has(r) ? 'bleu' : E.has(r) ? 'vj' : 'orange'; };
     // bornes : une boîte par équipotentielle, sous la goulotte
     C.comps.filter((c) => c.type === 'borne').forEach((c, i) => { const r = fd(c.id + ':P'), net = L.has(r) ? 'L' : N2.has(r) ? 'N' : E.has(r) ? 'PE' : 'Ret', x = x0 + (i % n) * dx * 0.9; B.jbox(c.id, x, yG - 0.17, { w: 0.18, h: 0.12, label: c.ref, ly: -0.26 }); pos[c.id + ':P'] = () => B.nodes[c.id].at(net); });
     const pt = (k) => (typeof pos[k] === 'function' ? pos[k]() : pos[k]);
     C.wires.forEach((w, i) => B.grp(((B.circ.list.find((q) => q.wires.has(w.id)) || { key: 'ALIM' }).key) + ':w', () => {
       const A = pt(w.a), Bb = pt(w.b); if (!A || !Bb) return;
+      const ca = C.find(w.a.split(':')[0]), cb = C.find(w.b.split(':')[0]);
+      if ((ca && ca.type === 'ev') || (cb && cb.type === 'ev')) { const o = (i % 3 - 1) * 0.012; B.wire([[A.x, A.y, A.z], [A.x + o, A.y - 0.25, A.z + 0.12], [(A.x + Bb.x) / 2 + o, Math.min(A.y, Bb.y) - 0.15, Math.max(A.z, Bb.z) + 0.08], [Bb.x + o, Bb.y + 0.1, Bb.z], [Bb.x, Bb.y, Bb.z]], col(w), null, w.id, 0.06); return; }
       const lane = yG + 0.05 - (i % 8) * 0.012, zz = 0.012 + (i % 4) * 0.012, ox = ((i % 7) - 3) * 0.006;
       B.wire([[A.x, A.y, A.z], [A.x + ox, Math.min(lane, A.y + 0.12), 0.04 + zz], [A.x + ox, lane, 0.04 + zz], [Bb.x + ox, lane, 0.04 + zz], [Bb.x + ox, Math.min(lane, Bb.y + 0.12), 0.04 + zz], [Bb.x, Bb.y, Bb.z]], col(w), null, w.id, 0.04);
     }));
-    return { cx: 0, cy: 1.43, r: Math.max(5.35, W * 1.75) };
+    return { cx: 0, cy: 1.43, r: Math.max(5.35, W * 1.3) };
   }
   const free = (g) => g.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material && o.material.map) o.material.map.dispose(); });
   class View {
@@ -3155,7 +3267,7 @@ const V3D = (() => {
       if (!(await this.init()) || this.pending !== q) return;
       this.done = q; const [make, ctx] = q;
       if (this.b) { this.scene.remove(this.b.g); free(this.b.g); }
-      const T = window.THREE, ops = new Set(ctx.comps.filter((c) => DEF[c.type].op && opLabel(c)).map((c) => c.ref)), circ = { list: circuitsOf(ctx), ctx }, dry = new Builder(T, ops, null, circ), plan = {}; make(dry, ctx); Object.keys(dry.nodes).forEach((k) => { if (dry.nodes[k].cnt) plan[k] = dry.nodes[k].cnt; }); free(dry.g); const b = new Builder(T, ops, plan, circ); this.b = b; this.ctx = ctx; this.closeZone(true); const v = make(b, ctx); b.finish(); this.stopAnim(); this.stepOn = false; this.scene.add(b.g);
+      const T = window.THREE, ops = new Set(ctx.comps.filter((c) => DEF[c.type].op && !c.fixed && opLabel(c)).map((c) => c.ref)), circ = { list: circuitsOf(ctx), ctx }, dry = new Builder(T, ops, null, circ), plan = {}; make(dry, ctx); Object.keys(dry.nodes).forEach((k) => { if (dry.nodes[k].cnt) plan[k] = dry.nodes[k].cnt; }); free(dry.g); const b = new Builder(T, ops, plan, circ); this.b = b; this.ctx = ctx; this.closeZone(true); const v = make(b, ctx); b.finish(); this.stopAnim(); this.stepOn = false; this.scene.add(b.g);
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.renderSteps(); this.draw();
     }
@@ -3572,7 +3684,7 @@ const editor = (() => {
   const save = () => store.set('pn-bac-a-sable', { comps: C.comps.map((c) => Object.assign({}, c, { st: Object.assign({}, c.st, (c.type === 'bp' || c.type === 'radio') ? { pressed: false } : {}) })), wires: C.wires });
   C.listeners.push(() => { panel(); save(); });
 
-  const groups = [['Alimentation · protection', ['src', 'dpn', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vav', 'perm', 'bp', 'detect']], ['Appareillage modulaire', ['tele', 'tele2', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']], ['Connexion', ['borne']]];
+  const groups = [['Alimentation · protection', ['src', 'dpn', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vav', 'perm', 'bp', 'detect']], ['Appareillage modulaire', ['tele', 'tele2', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']], ['Photovoltaïque et IRVE', ['pv', 'ond', 'cpt', 'spd', 'evse', 'ev']], ['Connexion', ['borne']]];
   $('#ed-pal').innerHTML = `<p style="margin:0 8px 6px;font-size:13px;color:var(--ink-2)">Choisis un symbole, puis clique sur la grille pour le poser.</p>` +
     groups.map(([g, ks]) => `<h2>${g}</h2>` + ks.map((k) => `<button class="pal" type="button" data-pal="${k}" aria-pressed="false" title="${esc(DEF[k].desc)}"><span class="ic">${symIcon(k, 8)}</span>${DEF[k].name}</button>`).join('')).join('');
   $('#ed-pal').addEventListener('click', (e) => {
@@ -4572,6 +4684,65 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === 'Enter' && !$('#qz-ok').hidden && qz.sel !== null && e.target.id !== 'qz-ok') { $('#qz-ok').click(); e.preventDefault(); }
   else if ((e.key === 'Enter' || e.key === 'ArrowRight') && !$('#qz-next').hidden && e.target.id !== 'qz-next') { $('#qz-next').click(); e.preventDefault(); }
 });
+
+/* ---------------- Câblage PV et IRVE (2D + 3D) ---------------- */
+function buildPV() {
+  const pv = mk('pv', 120, 220, 0, 'PV', { lab: '10 modules · 4,3 kWc' }), qdc = mk('dpn', 340, 200, 0, 'QDC', { lab: 'sectionneur DC' }), f1 = mk('spd', 340, 360, 0, 'F1', { lab: 'parafoudre DC' });
+  const ond = mk('ond', 560, 220, 0, 'OND', { lab: 'onduleur 3 kW' }), qac = mk('dpn', 780, 200, 0, 'QPV', { lab: '20 A · 30 mA' }), f2 = mk('spd', 780, 360, 0, 'F2', { lab: 'parafoudre AC' });
+  const src = mk('src', 100, 600, 0, 'RÉSEAU'), cpt = mk('cpt', 280, 560, 0, 'CPT', { lab: 'Linky' }), agcp = mk('dpn', 460, 540, 0, 'AGCP', { lab: '500 mA' });
+  const xl = mk('borne', 960, 520, 0, 'XL'), xn = mk('borne', 960, 560, 0, 'XN'), q2 = mk('dpn', 1100, 520, 0, 'Q2', { lab: '20 A' }), pc = mk('prise', 1300, 560, 0, 'PC', { lab: 'consommation', st: { plug: true } });
+  return { comps: [pv, qdc, f1, ond, qac, f2, src, cpt, agcp, xl, xn, q2, pc], wires: [
+    wr(pv, '+', qdc, '1'), wr(pv, '-', qdc, 'N1'), wr(qdc, '2', ond, '+'), wr(qdc, 'N2', ond, '-'), wr(qdc, '2', f1, 'L'), wr(qdc, 'N2', f1, 'N'),
+    wr(ond, 'L', qac, '1'), wr(ond, 'N', qac, 'N1'), wr(qac, '2', f2, 'L'), wr(qac, 'N2', f2, 'N'), wr(qac, '2', xl, 'P'), wr(qac, 'N2', xn, 'P'),
+    wr(src, 'L', cpt, 'L1'), wr(src, 'N', cpt, 'N1'), wr(cpt, 'L2', agcp, '1'), wr(cpt, 'N2', agcp, 'N1'), wr(agcp, '2', xl, 'P'), wr(agcp, 'N2', xn, 'P'),
+    wr(xl, 'P', q2, '1'), wr(xn, 'P', q2, 'N1'), wr(q2, '2', pc, 'L'), wr(q2, 'N2', pc, 'N'),
+    wr(src, 'PE', pv, 'PE'), wr(src, 'PE', ond, 'PE'), wr(src, 'PE', f1, 'PE'), wr(src, 'PE', f2, 'PE'), wr(src, 'PE', pc, 'PE')] };
+}
+function buildIRVE(m) {
+  const src = mk('src', 100, 300, 0, 'ALIM'), ev = mk('ev', 1040, 300, 0, 'VE', { watt: [2300, 3200, 7400, 50000][m - 1], lab: ['charge lente · 10 A', 'charge renforcée · 14 A', '7,4 kW · 32 A', '50 kW en continu'][m - 1] });
+  const C = [src, ev], W = [];
+  if (m === 4) { src.tri = true; src.volt = ['400', 'V 3~']; }
+  const q = mk('dpn', 280, 280, 0, 'Q1', { lab: ['16 A · 30 mA A', '16 A · 30 mA A', '40 A · 30 mA type B ou A-EV', '125 A · 4P · 30 mA'][m - 1] }); C.push(q);
+  W.push(wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'));
+  let up = [q, '2', 'N2'];
+  if (m <= 2) { const pc = mk('prise', 480, 300, 0, 'PC', { lab: m === 1 ? 'prise domestique' : 'prise renforcée' }); pc.fixed = true; C.push(pc); W.push(wr(q, '2', pc, 'L'), wr(q, 'N2', pc, 'N'), wr(src, 'PE', pc, 'PE')); up = [pc, 'L', 'N']; }
+  if (m >= 2) {
+    const b = mk('evse', m === 2 ? 720 : 620, 300, 0, m === 2 ? 'IC-CPD' : 'IRVE', { lab: ['', 'boîtier sur le câble', 'wallbox 7,4 kW', 'borne rapide DC'][m - 1] }); if (m === 4) b.dc = true; C.push(b);
+    W.push(wr(up[0], up[1], b, 'L'), wr(up[0], up[2], b, 'N'), wr(src, 'PE', b, 'PE'), wr(b, 'L2', ev, 'L'), wr(b, 'N2', ev, 'N'), wr(b, 'PE2', ev, 'PE'));
+  } else W.push(wr(up[0], up[1], ev, 'L'), wr(up[0], up[2], ev, 'N'), wr(src, 'PE', ev, 'PE'));
+  return { comps: C, wires: W };
+}
+const LAB_PV = [{ id: 'pv', title: 'Autoconsommation', build: buildPV, note: '<h3>À retenir</h3><p>Côté continu, le sectionneur DC isole le champ de modules et le parafoudre protège l’onduleur. Côté alternatif, l’onduleur a son propre disjoncteur au tableau, en aval de l’AGCP. Ouvre l’AGCP : l’onduleur s’arrête aussitôt, c’est l’anti-îlotage (protection de découplage), pour ne jamais renvoyer de tension sur un réseau en travaux.</p>' }];
+const LAB_IRVE = [
+  { id: 'm1', title: 'Mode 1 · prise domestique', build: () => buildIRVE(1), note: '<h3>Mode 1</h3><p>La voiture se branche avec un simple câble sur une prise domestique, sans aucun dialogue ni protection dans le câble. Il est interdit pour les voitures en France ; on ne le trouve que pour les deux-roues et petits véhicules légers.</p>' },
+  { id: 'm2', title: 'Mode 2 · câble avec boîtier', build: () => buildIRVE(2), note: '<h3>Mode 2</h3><p>Le câble porte un boîtier de contrôle (IC-CPD) qui dialogue avec la voiture et intègre une protection différentielle. Il se branche sur une prise renforcée sur circuit dédié, protégée par un différentiel 30 mA. Charge lente, environ 2,3 à 3,2 kW.</p>' },
+  { id: 'm3', title: 'Mode 3 · wallbox', build: () => buildIRVE(3), note: '<h3>Mode 3</h3><p>La borne fixe (wallbox) dialogue avec la voiture par le fil pilote et ne ferme son contacteur que lorsque tout est prêt. Circuit dédié protégé par un disjoncteur 40 A et un différentiel 30 mA de type B, ou de type A-EV si la borne détecte elle-même les fuites continues. Jusqu’à 7,4 kW en monophasé, 22 kW en triphasé.</p>' },
+  { id: 'm4', title: 'Mode 4 · borne rapide DC', build: () => buildIRVE(4), note: '<h3>Mode 4</h3><p>Le chargeur est dans la borne : elle reçoit du triphasé et envoie directement du courant continu à la batterie, sans passer par le chargeur de la voiture. Puissance de 50 kW et plus, câble attaché à la borne, connecteur CCS Combo 2.</p>' }];
+function makeLab(p, presets) {
+  const $p = (s) => $('#' + p + 'l-' + s), C = new Circuit(), B = new Board($p('svg'), C, {}), V = new V3D.View($p('3d')), H = makeHL(C, B, V, $p('circ'));
+  V.stepEl = $p('steps'); let cur = presets[0];
+  const upd = () => {
+    const s = summary(C);
+    $p('dot').className = 'sdot' + (s.dot ? ' ' + s.dot : ''); $p('st').textContent = s.title; $p('sd').textContent = s.detail; $p('metric').textContent = metricTxt(C.res); V.sync(C);
+    $p('ctls').innerHTML = C.comps.filter((c) => DEF[c.type].op && !c.fixed && opLabel(c)).map((c) => {
+      const pressed = (c.type === 'prise' && c.st.plug) || (c.type === 'ev' && c.st.plug) || (c.type === 'evse' && c.st.charge) || (c.type === 'pv' && c.st.sun);
+      return `<button class="ctl" type="button" data-op="${c.id}"${['prise', 'ev', 'evse', 'pv'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span>${c.lab && c.type !== 'dpn' ? `<span class="c-lab">${esc(c.lab)}</span>` : ''}<span class="c-act">${opLabel(c)}</span></button>`;
+    }).join('') + '<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>';
+  };
+  C.listeners.push(upd);
+  const set = (pr) => {
+    cur = pr; C.power = true; C.load(pr.build()); H.refresh(); B.fit(); B.render();
+    $p('note').innerHTML = pr.note;
+    const tb = $p('tabs'); if (tb) tb.querySelectorAll('[data-m]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === pr.id)));
+    upd(); V.show(V3D.auto, C);
+  };
+  $p('ctls').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.reset) set(cur); else C.operate(b.dataset.op); });
+  const tb = $p('tabs');
+  if (tb) { tb.innerHTML = presets.map((pr) => `<button class="ctl" type="button" data-m="${pr.id}" aria-pressed="false">${pr.title}</button>`).join(''); tb.addEventListener('click', (e) => { const b = e.target.closest('[data-m]'); if (b) set(presets.find((x) => x.id === b.dataset.m)); }); }
+  set(cur);
+  return { C, B, V };
+}
+const pvLab = makeLab('pv', LAB_PV), irveLab = makeLab('irve', LAB_IRVE);
 
 /* ---------------- Navigation ---------------- */
 const NAV_NAMES = { bases: 'Les bases', schemas: 'Schémas', examen: 'Examen pratique', qcm: 'Examen théorique', 'bac-a-sable': 'Bac à sable', tableaux: 'Tableaux FR / US', pv: 'Panneaux PV', irve: 'Bornes IRVE' };
