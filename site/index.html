@@ -519,6 +519,22 @@ tr:last-child td{border-bottom:0}
 .pe-d{fill:none;stroke:#7DBA3A;stroke-width:1.5;stroke-dasharray:3 4;opacity:.55}
 .wrongu{fill:none;stroke:#FF9A3D;stroke-width:12;opacity:.22;stroke-linecap:round;stroke-linejoin:round}
 .tnote{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted)}
+/* Schémas et examen : les blocs de texte deviennent des notes compactes, comme des légendes */
+:is(#page-schemas,#page-examen) .info{gap:10px}
+:is(#page-schemas,#page-examen) .box{padding:13px 15px;gap:6px;border-radius:12px;border-width:1px}
+:is(#page-schemas,#page-examen) .box h2{font:600 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+:is(#page-schemas,#page-examen) .box.inv h2{color:var(--inv-accent)}
+:is(#page-schemas,#page-examen) .box :is(p,li,ul){font-size:13px;line-height:1.45}
+:is(#page-schemas,#page-examen) .box ul{gap:2px;padding-left:16px}
+:is(#page-schemas,#page-examen) .box ol{gap:4px}
+:is(#page-schemas,#page-examen) .box ol li i{width:18px;height:18px;border-radius:5px;font-size:10.5px;line-height:18px}
+#page-examen .box ol.ex-steps{font-size:13px !important;gap:3px !important}
+:is(#page-schemas,#page-examen) .ex-table{font-size:12.5px;line-height:1.4}
+:is(#page-schemas,#page-examen) .ex-table :is(th,td){padding:5px 6px}
+:is(#page-schemas,#page-examen) .ex-table th{font-size:10.5px}
+#page-examen .ex-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));align-items:start}
+#page-examen .ex-grid[hidden]{display:none}
+:is(#page-schemas,#page-examen) .lead{font-size:15.5px;line-height:1.5}
 
 @media (prefers-reduced-motion: reduce){
   .cur.leak,.ld.danger{animation:none}
