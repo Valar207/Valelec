@@ -205,8 +205,9 @@ tr:last-child td{border-bottom:0}
 .v3d-circ{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
 .v3d-circ[hidden]{display:none}
 .v3d-circ .ctl{padding:7px 12px;font-size:13px}
-.wire.dimmed{opacity:.12}
-.comp.dimmed{opacity:.28}
+.wire.dimmed{opacity:.32}
+.comp.dimmed{opacity:.45}
+.wire.lit .w{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 7px rgba(255,255,255,.75))}
 .v3d-zoom{position:absolute;left:10px;top:10px;right:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;color:#fff;pointer-events:none}
 .v3d-zoom[hidden]{display:none}
 .v3d-zoom button{pointer-events:auto;font:inherit;font-weight:600;color:#fff;background:#111a24;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:8px 14px;cursor:pointer}
@@ -680,7 +681,7 @@ tr:last-child td{border-bottom:0}
               <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
               <span class="metric" id="sim-metric">0 W</span>
             </div>
-          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche un fil pour suivre son circuit · une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="sim-3d"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche un fil pour le mettre en surbrillance, puis n’importe où pour revenir · une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="sim-3d"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
           <div class="ctls" id="sim-ctls" role="group" aria-label="Commandes du circuit"></div>
           <ul class="mini-legend" aria-label="Légende">
             <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
@@ -723,7 +724,7 @@ tr:last-child td{border-bottom:0}
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche un fil pour suivre son circuit · une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="ex-3d"></div><div class="v3d-circ" id="ex-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche un fil pour le mettre en surbrillance, puis n’importe où pour revenir · une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="ex-3d"></div><div class="v3d-circ" id="ex-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
         <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
         <ul class="mini-legend" aria-label="Légende">
           <li><span class="lsw" style="background:#E5533D"></span>Phase (ou + en très basse tension)</li>
@@ -2038,7 +2039,7 @@ class Board {
       const d = 'M' + pts.map((q) => q.x + ' ' + q.y).join('L');
       const sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === w.id ? ' sel' : '';
       const delay = r.s === 'live' ? dLive : dFlow;
-      h += `<g class="wire${sel}${this.hl && !this.hl.wires.has(w.id) ? ' dimmed' : ''}" data-wire="${w.id}">${this.edit || this.opts.onWire ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
+      h += `<g class="wire${sel}${this.hl ? (this.hl.wires.has(w.id) ? ' lit' : ' dimmed') : ''}" data-wire="${w.id}">${this.edit || this.opts.onWire ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
     });
     C.comps.forEach((c) => {
       if (c.type !== 'radio' || !c.to) return;
@@ -2095,7 +2096,7 @@ class Board {
   down(e) {
     const C = this.C, ui = this.ui;
     const tEl = e.target.closest('[data-term]'), cEl = e.target.closest('[data-comp]'), wEl = e.target.closest('[data-wire]');
-    if (!this.edit) { if (cEl) C.operate(cEl.dataset.comp); else if (this.opts.onWire) this.tap = { id: wEl ? wEl.dataset.wire : null, x: e.clientX, y: e.clientY }; return; }
+    if (!this.edit) { if (this.hl) this.tap = { id: null, x: e.clientX, y: e.clientY }; else if (cEl) C.operate(cEl.dataset.comp); else if (this.opts.onWire) this.tap = { id: wEl ? wEl.dataset.wire : null, x: e.clientX, y: e.clientY }; return; }
     if (e.button !== undefined && e.button !== 0) return;
     const fz = this.svg.closest('[tabindex]');
     if (fz && document.activeElement !== fz) fz.focus({ preventScroll: true });
@@ -2366,6 +2367,8 @@ function makeHL(C, B, V, el) {
     tap(r) { if (!r) { this.pick(null); return; } this.pick(r.wid ? list.find((c) => c.wires.has(r.wid)) : list.find((c) => c.key === r.key)); }
   };
   el.addEventListener('click', (e) => { const b = e.target.closest('[data-c]'); if (b) set(list.find((c) => c.key === b.dataset.c)); });
+  /* un clic ailleurs sur la page rend l'affichage normal ; schémas et 3D gèrent leur propre toucher, les boutons restent utilisables */
+  document.addEventListener('click', (e) => { if (cur && !e.target.closest('.ctl, .v3d-zoom, .v3d canvas, svg.view')) set(null); });
   B.opts.onWire = (id) => hl.byWire(id); V.hl = hl;
   return hl;
 }
@@ -2701,8 +2704,8 @@ const V3D = (() => {
       this.el.innerHTML = '<div class="v3d-zoom" hidden><button type="button">← Vue d’ensemble</button><span></span></div>'; this.el.appendChild(this.r.domElement); this.ui = this.el.firstChild; this.ui.firstChild.addEventListener('click', () => this.closeZone());
       this.scene = new T.Scene(); this.scene.background = new T.Color(0x18212c);
       this.cam = new T.PerspectiveCamera(34, 1, 0.05, 40);
-      this.scene.add(new T.HemisphereLight(0xffffff, 0x7a818a, 0.78));
-      const d = new T.DirectionalLight(0xffffff, 0.42); d.position.set(-2, 4, 5); this.scene.add(d);
+      this.hemi = new T.HemisphereLight(0xffffff, 0x7a818a, 0.78); this.scene.add(this.hemi);
+      const d = new T.DirectionalLight(0xffffff, 0.42); d.position.set(-2, 4, 5); this.scene.add(d); this.sun = d;
       this.yaw = 0.2; this.pitch = 0.09; this.target = new T.Vector3(); this.rad = 4; this.ctr = null;
       const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0, pc = null, multi = false, raf = 0, tap = null;
       /* écart et milieu des deux doigts ; lu une fois par image, quand les deux doigts ont bougé */
@@ -2772,6 +2775,7 @@ const V3D = (() => {
       return best;
     }
     pick(x, y) {
+      if (this.hlC) { this.hl.pick(null); return; } // un circuit est en surbrillance : le toucher suivant le relâche
       const ref = this.near(x, y), c = ref && this.ctx.comps.find((q) => q.ref === ref);
       if (c) { this.ctx.operate(c.id); return; }
       const z = this.zoneAt(x, y); if (z) { this.openZone(z); return; }
@@ -2796,11 +2800,22 @@ const V3D = (() => {
     /* met un circuit en évidence (c : entrée de circuitsOf, ou null pour tout réafficher) */
     setCircuit(c) {
       this.hlC = c || null; if (!this.b) return;
-      const b = this.b; if (!b.dimMat) b.dimMat = new window.THREE.MeshStandardMaterial({ color: 0x8a8f96, transparent: true, opacity: 0.2, depthWrite: false });
-      b.wires.forEach((r) => { r.mesh.material = !c || (r.wid ? c.wires.has(r.wid) : r.key === c.key) ? r.mat : b.dimMat; });
+      const b = this.b, T = window.THREE;
+      (b.halos || []).forEach((m) => { b.g.remove(m); m.geometry.dispose(); }); b.halos = [];
+      /* le reste de la scène passe dans l'ombre, sans perdre ses couleurs */
+      this.hemi.intensity = c ? 0.58 : 0.78; this.sun.intensity = c ? 0.28 : 0.42;
+      b.wires.forEach((r) => {
+        r.mesh.material = r.mat;
+        if (!c || !(r.wid ? c.wires.has(r.wid) : r.key === c.key)) return;
+        /* fil du circuit : couleur pleine, sans ombre, entouré d'un halo */
+        if (!r.mat.userData.lit) r.mat.userData.lit = new T.MeshBasicMaterial({ color: r.mat.color, map: r.mat.map || null });
+        r.mesh.material = r.mat.userData.lit;
+        const halo = b.tube(r.pts, 0.0085, new T.MeshBasicMaterial({ color: r.mat.map ? 0xc9e84f : r.mat.color, transparent: true, opacity: 0.42, depthWrite: false }), 0.03);
+        if (halo) { halo.renderOrder = 5; b.halos.push(halo); }
+      });
       Object.values(b.mats).forEach((m) => { if (!m.transparent) return; if (m.userData.o === undefined) m.userData.o = m.opacity; m.opacity = c ? m.userData.o * 0.4 : m.userData.o; });
-      Object.keys(b.ctl).forEach((ref) => { const k = b.ctl[ref]; if (k.lab) k.lab.material.opacity = !c || c.refs.has(ref) ? 1 : 0.3; });
-      b.runLabs.forEach((r) => { r.sp.material.opacity = !c || r.keys.has(c.key) ? 1 : 0.3; });
+      Object.keys(b.ctl).forEach((ref) => { const k = b.ctl[ref]; if (k.lab) k.lab.material.opacity = !c || c.refs.has(ref) ? 1 : 0.55; });
+      b.runLabs.forEach((r) => { r.sp.material.opacity = !c || r.keys.has(c.key) ? 1 : 0.55; });
       this.draw();
     }
     /* boîte située sous un point de l'écran */
