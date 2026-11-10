@@ -671,7 +671,7 @@ tr:last-child td{border-bottom:0}
               <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
               <span class="metric" id="sim-metric">0 W</span>
             </div>
-          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Glisser pour tourner · molette ou pincer pour zoomer · Maj + glisser pour déplacer</span></div><div class="v3d" id="sim-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
+          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="sim-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
           <div class="ctls" id="sim-ctls" role="group" aria-label="Commandes du circuit"></div>
           <ul class="mini-legend" aria-label="Légende">
             <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
@@ -714,7 +714,7 @@ tr:last-child td{border-bottom:0}
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Glisser pour tourner · molette ou pincer pour zoomer · Maj + glisser pour déplacer</span></div><div class="v3d" id="ex-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="ex-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
         <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
         <ul class="mini-legend" aria-label="Légende">
           <li><span class="lsw" style="background:#E5533D"></span>Phase (ou + en très basse tension)</li>
@@ -2616,17 +2616,26 @@ const V3D = (() => {
       this.scene.add(new T.HemisphereLight(0xffffff, 0x7a818a, 0.78));
       const d = new T.DirectionalLight(0xffffff, 0.42); d.position.set(-2, 4, 5); this.scene.add(d);
       this.yaw = 0.2; this.pitch = 0.09; this.target = new T.Vector3(); this.rad = 4; this.ctr = null;
-      const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0;
-      c.addEventListener('pointerdown', (e) => { c.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); });
+      const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0, pc = null, multi = false, raf = 0;
+      /* écart et milieu des deux doigts ; lu une fois par image, quand les deux doigts ont bougé */
+      const two = () => { const v = [...pts.values()]; return [Math.hypot(v[0][0] - v[1][0], v[0][1] - v[1][1]), [(v[0][0] + v[1][0]) / 2, (v[0][1] + v[1][1]) / 2]]; };
+      c.addEventListener('pointerdown', (e) => { c.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); if (pts.size > 1) multi = true; if (pts.size === 2) [pd, pc] = two(); });
       c.addEventListener('pointermove', (e) => {
         if (!pts.has(e.pointerId)) return; const old = pts.get(e.pointerId), dx = e.clientX - old[0], dy = e.clientY - old[1]; pts.set(e.pointerId, [e.clientX, e.clientY]);
-        if (pts.size === 1) { if (e.shiftKey || e.buttons === 2) { const k = this.rad * 0.0016; this.target.x -= dx * k * Math.cos(this.yaw); this.target.y += dy * k; } else { this.yaw -= dx * 0.008; this.pitch = Math.max(-0.5, Math.min(1.1, this.pitch + dy * 0.006)); } this.draw(); }
-        else if (pts.size === 2) { const v = [...pts.values()], dd = Math.hypot(v[0][0] - v[1][0], v[0][1] - v[1][1]); if (pd) this.zoom(pd / dd); pd = dd; }
+        if (pts.size === 1) { if (multi) return; if (e.shiftKey || e.buttons === 2) this.pan(dx, dy); else { this.yaw -= dx * 0.008; this.pitch = Math.max(-0.5, Math.min(1.1, this.pitch + dy * 0.006)); this.draw(); } }
+        else if (pts.size === 2 && !raf) raf = requestAnimationFrame(() => { raf = 0; if (pts.size !== 2) return; const [dd, cn] = two(); if (pd && dd) this.zoom(pd / dd); if (pc) this.pan(cn[0] - pc[0], cn[1] - pc[1]); pd = dd; pc = cn; });
       });
-      const up = (e) => { pts.delete(e.pointerId); pd = 0; }; c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up);
+      const up = (e) => { pts.delete(e.pointerId); pd = 0; pc = null; if (!pts.size) multi = false; }; c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up);
       c.addEventListener('contextmenu', (e) => e.preventDefault());
       c.addEventListener('wheel', (e) => { e.preventDefault(); this.zoom(Math.exp(e.deltaY * 0.0012)); }, { passive: false });
       new ResizeObserver(() => this.size()).observe(this.el); this.ready = true; this.size(); return true;
+    }
+    /* déplace la vue d'un nombre de pixels : la scène suit exactement les doigts */
+    pan(dx, dy) {
+      const k = 2 * this.rad * Math.tan(this.cam.fov * Math.PI / 360) / (this.el.clientHeight || 1), t = this.target, h = this.home, m = this.fitR * 0.75;
+      t.x -= dx * k * Math.cos(this.yaw); t.z += dx * k * Math.sin(this.yaw); t.y += dy * k;
+      if (h) { t.x = Math.max(h.x - m, Math.min(h.x + m, t.x)); t.y = Math.max(h.y - m, Math.min(h.y + m, t.y)); t.z = Math.max(h.z - m, Math.min(h.z + m, t.z)); }
+      this.draw();
     }
     zoom(f) { this.rad = Math.max(0.7, Math.min(this.fitR ? this.fitR * 1.6 : 12, this.rad * f)); this.draw(); }
     size() { const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h || !this.r) return; this.r.setSize(w, h, false); this.r.domElement.style.width = '100%'; this.r.domElement.style.height = '100%'; this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.draw(); }
@@ -2643,7 +2652,7 @@ const V3D = (() => {
       this.done = q; const [make, ctx] = q;
       if (this.b) { this.scene.remove(this.b.g); this.b.g.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); }
       const T = window.THREE, b = new Builder(T); this.b = b; const v = make(b, ctx); this.scene.add(b.g);
-      this.target.set(v.cx, v.cy, 0.05); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
+      this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.draw();
     }
     sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.5 : 0; L.pt.intensity = on ? 0.8 : 0; }); this.draw(); }
