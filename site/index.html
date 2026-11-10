@@ -671,7 +671,7 @@ tr:last-child td{border-bottom:0}
               <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
               <span class="metric" id="sim-metric">0 W</span>
             </div>
-          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="sim-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
+          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="sim-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
           <div class="ctls" id="sim-ctls" role="group" aria-label="Commandes du circuit"></div>
           <ul class="mini-legend" aria-label="Légende">
             <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
@@ -714,7 +714,7 @@ tr:last-child td{border-bottom:0}
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="ex-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Touche une étiquette verte pour actionner l’appareil · un doigt pour tourner · pincer pour zoomer · deux doigts pour déplacer (souris : glisser, molette, Maj + glisser)</span></div><div class="v3d" id="ex-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li></ul></div></div>
         <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
         <ul class="mini-legend" aria-label="Légende">
           <li><span class="lsw" style="background:#E5533D"></span>Phase (ou + en très basse tension)</li>
@@ -2336,16 +2336,18 @@ const V3D = (() => {
     return out;
   }
   class Builder {
-    constructor(T) { this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; }
+    constructor(T, ops) { this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); }
+    /* voyant vert d'un appareil alimenté : caché tant que l'appareil ne fonctionne pas */
+    led(x, y, z) { const m = new this.T.Mesh(new this.T.SphereGeometry(0.011, 10, 8), new this.T.MeshBasicMaterial({ color: 0x4ade80 })); m.position.set(x, y, z); m.visible = false; this.g.add(m); return m; }
     mat(c, o) { const k = c + JSON.stringify(o || {}); if (!this.mats[k]) this.mats[k] = new this.T.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.62, metalness: 0.02 }, o || {})); return this.mats[k]; }
     glass(c, op) { return this.mat(c, { transparent: true, opacity: op, depthWrite: false, roughness: 0.4 }); }
     vj() { if (!this.vjT) { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const x = c.getContext('2d'); x.fillStyle = '#2f9e44'; x.fillRect(0, 0, 64, 8); x.fillStyle = '#f2c81e'; x.fillRect(0, 0, 32, 8); this.vjT = new this.T.CanvasTexture(c); this.vjT.wrapS = this.vjT.wrapT = this.T.RepeatWrapping; this.vjT.repeat.set(26, 1); } return this.mat(0xffffff, { map: this.vjT }); }
     wmat(c) { return c === 'vj' ? this.vj() : this.mat(COL[c] === undefined ? 0x888888 : COL[c]); }
     box(w, h, d, m, x, y, z) { const b = new this.T.Mesh(new this.T.BoxGeometry(w, h, d), typeof m === 'number' ? this.mat(m) : m); b.position.set(x, y, z); this.g.add(b); return b; }
     tube(pts, r, m, rad) { const V = pts.map((p) => (p.isVector3 ? p : new this.T.Vector3(p[0], p[1], p[2]))); const P = rounded(V, rad === undefined ? 0.05 : rad); const dedupe = P.filter((p, i) => !i || p.distanceTo(P[i - 1]) > 1e-4); if (dedupe.length < 2) return null; const c = new this.T.CatmullRomCurve3(dedupe, false, 'catmullrom', 0.02); const t = new this.T.Mesh(new this.T.TubeGeometry(c, Math.min(400, dedupe.length * 8), r, 8, false), m); this.g.add(t); return t; }
-    label(txt, x, y, z, big) {
+    label(txt, x, y, z, big, hot) {
       const c = document.createElement('canvas'), s = 3, f = (big === 1 ? 22 : 17) * s, x2 = c.getContext('2d'); x2.font = `600 ${f}px "IBM Plex Mono",monospace`; const w = Math.ceil(x2.measureText(txt).width) + 8 * s; c.width = w; c.height = f + 6 * s;
-      const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = 'rgba(17,26,36,.88)'; q.beginPath(); q.roundRect(0, 0, c.width, c.height, 7 * s); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
+      const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = hot ? 'rgba(13,120,100,.96)' : 'rgba(17,26,36,.88)'; q.beginPath(); q.roundRect(0, 0, c.width, c.height, 7 * s); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
       const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; this.g.add(sp); return sp;
     }
     wall(W, H, cx, cy) {
@@ -2370,7 +2372,7 @@ const V3D = (() => {
     }
     /* appareil : façade pleine, bornes visibles sur le bord où arrivent les fils */
     dev(id, kind, x, y, o) {
-      o = o || {}; const T = this.T, n0 = this.g.children.length, z0 = o.z || 0; const N = { x, y, nets: {}, n: 0, kind, ref: o.ref || id };
+      o = o || {}; const T = this.T, n0 = this.g.children.length, z0 = o.z || 0; const N = { x, y, nets: {}, n: 0, kind, ref: o.ref || id }; let part = null, plug = null, face = null, led = null;
       const W = o.w || 0.11, H = o.h || 0.11, side = o.side === undefined ? 1 : o.side;
       const col = { etanche: 0x8a9096, poussoir: 0x8a9096, dm: 0xc8302a, rj: 0xdfe1e4, au: 0xf0c419, baes: 0xf4f4f0 }[kind] || 0xf3f1ea;
       const dz = kind === 'lampe' ? 0.03 : 0.045;
@@ -2382,15 +2384,17 @@ const V3D = (() => {
         this.lamps[N.ref] = { m, pt };
       } else {
         this.box(W, H, dz, this.mat(col), x, y, dz / 2);
-        if (kind === 'dm') this.box(W * 0.6, H * 0.6, 0.006, 0xf4f4f0, x, y, dz + 0.003);
-        if (kind === 'au') { const b = new T.Mesh(new T.CylinderGeometry(0.03, 0.03, 0.03, 20), this.mat(0xc8302a)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.015); this.g.add(b); }
-        if (kind === 'prise' || kind === 'pc') { const b = new T.Mesh(new T.CylinderGeometry(0.034, 0.034, 0.01, 24), this.mat(0xdedbd2)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.005); this.g.add(b); }
-        if (kind === 'poussoir' || kind === 'inter') this.box(W * 0.62, H * 0.62, 0.012, this.mat(0xfafaf6), x, y, dz + 0.006);
-        if (kind === 'baes') { this.box(W * 0.75, H * 0.5, 0.004, 0x2f9e44, x, y, dz + 0.002); this.lamps[N.ref + '#v'] = null; }
+        if (kind === 'dm') part = this.box(W * 0.6, H * 0.6, 0.006, 0xf4f4f0, x, y, dz + 0.003);
+        if (kind === 'au') { const b = new T.Mesh(new T.CylinderGeometry(0.03, 0.03, 0.03, 20), this.mat(0xc8302a)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.015); this.g.add(b); part = b; }
+        if (kind === 'prise' || kind === 'pc') { const b = new T.Mesh(new T.CylinderGeometry(0.034, 0.034, 0.01, 24), this.mat(0xdedbd2)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.005); this.g.add(b); plug = new T.Mesh(new T.CylinderGeometry(0.03, 0.03, 0.05, 20), this.mat(0x2a2d31)); plug.rotation.x = Math.PI / 2; plug.position.set(x, y, dz + 0.035); plug.visible = false; this.g.add(plug); }
+        if (kind === 'poussoir' || kind === 'inter') part = this.box(W * 0.62, H * 0.62, 0.012, this.mat(0xfafaf6), x, y, dz + 0.006);
+        if (kind === 'baes') face = this.box(W * 0.75, H * 0.5, 0.004, new T.MeshStandardMaterial({ color: 0x2f9e44, roughness: 0.5 }), x, y, dz + 0.002);
         if (kind === 'rj') this.box(0.03, 0.022, 0.004, 0x333333, x, y, dz + 0.002);
       }
+      if (kind !== 'lampe' && kind !== 'hublot') led = this.led(x + W / 2 - 0.02, y + H / 2 - 0.02, dz + 0.006);
       for (let i = n0; i < this.g.children.length; i++) this.g.children[i].position.z += z0;
-      if (o.label !== false) this.label(o.label || id, x, y + H / 2 + 0.07, 0.1);
+      this.ctl[N.ref] = { pos: new T.Vector3(x, y, dz + z0), part, base: part ? part.position.clone() : null, plug, face, led, kind };
+      if (o.label !== false) this.label(o.label || id, x, y + H / 2 + 0.07, 0.1, undefined, this.ops.has(N.ref));
       N.at = (net) => {
         if (!N.nets[net]) { const i = N.n++, offs = (i - 1.5) * 0.024; const p = side === 'l' || side === 'r' ? new T.Vector3(x + (side === 'r' ? W : -W) / 2, y - offs, 0.022 + z0) : new T.Vector3(x + offs, y + side * H / 2, 0.022 + z0); N.nets[net] = p; const b = new T.Mesh(new T.SphereGeometry(0.008, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); b.position.copy(p); this.g.add(b); }
         return N.nets[net];
@@ -2436,8 +2440,9 @@ const V3D = (() => {
         r.items.forEach((m) => {
           const w = mw * (m.m || 1), mx = cx + w / 2 - mw / 2, col = m.k === 'id' ? 0xf0f0e8 : 0xf7f7f2, h = 0.135;
           this.box(w - 0.006, h, 0.05, this.mat(col), mx, yr, 0.05);
-          this.box(w * 0.5, 0.026, 0.02, this.mat(m.k === 'id' ? 0x2b6be0 : 0x24272b), mx, yr + 0.028, 0.082);
-          this.label(m.id, mx, yr - 0.03, 0.12, 'tiny');
+          const hd = this.box(w * 0.5, 0.026, 0.02, this.mat(m.k === 'id' ? 0x2b6be0 : 0x24272b), mx, yr + 0.028, 0.082);
+          this.ctl[m.id] = { pos: new T.Vector3(mx, yr, 0.08), part: hd, base: hd.position.clone(), led: this.led(mx + w / 2 - 0.016, yr + 0.054, 0.08), kind: 'mod' };
+          this.label(m.id, mx, yr - 0.03, 0.12, 'tiny', this.ops.has(m.id));
           const tb = yr - h / 2 - 0.004;
           (m.t || []).forEach((tn, j) => { const tx = mx + (j - (m.t.length - 1) / 2) * 0.026; const p = new T.Vector3(tx, tb, 0.075); N.nets[tn] = p; const s = new T.Mesh(new T.SphereGeometry(0.007, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); s.position.copy(p); this.g.add(s); });
           cx += w;
@@ -2581,7 +2586,7 @@ const V3D = (() => {
     const pos = {};
     const panel = C.comps.filter((c) => ['src', 'disj', 'dpn', 'fus'].includes(c.type));
     B.box(0.6, 0.9, 0.02, 0xf4f2ec, -W / 2 + 0.42, 1.55, 0.01); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
-    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; B.box(0.3, 0.13, 0.05, isSrc ? 0x59626d : 0xffffff, row.x, row.y, 0.03); if (!isSrc) B.box(0.1, 0.03, 0.02, 0x24272b, row.x, row.y, 0.065); B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1); tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.1 + i * 0.05, row.y + 0.07, 0.06); pos[c.id + ':' + t] = p; }); py -= 0.27; });
+    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; B.box(0.3, 0.13, 0.05, isSrc ? 0x59626d : 0xffffff, row.x, row.y, 0.03); if (!isSrc) { const hd = B.box(0.1, 0.03, 0.02, 0x24272b, row.x, row.y + 0.015, 0.065); B.ctl[c.ref] = { pos: new B.T.Vector3(row.x, row.y, 0.06), part: hd, base: hd.position.clone(), kind: 'mod' }; } B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1, undefined, B.ops.has(c.ref)); tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.1 + i * 0.05, row.y + 0.07, 0.06); pos[c.id + ':' + t] = p; }); py -= 0.27; });
     sorted.filter((c) => !panel.includes(c)).forEach((c, i) => {
       const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'inter';
       B.dev(c.id, k, x, y, { ref: c.ref, label: c.ref, side: 1, w: 0.14, h: 0.14 });
@@ -2616,16 +2621,18 @@ const V3D = (() => {
       this.scene.add(new T.HemisphereLight(0xffffff, 0x7a818a, 0.78));
       const d = new T.DirectionalLight(0xffffff, 0.42); d.position.set(-2, 4, 5); this.scene.add(d);
       this.yaw = 0.2; this.pitch = 0.09; this.target = new T.Vector3(); this.rad = 4; this.ctr = null;
-      const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0, pc = null, multi = false, raf = 0;
+      const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0, pc = null, multi = false, raf = 0, tap = null;
       /* écart et milieu des deux doigts ; lu une fois par image, quand les deux doigts ont bougé */
       const two = () => { const v = [...pts.values()]; return [Math.hypot(v[0][0] - v[1][0], v[0][1] - v[1][1]), [(v[0][0] + v[1][0]) / 2, (v[0][1] + v[1][1]) / 2]]; };
-      c.addEventListener('pointerdown', (e) => { c.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); if (pts.size > 1) multi = true; if (pts.size === 2) [pd, pc] = two(); });
+      c.addEventListener('pointerdown', (e) => { c.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); tap = pts.size === 1 && e.button === 0 ? [e.clientX, e.clientY] : null; if (pts.size > 1) multi = true; if (pts.size === 2) [pd, pc] = two(); });
       c.addEventListener('pointermove', (e) => {
-        if (!pts.has(e.pointerId)) return; const old = pts.get(e.pointerId), dx = e.clientX - old[0], dy = e.clientY - old[1]; pts.set(e.pointerId, [e.clientX, e.clientY]);
+        if (!pts.has(e.pointerId)) { if (e.pointerType === 'mouse') c.style.cursor = this.near(e.clientX, e.clientY) ? 'pointer' : ''; return; }
+        const old = pts.get(e.pointerId), dx = e.clientX - old[0], dy = e.clientY - old[1]; pts.set(e.pointerId, [e.clientX, e.clientY]);
+        if (tap) { if (Math.hypot(e.clientX - tap[0], e.clientY - tap[1]) < 7) return; tap = null; }
         if (pts.size === 1) { if (multi) return; if (e.shiftKey || e.buttons === 2) this.pan(dx, dy); else { this.yaw -= dx * 0.008; this.pitch = Math.max(-0.5, Math.min(1.1, this.pitch + dy * 0.006)); this.draw(); } }
         else if (pts.size === 2 && !raf) raf = requestAnimationFrame(() => { raf = 0; if (pts.size !== 2) return; const [dd, cn] = two(); if (pd && dd) this.zoom(pd / dd); if (pc) this.pan(cn[0] - pc[0], cn[1] - pc[1]); pd = dd; pc = cn; });
       });
-      const up = (e) => { pts.delete(e.pointerId); pd = 0; pc = null; if (!pts.size) multi = false; }; c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up);
+      const up = (e) => { pts.delete(e.pointerId); pd = 0; pc = null; if (!pts.size) multi = false; }; c.addEventListener('pointerup', (e) => { const t = tap; tap = null; up(e); if (t) this.pick(e.clientX, e.clientY); }); c.addEventListener('pointercancel', (e) => { tap = null; up(e); });
       c.addEventListener('contextmenu', (e) => e.preventDefault());
       c.addEventListener('wheel', (e) => { e.preventDefault(); this.zoom(Math.exp(e.deltaY * 0.0012)); }, { passive: false });
       new ResizeObserver(() => this.size()).observe(this.el); this.ready = true; this.size(); return true;
@@ -2651,11 +2658,34 @@ const V3D = (() => {
       if (!(await this.init()) || this.pending !== q) return;
       this.done = q; const [make, ctx] = q;
       if (this.b) { this.scene.remove(this.b.g); this.b.g.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); }
-      const T = window.THREE, b = new Builder(T); this.b = b; const v = make(b, ctx); this.scene.add(b.g);
+      const T = window.THREE, ops = new Set(ctx.comps.filter((c) => DEF[c.type].op && opLabel(c)).map((c) => c.ref)), b = new Builder(T, ops); this.b = b; this.ctx = ctx; const v = make(b, ctx); this.scene.add(b.g);
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.draw();
     }
-    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.5 : 0; L.pt.intensity = on ? 0.8 : 0; }); this.draw(); }
+    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.5 : 0; L.pt.intensity = on ? 0.8 : 0; });
+      Object.keys(this.b.ctl).forEach((ref) => {
+        const k = this.b.ctl[ref], c = C.comps.find((x) => x.ref === ref); if (!c) return;
+        const s = c.st, on = !!C.res.loadsOn[c.id];
+        if (k.led) k.led.visible = on && c.type !== 'detect';
+        if (k.plug) k.plug.visible = c.type === 'prise' && !!s.plug;
+        if (k.face) { const sec = c.type === 'baes' && !on && !s.rest; k.face.material.emissive.setHex(sec ? 0x7dff9a : 0); k.face.material.emissiveIntensity = sec ? 0.9 : 0; }
+        if (!k.part) return;
+        const p = k.part, b = k.base;
+        if (c.type === 'disj' || c.type === 'dpn') { p.position.y = b.y - (s.closed ? 0 : 0.03); return; }
+        const act = c.type === 'inter' ? s.on !== !!c.inv : c.type === 'vav' ? s.pos === 2 : c.type === 'perm' ? !!s.cross : c.type === 'bp' || c.type === 'radio' ? !!s.pressed : c.type === 'tele2' ? !!s.k : false;
+        if (k.kind === 'au' || k.kind === 'dm' || c.type === 'bp' || c.type === 'radio') p.position.z = b.z - (act ? 0.012 : 0);
+        else p.rotation.x = act ? -0.3 : 0.3;
+      });
+      this.draw();
+    }
+    /* appareil actionnable le plus proche d'un point de l'écran (zone large pour le doigt) */
+    near(x, y) {
+      if (!this.b) return null;
+      const rc = this.r.domElement.getBoundingClientRect(), v = new window.THREE.Vector3(); let best = null, bd = 26;
+      this.b.ops.forEach((ref) => { const k = this.b.ctl[ref]; if (!k) return; v.copy(k.pos).project(this.cam); const d = Math.hypot((v.x + 1) / 2 * rc.width + rc.left - x, (1 - v.y) / 2 * rc.height + rc.top - y); if (d < bd) { bd = d; best = ref; } });
+      return best;
+    }
+    pick(x, y) { const ref = this.near(x, y), c = ref && this.ctx.comps.find((q) => q.ref === ref); if (c) this.ctx.operate(c.id); }
     reset() { if (this.fitR) { this.yaw = 0.2; this.pitch = 0.09; this.rad = this.fitR; this.draw(); } }
   }
   return { View, esp1, esp2, esp3, auto };
