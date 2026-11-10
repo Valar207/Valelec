@@ -3,7 +3,8 @@
 Site pédagogique pour apprendre l’électricité domestique : leçons, schémas animés, examen pratique interactif (titre pro électricien d’équipement du bâtiment, espaces de travail n°1, n°2 et n°3), bac à sable de schémas, comparaison des tableaux électriques français et américain, et deux modules métier : panneaux photovoltaïques et bornes de recharge IRVE. Thème clair ou sombre au choix.
 
 - Code source : https://github.com/Valar207/Valelec
-- Version en ligne (adresse fixe, GitHub Pages, mise à jour à chaque push) : https://valar207.github.io/Valelec/site/
+- Adresse principale (Cloudflare Pages, projet `formationeeb`, branche `main`, dossier publié `site`, mise à jour automatique à chaque push) : https://formationeeb.pages.dev/
+- Copie GitHub Pages (même contenu, mise à jour à chaque push) : https://valar207.github.io/Valelec/site/
 - Version de test (hébergée sur le NAS via un tunnel Cloudflare) : https://satisfactory-quarter-determination-david.trycloudflare.com — cette adresse change à chaque redémarrage du tunnel.
 - Ancienne version (privée, claude.ai) : https://claude.ai/artifact/S6ikzc59nVyA9KQGuzFv2d
 
