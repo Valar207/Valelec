@@ -30,7 +30,7 @@ Aucune compilation. Ouvrir `site/index.html` dans un navigateur, ou le servir en
 cd site && python3 -m http.server 8080
 ```
 
-Seule ressource externe : les polices Google Fonts (Bricolage Grotesque, IBM Plex Sans, IBM Plex Mono). Sans réseau, le site retombe sur les polices système. La vue 3D utilise `site/vendor/three.min.js`, livré avec le site (pas de CDN) ; sans WebGL, le panneau 3D affiche un message et le schéma reste utilisable.
+Seule ressource externe : les polices Google Fonts (Bricolage Grotesque, IBM Plex Sans, IBM Plex Mono). Sans réseau, le site retombe sur les polices système. La vue 3D utilise `site/vendor/three.min.js`, livré avec le site (pas de CDN) ; si la création du rendu échoue, `View.renderer()` essaie quatre réglages (antialiasing, sans antialiasing, précision moyenne, WebGL 1) ; en dernier recours, `showFailure()` affiche la cause probable et le détail technique, et le schéma 2D reste utilisable.
 
 ## Organisation de `site/index.html`
 

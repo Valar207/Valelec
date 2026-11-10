@@ -202,6 +202,9 @@ tr:last-child td{border-bottom:0}
 .v3d canvas{display:block;cursor:grab}
 .v3d canvas:active{cursor:grabbing}
 .v3d-msg{color:#cfd6df;padding:24px;margin:0}
+.v3d-msg p{margin:10px 0 14px;line-height:1.45}
+.v3d-msg .ctl{color:var(--ink)}
+.v3d-msg small{display:block;margin-top:14px;font-size:11px;opacity:.65;word-break:break-word}
 .v3d-circ{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
 .v3d-circ[hidden]{display:none}
 .v3d-circ .ctl{padding:7px 12px;font-size:13px}
@@ -2403,7 +2406,7 @@ const V3D = (() => {
     tube(pts, r, m, rad) { const V = pts.map((p) => (p.isVector3 ? p : new this.T.Vector3(p[0], p[1], p[2]))); const P = rounded(V, rad === undefined ? 0.05 : rad); const dedupe = P.filter((p, i) => !i || p.distanceTo(P[i - 1]) > 1e-4); if (dedupe.length < 2) return null; const c = new this.T.CatmullRomCurve3(dedupe, false, 'catmullrom', 0.02); const t = new this.T.Mesh(new this.T.TubeGeometry(c, Math.min(400, dedupe.length * 8), r, 8, false), m); this.g.add(t); return t; }
     label(txt, x, y, z, big, hot) {
       const c = document.createElement('canvas'), s = 3, f = (big === 1 ? 22 : 17) * s, x2 = c.getContext('2d'); x2.font = `600 ${f}px "IBM Plex Mono",monospace`; const w = Math.ceil(x2.measureText(txt).width) + 8 * s; c.width = w; c.height = f + 6 * s;
-      const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = typeof hot === 'string' ? hot : hot ? 'rgba(13,120,100,.96)' : 'rgba(17,26,36,.88)'; q.beginPath(); q.roundRect(0, 0, c.width, c.height, 7 * s); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
+      const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = typeof hot === 'string' ? hot : hot ? 'rgba(13,120,100,.96)' : 'rgba(17,26,36,.88)'; q.beginPath(); if (q.roundRect) q.roundRect(0, 0, c.width, c.height, 7 * s); else q.rect(0, 0, c.width, c.height); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
       const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'wago' ? 0.015 : big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; this.g.add(sp); if (big !== 'wago') this.labels.push(sp); return sp;
     }
     wall(W, H, cx, cy) {
@@ -2695,11 +2698,34 @@ const V3D = (() => {
   const free = (g) => g.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material && o.material.map) o.material.map.dispose(); });
   class View {
     constructor(el) { this.el = el; this.spec = null; this.ready = false; }
+    /* Safari peut refuser certains réglages : on essaie du plus beau au plus simple */
+    renderer(T) {
+      this.errs = [];
+      const tries = [{ antialias: true }, { antialias: false }, { antialias: false, precision: 'mediump' }, { antialias: false, webgl1: true }];
+      for (const a of tries) {
+        try {
+          const o = { alpha: false, antialias: a.antialias, powerPreference: 'default' };
+          if (a.precision) o.precision = a.precision;
+          if (a.webgl1) { const cv = document.createElement('canvas'), gl = cv.getContext('webgl', { alpha: false, antialias: false, depth: true, stencil: true, powerPreference: 'default' }) || cv.getContext('experimental-webgl'); if (!gl) throw new Error('contexte webgl refusé'); o.canvas = cv; o.context = gl; }
+          return new T.WebGLRenderer(o);
+        } catch (e) { this.errs.push((e && e.message) || String(e)); }
+      }
+      return null;
+    }
+    showFailure() {
+      const probe = (n) => { try { return !!document.createElement('canvas').getContext(n); } catch (e) { return false; } }, w2 = probe('webgl2'), w1 = probe('webgl');
+      const why = w2 || w1 ? 'Le navigateur manque de mémoire graphique. Ferme quelques onglets, puis réessaie.' : 'Le navigateur bloque WebGL sur cet appareil. Sur iPhone, vérifie que le Mode Isolement est désactivé (Réglages › Confidentialité et sécurité), puis réessaie. Le schéma 2D reste utilisable.';
+      this.el.innerHTML = '<div class="v3d-msg"><strong>Vue 3D indisponible</strong><p></p><button class="ctl" type="button">Réessayer</button><small></small></div>';
+      this.el.querySelector('p').textContent = why;
+      this.el.querySelector('small').textContent = 'Détail : WebGL2 ' + (w2 ? 'oui' : 'non') + ' · WebGL ' + (w1 ? 'oui' : 'non') + ' · ' + ((this.errs[0]) || '?') + ' · ' + navigator.userAgent;
+      this.el.querySelector('button').addEventListener('click', () => location.reload());
+    }
     async init() {
       if (this.ready) return true;
+      if (this.failed) return false;
       try { await loadThree(); } catch (e) { this.el.innerHTML = '<p class="v3d-msg">Vue 3D indisponible (fichier vendor/three.min.js introuvable).</p>'; return false; }
       const T = window.THREE;
-      try { this.r = new T.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true }); } catch (e) { this.el.innerHTML = '<p class="v3d-msg">Vue 3D indisponible : ton navigateur ne gère pas WebGL.</p>'; return false; }
+      this.r = this.renderer(T); if (!this.r) { this.failed = true; this.showFailure(); return false; }
       this.r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
       this.el.innerHTML = '<div class="v3d-zoom" hidden><button type="button">← Vue d’ensemble</button><span></span></div>'; this.el.appendChild(this.r.domElement); this.ui = this.el.firstChild; this.ui.firstChild.addEventListener('click', () => this.closeZone());
       this.scene = new T.Scene(); this.scene.background = new T.Color(0x18212c);
@@ -2720,8 +2746,9 @@ const V3D = (() => {
       });
       const up = (e) => { pts.delete(e.pointerId); pd = 0; pc = null; if (!pts.size) multi = false; }; c.addEventListener('pointerup', (e) => { const t = tap; tap = null; up(e); if (t) this.pick(e.clientX, e.clientY); }); c.addEventListener('pointercancel', (e) => { tap = null; up(e); });
       c.addEventListener('contextmenu', (e) => e.preventDefault());
+      ['gesturestart', 'gesturechange', 'gestureend'].forEach((n) => c.addEventListener(n, (e) => e.preventDefault()));
       c.addEventListener('wheel', (e) => { e.preventDefault(); this.zoom(Math.exp(e.deltaY * 0.0012)); }, { passive: false });
-      new ResizeObserver(() => this.size()).observe(this.el); this.ready = true; this.size(); return true;
+      new ResizeObserver(() => this.size()).observe(this.el); document.addEventListener('visibilitychange', () => { if (!document.hidden) this.draw(); }); this.ready = true; this.size(); return true;
     }
     /* déplace la vue d'un nombre de pixels : la scène suit exactement les doigts */
     pan(dx, dy) {
