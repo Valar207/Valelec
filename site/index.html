@@ -232,6 +232,32 @@ tr:last-child td{border-bottom:0}
 .stage{display:flex;flex-direction:column;gap:14px;min-width:0}
 .dual{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));align-items:start}
 .col2d{display:flex;flex-direction:column;gap:14px;min-width:0}
+.d2-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.d2-head strong,.v3d-head strong{color:var(--ink,inherit);font-size:15px}
+/* commandes : cartes de même taille, repère en gras, réglage en petit, action dessous */
+.ctls.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(170px,100%),1fr));gap:8px}
+.cgrid .ctl{display:grid;grid-template-columns:auto minmax(0,1fr);align-content:center;align-items:baseline;gap:2px 8px;min-height:58px;width:100%;padding:8px 12px;text-align:left}
+.cgrid .c-ref{font-weight:700;font-size:15px}
+.cgrid .c-lab{font-size:12px;font-weight:500;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cgrid .c-act{grid-column:1/-1;font-size:13px;font-weight:600}
+.cgrid .ctl[aria-pressed="true"] .c-lab{color:inherit;opacity:.75}
+.cgrid .ctl.ghost{display:flex;justify-content:center;align-items:center;text-align:center}
+.v3d-circ>span{flex-basis:100%}
+.v3d-circ .ctl{min-height:38px;padding:0 14px;border-radius:999px;font-size:13px}
+.v3d-steps .stp-go{min-height:44px}
+/* deux colonnes alignées : titres, schémas et commandes sur les mêmes lignes */
+.stage{container-type:inline-size}
+@container (min-width:760px){
+  .dual{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"h2 h3" "b2 v3" "ct st" "ct ci" "lg l3" "nx nx";grid-template-rows:auto auto auto 1fr auto auto;gap:14px 22px;align-items:start}
+  .dual .col2d,.dual .v3d-wrap{display:contents}
+  .d2-head{grid-area:h2;min-height:24px}.v3d-head{grid-area:h3;min-height:24px}
+  .col2d>.board{grid-area:b2;align-self:stretch;display:flex;flex-direction:column}
+  .col2d>.board>svg{margin-block:auto}
+  .dual .v3d{grid-area:v3;aspect-ratio:auto;height:auto;min-height:280px;align-self:stretch}
+  .col2d>.ctls{grid-area:ct}.v3d-steps{grid-area:st}.v3d-circ{grid-area:ci;align-self:start}
+  .col2d>.mini-legend{grid-area:lg}.v3d-leg{grid-area:l3}
+  #sim-next{grid-area:nx;justify-self:start}
+}
 .v3d-wrap{display:flex;flex-direction:column;gap:8px;min-width:0}
 .v3d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .v3d-help summary{cursor:pointer;font-weight:600;color:var(--ink-2)}
@@ -758,14 +784,14 @@ tr:last-child td{border-bottom:0}
       <div><p class="eyebrow" id="sim-group"></p><h1 class="display" id="sim-title"></h1><p class="lead" id="sim-sub"></p></div>
       <div class="sim-cols has3d">
         <div class="stage">
-          <div class="dual"><div class="col2d"><div class="board">
+          <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
             <svg id="sim-svg" class="view" role="img" aria-label="Schéma animé"></svg>
             <div class="statusbar">
               <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
               <span class="metric" id="sim-metric">0 W</span>
             </div>
           </div>
-          <div class="ctls" id="sim-ctls" role="group" aria-label="Commandes du circuit"></div>
+          <div class="ctls cgrid" id="sim-ctls" role="group" aria-label="Commandes du circuit"></div>
           <ul class="mini-legend" aria-label="Légende">
             <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
             <li><span class="lsw" style="background:#4E8EF7"></span>Neutre</li>
@@ -803,14 +829,14 @@ tr:last-child td{border-bottom:0}
     <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p></div>
     <div class="sim-cols has3d">
       <div class="stage">
-        <div class="dual"><div class="col2d"><div class="board">
+        <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
           <svg id="ex-svg" class="view" role="img" aria-label="Schéma développé de l’espace de travail"></svg>
           <div class="statusbar">
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
         </div>
-          <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
+          <div class="ctls cgrid" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
         <ul class="mini-legend" aria-label="Légende">
           <li><span class="lsw" style="background:#E5533D"></span>Phase (ou + en très basse tension)</li>
           <li><span class="lsw" style="background:#4E8EF7"></span>Neutre (ou −)</li>
@@ -3280,7 +3306,7 @@ function simUpd() {
   const ops = simC.comps.filter((c) => DEF[c.type].op && opLabel(c));
   $('#sim-ctls').innerHTML = ops.map((c) => {
     const pressed = (c.type === 'inter' && c.st.on) || (c.type === 'bp' && c.st.pressed) || (c.type === 'prise' && c.st.plug);
-    return `<button class="ctl" type="button" data-op="${c.id}"${['inter', 'bp', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab && c.type !== 'disj' && c.type !== 'dpn' ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
+    return `<button class="ctl" type="button" data-op="${c.id}"${['inter', 'bp', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span>${c.lab && c.type !== 'disj' && c.type !== 'dpn' ? `<span class="c-lab">${esc(c.lab)}</span>` : ''}<span class="c-act">${opLabel(c)}</span></button>`;
   }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
 }
 simC.listeners.push(simUpd);
@@ -3413,7 +3439,7 @@ function exUpd() {
   const ops = exC.comps.filter((c) => DEF[c.type].op && opLabel(c)).sort((a, b) => order.indexOf(a.ref) - order.indexOf(b.ref));
   $('#ex-ctls').innerHTML = ops.map((c) => {
     const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug) || (c.type === 'inter' && c.st.on !== !!c.inv);
-    return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise', 'inter'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
+    return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise', 'inter'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span>${c.lab ? `<span class="c-lab">${esc(c.lab)}</span>` : ''}<span class="c-act">${opLabel(c)}</span></button>`;
   }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
 }
 exC.listeners.push(exUpd);
