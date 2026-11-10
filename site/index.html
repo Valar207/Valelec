@@ -2838,18 +2838,24 @@ const V3D = (() => {
       this.hemi = new T.HemisphereLight(0xffffff, 0x7a818a, 0.78); this.scene.add(this.hemi);
       const d = new T.DirectionalLight(0xffffff, 0.42); d.position.set(-2, 4, 5); this.scene.add(d); this.sun = d;
       this.yaw = 0.2; this.pitch = 0.09; this.target = new T.Vector3(); this.rad = 4; this.ctr = null;
-      const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0, pc = null, multi = false, raf = 0, tap = null;
+      const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0, pc = null, multi = false, raf = 0, tap = null, t0 = null, d0 = 0, c0 = null, mode2 = null;
       /* écart et milieu des deux doigts ; lu une fois par image, quand les deux doigts ont bougé */
       const two = () => { const v = [...pts.values()]; return [Math.hypot(v[0][0] - v[1][0], v[0][1] - v[1][1]), [(v[0][0] + v[1][0]) / 2, (v[0][1] + v[1][1]) / 2]]; };
-      c.addEventListener('pointerdown', (e) => { c.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); tap = pts.size === 1 && e.button === 0 ? [e.clientX, e.clientY] : null; if (pts.size > 1) multi = true; if (pts.size === 2) [pd, pc] = two(); });
+      c.addEventListener('pointerdown', (e) => { c.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); tap = pts.size === 1 && e.button === 0 ? [e.clientX, e.clientY] : null; if (pts.size === 1) t0 = this.target.clone(); if (pts.size > 1) multi = true;
+        /* deuxième doigt posé : on annule le petit déplacement fait par le premier, et le geste reste à déterminer */
+        if (pts.size === 2) { [pd, pc] = two(); d0 = pd; c0 = pc; mode2 = null; if (t0 && e.pointerType !== 'mouse') { this.target.copy(t0); this.draw(); } } });
       c.addEventListener('pointermove', (e) => {
         if (!pts.has(e.pointerId)) { if (e.pointerType === 'mouse') c.style.cursor = this.near(e.clientX, e.clientY) || this.zoneAt(e.clientX, e.clientY) ? 'pointer' : ''; return; }
         const old = pts.get(e.pointerId), dx = e.clientX - old[0], dy = e.clientY - old[1]; pts.set(e.pointerId, [e.clientX, e.clientY]);
         if (tap) { if (Math.hypot(e.clientX - tap[0], e.clientY - tap[1]) < 7) return; tap = null; }
         if (pts.size === 1) { if (multi) return; if (e.pointerType !== 'mouse' || e.shiftKey || e.buttons === 2) this.pan(dx, dy); else this.orbit(dx, dy); }
-        else if (pts.size === 2 && !raf) raf = requestAnimationFrame(() => { raf = 0; if (pts.size !== 2) return; const [dd, cn] = two(); if (pd && dd) this.zoom(pd / dd); if (pc) this.orbit(cn[0] - pc[0], cn[1] - pc[1]); pd = dd; pc = cn; });
+        else if (pts.size === 2 && !raf) raf = requestAnimationFrame(() => { raf = 0; if (pts.size !== 2) return; const [dd, cn] = two();
+          /* un seul geste à la fois : les doigts s'écartent (zoom) ou glissent ensemble (rotation), choisi au début et gardé jusqu'au lâcher */
+          if (!mode2) { const dm = Math.abs(dd - d0), cm = Math.hypot(cn[0] - c0[0], cn[1] - c0[1]); if (Math.max(dm, cm) < 10) return; mode2 = dm > cm ? 'zoom' : 'turn'; pd = dd; pc = cn; return; }
+          if (mode2 === 'zoom') { if (pd && dd) this.zoom(pd / dd); } else if (pc) this.orbit(cn[0] - pc[0], cn[1] - pc[1]);
+          pd = dd; pc = cn; });
       });
-      const up = (e) => { pts.delete(e.pointerId); pd = 0; pc = null; if (!pts.size) multi = false; }; c.addEventListener('pointerup', (e) => { const t = tap; tap = null; up(e); if (t) this.pick(e.clientX, e.clientY); }); c.addEventListener('pointercancel', (e) => { tap = null; up(e); });
+      const up = (e) => { pts.delete(e.pointerId); pd = 0; pc = null; mode2 = null; if (!pts.size) multi = false; }; c.addEventListener('pointerup', (e) => { const t = tap; tap = null; up(e); if (t) this.pick(e.clientX, e.clientY); }); c.addEventListener('pointercancel', (e) => { tap = null; up(e); });
       c.addEventListener('contextmenu', (e) => e.preventDefault());
       ['gesturestart', 'gesturechange', 'gestureend'].forEach((n) => c.addEventListener(n, (e) => e.preventDefault()));
       c.addEventListener('wheel', (e) => { e.preventDefault(); this.zoom(Math.exp(e.deltaY * 0.0012)); }, { passive: false });
