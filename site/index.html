@@ -194,6 +194,16 @@ tr:last-child td{border-bottom:0}
 .sim-main h1{margin:6px 0 8px;font-size:clamp(36px,4.4vw,54px)}
 .sim-cols{display:grid;gap:24px;grid-template-columns:minmax(0,1fr) 300px;align-items:start}
 .stage{display:flex;flex-direction:column;gap:14px;min-width:0}
+.dual{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));align-items:start}
+.v3d-wrap{display:flex;flex-direction:column;gap:8px;min-width:0}
+.v3d-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.v3d-head strong{color:var(--ink,inherit);font-size:15px}
+.v3d{aspect-ratio:1/1;min-height:300px;width:100%;border-radius:18px;overflow:hidden;background:#18212c;position:relative}
+.v3d canvas{display:block;cursor:grab}
+.v3d canvas:active{cursor:grabbing}
+.v3d-msg{color:#cfd6df;padding:24px;margin:0}
+.sim-cols.has3d{grid-template-columns:minmax(0,1fr)}
+.sim-cols.has3d>:not(.stage){display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:20px;align-items:start}
 .stage .board{border-radius:18px;box-shadow:0 30px 60px -38px rgba(17,26,36,.6)}
 .ctls{display:flex;flex-wrap:wrap;gap:8px}
 .ctl{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:10px;border:1.5px solid var(--ink);background:var(--paper-2);font-weight:600;font-size:14px;cursor:pointer;color:var(--ink)}
@@ -603,15 +613,15 @@ tr:last-child td{border-bottom:0}
     <aside class="sim-nav" id="sim-nav" aria-label="Liste des schémas"></aside>
     <div class="sim-main">
       <div><p class="eyebrow" id="sim-group"></p><h1 class="display" id="sim-title"></h1><p class="lead" id="sim-sub"></p></div>
-      <div class="sim-cols">
+      <div class="sim-cols has3d">
         <div class="stage">
-          <div class="board">
+          <div class="dual"><div class="board">
             <svg id="sim-svg" class="view" role="img" aria-label="Schéma animé"></svg>
             <div class="statusbar">
               <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
               <span class="metric" id="sim-metric">0 W</span>
             </div>
-          </div>
+          </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Glisser pour tourner · molette ou pincer pour zoomer · Maj + glisser pour déplacer</span></div><div class="v3d" id="sim-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
           <div class="ctls" id="sim-ctls" role="group" aria-label="Commandes du circuit"></div>
           <ul class="mini-legend" aria-label="Légende">
             <li><span class="lsw" style="background:#E5533D"></span>Phase</li>
@@ -646,15 +656,15 @@ tr:last-child td{border-bottom:0}
       <button class="extab" type="button" data-espace="3" aria-pressed="false"><span class="num">3</span><span class="tx"><span class="k">Espace de travail n°3</span><strong>Locaux tertiaires</strong><span class="ds">Détecteur, BAES, arrêt d’urgence</span></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
     <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p></div>
-    <div class="sim-cols">
+    <div class="sim-cols has3d">
       <div class="stage">
-        <div class="board">
+        <div class="dual"><div class="board">
           <svg id="ex-svg" class="view" role="img" aria-label="Schéma développé de l’espace de travail"></svg>
           <div class="statusbar">
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
-        </div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><span>Glisser pour tourner · molette ou pincer pour zoomer · Maj + glisser pour déplacer</span></div><div class="v3d" id="ex-3d"></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li></ul></div></div>
         <div class="ctls" id="ex-ctls" role="group" aria-label="Commandes de l’espace"></div>
         <ul class="mini-legend" aria-label="Légende">
           <li><span class="lsw" style="background:#E5533D"></span>Phase (ou + en très basse tension)</li>
@@ -669,7 +679,7 @@ tr:last-child td{border-bottom:0}
           <li>Appuie sur S1 (filaire), puis sur E1 (radio) : L1 et L3 s’allument puis s’éteignent ensemble.</li>
           <li>Appuie sur E2 : seule L2 change d’état.</li>
           <li>Bascule S2 : le contact heures creuses alimente la bobine de C1, qui fait chauffer le chauffe-eau.</li>
-          <li>Branche la machine à laver sur PC2, puis déclenche ID1 : l’éclairage s’éteint, la machine continue (elle est sous ID2).</li>
+          <li>Branche la machine à laver sur PC2, puis déclenche ID2 : le chauffe-eau et la prise PC1 sont coupés, la machine continue (elle est sous ID1).</li>
         </ol></div>
         <div class="box" data-espace="1"><h2>Travail demandé</h2><ul>
           <li>L1 et L3 commandées par S1 et E1 en télérupteur (récepteur R1 dans BD1).</li>
@@ -717,14 +727,14 @@ tr:last-child td{border-bottom:0}
         <table class="ex-table">
           <thead><tr><th>Repère</th><th>Appareil</th><th>Circuit</th></tr></thead>
           <tbody>
-            <tr><td>ID1</td><td>Inter. différentiel 40 A · 30 mA · type AC</td><td>Protège D1, D2, D3</td></tr>
-            <tr><td>D1</td><td>Disjoncteur C20</td><td>PC1 (prise modulaire)</td></tr>
-            <tr><td>D2</td><td>Disjoncteur C16</td><td>L1 + L3 par R1</td></tr>
-            <tr><td>D3</td><td>Disjoncteur C16</td><td>L2 par R2</td></tr>
-            <tr><td>ID2</td><td>Inter. différentiel 40 A · 30 mA · type A</td><td>Protège D4, D5, D6</td></tr>
-            <tr><td>D4</td><td>Disjoncteur C20</td><td>PC2 (machine à laver)</td></tr>
-            <tr><td>D5</td><td>Disjoncteur C2</td><td>Commande de C1 (par S2)</td></tr>
-            <tr><td>D6</td><td>Disjoncteur C20</td><td>Chauffe-eau (SC) par C1</td></tr>
+            <tr><td>ID1</td><td>Inter. différentiel 40 A · 30 mA · type A</td><td>Protège D1, D2, D3</td></tr>
+            <tr><td>D1</td><td>Disjoncteur 1P+N C20</td><td>PC2 (machine à laver)</td></tr>
+            <tr><td>D2</td><td>Disjoncteur 1P+N C16</td><td>Éclairage salon : L1 + L3 par R1</td></tr>
+            <tr><td>D3</td><td>Disjoncteur 1P+N C16</td><td>Éclairage séjour : L2 par R2</td></tr>
+            <tr><td>ID2</td><td>Inter. différentiel 40 A · 30 mA · type AC</td><td>Protège D4, D5, D6</td></tr>
+            <tr><td>D4</td><td>Disjoncteur 1P+N C20</td><td>Puissance chauffe-eau (SC) par C1</td></tr>
+            <tr><td>D5</td><td>Disjoncteur 1P+N C2</td><td>Commande de C1 (par S2)</td></tr>
+            <tr><td>D6</td><td>Disjoncteur 1P+N C20</td><td>PC1 (prise modulaire)</td></tr>
             <tr><td>C1</td><td>Contacteur HC/HP</td><td>Coupe le chauffe-eau</td></tr>
             <tr><td>PC1</td><td>Prise modulaire 16 A 2P+T</td><td>Dans le tableau</td></tr>
           </tbody>
@@ -736,7 +746,7 @@ tr:last-child td{border-bottom:0}
         <li>Les micromodules sont alimentés en permanence par la phase et le neutre, dans la boîte de dérivation BD1.</li>
         <li>Sections : 1,5 mm² sur les circuits en C16 et C2, 2,5 mm² sur les circuits en C20.</li>
         <li>Le combiné d’interphone I1 est en très basse tension, par la liaison C2 vers la platine de rue : il ne figure pas sur ce schéma 230 V.</li>
-        <li>Sur le schéma, les différentiels sont dessinés sur la phase seulement ; en vrai, ils coupent aussi le neutre.</li>
+        <li>Câblage à la française : chaque différentiel a son propre peigne de neutre, et chaque circuit repart de son disjoncteur 1P+N avec <strong>sa phase et son neutre</strong>. Le neutre d’un circuit ne se mélange jamais à celui d’un autre.</li>
         <li>Documents remis au début : attestation de consignation, autorisation de travail, schéma de bornier de la boîte 4.</li>
       </ul></div>
       <div class="box"><h2>Installation existante</h2><ul>
@@ -949,6 +959,7 @@ const COIL = [['A1', 0, 20], ['A2', 0, 60], ['1', 120, 20], ['2', 120, 60]];
 const DEF = {
   src: { name: 'Alimentation 230 V', pre: 'ALIM', w: 80, h: 160, t: [['L', 80, 20], ['N', 80, 100], ['PE', 80, 140]], desc: 'Le tableau : il fournit la phase (L), le neutre (N) et la terre (PE).' },
   disj: { name: 'Disjoncteur', pre: 'Q', w: 80, h: 40, t: T2, desc: 'Protège le circuit : il déclenche en cas de court-circuit.', op: true },
+  dpn: { name: 'Disjoncteur phase + neutre', pre: 'Q', w: 80, h: 80, t: [['1', 0, 20], ['2', 80, 20], ['N1', 0, 60], ['N2', 80, 60]], desc: 'Disjoncteur 1P+N, le modèle français : il coupe la phase et le neutre en même temps. Chaque circuit repart de son propre disjoncteur avec sa phase et son neutre.', op: true },
   fus: { name: 'Fusible', pre: 'F', w: 80, h: 40, t: T2, desc: 'Protection qui fond en cas de court-circuit. Il faut ensuite le remplacer.', op: true },
   terre: { name: 'Prise de terre', pre: 'PE', w: 40, h: 40, t: [['PE', 20, 0]], desc: 'Relie les masses métalliques et les prises à la terre.' },
   inter: { name: 'Interrupteur', pre: 'S', w: 80, h: 40, t: T2, desc: 'Ouvre ou ferme le circuit.', op: true },
@@ -977,7 +988,7 @@ const ED_W = 1400, ED_H = 1000; // taille du plan du bac à sable
 
 function defSt(type) {
   switch (type) {
-    case 'disj': return { closed: true };
+    case 'disj': case 'dpn': return { closed: true };
     case 'fus': return { ok: true };
     case 'inter': return { on: false };
     case 'vav': return { pos: 1 };
@@ -1003,6 +1014,7 @@ function links(c) {
   const s = c.st;
   switch (c.type) {
     case 'disj': return s.closed ? [['1', '2']] : [];
+    case 'dpn': return s.closed ? [['1', '2'], ['N1', 'N2']] : [];
     case 'fus': return s.ok ? [['1', '2']] : [];
     case 'inter': return s.on ? [['1', '2']] : [];
     case 'vav': return s.pos === 1 ? [['C', '1']] : [['C', '2']];
@@ -1101,13 +1113,13 @@ function simulate(comps, wires, power) {
   for (let it = 0; it < 12; it++) {
     res = solve(cs, wires, power);
     if (res.short) {
-      const prot = cs.filter((c) => (c.type === 'disj' && c.st.closed) || (c.type === 'fus' && c.st.ok));
+      const prot = cs.filter((c) => ((c.type === 'disj' || c.type === 'dpn') && c.st.closed) || (c.type === 'fus' && c.st.ok));
       let fixed = false;
       for (const p of prot) {
-        const test = cs.map((c) => (c.id === p.id ? Object.assign({}, c, { st: Object.assign({}, c.st, c.type === 'disj' ? { closed: false } : { ok: false }) }) : c));
+        const test = cs.map((c) => (c.id === p.id ? Object.assign({}, c, { st: Object.assign({}, c.st, (c.type === 'disj' || c.type === 'dpn') ? { closed: false } : { ok: false }) }) : c));
         if (!solve(test, wires, power).short) {
           cs = test; fixed = true;
-          msgs.push('Court-circuit ! ' + p.ref + (p.type === 'disj' ? ' a déclenché' : ' a fondu') + ' pour protéger l’installation.');
+          msgs.push('Court-circuit ! ' + p.ref + ((p.type === 'disj' || p.type === 'dpn') ? ' a déclenché' : ' a fondu') + ' pour protéger l’installation.');
           break;
         }
       }
@@ -1145,7 +1157,7 @@ function boxOf(c) { const d = DEF[c.type], sw = (c.rot || 0) % 180 !== 0; return
 function opLabel(c, on) {
   const s = c.st;
   switch (c.type) {
-    case 'disj': return s.closed ? 'Déclencher' : 'Réarmer';
+    case 'disj': case 'dpn': return s.closed ? 'Déclencher' : 'Réarmer';
     case 'fus': return s.ok ? '' : 'Remplacer le fusible';
     case 'inter': return c.ops ? (s.on ? c.ops[1] : c.ops[0]) : (s.on ? 'Ouvrir' : 'Fermer');
     case 'vav': return 'Basculer (navette ' + s.pos + ')';
@@ -1163,7 +1175,7 @@ function stateText(c, on, power) {
   const s = c.st;
   switch (c.type) {
     case 'src': return power ? 'Sous tension' : 'Hors tension';
-    case 'disj': return s.closed ? 'Armé' : 'Déclenché';
+    case 'disj': case 'dpn': return s.closed ? 'Armé' : 'Déclenché';
     case 'fus': return s.ok ? 'En bon état' : 'Fondu';
     case 'inter': return c.sts ? (s.on ? c.sts[1] : c.sts[0]) : (s.on ? 'Fermé' : 'Ouvert');
     case 'vav': return 'Sur la navette ' + s.pos;
@@ -1193,6 +1205,7 @@ function sym(c, on, now) {
   switch (c.type) {
     case 'src': return `<rect x="4" y="4" width="50" height="152" rx="8" class="srcb"/><path d="M54 20H80" class="stub ph"/><path d="M54 100H80" class="stub ne"/><path d="M54 140H80" class="stub pe"/><text x="29" y="72" class="t c">${c.volt ? c.volt[0] : '230'}</text><text x="29" y="90" class="t c">${c.volt ? c.volt[1] : 'V ~'}</text><text x="62" y="13" class="t sm">L</text><text x="62" y="93" class="t sm">N</text><text x="60" y="133" class="t sm">PE</text>`;
     case 'disj': return `<path d="M0 20H20M62 20H80M56 14L68 26M68 14L56 26" class="s"/>${dot(20, 20)}<line x1="20" y1="20" x2="${s.closed ? 60 : 54}" y2="${s.closed ? 20 : 3}" class="s"/>`;
+    case 'dpn': { const y2 = s.closed ? 20 : 3, y6 = s.closed ? 60 : 43, x2 = s.closed ? 60 : 54; return `<path d="M0 20H20M62 20H80M56 14L68 26M68 14L56 26M0 60H20M60 60H80" class="s"/>${dot(20, 20)}${dot(20, 60)}${dot(60, 60)}<line x1="20" y1="20" x2="${x2}" y2="${y2}" class="s"/><line x1="20" y1="60" x2="${x2}" y2="${y6}" class="s"/><line x1="38" y1="${s.closed ? 20 : 11}" x2="38" y2="${s.closed ? 60 : 51}" class="s" stroke-dasharray="4 4"/><text x="8" y="56" class="t lab c" style="font-size:12px">N</text>`; }
     case 'fus': return `<path d="M0 20H18M62 20H80" class="s"/><rect x="18" y="11" width="44" height="18" rx="2" class="fuse${s.ok ? '' : ' blown'}"/><path d="M18 20H62" class="s thin${s.ok ? '' : ' blown'}"/>`;
     case 'terre': return `<path d="M20 0V20M6 20H34M11 27H29M16 34H24" class="s pe2"/>`;
     case 'inter': return `<path d="M0 20H20M60 20H80" class="s"/>${dot(20, 20)}${dot(60, 20)}<line x1="20" y1="20" x2="${s.on ? 60 : 54}" y2="${s.on ? 20 : 3}" class="s"/>`;
@@ -1340,7 +1353,7 @@ class Circuit {
       this.bpT = setTimeout(() => { this.comps.forEach((x) => { if (x.type === 'bp' || x.type === 'radio') x.st.pressed = false; }); this.update(); }, 650);
       return;
     }
-    if (c.type === 'disj') { s.closed = !s.closed; if (s.closed) this.events = []; }
+    if (c.type === 'disj' || c.type === 'dpn') { s.closed = !s.closed; if (s.closed) this.events = []; }
     else if (c.type === 'fus') { if (s.ok) return; s.ok = true; this.events = []; }
     else if (c.type === 'inter') s.on = !s.on;
     else if (c.type === 'vav') s.pos = s.pos === 1 ? 2 : 1;
@@ -1487,7 +1500,7 @@ class Board {
     const f2 = (a) => { while (P2[a] !== a) { P2[a] = P2[P2[a]]; a = P2[a]; } return a; };
     const u2 = (a, b) => { const ra = f2(a), rb = f2(b); if (ra !== rb) P2[ra] = rb; };
     C.wires.forEach((w) => { if (P2[w.a] !== undefined && P2[w.b] !== undefined) u2(w.a, w.b); });
-    C.comps.forEach((c) => { if (c.type === 'disj' || c.type === 'fus') u2(c.id + ':1', c.id + ':2'); });
+    C.comps.forEach((c) => { if (c.type === 'disj' || c.type === 'fus' || c.type === 'dpn') u2(c.id + ':1', c.id + ':2'); if (c.type === 'dpn') u2(c.id + ':N1', c.id + ':N2'); });
     const kind = {};
     C.comps.forEach((c) => { if (c.type === 'src') kind[f2(c.id + ':L')] = 'ph'; });
     C.comps.forEach((c) => {
@@ -1499,7 +1512,7 @@ class Board {
     let h = '';
     const vb = this.edit ? { x: 0, y: 0, w: ED_W, h: ED_H } : (this.vb || { x: 0, y: 0, w: 800, h: 500 });
     h += `<rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="#111A24"/><rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="url(#${this.gid})" data-bg="1"/>`;
-    const conn = {}, RT = this.edit ? this.routeAll(pos) : null;
+    const conn = {}, RT = this.routeAll(pos);
     C.wires.forEach((w) => {
       conn[w.a] = (conn[w.a] || 0) + 1; conn[w.b] = (conn[w.b] || 0) + 1;
       const A = pos[w.a], B = pos[w.b]; if (!A || !B) return;
@@ -1694,36 +1707,36 @@ class Board {
 /* ---------------- Schémas prédéfinis ---------------- */
 const PRESETS = [
   { id: 'simple', group: 'base', title: 'Simple allumage', sub: 'Un interrupteur commande un point lumineux depuis un seul endroit.',
-    ret: ['L’interrupteur coupe toujours la phase, jamais le neutre.', 'Le fil entre l’interrupteur et la lampe s’appelle le retour lampe.', 'Le neutre va directement du tableau à la lampe.'],
+    ret: ['L’interrupteur coupe toujours la phase, jamais le neutre.', 'Le fil entre l’interrupteur et la lampe s’appelle le retour lampe.', 'Le neutre part du disjoncteur 1P+N et va directement à la lampe, sans passer par l’interrupteur.'],
     essai: 'Clique sur S1 pour l’ouvrir : la lampe s’éteint, mais la lueur rouge montre que la phase reste sous tension jusqu’à l’interrupteur.',
-    mat: ['1 interrupteur simple allumage', '1 point lumineux (DCL)', 'Disjoncteur 16 A · fils 1,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), s = mk('inter', 400, 220, 0, 'S1'), l = mk('lampe', 600, 260, 90, 'L1');
-      return { comps: [src, q, s, l], wires: [wr(src, 'L', q, '1'), wr(q, '2', s, '1'), wr(s, '2', l, '1'), wr(l, '2', src, 'N')] }; } },
+    mat: ['1 interrupteur simple allumage', '1 point lumineux (DCL)', 'Disjoncteur 1P+N 16 A · fils 1,5 mm²'],
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), s = mk('inter', 400, 220, 0, 'S1'), l = mk('lampe', 600, 260, 90, 'L1');
+      return { comps: [src, q, s, l], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', s, '1'), wr(s, '2', l, '1'), wr(l, '2', q, 'N2')] }; } },
   { id: 'double', group: 'base', title: 'Double allumage', sub: 'Deux interrupteurs indépendants commandent chacun leur lampe, souvent réunis dans un même boîtier.',
     ret: ['La phase arrive une seule fois puis alimente les deux interrupteurs.', 'Chaque interrupteur a son propre retour lampe.', 'Le neutre est commun aux deux lampes.'],
     essai: 'Allume L1, puis L2 : la puissance consommée double.',
-    mat: ['1 interrupteur double allumage (ou 2 simples)', '2 points lumineux', 'Disjoncteur 16 A · fils 1,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), x = mk('borne', 320, 220, 0, 'X1'),
+    mat: ['1 interrupteur double allumage (ou 2 simples)', '2 points lumineux', 'Disjoncteur 1P+N 16 A · fils 1,5 mm²'],
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), x = mk('borne', 320, 220, 0, 'X1'),
         s1 = mk('inter', 420, 220, 0, 'S1'), l1 = mk('lampe', 560, 260, 90, 'L1', { lab: 'salon' }), s2 = mk('inter', 420, 360, 0, 'S2'), l2 = mk('lampe', 680, 400, 90, 'L2', { lab: 'salle à manger' });
-      return { comps: [src, q, x, s1, l1, s2, l2], wires: [wr(src, 'L', q, '1'), wr(q, '2', x, 'P'), wr(x, 'P', s1, '1'), wr(s1, '2', l1, '1'), wr(l1, '2', src, 'N'), wr(x, 'P', s2, '1', true), wr(s2, '2', l2, '1'), wr(l2, '2', l1, '2')] }; } },
+      return { comps: [src, q, x, s1, l1, s2, l2], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', x, 'P'), wr(x, 'P', s1, '1'), wr(s1, '2', l1, '1'), wr(l1, '2', q, 'N2'), wr(x, 'P', s2, '1', true), wr(s2, '2', l2, '1'), wr(l2, '2', l1, '2')] }; } },
   { id: 'vav', group: 'base', title: 'Va-et-vient', sub: 'Commander une même lampe depuis deux endroits : escalier, couloir, chambre.',
     ret: ['Chaque va-et-vient a une borne commune et deux bornes de navettes.', 'Les deux navettes relient les interrupteurs entre eux.', 'La lampe s’allume quand les deux leviers mènent à la même navette.'],
     essai: 'Bascule S1, puis S2 : à chaque action, l’état de la lampe s’inverse, quel que soit l’interrupteur utilisé.',
-    mat: ['2 interrupteurs va-et-vient', '1 point lumineux (DCL)', 'Disjoncteur 16 A · fils 1,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), s1 = mk('vav', 400, 220, 0, 'S1', { lab: 'bas d’escalier' }), s2 = mk('vav', 600, 220, 180, 'S2', { lab: 'haut d’escalier' }), l = mk('lampe', 760, 260, 90, 'L1');
-      return { comps: [src, q, s1, s2, l], wires: [wr(src, 'L', q, '1'), wr(q, '2', s1, 'C'), wr(s1, '1', s2, '2'), wr(s1, '2', s2, '1'), wr(s2, 'C', l, '1'), wr(l, '2', src, 'N')] }; } },
+    mat: ['2 interrupteurs va-et-vient', '1 point lumineux (DCL)', 'Disjoncteur 1P+N 16 A · fils 1,5 mm²'],
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), s1 = mk('vav', 400, 220, 0, 'S1', { lab: 'bas d’escalier' }), s2 = mk('vav', 600, 220, 180, 'S2', { lab: 'haut d’escalier' }), l = mk('lampe', 760, 260, 90, 'L1');
+      return { comps: [src, q, s1, s2, l], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', s1, 'C'), wr(s1, '1', s2, '2'), wr(s1, '2', s2, '1'), wr(s2, 'C', l, '1'), wr(l, '2', q, 'N2')] }; } },
   { id: 'sonnette', group: 'base', title: 'Bouton poussoir et sonnette', sub: 'Un bouton poussoir ne ferme le circuit que tant qu’on appuie dessus.',
     ret: ['Au repos, le contact du bouton poussoir est ouvert.', 'Le courant ne passe que pendant l’appui : la sonnette s’arrête dès qu’on relâche.', 'Le même principe sert à commander un télérupteur ou une minuterie.'],
     essai: 'Appuie sur BP1 : la sonnette fait « ding » quand le courant arrive et « dong » quand il s’arrête. Observe le courant : il ne circule que pendant l’appui.',
-    mat: ['1 bouton poussoir', '1 sonnette 230 V', 'Disjoncteur 16 A · fils 1,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), b = mk('bp', 400, 220, 0, 'BP1', { lab: 'porte d’entrée' }), s = mk('sonnette', 560, 260, 90, 'B1');
-      return { comps: [src, q, b, s], wires: [wr(src, 'L', q, '1'), wr(q, '2', b, '1'), wr(b, '2', s, '1'), wr(s, '2', src, 'N')] }; } },
+    mat: ['1 bouton poussoir', '1 sonnette 230 V', 'Disjoncteur 1P+N 16 A · fils 1,5 mm²'],
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), b = mk('bp', 400, 220, 0, 'BP1', { lab: 'porte d’entrée' }), s = mk('sonnette', 560, 260, 90, 'B1');
+      return { comps: [src, q, b, s], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', b, '1'), wr(b, '2', s, '1'), wr(s, '2', q, 'N2')] }; } },
   { id: 'perm', group: 'adv', title: 'Commande depuis 3 endroits', sub: 'Un permutateur placé entre deux va-et-vient ajoute un point de commande.',
     ret: ['Les va-et-vient sont aux deux extrémités, les permutateurs au milieu.', 'Le permutateur croise ou décroise les deux navettes.', 'On ajoute un permutateur par point de commande supplémentaire.'],
     essai: 'Actionne S1, S2 puis S3 : chaque action inverse l’état de la lampe.',
-    mat: ['2 va-et-vient et 1 permutateur', '1 point lumineux', 'Disjoncteur 16 A · fils 1,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), s1 = mk('vav', 400, 220, 0, 'S1'), s2 = mk('perm', 560, 220, 0, 'S2'), s3 = mk('vav', 720, 220, 180, 'S3'), l = mk('lampe', 880, 260, 90, 'L1');
-      return { comps: [src, q, s1, s2, s3, l], wires: [wr(src, 'L', q, '1'), wr(q, '2', s1, 'C'), wr(s1, '1', s2, '1'), wr(s1, '2', s2, '2'), wr(s2, '3', s3, '2'), wr(s2, '4', s3, '1'), wr(s3, 'C', l, '1'), wr(l, '2', src, 'N')] }; } },
+    mat: ['2 va-et-vient et 1 permutateur', '1 point lumineux', 'Disjoncteur 1P+N 16 A · fils 1,5 mm²'],
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), s1 = mk('vav', 400, 220, 0, 'S1'), s2 = mk('perm', 560, 220, 0, 'S2'), s3 = mk('vav', 720, 220, 180, 'S3'), l = mk('lampe', 880, 260, 90, 'L1');
+      return { comps: [src, q, s1, s2, s3, l], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', s1, 'C'), wr(s1, '1', s2, '1'), wr(s1, '2', s2, '2'), wr(s2, '3', s3, '2'), wr(s2, '4', s3, '1'), wr(s3, 'C', l, '1'), wr(l, '2', q, 'N2')] }; } },
   { id: 'tele', group: 'adv', title: 'Télérupteur', sub: 'Commander une lampe depuis trois endroits ou plus, avec des boutons poussoirs.',
     ret: ['Les boutons poussoirs sont câblés en parallèle et alimentent la bobine.', 'Chaque impulsion fait basculer le contact : allumé, éteint, allumé…', 'Deux circuits distincts : la commande (bobine) et la puissance (lampe).'],
     essai: 'Appuie sur BP1, puis sur BP3 : le courant ne traverse la bobine que pendant l’appui, mais la lampe garde son état.',
@@ -1732,16 +1745,16 @@ const PRESETS = [
   { id: 'tele412', group: 'adv', title: 'Télérupteur Legrand 412412', sub: 'Le câblage d’un vrai télérupteur bipolaire : bornes 1 et 3 en haut, 2, 4, A1 et A2 en bas.',
     ret: ['A1 et A2, la bobine 230 V : A1 reçoit le retour des boutons poussoirs (la phase, seulement pendant l’appui), A2 va directement au neutre.', '1 et 3, les arrivées : la phase venant du disjoncteur sur 1, le neutre sur 3.', '2 et 4, les départs vers la lampe : 2 donne le retour lampe (la phase), 4 le neutre. Les deux contacts s’ouvrent et se ferment ensemble.', 'Le levier I / O en façade allume ou éteint à la main, sans bouton poussoir.'],
     essai: 'Appuie sur BP1 ou BP2 : les deux contacts basculent ensemble. Essaie ensuite le levier du télérupteur.',
-    mat: ['Legrand 412412 : télérupteur bipolaire 16AX 250 V, 2 contacts, bobine 230 V', '2 boutons poussoirs · 1 point lumineux', 'Disjoncteur 16 A · fils 1,5 mm²', 'Le 2e contact (3-4) peut aussi commander un autre circuit'],
-    build() { const src = mk('src', 100, 300, 0, 'ALIM'), q = mk('disj', 240, 240, 0, 'Q1', { lab: '16 A' }), x1 = mk('borne', 360, 240, 0, 'X1');
+    mat: ['Legrand 412412 : télérupteur bipolaire 16AX 250 V, 2 contacts, bobine 230 V', '2 boutons poussoirs · 1 point lumineux', 'Disjoncteur 1P+N 16 A · fils 1,5 mm²', 'Le 2e contact (3-4) peut aussi commander un autre circuit'],
+    build() { const src = mk('src', 100, 300, 0, 'ALIM'), q = mk('dpn', 240, 260, 0, 'Q1', { lab: '16 A' }), x1 = mk('borne', 360, 240, 0, 'X1');
       const b1 = mk('bp', 400, 340, 90, 'BP1', { lab: 'entrée' }), b2 = mk('bp', 520, 340, 90, 'BP2', { lab: 'couloir' });
       const k = mk('tele2', 680, 420, 0, 'KA1'), l = mk('lampe', 680, 560, 0, 'L1');
-      const n1 = mk('borne', 180, 320, 0, 'X2'), n2 = mk('borne', 180, 640, 0, 'X3'), n3 = mk('borne', 600, 640, 0, 'X4'), n4 = mk('borne', 800, 640, 0, 'X5'), n5 = mk('borne', 800, 300, 0, 'X6');
+      const n3 = mk('borne', 600, 620, 0, 'X2');
       const wn = wr(k, '4', l, '2'); wn.color = 'ne';
-      return { comps: [src, q, x1, b1, b2, k, l, n1, n2, n3, n4, n5], wires: [
-        wr(src, 'L', q, '1'), wr(q, '2', x1, 'P'), wr(x1, 'P', b1, '1'), wr(x1, 'P', b2, '1'), wr(b1, '2', b2, '2'), wr(b2, '2', k, 'A1'),
+      return { comps: [src, q, x1, b1, b2, k, l, n3], wires: [
+        wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', x1, 'P'), wr(x1, 'P', b1, '1'), wr(x1, 'P', b2, '1'), wr(b1, '2', b2, '2'), wr(b2, '2', k, 'A1'),
         wr(x1, 'P', k, '1'), wr(k, '2', l, '1'), wn, wr(k, 'A2', n3, 'P'),
-        wr(src, 'N', n1, 'P'), wr(n1, 'P', n2, 'P'), wr(n2, 'P', n3, 'P'), wr(n3, 'P', n4, 'P'), wr(n4, 'P', n5, 'P'), wr(n5, 'P', k, '3')] }; } },
+        wr(q, 'N2', n3, 'P'), wr(n3, 'P', k, '3')] }; } },
   { id: 'minu', group: 'adv', title: 'Minuterie d’escalier', sub: 'Une impulsion allume l’éclairage pendant une durée réglée, puis il s’éteint tout seul.',
     ret: ['Les boutons poussoirs alimentent la bobine de la minuterie, comme pour un télérupteur.', 'Le contact reste fermé pendant la durée réglée (ici 8 secondes), puis s’ouvre.', 'Un nouvel appui pendant le décompte relance la temporisation.'],
     essai: 'Appuie sur un bouton poussoir, puis regarde le décompte sous la bobine KT1.',
@@ -1751,37 +1764,37 @@ const PRESETS = [
     ret: ['Le micromodule est alimenté en permanence par la phase (L) et le neutre (N).', 'Les boutons poussoirs, câblés en parallèle, envoient une impulsion sur son entrée BP.', 'À chaque impulsion, sa sortie S bascule et allume ou éteint les 3 lampes branchées en parallèle.'],
     essai: 'Appuie sur BP1, puis sur BP3 : les trois lampes s’allument puis s’éteignent ensemble, quel que soit le poussoir utilisé.',
     mat: ['1 micromodule télérupteur encastré (ex. Yokis MTR2000E)', '3 boutons poussoirs sans voyant', '3 points lumineux · disjoncteur 16 A · fils 1,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), x1 = mk('borne', 360, 220, 0, 'X1'), xn = mk('borne', 180, 480, 0, 'X2');
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), x1 = mk('borne', 360, 220, 0, 'X1'), xn = mk('borne', 180, 480, 0, 'X2');
       const b1 = mk('bp', 360, 320, 90, 'BP1', { lab: 'entrée' }), b2 = mk('bp', 460, 320, 90, 'BP2', { lab: 'couloir' }), b3 = mk('bp', 560, 320, 90, 'BP3', { lab: 'salon' });
       const y = mk('yokis', 720, 380, 0, 'Y1', { lab: 'Yokis' }), l1 = mk('lampe', 880, 400, 90, 'L1'), l2 = mk('lampe', 980, 400, 90, 'L2'), l3 = mk('lampe', 1080, 400, 90, 'L3');
       return { comps: [src, q, x1, xn, b1, b2, b3, y, l1, l2, l3], wires: [
-        wr(src, 'L', q, '1'), wr(q, '2', x1, 'P'), wr(x1, 'P', b1, '1'), wr(x1, 'P', b2, '1'), wr(x1, 'P', b3, '1'),
+        wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', x1, 'P'), wr(x1, 'P', b1, '1'), wr(x1, 'P', b2, '1'), wr(x1, 'P', b3, '1'),
         wr(b1, '2', b2, '2'), wr(b2, '2', b3, '2'), wr(b3, '2', y, 'BP', true), wr(x1, 'P', y, 'L'),
-        wr(src, 'N', xn, 'P'), wr(y, 'N', xn, 'P', true),
+        wr(q, 'N2', xn, 'P'), wr(y, 'N', xn, 'P', true),
         wr(y, 'S', l1, '1'), wr(l1, '1', l2, '1'), wr(l2, '1', l3, '1'),
         wr(l1, '2', xn, 'P', true), wr(l2, '2', l1, '2'), wr(l3, '2', l2, '2')] }; } },
   { id: 'hc', group: 'adv', title: 'Contacteur heures creuses', sub: 'Le chauffe-eau ne chauffe que pendant les heures creuses, sauf si l’on force la marche.',
     ret: ['Le compteur ferme un contact sec quand les heures creuses commencent.', 'Ce contact alimente la bobine KM, qui ferme le circuit de puissance du chauffe-eau.', 'L’interrupteur de marche forcée, en parallèle, permet de chauffer à tout moment.'],
     essai: 'Ferme S1 (début des heures creuses), puis ouvre-le et force la marche avec S2.',
     mat: ['1 contacteur jour/nuit 20 A', '1 chauffe-eau 3 000 W', 'Disjoncteur 20 A · fils 2,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '20 A' }), x1 = mk('borne', 320, 220, 0, 'X1'), xn = mk('borne', 180, 460, 0, 'X2'),
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '20 A' }), x1 = mk('borne', 320, 220, 0, 'X1'), xn = mk('borne', 180, 460, 0, 'X2'),
         s1 = mk('inter', 420, 300, 0, 'S1', { lab: 'contact HC' }), s2 = mk('inter', 420, 380, 0, 'S2', { lab: 'marche forcée' }), km = mk('cont', 620, 320, 0, 'KM1'), r = mk('rad', 800, 380, 90, 'R1', { lab: 'chauffe-eau', watt: 3000 });
-      return { comps: [src, q, x1, xn, s1, s2, km, r], wires: [wr(src, 'L', q, '1'), wr(q, '2', x1, 'P'), wr(x1, 'P', s1, '1', true), wr(x1, 'P', s2, '1', true), wr(s2, '2', s1, '2'), wr(s1, '2', km, 'A1'),
-        wr(src, 'N', xn, 'P'), wr(km, 'A2', xn, 'P', true), wr(x1, 'P', km, '1'), wr(km, '2', r, '1'), wr(r, '2', xn, 'P', true)] }; } },
+      return { comps: [src, q, x1, xn, s1, s2, km, r], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', x1, 'P'), wr(x1, 'P', s1, '1', true), wr(x1, 'P', s2, '1', true), wr(s2, '2', s1, '2'), wr(s1, '2', km, 'A1'),
+        wr(q, 'N2', xn, 'P'), wr(km, 'A2', xn, 'P', true), wr(x1, 'P', km, '1'), wr(km, '2', r, '1'), wr(r, '2', xn, 'P', true)] }; } },
   { id: 'court', group: 'adv', title: 'Court-circuit et disjoncteur', sub: 'Que se passe-t-il quand la phase touche directement le neutre ?',
     ret: ['Sans récepteur pour le limiter, le courant devient énorme.', 'Le disjoncteur détecte cette surintensité et coupe le circuit en quelques millisecondes.', 'Il faut trouver et réparer le défaut avant de réarmer.'],
     essai: 'Allume la lampe avec S1, puis ferme S2 pour simuler un défaut. Rouvre S2, puis réarme Q1.',
     mat: ['Un disjoncteur adapté à la section des fils', 'Ici : 16 A pour du 1,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), s1 = mk('inter', 400, 220, 0, 'S1'), s2 = mk('inter', 520, 260, 90, 'S2', { lab: 'défaut' }), l = mk('lampe', 640, 260, 90, 'L1');
-      return { comps: [src, q, s1, s2, l], wires: [wr(src, 'L', q, '1'), wr(q, '2', s1, '1'), wr(s1, '2', s2, '1'), wr(s2, '1', l, '1'), wr(l, '2', s2, '2'), wr(s2, '2', src, 'N')] }; } }
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), s1 = mk('inter', 400, 220, 0, 'S1'), s2 = mk('inter', 520, 260, 90, 'S2', { lab: 'défaut' }), l = mk('lampe', 640, 260, 90, 'L1');
+      return { comps: [src, q, s1, s2, l], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', s1, '1'), wr(s1, '2', s2, '1'), wr(s2, '1', l, '1'), wr(l, '2', s2, '2'), wr(s2, '2', q, 'N2')] }; } }
 ];
 function buildImpulse(type, ref, labs) {
-  const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('disj', 240, 220, 0, 'Q1', { lab: '16 A' }), x1 = mk('borne', 360, 220, 0, 'X1'), xn = mk('borne', 180, 400, 0, 'X2');
+  const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), x1 = mk('borne', 360, 220, 0, 'X1'), xn = mk('borne', 180, 400, 0, 'X2');
   const b1 = mk('bp', 360, 320, 90, 'BP1', { lab: labs[0] }), b2 = mk('bp', 460, 320, 90, 'BP2', { lab: labs[1] }), b3 = mk('bp', 560, 320, 90, 'BP3', { lab: labs[2] });
   const k = mk(type, 720, 380, 0, ref), l = mk('lampe', 920, 440, 90, 'L1');
   return { comps: [src, q, x1, xn, b1, b2, b3, k, l], wires: [
-    wr(src, 'L', q, '1'), wr(q, '2', x1, 'P'), wr(x1, 'P', b1, '1'), wr(x1, 'P', b2, '1'), wr(x1, 'P', b3, '1'),
-    wr(b1, '2', b2, '2'), wr(b2, '2', b3, '2'), wr(b3, '2', k, 'A1'), wr(src, 'N', xn, 'P'), wr(k, 'A2', xn, 'P'),
+    wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', x1, 'P'), wr(x1, 'P', b1, '1'), wr(x1, 'P', b2, '1'), wr(x1, 'P', b3, '1'),
+    wr(b1, '2', b2, '2'), wr(b2, '2', b3, '2'), wr(b3, '2', k, 'A1'), wr(q, 'N2', xn, 'P'), wr(k, 'A2', xn, 'P'),
     wr(x1, 'P', k, '1'), wr(k, '2', l, '1'), wr(l, '2', xn, 'P')] };
 }
 
@@ -1791,12 +1804,349 @@ function summary(C) {
   if (res.short) return { dot: 'bad', title: 'Court-circuit !', detail: 'La phase touche le neutre sans récepteur et rien ne protège le circuit.' };
   const ons = C.comps.filter((c) => res.loadsOn[c.id] && ON_WORD[c.type]).map((c) => c.ref + ' ' + ON_WORD[c.type])
     .concat(C.comps.filter((c) => c.type === 'baes' && !res.loadsOn[c.id] && !c.st.rest).map((c) => c.ref + ' allumé (secours)'));
-  const ops = C.comps.filter((c) => ['inter', 'vav', 'perm', 'disj', 'bp'].includes(c.type) || (c.type === 'fus' && !c.st.ok)).map((c) => c.ref + ' ' + stateText(c, false, C.power).toLowerCase());
+  const ops = C.comps.filter((c) => ['inter', 'vav', 'perm', 'disj', 'dpn', 'bp'].includes(c.type) || (c.type === 'fus' && !c.st.ok)).map((c) => c.ref + ' ' + stateText(c, false, C.power).toLowerCase());
   if (C.events.length) return { dot: 'bad', title: ons.length ? ons.join(' · ') : 'Circuit coupé', detail: C.events[0] };
   if (!C.power) return { dot: '', title: 'Hors tension', detail: ops.join(' · ') };
   return { dot: ons.length ? 'on' : '', title: ons.length ? ons.join(' · ') : 'Aucun récepteur alimenté', detail: ops.join(' · ') };
 }
 function metricTxt(res) { return res.watts > 0 ? res.watts.toLocaleString('fr-FR') + ' W · ' + fr(res.watts / 230, 2) + ' A' : '0 W · 0 A'; }
+
+/* ---------------- Vue 3D (three.js, chargé à la demande depuis vendor/three.min.js) ----------------
+   Une scène = un mur, des boîtes, des appareils, des conduits et des fils.
+   Chaque fil porte un « net » : il finit toujours sur le connecteur de ce net (Wago ou borne). */
+const V3D = (() => {
+  let loading = null;
+  const loadThree = () => { if (window.THREE) return Promise.resolve(); if (!loading) loading = new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'vendor/three.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s); }); return loading; };
+  const COL = { rouge: 0xd8362a, bleu: 0x2b6be0, marron: 0x6d4022, orange: 0xea8420, noir: 0x1c1c1e, violet: 0x7c3fc6, ivoire: 0xe9e1c9, gris: 0x8d939a, blanc: 0xf1efe9, cr1: 0xd8362a };
+  const ring = (i, n, R) => { if (n < 2) return [0, 0, 0]; const a = 2 * Math.PI * i / n; return [Math.cos(a) * R, Math.sin(a) * R * 0.6, Math.sin(a) * R * 0.8]; };
+  function rounded(pts, rad) {
+    if (pts.length < 3) return pts;
+    const out = [pts[0]];
+    for (let i = 1; i < pts.length - 1; i++) {
+      const p = pts[i], a = pts[i - 1], b = pts[i + 1];
+      const da = p.distanceTo(a), db = p.distanceTo(b), r = Math.min(rad, da * 0.45, db * 0.45);
+      const A = p.clone().add(a.clone().sub(p).setLength(r)), B = p.clone().add(b.clone().sub(p).setLength(r));
+      for (let k = 0; k <= 5; k++) { const t = k / 5, q = A.clone().multiplyScalar((1 - t) * (1 - t)).add(p.clone().multiplyScalar(2 * t * (1 - t))).add(B.clone().multiplyScalar(t * t)); out.push(q); }
+    }
+    out.push(pts[pts.length - 1]);
+    return out;
+  }
+  class Builder {
+    constructor(T) { this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; }
+    mat(c, o) { const k = c + JSON.stringify(o || {}); if (!this.mats[k]) this.mats[k] = new this.T.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.62, metalness: 0.02 }, o || {})); return this.mats[k]; }
+    glass(c, op) { return this.mat(c, { transparent: true, opacity: op, depthWrite: false, roughness: 0.4 }); }
+    vj() { if (!this.vjT) { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const x = c.getContext('2d'); x.fillStyle = '#2f9e44'; x.fillRect(0, 0, 64, 8); x.fillStyle = '#f2c81e'; x.fillRect(0, 0, 32, 8); this.vjT = new this.T.CanvasTexture(c); this.vjT.wrapS = this.vjT.wrapT = this.T.RepeatWrapping; this.vjT.repeat.set(26, 1); } return this.mat(0xffffff, { map: this.vjT }); }
+    wmat(c) { return c === 'vj' ? this.vj() : this.mat(COL[c] === undefined ? 0x888888 : COL[c]); }
+    box(w, h, d, m, x, y, z) { const b = new this.T.Mesh(new this.T.BoxGeometry(w, h, d), typeof m === 'number' ? this.mat(m) : m); b.position.set(x, y, z); this.g.add(b); return b; }
+    tube(pts, r, m, rad) { const V = pts.map((p) => (p.isVector3 ? p : new this.T.Vector3(p[0], p[1], p[2]))); const P = rounded(V, rad === undefined ? 0.05 : rad); const dedupe = P.filter((p, i) => !i || p.distanceTo(P[i - 1]) > 1e-4); if (dedupe.length < 2) return null; const c = new this.T.CatmullRomCurve3(dedupe, false, 'catmullrom', 0.02); const t = new this.T.Mesh(new this.T.TubeGeometry(c, Math.min(400, dedupe.length * 8), r, 8, false), m); this.g.add(t); return t; }
+    label(txt, x, y, z, big) {
+      const c = document.createElement('canvas'), s = 3, f = (big === 1 ? 22 : 17) * s, x2 = c.getContext('2d'); x2.font = `600 ${f}px "IBM Plex Mono",monospace`; const w = Math.ceil(x2.measureText(txt).width) + 8 * s; c.width = w; c.height = f + 6 * s;
+      const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = 'rgba(17,26,36,.88)'; q.beginPath(); q.roundRect(0, 0, c.width, c.height, 7 * s); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
+      const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; this.g.add(sp); return sp;
+    }
+    wall(W, H, cx, cy) {
+      this.box(W, H, 0.04, this.mat(0xd8d2c5, { roughness: 0.95 }), cx, cy, -0.02);
+      this.box(W + 0.2, 0.05, 0.5, 0xb9ac97, cx, cy - H / 2 - 0.025, 0.22);
+      // trait de référence à 1 m
+      for (let x = cx - W / 2 + 0.05; x < cx + W / 2; x += 0.1) this.box(0.06, 0.006, 0.002, 0x55606b, x, 1, 0.002);
+      this.label('Trait 1 m', cx + W / 2 - 0.22, 1.05, 0.02);
+    }
+    /* boîte de dérivation ouverte : les connexions se voient */
+    jbox(id, x, y, o) {
+      o = o || {}; const w = o.w || 0.2, h = o.h || 0.2, d = 0.07, m = this.glass(o.c || 0xcfd4d9, 0.42);
+      this.box(w, h, 0.006, this.mat(o.c || 0xc9ced3), x, y, 0.005);
+      [[w, 0.008, d, 0, h / 2], [w, 0.008, d, 0, -h / 2], [0.008, h, d, -w / 2, 0], [0.008, h, d, w / 2, 0]].forEach((s) => this.box(s[0], s[1], s[2], m, x + s[3], y + s[4], d / 2));
+      this.label(o.label || id, x + (o.lx || 0), y + h / 2 + 0.07 + (o.ly || 0), 0.1);
+      const N = { x, y, nets: {}, n: 0, kind: 'jbox' };
+      N.at = (net) => {
+        if (!N.nets[net]) { const i = N.n++, col = i % 4, row = Math.floor(i / 4); const p = new this.T.Vector3(x - w * 0.33 + col * w * 0.22, y + h * 0.28 - row * h * 0.26, 0.04); N.nets[net] = p; this.box(0.03, 0.022, 0.024, this.mat(net.startsWith('PE') ? 0xd9d6cc : 0xe58a2c), p.x, p.y, p.z); }
+        return N.nets[net];
+      };
+      this.nodes[id] = N; return N;
+    }
+    /* appareil : façade pleine, bornes visibles sur le bord où arrivent les fils */
+    dev(id, kind, x, y, o) {
+      o = o || {}; const T = this.T, n0 = this.g.children.length, z0 = o.z || 0; const N = { x, y, nets: {}, n: 0, kind, ref: o.ref || id };
+      const W = o.w || 0.11, H = o.h || 0.11, side = o.side === undefined ? 1 : o.side;
+      const col = { etanche: 0x8a9096, poussoir: 0x8a9096, dm: 0xc8302a, rj: 0xdfe1e4, au: 0xf0c419, baes: 0xf4f4f0 }[kind] || 0xf3f1ea;
+      const dz = kind === 'lampe' ? 0.03 : 0.045;
+      if (kind === 'lampe' || kind === 'hublot') {
+        this.box(W, H, dz, kind === 'hublot' ? 0x8a9096 : 0xf1efe9, x, y, dz / 2);
+        const m = new T.MeshStandardMaterial({ color: 0xf6eecf, emissive: 0xffc94d, emissiveIntensity: 0, roughness: 0.3 });
+        const b = new T.Mesh(new T.SphereGeometry(0.052, 20, 14), m); b.position.set(x, y, dz + 0.04); this.g.add(b);
+        const pt = new T.PointLight(0xffd27a, 0, 1.4); pt.position.set(x, y, 0.2); this.g.add(pt);
+        this.lamps[N.ref] = { m, pt };
+      } else {
+        this.box(W, H, dz, this.mat(col), x, y, dz / 2);
+        if (kind === 'dm') this.box(W * 0.6, H * 0.6, 0.006, 0xf4f4f0, x, y, dz + 0.003);
+        if (kind === 'au') { const b = new T.Mesh(new T.CylinderGeometry(0.03, 0.03, 0.03, 20), this.mat(0xc8302a)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.015); this.g.add(b); }
+        if (kind === 'prise' || kind === 'pc') { const b = new T.Mesh(new T.CylinderGeometry(0.034, 0.034, 0.01, 24), this.mat(0xdedbd2)); b.rotation.x = Math.PI / 2; b.position.set(x, y, dz + 0.005); this.g.add(b); }
+        if (kind === 'poussoir' || kind === 'inter') this.box(W * 0.62, H * 0.62, 0.012, this.mat(0xfafaf6), x, y, dz + 0.006);
+        if (kind === 'baes') { this.box(W * 0.75, H * 0.5, 0.004, 0x2f9e44, x, y, dz + 0.002); this.lamps[N.ref + '#v'] = null; }
+        if (kind === 'rj') this.box(0.03, 0.022, 0.004, 0x333333, x, y, dz + 0.002);
+      }
+      for (let i = n0; i < this.g.children.length; i++) this.g.children[i].position.z += z0;
+      if (o.label !== false) this.label(o.label || id, x, y + H / 2 + 0.07, 0.1);
+      N.at = (net) => {
+        if (!N.nets[net]) { const i = N.n++, offs = (i - 1.5) * 0.024; const p = side === 'l' || side === 'r' ? new T.Vector3(x + (side === 'r' ? W : -W) / 2, y - offs, 0.022 + z0) : new T.Vector3(x + offs, y + side * H / 2, 0.022 + z0); N.nets[net] = p; const b = new T.Mesh(new T.SphereGeometry(0.008, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); b.position.copy(p); this.g.add(b); }
+        return N.nets[net];
+      };
+      this.nodes[id] = N; return N;
+    }
+    /* conduit + fils. k : icta, irl, dlp, mou, cable, nu (fils seuls) */
+    run(o) {
+      const pts = o.pts.map((p) => [p[0], p[1], p[2] === undefined ? 0.035 : p[2]]);
+      const c = o.cond || [], R = o.k === 'cable' ? 0.009 : o.r ? o.r - 0.01 : 0.012;
+      const conduit = { icta: [o.r || 0.026, this.glass(0x7c8894, 0.34)], irl: [o.r || 0.026, this.glass(0x6f7a85, 0.38)], cable: [0.016, this.glass(0x1a1a1c, 0.5)] }[o.k];
+      if (conduit) this.tube(pts, conduit[0], conduit[1], o.k === 'icta' ? 0.12 : 0.04);
+      if (o.k === 'dlp' || o.k === 'mou') this.gaine(pts, o.k, o.wd);
+      c.forEach((w, i) => {
+        const of = ring(i, c.length, R), mid = pts.map((p) => [p[0] + of[0], p[1] + of[1], p[2] + of[2]]);
+        const P = mid.slice();
+        const A = o.from && this.nodes[o.from] ? this.nodes[o.from].at(w.a || w.n) : null, B = o.to && this.nodes[o.to] ? this.nodes[o.to].at(w.b || w.n) : null;
+        if (w.via) w.via.slice().reverse().forEach((v) => P.unshift(v)); if (A) P.unshift([A.x, A.y, A.z]); if (B) P.push([B.x, B.y, B.z]);
+        this.tube(P, 0.0062, this.wmat(w.c), 0.03);
+      });
+      if (o.label) { const p = pts[Math.floor(pts.length / 2)], q = pts[Math.max(0, Math.floor(pts.length / 2) - 1)], at = o.at || [(p[0] + q[0]) / 2 + 0.05, (p[1] + q[1]) / 2 + 0.04]; this.label(o.label, at[0], at[1], 0.12); }
+    }
+    gaine(pts, k, W) {
+      const lid = this.glass(k === 'dlp' ? 0xf7f5ef : 0xf4f4f0, 0.28), base = this.mat(0xf0ede6), wd = W || (k === 'dlp' ? 0.13 : 0.075), dp = k === 'dlp' ? 0.055 : 0.03;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i], b = pts[i + 1], len = Math.hypot(b[0] - a[0], b[1] - a[1]), hz = Math.abs(a[0] - b[0]) > Math.abs(a[1] - b[1]), cx = (a[0] + b[0]) / 2, cy = (a[1] + b[1]) / 2;
+        this.box(hz ? len + wd : wd, hz ? wd : len + wd, 0.004, base, cx, cy, 0.003);
+        this.box(hz ? len + wd : wd, hz ? wd : len + wd, dp, lid, cx, cy, dp / 2 + 0.002);
+      }
+    }
+    rail(x0, x1, y) { const m = this.mat(0xb4b9be, { metalness: 0.5 }); this.box(x1 - x0, 0.09, 0.008, m, (x0 + x1) / 2, y, 0.03); for (let x = x0 + 0.05; x < x1 - 0.04; x += 0.14) this.box(0.08, 0.03, 0.01, 0x7f858b, x, y, 0.03); }
+    /* tableau : rangées de modules, peignes, bornes par net */
+    tableau(id, x, y, W, H, rows, label) {
+      const T = this.T; this.box(W, H, 0.012, 0xf4f2ec, x, y, 0.006);
+      [[W, 0.012, 0.09, 0, H / 2], [W, 0.012, 0.09, 0, -H / 2], [0.012, H, 0.09, -W / 2, 0], [0.012, H, 0.09, W / 2, 0]].forEach((s) => this.box(s[0], s[1], s[2], this.glass(0xe6e3dc, 0.5), x + s[3], y + s[4], 0.045));
+      this.label(label || id, x - W / 2 + 0.07, y + H / 2 - 0.05, 0.15, 1);
+      const N = { x, y, nets: {}, kind: 'tab', at: (n) => N.nets[n] || (N.nets[n] = new T.Vector3(x, y, 0.06)) };
+      const mw = (W - 0.1) / 10, rowH = (H - 0.2) / rows.length;
+      rows.forEach((r, i) => {
+        const yr = y + H / 2 - 0.1 - rowH * (i + 0.5);
+        this.box(W - 0.06, 0.03, 0.01, 0x9aa0a6, x, yr, 0.018);
+        let cx = x - W / 2 + 0.08, first = cx;
+        r.items.forEach((m) => {
+          const w = mw * (m.m || 1), mx = cx + w / 2 - mw / 2, col = m.k === 'id' ? 0xf0f0e8 : 0xf7f7f2, h = 0.135;
+          this.box(w - 0.006, h, 0.05, this.mat(col), mx, yr, 0.05);
+          this.box(w * 0.5, 0.026, 0.02, this.mat(m.k === 'id' ? 0x2b6be0 : 0x24272b), mx, yr + 0.028, 0.082);
+          this.label(m.id, mx, yr - 0.03, 0.12, 'tiny');
+          const tb = yr - h / 2 - 0.004;
+          (m.t || []).forEach((tn, j) => { const tx = mx + (j - (m.t.length - 1) / 2) * 0.026; const p = new T.Vector3(tx, tb, 0.075); N.nets[tn] = p; const s = new T.Mesh(new T.SphereGeometry(0.007, 8, 6), this.mat(0xc9a44a, { metalness: 0.7 })); s.position.copy(p); this.g.add(s); });
+          cx += w;
+        });
+        // peignes phase et neutre de la rangée (séparés d'une rangée à l'autre)
+        this.box(cx - first + 0.0 - mw * 0.4, 0.008, 0.006, this.mat(0xc23a2c), (first + cx) / 2 - mw / 2, yr + 0.085, 0.08);
+        this.box(cx - first + 0.0 - mw * 0.4, 0.008, 0.006, this.mat(0x2b6be0), (first + cx) / 2 - mw / 2, yr + 0.097, 0.08);
+      });
+      // barrette de terre
+      const py = y - H / 2 + 0.06; this.box(W * 0.7, 0.024, 0.02, this.mat(0xc9a44a, { metalness: 0.6 }), x, py, 0.03); N.nets.PE = new T.Vector3(x, py, 0.045);
+      this.nodes[id] = N; return N;
+    }
+    link(a, na, b, nb, c) { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.tube([[A.x, A.y, A.z], mid, [B.x, B.y, B.z]], 0.0062, this.wmat(c), 0.03); }
+  }
+  /* ---- Espace 1 : implantation de l'énoncé (TR, BD1, ICTA G01 à G07, moulure M1) ---- */
+  function esp1(B) {
+    const p = (x, y) => [(x - 580) / 420, 1 + (890 - y) / 420];
+    B.wall(3.0, 2.75, 0, 1.38);
+    const y0 = (x, y, z) => { const q = p(x, y); return [q[0], q[1], z === undefined ? 0.035 : z]; };
+    const L = (id, x, y) => B.dev(id, 'lampe', ...p(x, y), { w: 0.09, h: 0.09, side: -1 });
+    L('L1', 195, 420); L('L2', 350, 375); L('L3', 480, 445);
+    const bd = B.jbox('BD1', ...p(340, 560), { w: 0.36, h: 0.36, label: 'BD1', lx: -0.29, ly: -0.2 });
+    // Micromodules dans BD1
+    B.dev('R1', 'inter', bd.x - 0.08, bd.y - 0.11, { w: 0.09, h: 0.06, side: 1, label: 'R1' }); B.dev('R2', 'inter', bd.x + 0.08, bd.y - 0.11, { w: 0.09, h: 0.06, side: 1, label: 'R2' });
+    B.dev('S1', 'poussoir', ...p(290, 760), { side: 1 }); B.dev('E1', 'inter', ...p(335, 840), { label: 'E1 (radio)', side: 1 }); B.dev('E2', 'inter', ...p(400, 760), { label: 'E2 (radio)', side: 1 });
+    B.dev('SC', 'pc', ...[p(330, 965)[0], 0.32], { label: 'SC · chauffe-eau', side: 1 });
+    const P = (id, kind, x, y, o) => B.dev(id, kind, ...p(x, y), o);
+    P('S2', 'inter', 785, 835, { side: -1, label: 'S2 (HC)' }); P('PC2', 'prise', 895, 835, { side: -1, label: 'PC2' });
+    P('I1', 'inter', 895, 560, { w: 0.09, h: 0.17, side: 1, label: 'I1 interphone' });
+    B.jbox('4', ...p(893, 340), { w: 0.16, h: 0.16, label: 'Boîte 4' });
+    B.jbox('AGCP', ...p(700, 420), { w: 0.38, h: 0.28, label: '1 · AGCP', c: 0xb9c0c7 });
+    const dpn = (id) => ({ id, t: ['L.' + id, 'N.' + id] });
+    const tx = p(700, 640)[0], tl = tx - 0.38, nT = B.tableau('TR', ...p(700, 640), 0.76, 0.7, [
+      { items: [{ id: 'ID1', k: 'id', m: 2, t: ['L.ID1', 'N.ID1'] }, dpn('D1'), dpn('D2'), dpn('D3')] },
+      { items: [{ id: 'ID2', k: 'id', m: 2, t: ['L.ID2', 'N.ID2'] }, dpn('D4'), dpn('D5'), dpn('D6'), { id: 'C1', t: ['C1.1', 'C1.2', 'C1.A1', 'C1.A2'], m: 2 }, { id: 'PC1', t: ['PC1.L', 'PC1.N', 'PE.PC1'], m: 2 }] }
+    ], 'TR');
+    const TR = (...q) => q.map((v) => v);
+    const cTR = y0(640, 785), wTR = y0(560, 700, 0.05), yU = nT.nets['L.ID1'].y - 0.02, yB = nT.nets['L.ID2'].y - 0.035;
+    const v = (n, c) => ({ n, c });
+    B.run({ k: 'icta', r: 0.031, pts: [wTR, y0(480, 660, 0.05), y0(440, 575, 0.05), [bd.x + 0.12, bd.y, 0.04]], from: 'TR', to: 'BD1', at: p(500, 610), label: 'G01 · Ø25', cond: [v('L.D2', 'rouge'), v('L.D3', 'rouge'), { n: 'L.D2', c: 'rouge', a: 'L.D2' }, v('N.D2', 'bleu'), v('N.D3', 'bleu'), { a: 'PE', n: 'PE.D2', c: 'vj' }, { a: 'PE', n: 'PE.D3', c: 'vj' }] });
+    const R = (lab, to, pp, cond) => B.run({ k: 'icta', pts: pp, from: 'BD1', to, label: lab, cond });
+    const bdY = bd.y, bdX = bd.x;
+    R('G04', 'L1', [[bdX - 0.12, bdY, 0.04], [bdX - 0.3, bdY + 0.1, 0.04], y0(200, 470)], [{ n: 'PE.D2', b: 'PE', c: 'vj' }, { n: 'N.D2', b: 'N', c: 'bleu' }, { n: 'S.R1', b: 'L', c: 'marron' }]);
+    R('G03', 'L2', [[bdX, bdY + 0.12, 0.04], [bdX + 0.02, bdY + 0.25, 0.04], y0(352, 420)], [{ n: 'PE.D3', b: 'PE', c: 'vj' }, { n: 'N.D3', b: 'N', c: 'bleu' }, { n: 'S.R2', b: 'L', c: 'marron' }]);
+    R('G02', 'L3', [[bdX + 0.1, bdY + 0.12, 0.04], [bdX + 0.28, bdY + 0.2, 0.04], y0(475, 495)], [{ n: 'PE.D2', b: 'PE', c: 'vj' }, { n: 'N.D2', b: 'N', c: 'bleu' }, { n: 'S.R1', b: 'L', c: 'orange' }]);
+    R('G05', 'S1', [[bdX - 0.12, bdY - 0.17, 0.04], y0(300, 690)], [{ n: 'L.D2', b: 'L', c: 'rouge' }, { n: 'BP.R1', b: 'BP', c: 'ivoire' }]);
+    // Liaisons internes de BD1 vers les micromodules
+    [['L.D2', 'L', 'rouge'], ['N.D2', 'N', 'bleu'], ['BP.R1', 'BP', 'ivoire'], ['S.R1', 'S', 'marron']].forEach((q) => B.link('BD1', q[0], 'R1', q[1], q[2]));
+    [['L.D3', 'L', 'rouge'], ['N.D3', 'N', 'bleu'], ['S.R2', 'S', 'marron']].forEach((q) => B.link('BD1', q[0], 'R2', q[1], q[2]));
+    // G06 : sortie de câble du chauffe-eau
+    const sc = B.nodes.SC; B.run({ k: 'icta', pts: [cTR, [cTR[0] - 0.3, 0.72, 0.05], [sc.x + 0.32, 0.55, 0.05], [sc.x, sc.y + 0.1, 0.05]], from: 'TR', to: 'SC', at: p(560, 900), label: 'G06 · Ø20', cond: [{ n: 'S.C1', a: 'C1.2', b: 'L', c: 'rouge' }, { n: 'N.D4', b: 'N', c: 'bleu' }, { a: 'PE', n: 'PE', c: 'vj' }] });
+    // Moulure M1 : S2 puis PC2
+    const mA = y0(700, 765, 0.03), mB = y0(700, 880, 0.03), mS2 = y0(785, 880, 0.03), mPC = y0(895, 880, 0.03);
+    B.run({ k: 'mou', pts: [mA, mB, [y0(960, 880)[0], mB[1], 0.03]] });
+    B.label('M1 · moulure', mS2[0] + 0.05, mB[1] - 0.09, 0.1);
+    B.run({ pts: [[mA[0] - 0.015, mA[1], 0.03], [mB[0] - 0.015, mB[1] + 0.01, 0.03], [mS2[0], mB[1] + 0.01, 0.03]], from: 'TR', to: 'S2', cond: [{ n: 'L.D5', b: 'C', c: 'noir' }, { n: 'C1.A1', b: '1', c: 'violet' }] });
+    B.run({ pts: [[mA[0] + 0.015, mA[1], 0.03], [mB[0] + 0.015, mB[1] - 0.012, 0.03], [mPC[0], mB[1] - 0.012, 0.03]], from: 'TR', to: 'PC2', cond: [{ n: 'L.D1', b: 'L', c: 'rouge', via: [[nT.nets['L.D1'].x, yU, 0.1], [nT.nets['L.D1'].x, yB, 0.1]] }, { n: 'N.D1', b: 'N', c: 'bleu', via: [[nT.nets['N.D1'].x, yU, 0.1], [nT.nets['N.D1'].x, yB, 0.1]] }, { n: 'PE', a: 'PE', b: 'PE', c: 'vj' }] });
+    // Câbles d'arrivée
+    const ag = B.nodes.AGCP;
+    B.run({ k: 'cable', pts: [[-1.45, 2.46, 0.05], [ag.x - 0.02, 2.46, 0.05], [ag.x - 0.02, ag.y + 0.08, 0.05]], to: 'AGCP', at: [-0.9, 2.52], label: 'C1 · U1000 R2V', cond: [{ n: 'L', c: 'noir' }, { n: 'N', c: 'bleu' }, { n: 'PE', c: 'vj' }] });
+    B.run({ pts: [[ag.x - 0.05, ag.y - 0.1, 0.05], [tl + 0.024, ag.y - 0.2, 0.09], [tl + 0.024, yU, 0.09]], from: 'AGCP', to: 'TR', cond: [{ n: 'L', b: 'L.ID1', c: 'rouge' }, { n: 'N', b: 'N.ID1', c: 'bleu' }, { a: 'PE', n: 'PE', c: 'vj' }] });
+    B.run({ pts: [[tl + 0.024, yU, 0.09], [tl + 0.024, yB + 0.04, 0.09]], from: 'TR', to: 'TR', cond: [{ a: 'L.ID1', b: 'L.ID2', n: 'L', c: 'rouge' }, { a: 'N.ID1', b: 'N.ID2', n: 'N', c: 'bleu' }] });
+    B.run({ k: 'icta', pts: [y0(893, 400), y0(895, 475)], from: '4', to: 'I1', label: 'G07', cond: [{ n: 'A', c: 'blanc' }, { n: 'B', c: 'orange' }, { n: 'C', c: 'gris' }] });
+    B.run({ k: 'icta', pts: [[-1.45, 2.6, 0.04], [B.nodes['4'].x, 2.6, 0.04], [B.nodes['4'].x, B.nodes['4'].y + 0.05, 0.04]], to: '4', at: [-0.9, 2.66], label: 'C2 · SYT1', cond: [{ n: 'A', c: 'blanc' }, { n: 'B', c: 'orange' }] });
+    // Liaisons internes du tableau (phase + neutre séparés par circuit)
+    [['L.D4', 'C1.1', 'rouge'], ['L.D6', 'PC1.L', 'rouge'], ['N.D6', 'PC1.N', 'bleu'], ['N.D5', 'C1.A2', 'bleu']].forEach((k) => B.link('TR', k[0], 'TR', k[1], k[2]));
+    return { cx: 0, cy: 1.38, r: 5.35 };
+  }
+  /* ---- Espace 2 : chemin de câble, BD1, BD2, IRL C01 à C08 ---- */
+  function esp2(B) {
+    const p = (x, y) => [(x - 580) / 350, 1 + (1140 - y) / 350], z = 0.05, q = (x, y, zz) => [...p(x, y), zz === undefined ? z : zz];
+    B.wall(3.0, 2.85, 0, 1.43); B.rail(p(260, 0)[0], p(905, 0)[0], p(0, 745)[1]);
+    B.jbox('5', ...p(222, 617), { w: 0.18, h: 0.18, label: 'Boîte 5' }); B.jbox('8', ...p(895, 618), { w: 0.18, h: 0.18, label: 'Boîte 8', c: 0xcc3b32 });
+    B.jbox('BD1', ...p(470, 735), { w: 0.2, h: 0.2 }); B.jbox('BD2', ...p(675, 745), { w: 0.2, h: 0.2 });
+    const D = (id, k, x, y, o) => B.dev(id, k, ...p(x, y), Object.assign({ w: 0.13, h: 0.13 }, o || {}));
+    D('L1', 'hublot', 382, 850, { side: 'l' }); D('L2', 'hublot', 750, 855, { side: 'r' });
+    D('DM1', 'dm', 287, 995, { side: 1 }); D('DM2', 'dm', 855, 1000, { side: 1 });
+    D('S1', 'poussoir', 487, 1000, { side: 'r' }); D('S2', 'poussoir', 633, 1000, { side: 'l' }); D('PC1', 'prise', 700, 1005, { side: -1 });
+    const ph = (n, b) => ({ n, b, c: 'marron' }), ne = (n, b) => ({ n, b, c: 'bleu' }), pe = (n, b) => ({ n: n || 'PE', b, c: 'vj' }), rl = (n, b) => ({ n, b, c: 'noir' }), bp = { n: 'BP', c: 'gris' };
+    const lamp = [ph('RL', 'L'), ne('N', 'N'), pe('PE', 'PE')], btn = [ph('L', '1'), rl('BP', '2')], ssi = [{ n: 'S1', c: 'rouge' }, { n: 'S2', c: 'noir' }];
+    const cab = (o) => B.run(Object.assign({ k: 'cable' }, o)), irl = (...a) => B.run({ k: 'irl', pts: a });
+    // Chemin de câble : arrivées et liaison entre les boîtes
+    cab({ pts: [q(245, 640), q(245, 735), q(440, 735)], from: '5', to: 'BD1', at: p(345, 718), label: 'C3 · 3G2,5', cond: [ph('L.PC'), ne('N.PC'), pe('PE.PC')] });
+    cab({ pts: [q(212, 640), q(212, 745), q(440, 745)], from: '5', to: 'BD1', at: p(310, 778), label: 'C4 · 5G1,5', cond: [ph('L'), ne('N'), pe('PE'), rl('RL'), bp] });
+    cab({ pts: [q(500, 745), q(645, 745)], from: 'BD1', to: 'BD2', at: p(572, 725), label: 'C4 (suite)', cond: [ph('L'), ne('N'), pe('PE'), rl('RL'), bp] });
+    // Descentes en IRL : le câble passe dans le tube jusqu'à l'appareil
+    irl(q(340, 765), q(340, 850)); cab({ pts: [q(440, 757), q(340, 757), q(340, 850)], from: 'BD1', to: 'L1', at: p(305, 815), label: 'C02', cond: lamp });
+    irl(q(800, 765), q(800, 855)); cab({ pts: [q(710, 757), q(800, 757), q(800, 855)], from: 'BD2', to: 'L2', at: p(838, 815), label: 'C07', cond: lamp });
+    irl(q(540, 775), q(540, 1000)); cab({ pts: [q(500, 768), q(540, 768), q(540, 1000)], from: 'BD1', to: 'S1', at: p(512, 890), label: 'C03', cond: btn });
+    irl(q(565, 775), q(565, 1070), q(700, 1070)); cab({ pts: [q(500, 758), q(565, 758), q(565, 1070), q(700, 1070)], from: 'BD1', to: 'PC1', at: p(640, 1096), label: 'C04 · C05', cond: [ph('L.PC', 'L'), ne('N.PC', 'N'), pe('PE.PC', 'PE')] });
+    irl(q(595, 775), q(595, 1000)); cab({ pts: [q(645, 768), q(595, 768), q(595, 1000)], from: 'BD2', to: 'S2', at: p(628, 890), label: 'C06', cond: btn });
+    // Sécurité incendie : boucle SYT rouge, séparée du courant fort
+    const zs = 0.026;
+    cab({ pts: [[-1.45, ...[p(0, 545)[1]], zs], [p(895, 0)[0], p(0, 545)[1], zs], [p(895, 0)[0], p(0, 590)[1], zs]], to: '8', at: [-0.9, p(0, 545)[1] + 0.07], label: 'C9 · SYT1 9/10', cond: ssi });
+    irl(q(855, 770), q(855, 955));
+    cab({ pts: [q(880, 648), q(861, 720), q(861, 955)], from: '8', to: 'DM2', at: p(905, 830), label: 'C08', cond: ssi });
+    cab({ pts: [q(849, 955, zs), q(849, 690, zs), q(300, 690, zs), q(300, 955, zs)], from: 'DM2', to: 'DM1', at: p(360, 672), label: 'Boucle SSI', cond: ssi });
+    irl(q(300, 770), q(300, 955)); B.label('C01', ...p(262, 880), 0.12);
+    // Continuité de terre du chemin de câble
+    const E = p(270, 765); B.box(0.05, 0.03, 0.012, B.mat(0xc9a44a, { metalness: 0.6 }), E[0], E[1], 0.04);
+    B.run({ pts: [q(228, 648), q(240, 700)], from: '5', cond: [{ n: 'PE', c: 'vj' }] }); B.tube([q(240, 700), q(258, 745), [E[0], E[1], 0.045]], 0.0062, B.wmat('vj'), 0.03);
+    return { cx: 0, cy: 1.43, r: 5.35 };
+  }
+  /* ---- Espace 3 : goulotte DLP, chemin de câble, BD1, BAES, RJ45 ---- */
+  function esp3(B) {
+    const p = (x, y) => [(x - 560) / 350, 1 + (1035 - y) / 350], z = 0.05, q = (x, y, zz) => [...p(x, y), zz === undefined ? z : zz];
+    B.wall(3.0, 2.85, 0, 1.43); B.rail(p(250, 0)[0], p(860, 0)[0], p(0, 595)[1]);
+    B.jbox('7', ...p(205, 467), { w: 0.18, h: 0.18, label: 'Boîte 7' }); B.jbox('BD1', ...p(615, 590), { w: 0.2, h: 0.2 });
+    // Goulotte DLP : verticale puis horizontale, comme sur l'énoncé
+    B.run({ k: 'dlp', wd: 0.26, pts: [q(152, 612, 0.03), q(152, 1110, 0.03), q(1040, 1110, 0.03)] });
+    B.label('Goulotte DLP', ...p(760, 1180), 0.12);
+    const D = (id, k, x, y, o) => B.dev(id, k, ...p(x, y), Object.assign({ w: 0.13, h: 0.13 }, o || {})), ZD = 0.06;
+    D('L1', 'hublot', 485, 765); D('L2', 'hublot', 655, 770); D('BAES', 'baes', 935, 585, { w: 0.28, h: 0.12, side: 'l' });
+    D('RJ45', 'rj', 795, 930, { label: 'RJ45' });
+    D('S1', 'au', 152, 905, { z: ZD, label: 'S1 · AU' }); D('S2', 'inter', 368, 1110, { z: ZD, label: 'S2 · détecteur' }); D('PC1', 'prise', 630, 1110, { z: ZD }); D('RJ2', 'rj', 912, 1130, { z: ZD, side: 'l', label: 'RJ45' });
+    const ph = (n, b) => ({ n, b, c: 'marron' }), ne = (n, b) => ({ n, b, c: 'bleu' }), pe = (n, b) => ({ n: n || 'PE', b, c: 'vj' }), lamp = [ph('RL', 'L'), ne('N', 'N'), pe('PE', 'PE')];
+    const cab = (o) => B.run(Object.assign({ k: 'cable' }, o)), ZC = 0.016;
+    cab({ pts: [q(190, 492), q(120, 610), q(120, 1084), q(630, 1084)], from: '7', to: 'PC1', at: p(70, 720), label: 'C6 · 3G2,5', cond: [ph('L.PC', 'L'), ne('N.PC', 'N'), pe('PE.PC', 'PE')] });
+    cab({ pts: [q(205, 492), q(140, 610), q(140, 876)], from: '7', to: 'S1', at: p(70, 790), label: 'C8', cond: [ph('AU1', '1'), { n: 'AU2', b: '2', c: 'noir' }] });
+    cab({ pts: [q(235, 490), q(280, 592), q(580, 592)], from: '7', to: 'BD1', at: p(400, 565), label: 'C7 · 5G1,5', cond: [ph('L'), ne('N'), pe('PE'), { n: 'RL', c: 'noir' }, { n: 'TC', c: 'gris' }] });
+    cab({ pts: [q(580, 610), q(300, 610), q(165, 620), q(165, 1072), q(368, 1072)], from: 'BD1', to: 'S2', at: p(268, 720), label: 'S2 · 5G1,5', cond: [ph('L', 'L'), ne('N', 'N'), pe('PE', 'PE'), { n: 'RL', b: 'S', c: 'noir' }] });
+    const drop = (lab, x, y1, to) => { B.run({ k: 'irl', pts: [q(x, 625), q(x, y1)] }); cab({ pts: [q(590, 620), q(x, 642), q(x, y1)], from: 'BD1', to, at: p(x + 38, 690), label: lab, cond: lamp }); };
+    drop('C01', 500, 725, 'L1'); drop('C02', 650, 730, 'L2');
+    cab({ pts: [q(650, 578), q(880, 578)], from: 'BD1', to: 'BAES', at: p(770, 552), label: 'BAES · 5G1,5', cond: [ph('L', 'L'), ne('N', 'N'), pe('PE', 'PE'), { n: 'TC', b: 'T', c: 'gris' }] });
+    // Cat 6 : au fond de la goulotte, séparé du courant fort
+    B.run({ k: 'irl', pts: [q(785, 640), q(785, 890)] });
+    const rj = [{ n: 'P1', c: 'blanc' }, { n: 'P2', c: 'orange' }, { n: 'P3', c: 'bleu' }, { n: 'P4', c: 'marron' }];
+    cab({ pts: [q(885, 1130, ZC), q(185, 1130, ZC), q(185, 640, ZC), q(300, 632, ZC), q(785, 632, ZC), q(785, 890, ZC)], from: 'RJ2', to: 'RJ45', at: p(268, 790), label: 'C03 · Cat 6 FTP', cond: rj });
+    return { cx: 0, cy: 1.43, r: 5.35 };
+  }
+  /* Vue générique d'un schéma : tableau à gauche, goulotte en haut, descentes vers les appareils */
+  function auto(B, C) {
+    const comps = C.comps.filter((c) => !['src', 'borne', 'terre'].includes(c.type));
+    const sorted = comps.slice().sort((a, b) => a.x - b.x || a.y - b.y), n = sorted.length;
+    const W = Math.max(3.0, 0.62 * n + 1.5), x0 = -W / 2 + 1.05, dx = n > 1 ? (W - 1.35) / (n - 1) : 0;
+    B.wall(W + 0.2, 2.85, 0, 1.43);
+    const yG = 2.42; B.run({ k: 'dlp', pts: [[-W / 2 + 0.05, yG, 0.03], [W / 2 - 0.05, yG, 0.03]] }); B.label('Goulotte', W / 2 - 0.3, yG + 0.12, 0.1);
+    // Parafoudre mis à part, tableau : alimentation + protection
+    const KIND = { inter: 'inter', vav: 'inter', perm: 'inter', bp: 'poussoir', radio: 'inter', lampe: 'lampe', voyant: 'lampe', prise: 'prise', rad: 'pc', sonnette: 'inter', moteur: 'pc', baes: 'baes', detect: 'inter' };
+    const Y = { lampe: 2.0, voyant: 2.0, sonnette: 1.9, detect: 2.0, prise: 0.4, rad: 0.55, moteur: 0.55, baes: 2.05, tele: 1.65, tele2: 1.65, cont: 1.65, minu: 1.65, yokis: 1.65 };
+    const pos = {};
+    const panel = C.comps.filter((c) => ['src', 'disj', 'dpn', 'fus'].includes(c.type));
+    B.box(0.6, 0.9, 0.02, 0xf4f2ec, -W / 2 + 0.42, 1.55, 0.01); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
+    let py = 1.82; panel.forEach((c) => { const tn = DEF[c.type].t.map((t) => t[0]), isSrc = c.type === 'src'; const row = { x: -W / 2 + 0.42, y: py, ref: c.ref, tn }; B.box(0.3, 0.13, 0.05, isSrc ? 0x59626d : 0xffffff, row.x, row.y, 0.03); if (!isSrc) B.box(0.1, 0.03, 0.02, 0x24272b, row.x, row.y, 0.065); B.label(isSrc ? 'Arrivée' : c.ref, row.x, row.y - 0.1, 0.1); tn.forEach((t, i) => { const p = new B.T.Vector3(row.x - 0.1 + i * 0.05, row.y + 0.07, 0.06); pos[c.id + ':' + t] = p; }); py -= 0.27; });
+    sorted.filter((c) => !panel.includes(c)).forEach((c, i) => {
+      const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'inter';
+      B.dev(c.id, k, x, y, { ref: c.ref, label: c.ref, side: 1, w: 0.14, h: 0.14 });
+      DEF[c.type].t.forEach((t) => { pos[c.id + ':' + t[0]] = B.nodes[c.id].at(t[0]); });
+    });
+    // bornes : regroupées sous la goulotte, une par équipotentielle
+    C.comps.filter((c) => c.type === 'borne').forEach((c, i) => { const x = x0 + (i % n) * dx * 0.9, p = new B.T.Vector3(x, yG - 0.17, 0.035); B.box(0.1, 0.09, 0.006, B.mat(0xc9ced3), p.x, p.y, 0.004); B.box(0.03, 0.022, 0.024, 0xe58a2c, p.x, p.y, p.z); B.label(c.ref, p.x, p.y - 0.09, 0.1, 'tiny'); pos[c.id + ':P'] = p; });
+    // couleur de chaque fil, d'après le réseau
+    const par = {}; const fd = (a) => { if (par[a] === undefined) par[a] = a; while (par[a] !== a) { par[a] = par[par[a]]; a = par[a]; } return a; };
+    C.wires.forEach((w) => { par[fd(w.a)] = fd(w.b); });
+    C.comps.forEach((c) => { if (c.type === 'disj' || c.type === 'fus' || c.type === 'dpn') par[fd(c.id + ':1')] = fd(c.id + ':2'); if (c.type === 'dpn') par[fd(c.id + ':N1')] = fd(c.id + ':N2'); });
+    const srcs = C.comps.filter((c) => c.type === 'src'), L = new Set(srcs.map((c) => fd(c.id + ':L'))), N2 = new Set(srcs.map((c) => fd(c.id + ':N'))), E = new Set(srcs.map((c) => fd(c.id + ':PE')));
+    const col = (w) => { const r = fd(w.a); return L.has(r) ? 'rouge' : N2.has(r) ? 'bleu' : E.has(r) ? 'vj' : 'orange'; };
+    C.wires.forEach((w, i) => {
+      const A = pos[w.a], Bb = pos[w.b]; if (!A || !Bb) return;
+      const lane = yG + 0.05 - (i % 8) * 0.012, zz = 0.012 + (i % 4) * 0.012, ox = ((i % 7) - 3) * 0.006;
+      B.tube([[A.x, A.y, A.z], [A.x + ox, Math.min(lane, A.y + 0.12), 0.04 + zz], [A.x + ox, lane, 0.04 + zz], [Bb.x + ox, lane, 0.04 + zz], [Bb.x + ox, Math.min(lane, Bb.y + 0.12), 0.04 + zz], [Bb.x, Bb.y, Bb.z]], 0.0062, B.wmat(col(w)), 0.04);
+    });
+    return { cx: 0, cy: 1.43, r: Math.max(5.35, W * 1.75) };
+  }
+  class View {
+    constructor(el) { this.el = el; this.spec = null; this.ready = false; }
+    async init() {
+      if (this.ready) return true;
+      try { await loadThree(); } catch (e) { this.el.innerHTML = '<p class="v3d-msg">Vue 3D indisponible (fichier vendor/three.min.js introuvable).</p>'; return false; }
+      const T = window.THREE;
+      try { this.r = new T.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true }); } catch (e) { this.el.innerHTML = '<p class="v3d-msg">Vue 3D indisponible : ton navigateur ne gère pas WebGL.</p>'; return false; }
+      this.r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+      this.el.innerHTML = ''; this.el.appendChild(this.r.domElement);
+      this.scene = new T.Scene(); this.scene.background = new T.Color(0x18212c);
+      this.cam = new T.PerspectiveCamera(34, 1, 0.05, 40);
+      this.scene.add(new T.HemisphereLight(0xffffff, 0x7a818a, 0.78));
+      const d = new T.DirectionalLight(0xffffff, 0.42); d.position.set(-2, 4, 5); this.scene.add(d);
+      this.yaw = 0.2; this.pitch = 0.09; this.target = new T.Vector3(); this.rad = 4; this.ctr = null;
+      const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0;
+      c.addEventListener('pointerdown', (e) => { c.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); });
+      c.addEventListener('pointermove', (e) => {
+        if (!pts.has(e.pointerId)) return; const old = pts.get(e.pointerId), dx = e.clientX - old[0], dy = e.clientY - old[1]; pts.set(e.pointerId, [e.clientX, e.clientY]);
+        if (pts.size === 1) { if (e.shiftKey || e.buttons === 2) { const k = this.rad * 0.0016; this.target.x -= dx * k * Math.cos(this.yaw); this.target.y += dy * k; } else { this.yaw -= dx * 0.008; this.pitch = Math.max(-0.5, Math.min(1.1, this.pitch + dy * 0.006)); } this.draw(); }
+        else if (pts.size === 2) { const v = [...pts.values()], dd = Math.hypot(v[0][0] - v[1][0], v[0][1] - v[1][1]); if (pd) this.zoom(pd / dd); pd = dd; }
+      });
+      const up = (e) => { pts.delete(e.pointerId); pd = 0; }; c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up);
+      c.addEventListener('contextmenu', (e) => e.preventDefault());
+      c.addEventListener('wheel', (e) => { e.preventDefault(); this.zoom(Math.exp(e.deltaY * 0.0012)); }, { passive: false });
+      new ResizeObserver(() => this.size()).observe(this.el); this.ready = true; this.size(); return true;
+    }
+    zoom(f) { this.rad = Math.max(0.7, Math.min(this.fitR ? this.fitR * 1.6 : 12, this.rad * f)); this.draw(); }
+    size() { const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h || !this.r) return; this.r.setSize(w, h, false); this.r.domElement.style.width = '100%'; this.r.domElement.style.height = '100%'; this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.draw(); }
+    draw() { if (!this.r || !this.b) return; const t = this.target, cp = Math.cos(this.pitch); this.cam.position.set(t.x + this.rad * Math.sin(this.yaw) * cp, t.y + this.rad * Math.sin(this.pitch), t.z + this.rad * Math.cos(this.yaw) * cp); this.cam.lookAt(t); this.r.render(this.scene, this.cam); }
+    show(make, ctx) {
+      this.pending = [make, ctx];
+      if (!this.io) { this.io = new IntersectionObserver((es) => { this.vis = es.some((e) => e.isIntersecting); if (this.vis) this.flush(); }, { rootMargin: '300px' }); this.io.observe(this.el); }
+      if (this.vis) this.flush();
+    }
+    /* three.js n'est chargé que lorsque le panneau devient visible */
+    async flush() {
+      const q = this.pending; if (!q || q === this.done) return;
+      if (!(await this.init()) || this.pending !== q) return;
+      this.done = q; const [make, ctx] = q;
+      if (this.b) { this.scene.remove(this.b.g); this.b.g.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); }
+      const T = window.THREE, b = new Builder(T); this.b = b; const v = make(b, ctx); this.scene.add(b.g);
+      this.target.set(v.cx, v.cy, 0.05); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
+      this.size(); this.sync(ctx); this.draw();
+    }
+    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.5 : 0; L.pt.intensity = on ? 0.8 : 0; }); this.draw(); }
+    reset() { if (this.fitR) { this.yaw = 0.2; this.pitch = 0.09; this.rad = this.fitR; this.draw(); } }
+  }
+  return { View, esp1, esp2, esp3, auto };
+})();
 
 /* ---------------- Accueil ---------------- */
 const heroC = new Circuit();
@@ -1831,16 +2181,17 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
   u.addEventListener('input', upd); r.addEventListener('input', upd); upd();
 })();
 (function symbols() {
-  const order = ['src', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'detect', 'tele', 'tele2', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes', 'borne'];
+  const order = ['src', 'dpn', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'detect', 'tele', 'tele2', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes', 'borne'];
   $('#sym-grid').innerHTML = order.map((k) => `<div class="symcard"><div class="tilebd">${symIcon(k, 12)}</div><h3>${DEF[k].name}</h3><p>${DEF[k].desc}</p></div>`).join('');
 })();
 
 /* ---------------- Schémas ---------------- */
 const simC = new Circuit();
 const simB = new Board($('#sim-svg'), simC, {});
+const sim3d = new V3D.View($('#sim-3d'));
 let cur = PRESETS[0];
 function simNav() {
-  const ICON = { simple: 'inter', double: 'inter', vav: 'vav', sonnette: 'sonnette', perm: 'perm', tele: 'tele', tele412: 'tele2', minu: 'minu', yokis: 'yokis', hc: 'cont', court: 'disj' };
+  const ICON = { simple: 'inter', double: 'inter', vav: 'vav', sonnette: 'sonnette', perm: 'perm', tele: 'tele', tele412: 'tele2', minu: 'minu', yokis: 'yokis', hc: 'cont', court: 'dpn' };
   const go = '<svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const g = (grp, label) => `<div><h2>${label}</h2>${PRESETS.filter((p) => p.group === grp).map((p) => `<button class="side" type="button" data-preset="${p.id}" aria-current="${p === cur}"><span class="ic">${symIcon(ICON[p.id] || 'lampe', 6)}</span><span class="tx"><span class="n">${String(PRESETS.indexOf(p) + 1).padStart(2, '0')}</span>${p.title}</span>${go}</button>`).join('')}</div>`;
   $('#sim-nav').innerHTML = '<p class="sim-hint">Choisis un circuit à manipuler :</p>' + g('base', 'Circuits de base') + g('adv', 'Circuits avancés');
@@ -1855,16 +2206,18 @@ function simSet(p) {
   $('#sim-try').textContent = p.essai;
   $('#sim-mat').innerHTML = p.mat.map((t) => `<li>${t}</li>`).join('');
   simNav(); simUpd();
+  sim3d.show(V3D.auto, simC);
 }
 function simUpd() {
   const s = summary(simC);
   $('#sim-dot').className = 'sdot' + (s.dot ? ' ' + s.dot : '');
   $('#sim-st').textContent = s.title; $('#sim-sd').textContent = s.detail;
   $('#sim-metric').textContent = metricTxt(simC.res);
+  sim3d.sync(simC);
   const ops = simC.comps.filter((c) => DEF[c.type].op && opLabel(c));
   $('#sim-ctls').innerHTML = ops.map((c) => {
     const pressed = (c.type === 'inter' && c.st.on) || (c.type === 'bp' && c.st.pressed) || (c.type === 'prise' && c.st.plug);
-    return `<button class="ctl" type="button" data-op="${c.id}"${['inter', 'bp', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab && c.type !== 'disj' ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
+    return `<button class="ctl" type="button" data-op="${c.id}"${['inter', 'bp', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}>${c.ref}${c.lab && c.type !== 'disj' && c.type !== 'dpn' ? ' · ' + esc(c.lab) : ''} : ${opLabel(c)}</button>`;
   }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
 }
 simC.listeners.push(simUpd);
@@ -1877,101 +2230,92 @@ $('#sim-open').addEventListener('click', () => { editor.load(cur.build()); locat
 $$('a[data-preset]').forEach((a) => a.addEventListener('click', () => { const p = PRESETS.find((x) => x.id === a.dataset.preset); if (p) simSet(p); }));
 simSet(PRESETS[0]);
 
-/* ---------------- Examen pratique (TP-00467, espace n°1) ---------------- */
+/* ---------------- Examen pratique (TP-00467, espace n°1) ----------------
+   Câblage à la française : chaque différentiel a son propre peigne de neutre,
+   et chaque circuit repart de son disjoncteur 1P+N avec sa phase et son neutre. */
 function buildExam1() {
-  const src = mk('src', 80, 440, 0, 'AGCP'), xl = mk('borne', 160, 380, 0, 'XL'), xn0 = mk('borne', 160, 460, 0, 'XN');
-  const id1 = mk('disj', 240, 120, 0, 'ID1', { lab: '40 A · 30 mA AC' }), id2 = mk('disj', 240, 660, 0, 'ID2', { lab: '40 A · 30 mA A' });
-  const xa1 = mk('borne', 320, 120, 0, 'X1'), xa2 = mk('borne', 320, 260, 0, 'X2'), xa3 = mk('borne', 320, 460, 0, 'X3');
-  const xb1 = mk('borne', 320, 660, 0, 'X4'), xb2 = mk('borne', 320, 760, 0, 'X5'), xb3 = mk('borne', 320, 860, 0, 'X6');
-  const d1 = mk('disj', 400, 120, 0, 'D1', { lab: 'C20' }), d2 = mk('disj', 400, 260, 0, 'D2', { lab: 'C16' }), d3 = mk('disj', 400, 460, 0, 'D3', { lab: 'C16' });
-  const d4 = mk('disj', 400, 660, 0, 'D4', { lab: 'C20' }), d6 = mk('disj', 400, 760, 0, 'D6', { lab: 'C20' }), d5 = mk('disj', 400, 860, 0, 'D5', { lab: 'C2' });
-  // PC1 : prise modulaire du tableau
-  const pc1 = mk('prise', 1140, 140, 0, 'PC1', { lab: 'modulaire' });
-  // Éclairage L1 + L3 : R1 radio et filaire, S1 filaire, E1 radio
-  const xd2 = mk('borne', 520, 260, 0, 'X7'), s1 = mk('bp', 520, 320, 90, 'S1', { lab: 'filaire' });
-  const r1 = mk('yokis', 720, 280, 0, 'R1'), e1 = mk('radio', 600, 200, 0, 'E1');
-  const l1 = mk('lampe', 860, 300, 90, 'L1'), l3 = mk('lampe', 960, 300, 90, 'L3');
-  // Éclairage L2 : R2 radio seul, E2
-  const r2 = mk('yokis', 720, 480, 0, 'R2'), e2 = mk('radio', 600, 560, 0, 'E2'), l2 = mk('lampe', 860, 500, 90, 'L2');
+  const src = mk('src', 80, 500, 0, 'AGCP'), xl = mk('borne', 160, 400, 0, 'XL'), xn0 = mk('borne', 140, 520, 0, 'XN');
+  const id1 = mk('dpn', 240, 160, 0, 'ID1', { lab: '40 A · 30 mA type A' }), id2 = mk('dpn', 240, 680, 0, 'ID2', { lab: '40 A · 30 mA type AC' });
+  // Peignes : phase et neutre de chaque rangée, séparés d'une rangée à l'autre
+  const pa1 = mk('borne', 380, 140, 0, 'PL1'), pa2 = mk('borne', 380, 300, 0, 'PL2'), pa3 = mk('borne', 380, 460, 0, 'PL3');
+  const na1 = mk('borne', 340, 180, 0, 'PN1'), na2 = mk('borne', 340, 340, 0, 'PN2'), na3 = mk('borne', 340, 500, 0, 'PN3');
+  const pb1 = mk('borne', 380, 660, 0, 'PL4'), pb2 = mk('borne', 380, 780, 0, 'PL5'), pb3 = mk('borne', 380, 900, 0, 'PL6');
+  const nb1 = mk('borne', 340, 700, 0, 'PN4'), nb2 = mk('borne', 340, 820, 0, 'PN5'), nb3 = mk('borne', 340, 940, 0, 'PN6');
+  const d1 = mk('dpn', 460, 160, 0, 'D1', { lab: 'C20 · 2,5 mm²' }), d2 = mk('dpn', 460, 320, 0, 'D2', { lab: 'C16 · 1,5 mm²' }), d3 = mk('dpn', 460, 480, 0, 'D3', { lab: 'C16 · 1,5 mm²' });
+  const d4 = mk('dpn', 460, 680, 0, 'D4', { lab: 'C20 · 2,5 mm²' }), d5 = mk('dpn', 460, 800, 0, 'D5', { lab: 'C2 · 1,5 mm²' }), d6 = mk('dpn', 460, 920, 0, 'D6', { lab: 'C20 · 2,5 mm²' });
+  const pc2 = mk('prise', 1200, 160, 0, 'PC2', { lab: 'machine à laver', watt: 2200 });
+  // D2 : L1 + L3 par R1 (S1 filaire, E1 radio). Une borne phase et une borne neutre, dans BD1
+  const xd2 = mk('borne', 600, 300, 0, 'BL2'), xn2 = mk('borne', 560, 340, 0, 'BN2'), s1 = mk('bp', 680, 240, 0, 'S1', { lab: 'filaire' }), e1 = mk('radio', 680, 180, 0, 'E1');
+  const r1 = mk('yokis', 860, 320, 0, 'R1'), l1 = mk('lampe', 1020, 300, 0, 'L1', { lab: 'salon' }), l3 = mk('lampe', 1160, 300, 0, 'L3', { lab: 'salon' });
+  // D3 : L2 par R2 (E2 radio)
+  const xn3 = mk('borne', 560, 500, 0, 'BN3'), r2 = mk('yokis', 860, 480, 0, 'R2'), e2 = mk('radio', 680, 560, 0, 'E2'), l2 = mk('lampe', 1020, 460, 0, 'L2', { lab: 'séjour' });
   e1.to = ['R1']; e2.to = ['R2'];
-  // PC2 : machine à laver
-  const pc2 = mk('prise', 1140, 680, 0, 'PC2', { lab: 'machine à laver', watt: 2200 });
-  // Chauffe-eau : C1 commandé par S2 (contact heures creuses simulé)
-  const xd6 = mk('borne', 800, 760, 0, 'X8'), c1 = mk('cont', 740, 800, 0, 'C1', { lab: 'HC / HP' });
-  const sc = mk('rad', 900, 840, 90, 'SC', { lab: 'chauffe-eau', watt: 2400 }), s2 = mk('vav', 560, 860, 0, 'S2', { lab: 'contact HC', st: { pos: 2 } });
-  // Neutre : bus à droite et retour par le bas
-  const xn1 = mk('borne', 1060, 140, 0, 'N1'), xn2 = mk('borne', 1060, 340, 0, 'N2'), xn3 = mk('borne', 1060, 540, 0, 'N3'), xn4 = mk('borne', 1060, 680, 0, 'N4');
-  const xn5 = mk('borne', 1060, 880, 0, 'N5'), xn6 = mk('borne', 1060, 940, 0, 'N6'), xn7 = mk('borne', 680, 940, 0, 'N7'), xn8 = mk('borne', 160, 940, 0, 'N8');
-  return { comps: [src, xl, xn0, id1, id2, xa1, xa2, xa3, xb1, xb2, xb3, d1, d2, d3, d4, d5, d6, pc1, xd2, s1, r1, e1, l1, l3, r2, e2, l2, pc2, xd6, c1, sc, s2, xn1, xn2, xn3, xn4, xn5, xn6, xn7, xn8],
+  // D4 : chauffe-eau par le contact C1 · D5 : commande par S2
+  const c1 = mk('cont', 780, 700, 0, 'C1', { lab: 'HC / HP' }), sc = mk('rad', 1060, 680, 0, 'SC', { lab: 'chauffe-eau', watt: 2400 }), s2 = mk('vav', 620, 800, 0, 'S2', { lab: 'contact HC', st: { pos: 2 } });
+  const pc1 = mk('prise', 1200, 920, 0, 'PC1', { lab: 'modulaire' });
+  return { comps: [src, xl, xn0, id1, id2, pa1, pa2, pa3, na1, na2, na3, pb1, pb2, pb3, nb1, nb2, nb3, d1, d2, d3, d4, d5, d6, pc2, xd2, xn2, s1, e1, r1, l1, l3, xn3, r2, e2, l2, c1, sc, s2, pc1],
     wires: [
-      wr(src, 'L', xl, 'P'), wr(xl, 'P', id1, '1'), wr(xl, 'P', id2, '1'),
-      wr(id1, '2', xa1, 'P'), wr(xa1, 'P', xa2, 'P'), wr(xa2, 'P', xa3, 'P'),
-      wr(id2, '2', xb1, 'P'), wr(xb1, 'P', xb2, 'P'), wr(xb2, 'P', xb3, 'P'),
-      wr(xa1, 'P', d1, '1'), wr(xa2, 'P', d2, '1'), wr(xa3, 'P', d3, '1'), wr(xb1, 'P', d4, '1'), wr(xb2, 'P', d6, '1'), wr(xb3, 'P', d5, '1'),
-      wr(d1, '2', pc1, 'L'), wr(pc1, 'N', xn1, 'P'),
-      wr(d2, '2', xd2, 'P'), wr(xd2, 'P', r1, 'L'), wr(xd2, 'P', s1, '1'), wr(s1, '2', r1, 'BP'),
-      wr(r1, 'S', l1, '1'), wr(l1, '1', l3, '1'), wr(r1, 'N', l1, '2', true), wr(l1, '2', l3, '2'), wr(l3, '2', xn2, 'P'),
-      wr(d3, '2', r2, 'L'), wr(r2, 'S', l2, '1'), wr(r2, 'N', l2, '2', true), wr(l2, '2', xn3, 'P'),
-      wr(d4, '2', pc2, 'L'), wr(pc2, 'N', xn4, 'P'),
-      wr(d6, '2', xd6, 'P'), wr(xd6, 'P', c1, '1'), wr(c1, '2', sc, '1'), wr(sc, '2', xn5, 'P'),
-      wr(d5, '2', s2, 'C'), wr(s2, '1', c1, 'A1', true), wr(c1, 'A2', xn7, 'P'),
-      wr(xn1, 'P', xn2, 'P'), wr(xn2, 'P', xn3, 'P'), wr(xn3, 'P', xn4, 'P'), wr(xn4, 'P', xn5, 'P'), wr(xn5, 'P', xn6, 'P'),
-      wr(xn6, 'P', xn7, 'P'), wr(xn7, 'P', xn8, 'P'), wr(xn8, 'P', xn0, 'P'), wr(xn0, 'P', src, 'N')
+      wr(src, 'L', xl, 'P'), wr(xl, 'P', id1, '1'), wr(xl, 'P', id2, '1'), wr(src, 'N', xn0, 'P'), wr(xn0, 'P', id1, 'N1'), wr(xn0, 'P', id2, 'N1'),
+      wr(id1, '2', pa1, 'P'), wr(pa1, 'P', pa2, 'P'), wr(pa2, 'P', pa3, 'P'), wr(id1, 'N2', na1, 'P'), wr(na1, 'P', na2, 'P'), wr(na2, 'P', na3, 'P'),
+      wr(pa1, 'P', d1, '1'), wr(pa2, 'P', d2, '1'), wr(pa3, 'P', d3, '1'), wr(na1, 'P', d1, 'N1'), wr(na2, 'P', d2, 'N1'), wr(na3, 'P', d3, 'N1'),
+      wr(id2, '2', pb1, 'P'), wr(pb1, 'P', pb2, 'P'), wr(pb2, 'P', pb3, 'P'), wr(id2, 'N2', nb1, 'P'), wr(nb1, 'P', nb2, 'P'), wr(nb2, 'P', nb3, 'P'),
+      wr(pb1, 'P', d4, '1'), wr(pb2, 'P', d5, '1'), wr(pb3, 'P', d6, '1'), wr(nb1, 'P', d4, 'N1'), wr(nb2, 'P', d5, 'N1'), wr(nb3, 'P', d6, 'N1'),
+      wr(d1, '2', pc2, 'L'), wr(d1, 'N2', pc2, 'N'), wr(src, 'PE', pc2, 'PE'),
+      wr(d2, '2', xd2, 'P'), wr(d2, 'N2', xn2, 'P'), wr(xd2, 'P', r1, 'L'), wr(xd2, 'P', s1, '1'), wr(s1, '2', r1, 'BP'), wr(xn2, 'P', r1, 'N'),
+      wr(r1, 'S', l1, '1'), wr(l1, '1', l3, '1'), wr(xn2, 'P', l1, '2'), wr(xn2, 'P', l3, '2'),
+      wr(d3, '2', r2, 'L'), wr(d3, 'N2', xn3, 'P'), wr(xn3, 'P', r2, 'N'), wr(r2, 'S', l2, '1'), wr(xn3, 'P', l2, '2'),
+      wr(d4, '2', c1, '1'), wr(c1, '2', sc, '1'), wr(d4, 'N2', sc, '2'),
+      wr(d5, '2', s2, 'C'), wr(s2, '1', c1, 'A1'), wr(d5, 'N2', c1, 'A2'),
+      wr(d6, '2', pc1, 'L'), wr(d6, 'N2', pc1, 'N'), wr(src, 'PE', pc1, 'PE')
     ] };
 }
 // Espace n°2 : parties communes (minuterie, prise, SSI)
 function buildExam2() {
-  const src = mk('src', 80, 280, 0, 'SG'), xl = mk('borne', 160, 220, 0, 'XL'), xn0 = mk('borne', 160, 300, 0, 'XN');
-  const q1 = mk('disj', 240, 120, 0, 'Q1', { lab: '20 A' }), q2 = mk('disj', 240, 220, 0, 'Q2', { lab: '16 A' });
-  const pc1 = mk('prise', 960, 140, 0, 'PC1', { lab: 'étanche · C3' });
-  const x1 = mk('borne', 360, 220, 0, 'X1'), s1 = mk('bp', 400, 300, 90, 'S1'), s2 = mk('bp', 480, 300, 90, 'S2'), xb = mk('borne', 520, 340, 0, 'XB');
-  const kt = mk('minu', 620, 300, 0, 'KT1', { lab: 'armoire SG' });
-  const l1 = mk('lampe', 740, 360, 90, 'L1'), l2 = mk('lampe', 820, 360, 90, 'L2');
-  const na = mk('borne', 880, 140, 0, 'N1'), nb = mk('borne', 880, 400, 0, 'N2'), nd = mk('borne', 880, 440, 0, 'N3'), nc = mk('borne', 560, 440, 0, 'N4'), ne = mk('borne', 160, 440, 0, 'N5');
+  const src = mk('src', 80, 300, 0, 'SG'), xl = mk('borne', 160, 220, 0, 'XL'), xn0 = mk('borne', 140, 320, 0, 'XN');
+  const q1 = mk('dpn', 260, 140, 0, 'Q1', { lab: '20 A · C3' }), q2 = mk('dpn', 260, 320, 0, 'Q2', { lab: '16 A · C4' });
+  const pc1 = mk('prise', 1000, 140, 0, 'PC1', { lab: 'étanche' });
+  const x1 = mk('borne', 400, 300, 0, 'X1'), xn2 = mk('borne', 400, 340, 0, 'X2'), s1 = mk('bp', 520, 220, 0, 'S1'), s2 = mk('bp', 520, 300, 0, 'S2'), xb = mk('borne', 620, 300, 0, 'XB');
+  const kt = mk('minu', 720, 340, 0, 'KT1', { lab: 'armoire SG' });
+  const l1 = mk('lampe', 900, 300, 0, 'L1'), l2 = mk('lampe', 1020, 300, 0, 'L2');
   // Circuit SSI en très basse tension : C9 vers la boîte 8 (voyant de signalisation)
-  const tbt = mk('src', 80, 620, 0, 'SSI'); tbt.volt = ['24', 'V ='];
-  const xs1 = mk('borne', 200, 560, 0, 'XS1'), xs2 = mk('borne', 420, 560, 0, 'XS2'), xs3 = mk('borne', 560, 700, 0, 'XS3'), xs4 = mk('borne', 160, 700, 0, 'XS4');
-  const dm1 = mk('inter', 300, 560, 0, 'DM1'), dm2 = mk('inter', 300, 640, 0, 'DM2');
+  const tbt = mk('src', 80, 680, 0, 'SSI'); tbt.volt = ['24', 'V ='];
+  const xs1 = mk('borne', 220, 620, 0, 'XS1'), xs2 = mk('borne', 460, 620, 0, 'XS2');
+  const dm1 = mk('inter', 340, 620, 0, 'DM1'), dm2 = mk('inter', 340, 720, 0, 'DM2');
   [dm1, dm2].forEach((d) => { d.ops = ['Actionner', 'Réarmer']; d.sts = ['Au repos', 'Actionné']; });
-  const h1 = mk('voyant', 560, 600, 90, 'H1', { lab: 'alarme (C9)' }); h1.alarm = true;
-  return { comps: [src, xl, xn0, q1, q2, pc1, x1, s1, s2, xb, kt, l1, l2, na, nb, nd, nc, ne, tbt, xs1, xs2, xs3, xs4, dm1, dm2, h1],
+  const h1 = mk('voyant', 620, 620, 0, 'H1', { lab: 'alarme (C9)' }); h1.alarm = true;
+  return { comps: [src, xl, xn0, q1, q2, pc1, x1, xn2, s1, s2, xb, kt, l1, l2, tbt, xs1, xs2, dm1, dm2, h1],
     wires: [
-      wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'),
-      wr(q1, '2', pc1, 'L'), wr(pc1, 'N', na, 'P'),
-      wr(q2, '2', x1, 'P'), wr(x1, 'P', kt, '1'), wr(x1, 'P', s1, '1'), wr(x1, 'P', s2, '1'),
-      wr(s1, '2', s2, '2'), wr(s2, '2', xb, 'P'), wr(xb, 'P', kt, 'A1', true),
-      wr(kt, '2', l1, '1'), wr(l1, '1', l2, '1'), wr(l1, '2', l2, '2'), wr(l2, '2', nb, 'P'),
-      wr(kt, 'A2', nc, 'P'), wr(na, 'P', nb, 'P'), wr(nb, 'P', nd, 'P'), wr(nd, 'P', nc, 'P'), wr(nc, 'P', ne, 'P'), wr(ne, 'P', xn0, 'P'),
+      wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'), wr(xn0, 'P', q1, 'N1'), wr(xn0, 'P', q2, 'N1'),
+      wr(q1, '2', pc1, 'L'), wr(q1, 'N2', pc1, 'N'), wr(src, 'PE', pc1, 'PE'),
+      wr(q2, '2', x1, 'P'), wr(q2, 'N2', xn2, 'P'), wr(x1, 'P', kt, '1'), wr(x1, 'P', s1, '1'), wr(x1, 'P', s2, '1'),
+      wr(s1, '2', xb, 'P'), wr(s2, '2', xb, 'P'), wr(xb, 'P', kt, 'A1'), wr(xn2, 'P', kt, 'A2'),
+      wr(kt, '2', l1, '1'), wr(l1, '1', l2, '1'), wr(xn2, 'P', l1, '2'), wr(xn2, 'P', l2, '2'),
       wr(tbt, 'L', xs1, 'P'), wr(xs1, 'P', dm1, '1'), wr(xs1, 'P', dm2, '1'), wr(dm1, '2', xs2, 'P'), wr(dm2, '2', xs2, 'P'),
-      wr(xs2, 'P', h1, '1'), wr(h1, '2', xs3, 'P'), wr(xs3, 'P', xs4, 'P'), wr(xs4, 'P', tbt, 'N', true)
+      wr(xs2, 'P', h1, '1'), wr(h1, '2', tbt, 'N')
     ] };
 }
 // Espace n°3 : locaux tertiaires (détecteur, BAES, arrêt d'urgence, prise)
 function buildExam3() {
-  const src = mk('src', 80, 300, 0, 'TER'), xl = mk('borne', 160, 240, 0, 'XL'), xn0 = mk('borne', 160, 320, 0, 'XN');
-  const q1 = mk('disj', 240, 100, 0, 'Q1', { lab: '20 A' }), q3 = mk('disj', 240, 260, 0, 'Q3', { lab: '2 A' }), q2 = mk('disj', 240, 420, 0, 'Q2', { lab: '16 A' });
-  const xk = mk('borne', 760, 100, 0, 'XK'), km = mk('cont', 700, 180, 0, 'KM1', { lab: 'MN · AU' });
-  const pc1 = mk('prise', 1000, 220, 0, 'PC1', { lab: 'C6' });
-  const s1 = mk('inter', 440, 260, 0, 'S1', { lab: 'arrêt d’urgence', st: { on: true } });
+  const src = mk('src', 80, 320, 0, 'TER'), xl = mk('borne', 160, 260, 0, 'XL'), xn0 = mk('borne', 140, 340, 0, 'XN');
+  const q1 = mk('dpn', 260, 120, 0, 'Q1', { lab: '20 A · C6' }), q3 = mk('dpn', 260, 300, 0, 'Q3', { lab: '2 A · C8' }), q2 = mk('dpn', 260, 500, 0, 'Q2', { lab: '16 A · C7' });
+  const km = mk('cont', 760, 260, 0, 'KM1', { lab: 'MN · AU' }), pc1 = mk('prise', 1060, 120, 0, 'PC1', { lab: 'C6' });
+  const s1 = mk('inter', 480, 240, 0, 'S1', { lab: 'arrêt d’urgence', st: { on: true } });
   s1.inv = true; s1.ops = ['Déverrouiller', 'Appuyer (coup de poing)']; s1.sts = ['Enfoncé : bobine coupée', 'Au repos : contact fermé'];
-  const xe = mk('borne', 360, 420, 0, 'XE'), baes = mk('baes', 520, 340, 0, 'BAES', { lab: 'C7' });
-  const s2 = mk('detect', 520, 440, 0, 'S2');
-  const l1 = mk('lampe', 680, 460, 90, 'L1'), l2 = mk('lampe', 760, 460, 90, 'L2');
-  const nk = mk('borne', 640, 300, 0, 'N1'), na = mk('borne', 920, 300, 0, 'N2'), ns = mk('borne', 480, 580, 0, 'N7'), nbae = mk('borne', 920, 340, 0, 'N3'), nc = mk('borne', 920, 500, 0, 'N4'), nd = mk('borne', 920, 580, 0, 'N5'), ne = mk('borne', 160, 580, 0, 'N6');
-  return { comps: [src, xl, xn0, q1, q2, q3, xk, km, pc1, s1, xe, baes, s2, l1, l2, nk, na, ns, nbae, nc, nd, ne],
+  const xe = mk('borne', 400, 480, 0, 'XE'), xn2 = mk('borne', 400, 520, 0, 'XN2'), baes = mk('baes', 600, 420, 0, 'BAES', { lab: 'C7' });
+  const s2 = mk('detect', 600, 540, 0, 'S2'), l1 = mk('lampe', 800, 520, 0, 'L1'), l2 = mk('lampe', 960, 520, 0, 'L2');
+  return { comps: [src, xl, xn0, q1, q2, q3, km, pc1, s1, xe, xn2, baes, s2, l1, l2],
     wires: [
-      wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q3, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'),
-      wr(q1, '2', xk, 'P'), wr(xk, 'P', km, '1'), wr(km, '2', pc1, 'L'), wr(pc1, 'N', na, 'P'),
-      wr(q3, '2', s1, '1'), wr(s1, '2', km, 'A1', true), wr(km, 'A2', nk, 'P'), wr(nk, 'P', na, 'P'),
-      wr(q2, '2', xe, 'P'), wr(xe, 'P', s2, 'L'), wr(xe, 'P', baes, '1', true), wr(baes, '2', nbae, 'P'),
-      wr(s2, 'S', l1, '1'), wr(l1, '1', l2, '1'), wr(s2, 'N', ns, 'P'), wr(l1, '2', l2, '2'), wr(l2, '2', nc, 'P'),
-      wr(na, 'P', nbae, 'P'), wr(nbae, 'P', nc, 'P'), wr(nc, 'P', nd, 'P'), wr(nd, 'P', ns, 'P'), wr(ns, 'P', ne, 'P'), wr(ne, 'P', xn0, 'P')
+      wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q3, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'), wr(xn0, 'P', q1, 'N1'), wr(xn0, 'P', q3, 'N1'), wr(xn0, 'P', q2, 'N1'),
+      wr(q1, '2', km, '1'), wr(km, '2', pc1, 'L'), wr(q1, 'N2', pc1, 'N'), wr(src, 'PE', pc1, 'PE'),
+      wr(q3, '2', s1, '1'), wr(s1, '2', km, 'A1'), wr(q3, 'N2', km, 'A2'),
+      wr(q2, '2', xe, 'P'), wr(q2, 'N2', xn2, 'P'), wr(xe, 'P', s2, 'L'), wr(xe, 'P', baes, '1'), wr(xn2, 'P', baes, '2'), wr(xn2, 'P', s2, 'N'),
+      wr(s2, 'S', l1, '1'), wr(l1, '1', l2, '1'), wr(xn2, 'P', l1, '2'), wr(xn2, 'P', l2, '2')
     ] };
 }
 const ESPACES = {
   1: { build: buildExam1, eyebrow: 'Espace de travail n°1', title: 'Installation électrique d’un logement',
     sub: 'Le logement du gardien : tableau de répartition TR, éclairage en télérupteur avec des boutons poussoirs radio, chauffe-eau en heures creuses et prises.',
-    order: ['ID1', 'D1', 'D2', 'D3', 'ID2', 'D4', 'D5', 'D6', 'S1', 'E1', 'E2', 'S2', 'PC1', 'PC2'] },
+    order: ['ID1', 'D1', 'D2', 'D3', 'ID2', 'D4', 'D5', 'D6', 'S1', 'E1', 'E2', 'S2', 'PC2', 'PC1'] },
   2: { build: buildExam2, eyebrow: 'Espace de travail n°2', title: 'Parties communes d’un immeuble d’habitation',
     sub: 'Un couloir d’immeuble : éclairage sur minuterie commandé par deux boutons-poussoirs, une prise de courant et deux déclencheurs manuels d’alarme incendie (SSI). Tout le matériel est étanche, en saillie.',
     order: ['Q1', 'Q2', 'S1', 'S2', 'PC1', 'DM1', 'DM2'] },
@@ -1982,6 +2326,7 @@ const ESPACES = {
 let exN = [2, 3].includes(store.get('pn-espace')) ? store.get('pn-espace') : 1;
 const exC = new Circuit();
 const exB = new Board($('#ex-svg'), exC, {});
+const ex3d = new V3D.View($('#ex-3d'));
 function exSet(n) {
   if (n) exN = n;
   const E = ESPACES[exN];
@@ -1992,12 +2337,14 @@ function exSet(n) {
   $$('#page-examen [data-espace]').forEach((el) => { if (!el.closest('#ex-tabs')) el.hidden = +el.dataset.espace !== exN; });
   store.set('pn-espace', exN);
   exUpd();
+  ex3d.show(V3D['esp' + exN], exC);
 }
 function exUpd() {
   const s = summary(exC), order = ESPACES[exN].order;
   $('#ex-dot').className = 'sdot' + (s.dot ? ' ' + s.dot : '');
   $('#ex-st').textContent = s.title; $('#ex-sd').textContent = s.detail;
   $('#ex-metric').textContent = metricTxt(exC.res);
+  ex3d.sync(exC);
   const ops = exC.comps.filter((c) => DEF[c.type].op && opLabel(c)).sort((a, b) => order.indexOf(a.ref) - order.indexOf(b.ref));
   $('#ex-ctls').innerHTML = ops.map((c) => {
     const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug) || (c.type === 'inter' && c.st.on !== !!c.inv);
@@ -2023,7 +2370,7 @@ const editor = (() => {
   const save = () => store.set('pn-bac-a-sable', { comps: C.comps.map((c) => Object.assign({}, c, { st: Object.assign({}, c.st, (c.type === 'bp' || c.type === 'radio') ? { pressed: false } : {}) })), wires: C.wires });
   C.listeners.push(() => { panel(); save(); });
 
-  const groups = [['Alimentation · protection', ['src', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vav', 'perm', 'bp', 'detect']], ['Appareillage modulaire', ['tele', 'tele2', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']], ['Connexion', ['borne']]];
+  const groups = [['Alimentation · protection', ['src', 'dpn', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vav', 'perm', 'bp', 'detect']], ['Appareillage modulaire', ['tele', 'tele2', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']], ['Connexion', ['borne']]];
   $('#ed-pal').innerHTML = `<p style="margin:0 8px 6px;font-size:13px;color:var(--ink-2)">Choisis un symbole, puis clique sur la grille pour le poser.</p>` +
     groups.map(([g, ks]) => `<h2>${g}</h2>` + ks.map((k) => `<button class="pal" type="button" data-pal="${k}" aria-pressed="false" title="${esc(DEF[k].desc)}"><span class="ic">${symIcon(k, 8)}</span>${DEF[k].name}</button>`).join('')).join('');
   $('#ed-pal').addEventListener('click', (e) => {
@@ -2184,7 +2531,7 @@ const editor = (() => {
 
     const D = [];
     const add = (cls, t) => D.push({ cls, t });
-    const hasSrc = C.comps.some((c) => c.type === 'src'), hasProt = C.comps.some((c) => c.type === 'disj' || c.type === 'fus');
+    const hasSrc = C.comps.some((c) => c.type === 'src'), hasProt = C.comps.some((c) => c.type === 'disj' || c.type === 'dpn' || c.type === 'fus');
     if (!hasSrc) add('info', 'Ajoute une alimentation 230 V pour alimenter le circuit.');
     else if (!C.power) add('info', 'Le circuit est hors tension.');
     if (res.short) add('bad', 'Court-circuit : la phase touche le neutre sans passer par un récepteur. Sans protection, les fils chauffent dangereusement.');
