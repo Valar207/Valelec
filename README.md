@@ -65,6 +65,10 @@ Le fichier est découpé par des commentaires repères (chercher ces lignes) :
 | `/* Navigation */` | En-tête : liens en ligne sur grand écran, menu burger groupé (Apprendre, S’entraîner, Aller plus loin) à 1240 px et moins (`openMenu()` / `closeMenu()`). `NAV_ORDER` définit la barre Précédent / Suivant en bas de page (`#nextbar`) ; l’accueil propose quatre chemins et un bouton Reprendre (`pn-last`). Sur téléphone, la liste des circuits devient une bande horizontale et la palette du bac à sable une feuille ouverte par « Ajouter un composant ». Routage par ancre : `#accueil`, `#bases`, `#schemas`, `#examen`, `#bac-a-sable`, `#tableaux`, `#pv`, `#irve` (les sous-sections `#pv-…` et `#irve-…` ouvrent la bonne page et défilent jusqu’à la section) |
 | `/* Bouton mode sombre */` | Bascule clair / sombre dans l’en-tête ; par défaut, le thème suit le réglage de l’appareil |
 
+## Symboles expliqués (page Les bases)
+
+La section « Les symboles à connaître » est générée par `symbols()` : un lexique repliable (`MOTS`, ouvert d’office sur grand écran), puis les symboles rangés par famille (`FAM`). Chaque carte affiche une phrase en clair (`AIDE[clé][0]`) et un menu déroulant « Comprendre en détail » : où on croise l’appareil, un détail utile, la description technique (`DEF[clé].desc`) et la définition des mots du lexique utilisés. Un symbole ajouté à `order` sans entrée dans `AIDE` s’affiche quand même, avec sa description technique, dans « Ce qui consomme ». Styles : bloc `<style id="sym-aide">` juste après la couche de design.
+
 ## Ajouter un composant
 
 1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).

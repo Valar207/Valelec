@@ -946,6 +946,30 @@ html.fx .tilt:hover{--ty:-4px}
   .cur.live{animation:none !important;opacity:.8}
 }
 </style><!-- /ds-tension -->
+<style id="sym-aide">
+.gloss-box{border:1.5px solid var(--line);border-radius:18px;background:var(--paper-2);padding:6px 18px;margin:0 0 26px}
+.gloss-box>summary,.symmore>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-weight:600}
+.gloss-box>summary::-webkit-details-marker,.symmore>summary::-webkit-details-marker{display:none}
+.gloss-box>summary{min-height:48px;font:700 18px var(--f-display);letter-spacing:-.01em}
+.gloss-box>summary::before,.symmore>summary::before{content:"";flex:none;width:9px;height:9px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(-45deg);transition:transform .2s}
+.gloss-box[open]>summary::before,.symmore[open]>summary::before{transform:rotate(45deg)}
+.gloss-box dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:10px 22px;margin:4px 0 16px}
+.gloss-box dl div,.symmore dl div{margin:0}
+.gloss-box dt,.symmore dt{font-weight:700;color:var(--ink)}
+.gloss-box dd,.symmore dd{margin:2px 0 0;font-size:14.5px;color:var(--ink-2)}
+.symfam{margin:0 0 30px}
+.symfam-t{font-size:22px;margin:0 0 4px}
+.symfam-s{margin:0 0 14px;color:var(--ink-2)}
+.symgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(230px,100%),1fr));gap:14px;align-items:start}
+.symcard .clair{font-size:15px;color:var(--ink)}
+.symmore{border-top:1px solid var(--line);padding-top:8px;margin-top:auto}
+.symmore>summary{min-height:40px;font-size:14.5px;color:var(--accent)}
+.symmore p{font-size:14px;margin:6px 0 0;color:var(--ink-2)}
+.symmore p b{color:var(--ink)}
+.symmore dl{display:grid;gap:8px;margin:10px 0 2px;padding:10px 12px;border-radius:12px;background:var(--paper-3)}
+.symmore dd{font-size:13.5px}
+@media (prefers-reduced-motion:reduce){.gloss-box>summary::before,.symmore>summary::before{transition:none}}
+</style>
 <header class="top">
   <div class="wrap wide">
     <a class="brand" href="#accueil" aria-label="Valelec, accueil">
@@ -1113,8 +1137,9 @@ html.fx .tilt:hover{--ty:-4px}
   </section>
 
   <section id="symboles" class="wrap" style="padding-top:80px;scroll-margin-top:90px">
-    <div class="sec-head"><div><p class="eyebrow">4 · Module 2 · Lire un schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les symboles à connaître</h2></div><p>Ce sont les mêmes symboles que dans le bac à sable : tu peux tous les poser et les câbler.</p></div>
-    <div class="grid" id="sym-grid" style="grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:14px"></div>
+    <div class="sec-head"><div><p class="eyebrow">4 · Module 2 · Lire un schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les symboles à connaître</h2></div><p>Un schéma, c’est un plan : chaque appareil a son dessin, et les traits sont les fils. Lis d’abord la phrase en clair sous chaque symbole, puis ouvre « Comprendre en détail » pour aller plus loin.</p></div>
+    <div class="gloss" id="sym-gloss"></div>
+    <div id="sym-grid"></div>
   </section>
 
   <section id="couleurs" class="wrap" style="padding-top:80px;scroll-margin-top:90px">
@@ -3849,7 +3874,69 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
 })();
 (function symbols() {
   const order = ['src', 'dpn', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'detect', 'tele', 'tele2', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes', 'borne'];
-  $('#sym-grid').innerHTML = order.map((k) => `<div class="symcard"><div class="tilebd">${symIcon(k, 12)}</div><h3>${DEF[k].name}</h3><p>${DEF[k].desc}</p></div>`).join('');
+  /* Lexique : les mots qui reviennent dans les descriptions techniques */
+  const MOTS = {
+    circuit: ['Circuit', 'Le chemin que suit l’électricité : du tableau jusqu’à l’appareil, puis retour au tableau. C’est une boucle : si elle est coupée quelque part, rien ne marche.'],
+    phase: ['Phase (L)', 'Le fil qui amène l’électricité. C’est lui qui est dangereux : on dit qu’il est « sous tension ». Souvent rouge, marron ou noir.'],
+    neutre: ['Neutre (N)', 'Le fil de retour, qui ramène le courant au tableau. Toujours bleu.'],
+    terre: ['Terre (PE)', 'Le fil de sécurité, vert et jaune. Normalement, aucun courant n’y passe. En cas de défaut, il envoie le courant dans le sol plutôt que dans ton corps.'],
+    cc: ['Court-circuit', 'La phase touche directement le neutre, sans passer par un appareil. Le courant devient énorme et chauffe les fils : les protections coupent tout de suite.'],
+    surcharge: ['Surcharge', 'Trop d’appareils branchés sur le même circuit : le courant dépasse ce que les fils supportent. Le disjoncteur coupe au bout de quelques secondes ou minutes.'],
+    contact: ['Contact', 'La pièce mobile d’un interrupteur ou d’un relais. Fermé, le courant passe ; ouvert, il ne passe plus, comme un pont-levis levé.'],
+    bobine: ['Bobine (A1-A2)', 'Un petit électroaimant caché dans l’appareil. Quand on l’alimente, il fait bouger un contact tout seul. Ses deux bornes s’appellent A1 et A2.'],
+    impulsion: ['Impulsion', 'Un appui bref sur un bouton, qui envoie du courant pendant une fraction de seconde.'],
+    navette: ['Navettes', 'Les deux fils qui relient deux va-et-vient entre eux. Le courant passe par l’une ou par l’autre.'],
+    borne: ['Borne', 'L’endroit où l’on fixe un fil sur un appareil : une vis ou un trou où on l’enfiche.'],
+  };
+  /* Pour chaque symbole : la phrase en clair, où on le croise, un détail utile, les mots du lexique concernés */
+  const AIDE = {
+    src: ['Le point de départ : le tableau électrique, qui envoie l’électricité vers tous les circuits de la maison.', 'Sur un schéma, tout part de là, comme l’eau part du robinet principal.', '', ['phase', 'neutre', 'terre']],
+    dpn: ['Le gardien d’un circuit : s’il y a un problème, il coupe le courant tout seul. Il coupe les deux fils, l’aller et le retour.', 'Dans ton tableau, c’est la rangée de petits interrupteurs à levier, chacun avec son étiquette : « cuisine », « chambres »…', '« 1P+N » veut dire : un pôle protégé (la phase), plus le neutre coupé en même temps.', ['circuit', 'phase', 'neutre', 'cc', 'surcharge']],
+    disj: ['Il coupe le courant automatiquement en cas de problème. Ici, il est dessiné sur un seul fil.', 'Quand « ça saute » parce qu’on a branché trop d’appareils, c’est lui qui a coupé.', '', ['cc', 'surcharge']],
+    fus: ['Une protection à usage unique : un petit fil à l’intérieur fond s’il passe trop de courant, ce qui coupe le circuit.', 'Dans les vieux tableaux, les multiprises et certains appareils. Une fois fondu, il faut le remplacer.', '', ['cc']],
+    terre: ['Le raccordement de sécurité au sol. Si un appareil métallique a un défaut, le courant part dans la terre plutôt que dans toi.', 'La broche ronde qui dépasse des prises, et tous les fils vert et jaune.', '', ['terre']],
+    inter: ['L’interrupteur classique : il ouvre ou ferme le chemin de l’électricité. Fermé, la lampe s’allume. Ouvert, elle s’éteint.', 'L’interrupteur sur le mur de ta chambre.', 'Le petit trait penché du dessin, c’est le contact ouvert : le courant ne peut pas passer.', ['contact', 'circuit']],
+    vav: ['Pour allumer et éteindre la même lampe depuis deux endroits.', 'En haut et en bas d’un escalier, ou aux deux bouts d’un couloir.', 'Il a trois bornes : une commune (C) et deux navettes. Il envoie le courant soit sur une navette, soit sur l’autre. La lampe s’allume quand les deux va-et-vient choisissent la même navette.', ['navette', 'borne']],
+    perm: ['Pour commander la même lampe depuis un troisième endroit, ou plus.', 'Un long couloir avec trois portes.', 'Il se place entre deux va-et-vient et croise les deux navettes à chaque appui.', ['navette']],
+    bp: ['Un bouton qui ne laisse passer le courant que pendant que tu appuies, comme une sonnette.', 'Le bouton de sonnette, ou les boutons lumineux d’un hall d’immeuble.', 'Seul, il ne peut pas garder une lampe allumée : on l’associe à un télérupteur ou à une minuterie, qui retient l’ordre.', ['impulsion']],
+    radio: ['Un bouton poussoir sans fil : il envoie l’ordre par radio, comme une télécommande.', 'Pratique pour ajouter un interrupteur sans percer le mur ni tirer de câble.', '', ['impulsion']],
+    tele: ['Un interrupteur commandé à distance : un appui sur un bouton poussoir allume, l’appui suivant éteint.', 'Quand on veut commander une lampe depuis beaucoup d’endroits : on ajoute autant de boutons poussoirs qu’on veut.', 'Il est rangé dans le tableau. Les boutons poussoirs lui envoient des impulsions, et il se souvient de l’état allumé ou éteint.', ['bobine', 'impulsion', 'contact']],
+    tele2: ['Un télérupteur qui commande deux choses à la fois : ses deux contacts bougent ensemble.', 'Allumer ou éteindre deux circuits d’un coup, ou couper la phase et le neutre en même temps.', '', ['bobine', 'contact']],
+    cont: ['Un gros interrupteur commandé à distance : il reste fermé tant qu’on l’alimente, et s’ouvre dès qu’on arrête.', 'Le contacteur heures creuses, qui fait chauffer le ballon d’eau chaude la nuit.', 'Différence avec le télérupteur : le télérupteur change d’état à chaque appui et s’en souvient ; le contacteur suit son ordre en continu.', ['bobine', 'contact']],
+    minu: ['Elle allume la lumière pendant un temps donné, puis l’éteint toute seule.', 'La lumière d’une cage d’escalier qui s’éteint au bout de quelques minutes. Ici, 8 secondes pour la démonstration.', '', ['impulsion', 'bobine']],
+    yokis: ['Un petit télérupteur caché dans une boîte au mur, au lieu d’être dans le tableau.', 'En rénovation : pas besoin de tirer de nouveaux fils jusqu’au tableau.', 'S est la sortie vers les lampes, BP l’entrée des boutons poussoirs.', ['phase', 'neutre', 'impulsion']],
+    detect: ['Il allume la lumière tout seul quand quelqu’un passe, puis l’éteint après un moment.', 'L’éclairage d’une entrée, d’un garage ou d’une allée.', 'S est la sortie vers les lampes.', ['phase', 'neutre']],
+    lampe: ['Le point lumineux : ce qu’on veut allumer.', 'Un plafonnier, une applique murale.', '', []],
+    voyant: ['Une toute petite lumière témoin, qui montre qu’un appareil est en marche.', 'Le petit point lumineux d’un interrupteur, visible dans le noir.', '', []],
+    rad: ['Un radiateur électrique : il transforme l’électricité en chaleur.', 'Le radiateur de la salle de bain.', '', []],
+    moteur: ['Un appareil qui transforme l’électricité en mouvement.', 'Un volet roulant, une ventilation (VMC).', '', []],
+    sonnette: ['La sonnette de la porte d’entrée : elle sonne tant qu’on appuie sur son bouton.', 'À l’entrée de la maison.', '', []],
+    prise: ['La prise de courant où l’on branche les appareils.', 'Partout dans la maison.', '« 2P+T » veut dire deux trous (phase et neutre) plus la terre, la broche ronde.', ['phase', 'neutre', 'terre']],
+    baes: ['Le bloc lumineux de secours, souvent marqué « Sortie ». Il s’allume tout seul en cas de coupure de courant, pour qu’on trouve la sortie.', 'Au-dessus des portes, dans les écoles, les magasins et les immeubles.', '', []],
+    borne: ['Un point de connexion où plusieurs fils se rejoignent.', 'Comme les connecteurs Wago dans une boîte de dérivation.', '', ['borne']],
+  };
+  const FAM = [
+    ['Alimenter et protéger', 'D’où vient l’électricité, et ce qui coupe tout en cas de danger.', ['src', 'dpn', 'disj', 'fus', 'terre']],
+    ['Allumer et éteindre à la main', 'Les interrupteurs et les boutons que tu actionnes toi-même.', ['inter', 'vav', 'perm', 'bp', 'radio']],
+    ['Les automatismes', 'Des appareils qui allument ou éteignent à ta place, sur un ordre ou tout seuls.', ['tele', 'tele2', 'cont', 'minu', 'yokis', 'detect']],
+    ['Ce qui consomme', 'Les appareils qu’on alimente : c’est pour eux que le circuit existe.', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']],
+    ['Raccorder', 'Là où les fils se rejoignent.', ['borne']],
+  ];
+  const motsUtilises = new Set(Object.values(AIDE).flatMap((a) => a[3]));
+  $('#sym-gloss').innerHTML = `<details class="gloss-box"${matchMedia('(min-width:700px)').matches ? ' open' : ''}><summary><span>Les ${motsUtilises.size} mots à connaître avant de commencer</span></summary><dl>${Object.keys(MOTS).filter((k) => motsUtilises.has(k)).map((k) => `<div><dt>${MOTS[k][0]}</dt><dd>${MOTS[k][1]}</dd></div>`).join('')}</dl></details>`;
+  const card = (k) => {
+    const a = AIDE[k] || [DEF[k].desc, '', '', []];
+    return `<div class="symcard"><div class="tilebd">${symIcon(k, 12)}</div><h3>${DEF[k].name}</h3><p class="clair">${a[0]}</p>
+      <details class="symmore"><summary>Comprendre en détail</summary>
+        ${a[1] ? `<p><b>Où tu le croises :</b> ${a[1]}</p>` : ''}${a[2] ? `<p>${a[2]}</p>` : ''}
+        <p><b>Version technique :</b> ${DEF[k].desc}</p>
+        ${a[3].length ? `<dl>${a[3].map((m) => `<div><dt>${MOTS[m][0]}</dt><dd>${MOTS[m][1]}</dd></div>`).join('')}</dl>` : ''}
+      </details></div>`;
+  };
+  const vus = new Set(FAM.flatMap((f) => f[2]));
+  const reste = order.filter((k) => !vus.has(k));
+  if (reste.length) FAM[3][2].push(...reste);
+  $('#sym-grid').innerHTML = FAM.map(([titre, sous, ks]) => `<div class="symfam"><h3 class="symfam-t">${titre}</h3><p class="symfam-s">${sous}</p><div class="symgrid">${ks.filter((k) => DEF[k]).map(card).join('')}</div></div>`).join('');
 })();
 
 /* ---------------- Schémas ---------------- */
