@@ -77,7 +77,7 @@ La section « Les symboles à connaître » est générée par `symbols()` : un 
 
 - **Cartes U, I, R (Bases)** : chaque carte porte une petite animation du tuyau d’eau (`.qanim` : pompe et manomètre pour U, débit au compteur pour I, rétrécissement pour R) et une ligne « Se mesure avec ». `grandeurs()` alterne toutes les 3,2 s entre deux situations (classe `b`, légendes `data-a` / `data-b`), seulement quand les cartes sont visibles, et jamais si l’utilisateur réduit les animations.
 - **Page `#depannage`** (menu « S’entraîner », après l’examen théorique) :
-  - `consignation()` : les étapes de la NF C 18-510 à choisir dans l’ordre (`ETAPES`) parmi des pièges (`PIEGES`) ; le tableau dessiné réagit (disjoncteur ouvert, cadenas, pancarte, VAT).
+  - `consignation()` : les étapes de la NF C 18-510 à choisir dans l’ordre (`ETAPES`) parmi des pièges (`PIEGES`) : un clic sélectionne une étape, le bouton « Valider cette étape » (`#cons-ok`) la vérifie ; le tableau dessiné réagit (disjoncteur ouvert, cadenas, pancarte, VAT).
   - `panne()` : 7 pannes (`SC`) construites à partir des schémas (`PRESETS`) ou de `BASES`. Un fil en défaut porte `cut: true` : il reste dessiné mais `solve()` l’ignore. Le VAT mesure entre deux bornes (`etat()` : phase, neutre, terre ou en l’air ; un récepteur transmet le potentiel à une borne isolée). La lueur « sous tension » est masquée sur ce schéma pour ne pas trahir la panne.
 
 ## Ajouter un composant

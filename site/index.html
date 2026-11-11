@@ -1022,6 +1022,7 @@ html.fx .tilt:hover{--ty:-4px}
 .cons-q{margin:0 0 8px;font-weight:700;color:var(--ink)}
 .cons-ch{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .cons-ch button{text-align:left;border-radius:14px;padding:10px 14px;line-height:1.35}
+.cons-ch button[aria-checked="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--paper));box-shadow:inset 4px 0 0 var(--accent)}
 .cons-ch button:hover,.pn-ctl button:hover,.pn-pick button:hover{border-color:var(--accent)}
 .cons-fb,.pn-fb{min-height:0;margin-bottom:10px}
 .fbx{padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.45}
@@ -1552,9 +1553,9 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
       <div class="cons-side">
         <ol class="cons-done" id="cons-done"></ol>
         <p class="cons-q" id="cons-q">Quelle est la première étape ?</p>
-        <div class="cons-ch" id="cons-ch"></div>
+        <div class="cons-ch" id="cons-ch" role="radiogroup" aria-labelledby="cons-q"></div>
         <div class="cons-fb" id="cons-fb" role="status" aria-live="polite"></div>
-        <button type="button" class="btn ghost" id="cons-reset">Recommencer</button>
+        <div class="row" style="gap:10px"><button type="button" class="btn pri" id="cons-ok" disabled>Valider cette étape</button><button type="button" class="btn ghost" id="cons-reset">Recommencer</button></div>
       </div>
     </div>
   </section>
@@ -5422,7 +5423,7 @@ window.addEventListener('resize', sizeEd);
     ['tourn', 'Vérifier avec un tournevis testeur', 'Le tournevis testeur n’est pas un VAT : il peut rester éteint alors que la tension est là. Seul un VAT normalisé prouve l’absence de tension.'],
     ['go', 'Démonter la prise, puisque le disjoncteur est ouvert', 'Tant que l’absence de tension n’est pas vérifiée au VAT, le circuit doit être considéré comme sous tension.'],
   ];
-  let fait = [], pieges = new Set();
+  let fait = [], pieges = new Set(), choisi = null;
   const melange = (a) => a.map((x) => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map((x) => x[1]);
   let ordre = [];
   function dessin() {
@@ -5444,20 +5445,26 @@ window.addEventListener('resize', sizeEd);
   }
   function choix() {
     const reste = ETAPES.filter((e) => !fait.includes(e[0])), pr = PIEGES.filter((x) => !pieges.has(x[0]));
-    if (!reste.length) { $('#cons-ch').innerHTML = ''; $('#cons-q').textContent = 'Circuit consigné : tu peux travailler.'; return; }
+    if (!reste.length) { $('#cons-ch').innerHTML = ''; $('#cons-q').textContent = 'Circuit consigné : tu peux travailler.'; choisi = null; $('#cons-ok').disabled = true; return; }
     if (!ordre.length) ordre = melange(ETAPES.map((e) => e[0]).concat(PIEGES.map((x) => x[0])));
     $('#cons-q').textContent = fait.length ? 'Quelle est l’étape suivante ?' : 'Quelle est la première étape ?';
     const lib = (k) => (ETAPES.find((e) => e[0] === k) || PIEGES.find((x) => x[0] === k))[1];
-    $('#cons-ch').innerHTML = ordre.filter((k) => reste.some((e) => e[0] === k) || pr.some((x) => x[0] === k)).map((k) => `<button type="button" data-k="${k}">${lib(k)}</button>`).join('');
+    choisi = null; $('#cons-ok').disabled = true;
+    $('#cons-ch').innerHTML = ordre.filter((k) => reste.some((e) => e[0] === k) || pr.some((x) => x[0] === k)).map((k) => `<button type="button" role="radio" aria-checked="false" data-k="${k}">${lib(k)}</button>`).join('');
   }
   function liste() { $('#cons-done').innerHTML = fait.map((k) => { const e = ETAPES.find((x) => x[0] === k); return `<li><b>${e[2]}</b> : ${e[1]}.</li>`; }).join(''); }
   const fb = (cls, titre, txt) => { $('#cons-fb').innerHTML = `<div class="fbx ${cls}"><b>${titre}</b>${txt}</div>`; };
   $('#cons-ch').addEventListener('click', (e) => {
-    const b = e.target.closest('[data-k]'); if (!b) return; const k = b.dataset.k;
+    const b = e.target.closest('[data-k]'); if (!b) return;
+    choisi = b.dataset.k; $('#cons-ok').disabled = false;
+    $$('#cons-ch [data-k]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+  });
+  $('#cons-ok').addEventListener('click', () => {
+    const k = choisi; if (!k) return;
     const piege = PIEGES.find((x) => x[0] === k);
     if (piege) { pieges.add(k); fb('bad', 'Non, c’est dangereux.', piege[2]); choix(); return; }
     const attendu = ETAPES[fait.length];
-    if (k !== attendu[0]) { const e = ETAPES.find((x) => x[0] === k); fb('bad', 'Pas encore.', `« ${e[2]} » vient plus tard. Pense d’abord à l’étape qui précède logiquement.`); return; }
+    if (k !== attendu[0]) { const e = ETAPES.find((x) => x[0] === k); fb('bad', 'Pas encore.', `« ${e[2]} » vient plus tard. Pense d’abord à l’étape qui précède logiquement.`); choisi = null; $('#cons-ok').disabled = true; $$('#cons-ch [data-k]').forEach((x) => x.setAttribute('aria-checked', 'false')); return; }
     fait.push(k); dessin(); liste(); choix();
     if (fait.length === ETAPES.length) fb('ok', 'Bravo, le circuit est consigné.', 'Les étapes de la NF C 18-510 : pré-identification, séparation, condamnation, identification, vérification d’absence de tension. En basse tension, la mise à la terre et en court-circuit n’est exigée que s’il existe un risque de réalimentation ou de tension induite. Pour remettre en service (déconsigner), on fait l’inverse : ranger les outils, prévenir, retirer le cadenas, remettre sous tension, essayer.');
     else fb('ok', attendu[2] + ' : c’est juste.', attendu[3]);
