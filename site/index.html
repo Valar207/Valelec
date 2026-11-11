@@ -737,10 +737,11 @@ html{background:var(--paper)}
 body{background:transparent}
 ::selection{background:var(--plasma);color:#fff}
 #fx{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-#fx i{position:absolute;width:70vmax;height:70vmax;border-radius:50%;opacity:var(--fx-a);will-change:transform}
-#fx i:nth-child(1){left:-22vmax;top:-26vmax;background:radial-gradient(closest-side,var(--ion),transparent 72%);animation:fxa 26s ease-in-out infinite alternate}
-#fx i:nth-child(2){right:-28vmax;top:8vmax;background:radial-gradient(closest-side,var(--plasma),transparent 72%);animation:fxb 32s ease-in-out infinite alternate}
-#fx i:nth-child(3){left:18vmax;bottom:-40vmax;background:radial-gradient(closest-side,var(--neutre),transparent 72%);animation:fxc 38s ease-in-out infinite alternate}
+#fx{background:radial-gradient(60vmax 60vmax at 0% 0%,color-mix(in srgb,var(--ion) 42%,transparent),transparent 70%),radial-gradient(55vmax 55vmax at 100% 30%,color-mix(in srgb,var(--plasma) 36%,transparent),transparent 70%),radial-gradient(60vmax 60vmax at 40% 110%,color-mix(in srgb,var(--neutre) 36%,transparent),transparent 70%)}
+#fx i,#fx b{display:none}
+#fx i:nth-child(1){left:-22vmax;top:-26vmax;background:radial-gradient(closest-side,var(--ion),transparent 72%);}
+#fx i:nth-child(2){right:-28vmax;top:8vmax;background:radial-gradient(closest-side,var(--plasma),transparent 72%);}
+#fx i:nth-child(3){left:18vmax;bottom:-40vmax;background:radial-gradient(closest-side,var(--neutre),transparent 72%);}
 #fx b{position:absolute;left:0;top:0;width:46vmax;height:46vmax;margin:-23vmax 0 0 -23vmax;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--volt) 55%,transparent),transparent 70%);opacity:.35;transform:translate(var(--mx,70vw),var(--my,20vh));transition:transform .9s var(--ease)}
 #fx::after{content:"";position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--ink) 22%,transparent) 1px,transparent 1.4px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 75%);opacity:.5}
 @keyframes fxa{to{transform:translate(28vmax,18vmax) scale(1.25)}}
@@ -751,18 +752,18 @@ body{background:transparent}
 .display{font-family:var(--f-display);font-weight:800;letter-spacing:-.045em}
 .sec-head h2{font-size:clamp(28px,3.4vw,44px)}
 .hero{grid-template-columns:repeat(auto-fit,minmax(min(480px,100%),1fr))}
-.hero h1{font-size:clamp(40px,5.2vw,72px);line-height:1;font-weight:800;background:var(--g-live);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gshift 7s ease-in-out infinite alternate;padding-bottom:.08em}
+.hero h1{font-size:clamp(40px,5.2vw,72px);line-height:1;font-weight:800;background:var(--g-live);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
 .eyebrow{display:flex;align-items:center;gap:9px;color:var(--accent);letter-spacing:.08em}
-.eyebrow::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--volt);box-shadow:0 0 0 0 color-mix(in srgb,var(--volt) 70%,transparent);animation:led 2.2s ease-out infinite}
+.eyebrow::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--volt);box-shadow:0 0 0 3px color-mix(in srgb,var(--volt) 30%,transparent)}
 .card .eyebrow::before{background:var(--terre);box-shadow:0 0 0 0 color-mix(in srgb,var(--terre) 70%,transparent)}
-.sec-head h2,.qz-top h1,#ex-title,#sim-title{background:linear-gradient(100deg,var(--ink) 40%,var(--ion) 70%,var(--plasma));background-size:240% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gshift 9s ease-in-out infinite alternate;padding-bottom:.06em}
+.sec-head h2,.qz-top h1,#ex-title,#sim-title{background:linear-gradient(100deg,var(--ink) 40%,var(--ion) 70%,var(--plasma));background-size:240% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.06em}
 @keyframes gshift{from{background-position:0% 50%}to{background-position:100% 50%}}
 @keyframes led{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--volt) 70%,transparent)}70%,100%{box-shadow:0 0 0 9px transparent}}
 
 /* ---------- 4. Composants ---------- */
 /* En-tête : verre dépoli + fil de progression qui suit le défilement */
 .top{background:transparent;border-bottom:0}
-.top::before{content:"";position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--paper) 74%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.top::before{content:"";position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--paper) 74%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
 .top::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;background:var(--g-arc);transform:scaleX(var(--sp,0));transform-origin:left;box-shadow:0 0 14px var(--plasma);border-radius:0 3px 3px 0}
 .brand b{font-family:var(--f-display);font-size:23px;letter-spacing:-.04em}
 .brand b span{background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -772,7 +773,7 @@ body{background:transparent}
 @keyframes wflow{to{stroke-dashoffset:-24}}
 .nav a{border-color:color-mix(in srgb,var(--line) 80%,transparent);background:color-mix(in srgb,var(--paper-2) 70%,transparent);transition:transform .25s var(--spring),border-color .2s,box-shadow .2s,background .2s}
 .nav a:hover{border-color:var(--ion);box-shadow:0 10px 24px -14px var(--ion);transform:translateY(-2px)}
-.nav a[aria-current="page"],.btn.pri,.extab[aria-pressed="true"],.side[aria-current="true"],.nextbar a.nx,.v3d-steps .stp-go,.v3d-steps .stp-nx,.lab-tabs .ctl[aria-pressed="true"],.lab-view .ctl[aria-pressed="true"],.v3d-circ .ctl[aria-pressed="true"]{background:var(--g-live);background-size:200% 100%;color:#fff;border-color:transparent;animation:gshift 6s ease-in-out infinite alternate;box-shadow:var(--glow)}
+.nav a[aria-current="page"],.btn.pri,.extab[aria-pressed="true"],.side[aria-current="true"],.nextbar a.nx,.v3d-steps .stp-go,.v3d-steps .stp-nx,.lab-tabs .ctl[aria-pressed="true"],.lab-view .ctl[aria-pressed="true"],.v3d-circ .ctl[aria-pressed="true"]{background:var(--g-live);background-size:200% 100%;color:#fff;border-color:transparent;box-shadow:var(--glow)}
 .nav a[aria-current="page"] small,.extab[aria-pressed="true"] .k,.extab[aria-pressed="true"] .ds,.side[aria-current="true"] .n{color:rgba(255,255,255,.82)}
 .extab[aria-pressed="true"] .go,.side[aria-current="true"] .go{color:var(--volt)}
 .snd,.burger{border-color:color-mix(in srgb,var(--line) 80%,transparent);background:color-mix(in srgb,var(--paper-2) 70%,transparent);transition:transform .4s var(--spring),border-color .2s}
@@ -803,7 +804,7 @@ body{background:transparent}
 .card,.goals a,.extab,.side,.box,.qz-card,.tbl-box,.calc-in,.nextbar a,.stp,.room,.safety{background:var(--card);border-color:color-mix(in srgb,var(--line) 85%,transparent);border-radius:var(--r-m)}
 a.card,.goals a,.extab,.side,.nextbar a{position:relative;overflow:hidden;transition:transform .35s var(--spring),box-shadow .3s,border-color .2s}
 a.card:hover,.goals a:hover,.extab:hover,.side:hover,.nextbar a:hover{border-color:transparent;background:linear-gradient(var(--paper-2),var(--paper-2)) padding-box,var(--g-ring) border-box;animation:spin 3.5s linear infinite;box-shadow:var(--glow)}
-.extab[aria-pressed="true"]:hover,.side[aria-current="true"]:hover,.nextbar a.nx:hover{background:var(--g-live);animation:gshift 6s ease-in-out infinite alternate}
+.extab[aria-pressed="true"]:hover,.side[aria-current="true"]:hover,.nextbar a.nx:hover{background:var(--g-live);animation:none}
 @keyframes spin{to{--ang:360deg}}
 a.card::before,.goals a::before{content:"";position:absolute;right:-34px;top:-34px;width:120px;height:120px;border-radius:50%;background:var(--g-ring);filter:blur(22px);opacity:.38;transition:transform .7s var(--ease),opacity .4s;pointer-events:none}
 a.card:hover::before,.goals a:hover::before{transform:scale(2.1) rotate(120deg);opacity:.6}
@@ -814,7 +815,7 @@ a.card>*,.goals a>*{position:relative}
 .goals a:nth-child(5)::before{filter:blur(22px) hue-rotate(290deg)}
 .goals b,.card h3{font-family:var(--f-display)}
 .chip{background:color-mix(in srgb,var(--ion) 14%,var(--paper-3));color:var(--ink-2);border-radius:999px;padding:5px 11px}
-.box.inv{background:var(--g-live);background-size:200% 100%;animation:gshift 8s ease-in-out infinite alternate;color:#fff;border-color:transparent;box-shadow:var(--glow)}
+.box.inv{background:var(--g-live);color:#fff;border-color:transparent;box-shadow:var(--glow)}
 .box.inv h2,:is(#page-schemas,#page-examen) .box.inv h2{color:var(--volt)}
 .box.inv :is(p,li,ol,ul){color:#fff}
 .band.alt{background:color-mix(in srgb,var(--paper-2) 58%,transparent)}
@@ -887,7 +888,7 @@ body.fs-lock{overflow:hidden}
   .stage:not(.has-fs) .dual::-webkit-scrollbar{display:none}
   .stage:not(.has-fs) .dual>:is(.col2d,.v3d-wrap){flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always}
   .stage:not(.has-fs) .d2-head span{display:none}
-  .stage:not(.has-fs) .swp{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:999px;background:var(--g-live);background-size:200% 100%;color:#fff;font:700 13px var(--f-body);cursor:pointer;box-shadow:var(--glow);animation:gshift 6s ease-in-out infinite alternate}
+  .stage:not(.has-fs) .swp{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:999px;background:var(--g-live);background-size:200% 100%;color:#fff;font:700 13px var(--f-body);cursor:pointer;box-shadow:var(--glow)}
   .swp i{font-style:normal;display:inline-block;animation:nudge 1.3s ease-in-out infinite}
   .swp.back i{animation-name:nudgeb}
 }
@@ -896,10 +897,12 @@ body.fs-lock{overflow:hidden}
 
 /* Fil sous tension sans courant : des étincelles crépitent sur place (la tension est là, rien ne circule).
    Fil parcouru par le courant : les tirets jaunes avancent. */
-.cur.live{opacity:1;stroke:#FFF3D6;stroke-width:5;stroke-dasharray:1 19;filter:drop-shadow(0 0 3px #FF6B52) drop-shadow(0 0 8px #FF2E1F);animation:pncrack .8s steps(1) infinite,pnflick 1.6s ease-in-out infinite}
-.cur.on{filter:drop-shadow(0 0 3px #FFD84A) drop-shadow(0 0 7px #FFB020)}
+.cur.live{opacity:1;stroke:#FFF3D6;stroke-width:5.5;stroke-dasharray:1 19;filter:none;animation:pncrack .8s steps(1) infinite}
+.cur.on{filter:none;stroke-width:4.5}
 @keyframes pncrack{0%{stroke-dashoffset:0}16%{stroke-dashoffset:-7}33%{stroke-dashoffset:-13}50%{stroke-dashoffset:-3}66%{stroke-dashoffset:-17}83%{stroke-dashoffset:-9}}
 @keyframes pnflick{0%,100%{opacity:.95}40%{opacity:.6}48%{opacity:1}54%{opacity:.35}60%{opacity:.9}}
+
+.v3d:empty::after{content:"Chargement de la vue 3D…";position:absolute;inset:0;display:grid;place-items:center;color:#aab4c2;font:500 14px var(--f-mono)}
 
 /* ---------- 5. Mouvement ---------- */
 [data-page]:not([hidden]){animation:pgin .45s var(--ease)}
@@ -3001,8 +3004,10 @@ const V3D = (() => {
     out.push(pts[pts.length - 1]);
     return out;
   }
+  const idle = window.requestIdleCallback || ((f) => setTimeout(f, 2500));
+  addEventListener('load', () => idle(() => { loadThree().catch(() => {}); }, { timeout: 5000 }));
   class Builder {
-    constructor(T, ops, plan, circ) { this.circ = circ || { list: [], ctx: null }; this.groups = {}; this.curK = 'sup'; this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); this.wires = []; this.runLabs = []; this.geo = {}; this.tex = {}; }
+    constructor(T, ops, plan, circ) { this.dry = plan === null; this.circ = circ || { list: [], ctx: null }; this.groups = {}; this.curK = 'sup'; this.plan = plan; this.zones = []; this.labels = []; this.T = T; this.g = new T.Group(); this.nodes = {}; this.lamps = {}; this.vjT = null; this.mats = {}; this.ctl = {}; this.ops = ops || new Set(); this.wires = []; this.runLabs = []; this.geo = {}; this.tex = {}; }
     /* étapes de construction : chaque objet créé dans fn rejoint le groupe de l'étape key */
     stepG(key) { if (!this.groups[key]) { const G = new this.T.Group(); G.userData.isG = true; this.groups[key] = G; this.g.add(G); } return this.groups[key]; }
     grp(key, fn) {
@@ -3023,6 +3028,7 @@ const V3D = (() => {
     dev(id, kind, x, y, o) { return this.grp(this.devKey((o && o.ref) || id), () => this._dev(id, kind, x, y, o)); }
     /* pavé aux angles arrondis, de z à z + d */
     rb(w, h, d, r, m, x, y, z) {
+      if (this.dry) return this.stub();
       const T = this.T, key = 'rb' + [w, h, d, r].map((v) => v.toFixed(4)).join();
       if (!this.geo[key]) {
         const s = new T.Shape(), a = w / 2 - r, b = h / 2 - r, P = Math.PI;
@@ -3034,17 +3040,20 @@ const V3D = (() => {
     }
     /* cylindre d'axe z, centré en z */
     cyl(r, len, m, x, y, z, seg) {
+      if (this.dry) return this.stub();
       const T = this.T, key = 'cy' + r + '_' + len + '_' + (seg || 20);
       if (!this.geo[key]) { this.geo[key] = new T.CylinderGeometry(r, r, len, seg || 20); this.geo[key].rotateX(Math.PI / 2); }
       const o = new T.Mesh(this.geo[key], typeof m === 'number' ? this.mat(m) : m); o.position.set(x, y, z); this.g.add(o); return o;
     }
     /* demi-sphère tournée vers l'avant, aplatie selon k */
     dome(r, m, x, y, z, k) {
+      if (this.dry) return this.stub();
       const T = this.T, g = new T.SphereGeometry(r, 22, 10, 0, Math.PI * 2, 0, Math.PI / 2); g.rotateX(Math.PI / 2);
       const o = new T.Mesh(g, typeof m === 'number' ? this.mat(m) : m); o.position.set(x, y, z); o.scale.z = k || 1; this.g.add(o); return o;
     }
     /* petite image plaquée (pictogramme) */
     decal(key, w, h, x, y, z, draw) {
+      if (this.dry) return this.stub();
       const T = this.T;
       if (!this.tex[key]) { const c = document.createElement('canvas'); c.width = 256; c.height = Math.round(256 * h / w); draw(c.getContext('2d'), c.width, c.height); this.tex[key] = new T.CanvasTexture(c); this.tex[key].anisotropy = 4; }
       const o = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshStandardMaterial({ map: this.tex[key], roughness: 0.5 })); o.position.set(x, y, z); this.g.add(o); return o;
@@ -3076,10 +3085,12 @@ const V3D = (() => {
     glass(c, op) { return this.mat(c, { transparent: true, opacity: op, depthWrite: false, roughness: 0.4 }); }
     vj() { if (!this.vjT) { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const x = c.getContext('2d'); x.fillStyle = '#2f9e44'; x.fillRect(0, 0, 64, 8); x.fillStyle = '#f2c81e'; x.fillRect(0, 0, 32, 8); this.vjT = new this.T.CanvasTexture(c); this.vjT.wrapS = this.vjT.wrapT = this.T.RepeatWrapping; this.vjT.repeat.set(26, 1); } return this.mat(0xffffff, { map: this.vjT }); }
     wmat(c) { return c === 'vj' ? this.vj() : this.mat(COL[c] === undefined ? 0x888888 : COL[c]); }
-    box(w, h, d, m, x, y, z) { const b = new this.T.Mesh(new this.T.BoxGeometry(w, h, d), typeof m === 'number' ? this.mat(m) : m); b.position.set(x, y, z); this.g.add(b); return b; }
-    tube(pts, r, m, rad) { const V = pts.map((p) => (p.isVector3 ? p : new this.T.Vector3(p[0], p[1], p[2]))); const P = rounded(V, rad === undefined ? 0.05 : rad); const dedupe = P.filter((p, i) => !i || p.distanceTo(P[i - 1]) > 1e-4); if (dedupe.length < 2) return null; const c = new this.T.CatmullRomCurve3(dedupe, false, 'catmullrom', 0.02); const t = new this.T.Mesh(new this.T.TubeGeometry(c, Math.min(400, dedupe.length * 8), r, 8, false), m); this.g.add(t); return t; }
+    stub() { const o = new this.T.Object3D(); this.g.add(o); return o; }
+    box(w, h, d, m, x, y, z) { if (this.dry) return this.stub(); const b = new this.T.Mesh(new this.T.BoxGeometry(w, h, d), typeof m === 'number' ? this.mat(m) : m); b.position.set(x, y, z); this.g.add(b); return b; }
+    tube(pts, r, m, rad) { if (this.dry) return null; const V = pts.map((p) => (p.isVector3 ? p : new this.T.Vector3(p[0], p[1], p[2]))); const P = rounded(V, rad === undefined ? 0.05 : rad); const dedupe = P.filter((p, i) => !i || p.distanceTo(P[i - 1]) > 1e-4); if (dedupe.length < 2) return null; const c = new this.T.CatmullRomCurve3(dedupe, false, 'catmullrom', 0.02); const t = new this.T.Mesh(new this.T.TubeGeometry(c, Math.min(260, dedupe.length * 5), r, r < 0.006 ? 5 : 8, false), m); this.g.add(t); return t; }
     label(txt, x, y, z, big, hot) {
-      const c = document.createElement('canvas'), s = 3, f = (big === 1 ? 22 : 17) * s, x2 = c.getContext('2d'); x2.font = `600 ${f}px "IBM Plex Mono",monospace`; const w = Math.ceil(x2.measureText(txt).width) + 8 * s; c.width = w; c.height = f + 6 * s;
+      if (this.dry) return this.stub();
+      const c = document.createElement('canvas'), s = 2, f = (big === 1 ? 22 : 17) * s, x2 = c.getContext('2d'); x2.font = `600 ${f}px "IBM Plex Mono",monospace`; const w = Math.ceil(x2.measureText(txt).width) + 8 * s; c.width = w; c.height = f + 6 * s;
       const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = typeof hot === 'string' ? hot : hot ? 'rgba(13,120,100,.96)' : 'rgba(17,26,36,.88)'; q.beginPath(); if (q.roundRect) q.roundRect(0, 0, c.width, c.height, 7 * s); else q.rect(0, 0, c.width, c.height); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
       const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'wago' ? 0.015 : big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; this.g.add(sp); if (big !== 'wago') this.labels.push(sp); return sp;
     }
@@ -3489,7 +3500,7 @@ const V3D = (() => {
       try { await loadThree(); } catch (e) { this.el.innerHTML = '<p class="v3d-msg">Vue 3D indisponible (fichier vendor/three.min.js introuvable).</p>'; return false; }
       const T = window.THREE;
       this.r = this.renderer(T); if (!this.r) { this.failed = true; this.showFailure(); return false; }
-      this.r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+      this.r.setPixelRatio(Math.min(navigator.maxTouchPoints ? 1.75 : 2, window.devicePixelRatio || 1));
       this.el.innerHTML = '<div class="v3d-zoom" hidden><button type="button">← Vue d’ensemble</button><span></span></div>'; this.el.appendChild(this.r.domElement); this.ui = this.el.firstChild; this.ui.firstChild.addEventListener('click', () => this.closeZone());
       if (T.ColorManagement) T.ColorManagement.legacyMode = false;
       this.scene = new T.Scene(); this.scene.background = new T.Color(0x18212c);
@@ -3498,8 +3509,8 @@ const V3D = (() => {
       this.hemi = new T.HemisphereLight(0xfff6e8, 0x6f7480, this.H0); this.scene.add(this.hemi);
       const d = new T.DirectionalLight(0xfff1dc, this.S0); d.position.set(-2, 4, 5); this.scene.add(d); this.scene.add(d.target);
       const R3 = this.r; R3.outputEncoding = T.sRGBEncoding; R3.toneMapping = T.ACESFilmicToneMapping; R3.toneMappingExposure = 0.92;
-      R3.shadowMap.enabled = true; R3.shadowMap.type = T.PCFSoftShadowMap;
-      d.castShadow = true; d.shadow.mapSize.set(2048, 2048); d.shadow.bias = -0.0005; d.shadow.normalBias = 0.012; d.shadow.radius = 3;
+      R3.shadowMap.enabled = true; R3.shadowMap.type = T.PCFSoftShadowMap; R3.shadowMap.autoUpdate = false;
+      d.castShadow = true; { const sm = navigator.maxTouchPoints ? 1024 : 2048; d.shadow.mapSize.set(sm, sm); } d.shadow.bias = -0.0005; d.shadow.normalBias = 0.012; d.shadow.radius = 3;
       /* ambiance : une petite pièce (plafond lumineux, fenêtre, sol sombre) dont les reflets donnent du relief aux plastiques et aux métaux */
       try {
         const pm = new T.PMREMGenerator(R3), es = new T.Scene(), pan = (c, w, h, x, y, z, rx, ry) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color: c, side: T.DoubleSide })); m.position.set(x, y, z); m.rotation.set(rx || 0, ry || 0, 0); es.add(m); };
@@ -3578,7 +3589,7 @@ const V3D = (() => {
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.renderSteps(); this.draw();
     }
-    sync(C) { if (!this.b || !C || !C.res) return; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = !this.stepOn && c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.1 : 0; L.pt.intensity = on ? 0.38 : 0; if (L.glow) L.glow.visible = !!on; });
+    sync(C) { if (!this.b || !C || !C.res) return; this.r.shadowMap.needsUpdate = true; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = !this.stepOn && c && C.res.loadsOn[c.id]; L.m.emissiveIntensity = on ? 1.1 : 0; L.pt.intensity = on ? 0.38 : 0; if (L.glow) L.glow.visible = !!on; });
       Object.keys(this.b.ctl).forEach((ref) => {
         const k = this.b.ctl[ref], c = C.comps.find((x) => x.ref === ref); if (!c) return;
         const s = c.st, on = !this.stepOn && !!C.res.loadsOn[c.id];
@@ -3628,7 +3639,7 @@ const V3D = (() => {
       S.push({ k: [], title: 'Le contrôle', text: 'Tout est câblé. Vérifie les serrages et les continuités avant de mettre sous tension, puis termine pour essayer l’installation.' });
       return last ? S : [];
     }
-    stopAnim() { clearInterval(this.anT); this.anT = 0; (this.anR || []).forEach((r) => r.mesh.geometry.setDrawRange(0, Infinity)); this.anR = []; }
+    stopAnim() { if (this.r) this.r.shadowMap.needsUpdate = true; clearInterval(this.anT); this.anT = 0; (this.anR || []).forEach((r) => r.mesh.geometry.setDrawRange(0, Infinity)); this.anR = []; }
     /* les fils de l'étape se déroulent : phase, puis neutre, terre et retours */
     animWires(keys) {
       this.stopAnim(); if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -3646,6 +3657,7 @@ const V3D = (() => {
       const on = new Set(); for (let j = 0; j <= i; j++) S[j].k.forEach((k) => on.add(k));
       Object.keys(b.groups).forEach((k) => { b.groups[k].visible = on.has(k); });
       if (fw) this.animWires(S[i].k); else this.stopAnim();
+      this.r.shadowMap.needsUpdate = true;
       this.updateBar(); this.draw();
     }
     stepStart() {
@@ -5123,7 +5135,7 @@ route();
   const fx = D.createElement('div'); fx.id = 'fx'; fx.setAttribute('aria-hidden', 'true'); fx.innerHTML = '<i></i><i></i><i></i><b></b>';
   D.body.insertBefore(fx, D.body.firstChild);
   let mx = 0, my = 0, mq = false;
-  if (fine && !calm) addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; if (!mq) { mq = true; requestAnimationFrame(() => { mq = false; fx.style.setProperty('--mx', mx + 'px'); fx.style.setProperty('--my', my + 'px'); }); } }, { passive: true });
+  if (false) addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; if (!mq) { mq = true; requestAnimationFrame(() => { mq = false; fx.style.setProperty('--mx', mx + 'px'); fx.style.setProperty('--my', my + 'px'); }); } }, { passive: true });
 
   // Fil de progression sous l'en-tête
   const top = D.querySelector('.top'); let sq = false;
@@ -5148,16 +5160,17 @@ route();
   if (hero && !calm) {
     const cv = D.createElement('canvas'); cv.id = 'hero-waves'; cv.setAttribute('aria-hidden', 'true');
     const page = D.querySelector('#page-accueil'); page.insertBefore(cv, page.firstChild);
-    const g = cv.getContext('2d'); let W = 0, H = 0, vis = false, amp = 1, tgt = 1, raf = 0;
-    const size = () => { const r = Math.min(2, devicePixelRatio || 1); W = page.clientWidth; H = hero.offsetHeight; cv.style.height = H + 'px'; cv.width = W * r; cv.height = H * r; g.setTransform(r, 0, 0, r, 0, 0); };
+    const g = cv.getContext('2d'); let W = 0, H = 0, vis = false, amp = 1, tgt = 1, raf = 0, last = 0;
+    const size = () => { const r = Math.min(1.5, devicePixelRatio || 1); W = page.clientWidth; H = hero.offsetHeight; cv.style.height = H + 'px'; cv.width = W * r; cv.height = H * r; g.setTransform(r, 0, 0, r, 0, 0); };
     const draw = (now) => {
-      raf = 0; if (!vis || page.hidden) return;
+      raf = 0; if (!vis || page.hidden || D.hidden) return;
+      if (now - last < 32) { raf = requestAnimationFrame(draw); return; } last = now;
       const t = now / 1000; amp += (tgt - amp) * 0.06; g.clearRect(0, 0, W, H);
       const cols = ['#FF6A3D', '#FF3D81', '#8B5CFF'], base = H * 0.56, A = Math.min(H * 0.2, 110) * amp;
       for (let k = 0; k < 3; k++) {
-        for (const pass of [[9, 0.1], [2.2, 0.85]]) {
+        for (const pass of [[2.4, 0.9]]) {
           g.beginPath();
-          for (let x = -10; x <= W + 10; x += 8) { const env = 0.25 + 0.75 * (x / W); const y = base + Math.sin(x / 150 - t * 1.6 + k * 2.0944) * A * env; if (x === -10) g.moveTo(x, y); else g.lineTo(x, y); }
+          for (let x = -10; x <= W + 10; x += 14) { const env = 0.25 + 0.75 * (x / W); const y = base + Math.sin(x / 150 - t * 1.6 + k * 2.0944) * A * env; if (x === -10) g.moveTo(x, y); else g.lineTo(x, y); }
           g.strokeStyle = cols[k]; g.lineWidth = pass[0]; g.globalAlpha = pass[1] * 0.55; g.lineCap = 'round'; g.stroke();
         }
       }
@@ -5165,7 +5178,7 @@ route();
     };
     const kick = () => { if (!raf && vis && !page.hidden) raf = requestAnimationFrame(draw); };
     new IntersectionObserver((es) => { vis = es[0].isIntersecting; kick(); }).observe(cv);
-    addEventListener('resize', size); addEventListener('hashchange', () => setTimeout(() => { size(); kick(); }, 80));
+    addEventListener('resize', size); D.addEventListener('visibilitychange', kick); addEventListener('hashchange', () => setTimeout(() => { size(); kick(); }, 80));
     if (fine) hero.addEventListener('pointermove', (e) => { tgt = 0.6 + 1.1 * (1 - e.clientY / innerHeight); });
     size(); setTimeout(size, 600);
   }
@@ -5185,7 +5198,7 @@ route();
     });
     // filet de sécurité : rien de visible à l'écran ne doit rester masqué
     const sweep = () => D.querySelectorAll('.rv:not(.in)').forEach((el) => { const r = el.getBoundingClientRect(); if (r.width && r.top < innerHeight && r.bottom > 0) { el.classList.add('in'); setTimeout(() => el.classList.remove('rv', 'in'), 1200); } });
-    addEventListener('hashchange', () => setTimeout(sweep, 900)); setTimeout(sweep, 1500); setInterval(sweep, 4000);
+    addEventListener('hashchange', () => setTimeout(sweep, 900)); setTimeout(sweep, 1500); setTimeout(sweep, 5000);
   }
 
   // Vue 3D en plein écran (le pas à pas, les circuits et les gestes restent actifs)
