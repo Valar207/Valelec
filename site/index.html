@@ -968,16 +968,27 @@ html.fx .tilt:hover{--ty:-4px}
 .symmore p b{color:var(--ink)}
 .symgo{display:inline-flex;align-items:center;min-height:40px;margin-top:10px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:600 14px var(--f-body);cursor:pointer}
 .symgo:hover{border-color:var(--accent);color:var(--accent)}
-.lex-box{border:1.5px solid var(--line);border-radius:22px;background:var(--paper-2);padding:22px 22px 8px}
-.lex-box h2{font-size:clamp(24px,3vw,32px);margin:0 0 8px}
+.lex-box{border:2px solid transparent;border-radius:22px;background:linear-gradient(var(--paper-2),var(--paper-2)) padding-box,var(--g-cta) border-box;padding:0 20px;box-shadow:0 18px 40px -26px color-mix(in srgb,var(--accent) 70%,transparent)}
+.lex-box>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;min-height:84px;padding:14px 0}
+.lex-box>summary::-webkit-details-marker{display:none}
+.lex-ic{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:var(--g-cta);color:#fff;font:800 20px var(--f-display);letter-spacing:-.02em}
+.lex-tx{flex:1;min-width:0}
+.lex-tx h2{font-size:clamp(20px,2.6vw,26px);margin:0 0 2px;line-height:1.15}
+.lex-tx small{display:block;font-size:14.5px;color:var(--ink-2)}
+.lex-go{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);display:grid;place-items:center}
+.lex-go::before{content:"";width:9px;height:9px;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+.lex-box[open] .lex-go::before{transform:translateY(2px) rotate(-135deg)}
+.lex-box>summary:hover .lex-go{border-color:var(--accent)}
+.lex-box[open]{padding-bottom:6px}
 .lex-hint{margin:0 0 16px;color:var(--ink-2)}
 .lex{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:12px 24px;margin:0 0 14px}
 .lex div{margin:0}
 .lex dt{font-weight:700;color:var(--ink)}
 .lex dd{margin:2px 0 0;font-size:14.5px;color:var(--ink-2)}
-.gl,.gl-demo{text-decoration:underline dotted;text-decoration-thickness:1.5px;text-underline-offset:3px;text-decoration-color:var(--accent);cursor:help}
-.gl{border-radius:3px}
-.gl:hover,.gl[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.gl,.gl-demo{font-style:italic;cursor:help;border-radius:3px}
+.gl::after,.gl-demo::after{content:"*";content:"*" / "";margin-left:1px;font-style:normal;font-weight:700;font-size:.8em;vertical-align:super;line-height:0;color:var(--accent)}
+.gl:hover,.gl[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+@media (prefers-reduced-motion:reduce){.lex-go::before{transition:none}}
 #gltip{position:fixed;z-index:200;max-width:min(320px,calc(100vw - 24px));padding:10px 14px;border-radius:12px;background:var(--ink);color:var(--paper);font:400 14.5px/1.45 var(--f-body);box-shadow:0 14px 34px -12px rgba(0,0,0,.5);pointer-events:auto}
 #gltip b{display:block;margin-bottom:2px;font-weight:700}
 #gltip[hidden]{display:none}
@@ -1098,11 +1109,11 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
   </div>
 
   <section id="lexique" class="wrap" style="padding-top:44px;scroll-margin-top:90px">
-    <div class="lex-box">
-      <h2>Avant de commencer&nbsp;: les mots de base</h2>
-      <p class="lex-hint">Pas besoin de tout retenir. Partout sur le site, les mots techniques sont <span class="gl-demo">soulignés en pointillé</span> : passe la souris dessus ou touche-les pour revoir leur définition.</p>
+    <details class="lex-box" id="lex-det">
+      <summary><span class="lex-ic" aria-hidden="true">Aa</span><span class="lex-tx"><h2>Les mots de base à connaître</h2><small><span id="lex-n">16</span> mots expliqués simplement. Touche pour ouvrir le lexique.</small></span><span class="lex-go" aria-hidden="true"></span></summary>
+      <p class="lex-hint">Pas besoin de tout retenir. Partout sur le site, les mots du lexique sont écrits <span class="gl-demo">en italique</span> : passe la souris dessus, ou touche-les sur téléphone, pour revoir leur définition.</p>
       <dl class="lex" id="lex-list"></dl>
-    </div>
+    </details>
   </section>
 
   <section id="grandeurs" class="wrap" style="padding-top:44px;scroll-margin-top:90px">
@@ -3903,7 +3914,7 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
   const order = ['src', 'dpn', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'detect', 'tele', 'tele2', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes', 'borne'];
   /* Pour chaque symbole : [phrase en clair, ce que montre le dessin, exemple dans un schéma du site, lien vers ce schéma] */
   const AIDE = {
-    src: ['Le point de départ : le tableau électrique, qui envoie l’électricité vers tous les circuits de la maison.', 'Un rectangle avec trois sorties : L pour la phase, N pour le neutre et PE pour la terre.', 'Dans « Simple allumage », tout part de là : la phase et le neutre vont d’abord au disjoncteur Q1.', 'schemas:simple'],
+    src: ['Le point de départ : le tableau électrique, qui envoie l’électricité vers tous les circuits de la maison.', 'Un rectangle avec trois sorties : L pour la phase, N pour le neutre et PE pour la terre.', 'Dans « Simple allumage », tout part de là : la phase et le neutre partent vers la lampe.', 'schemas:simple'],
     dpn: ['Le gardien d’un circuit : s’il y a un problème, il coupe le courant tout seul, sur la phase et sur le neutre.', 'Deux contacts l’un au-dessus de l’autre, un sur la phase et un sur le neutre (N), reliés par un pointillé : ils s’ouvrent ensemble. « 1P+N » veut dire un pôle protégé, la phase, plus le neutre coupé.', 'Dans « Court-circuit et disjoncteur », ferme S2 : Q1 coupe aussitôt, et la lampe s’éteint.', 'schemas:court'],
     disj: ['Il coupe le courant automatiquement en cas de problème. Ici, il est dessiné sur un seul fil.', 'Un contact sur un seul fil, marqué d’une croix : il ne coupe que ce fil.', 'Dans le tableau américain de la page « Tableaux FR / US », chaque circuit 120 V a ce type de disjoncteur : il coupe la phase, jamais le neutre.', 'tableaux'],
     fus: ['Une protection à usage unique : un petit fil à l’intérieur fond s’il passe trop de courant, ce qui coupe le circuit.', 'Un petit rectangle traversé par le fil : c’est le fil fin, à l’intérieur, qui fond.', '', ''],
@@ -3919,21 +3930,22 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
     minu: ['Elle allume la lumière pendant un temps donné, puis l’éteint toute seule.', 'Une bobine marquée d’une petite horloge, et son contact : il reste fermé pendant le temps réglé.', 'Dans « Minuterie d’escalier », un appui sur un bouton allume la lampe pendant 8 secondes.', 'schemas:minu'],
     yokis: ['Un petit télérupteur caché dans une boîte au mur, au lieu d’être dans le tableau.', 'Un boîtier marqué μTR et ses quatre bornes : L et N pour l’alimenter, BP pour les boutons, S vers les lampes.', 'Dans « Micromodule Yokis : 3 lampes », trois boutons commandent trois lampes par ce seul boîtier.', 'schemas:yokis'],
     detect: ['Il allume la lumière tout seul quand quelqu’un passe, puis l’éteint après un moment.', 'Un boîtier avec un œil en demi-cercle : le capteur qui voit passer les gens. Sa sortie S va vers les lampes.', 'À l’examen pratique (espace n°3), le détecteur S2 allume L1 et L2 quand quelqu’un passe.', 'examen:3'],
-    lampe: ['Le point lumineux : ce qu’on veut allumer.', 'Un rond barré d’une croix.', 'Dans « Simple allumage », c’est L1, commandée par l’interrupteur S1.', 'schemas:simple'],
-    voyant: ['Une toute petite lumière témoin, qui montre qu’un appareil est en marche.', 'Le même dessin que la lampe, en plus petit.', 'À l’examen pratique (espace n°2), le voyant H1 s’allume quand on actionne un déclencheur d’alarme incendie.', 'examen:2'],
-    rad: ['Un radiateur électrique : il transforme l’électricité en chaleur.', 'Un rectangle avec un zigzag : la résistance qui chauffe.', 'Dans « Contacteur heures creuses », le chauffe-eau R1 est dessiné ainsi.', 'schemas:hc'],
+    lampe: ['Le point lumineux : ce qu’on veut allumer.', 'Un rond barré d’une croix.', 'Dans « Simple allumage », c’est la lampe L1.', 'schemas:simple'],
+    voyant: ['Une toute petite lumière témoin, qui montre qu’un appareil est en marche.', 'Le même dessin que la lampe, en plus petit.', 'À l’examen pratique (espace n°2), H1 est un voyant : il s’allume pour signaler l’alarme.', 'examen:2'],
+    rad: ['Un radiateur électrique : il transforme l’électricité en chaleur.', 'Un rectangle avec un zigzag : la résistance qui chauffe.', 'Le chauffe-eau R1 du schéma « Contacteur heures creuses » est dessiné ainsi : c’est lui aussi une résistance qui chauffe.', 'schemas:hc'],
     moteur: ['Un appareil qui transforme l’électricité en mouvement, comme un volet roulant ou une ventilation.', 'Un rond avec la lettre M.', '', ''],
-    sonnette: ['La sonnette de la porte d’entrée : elle sonne tant qu’on appuie sur son bouton.', 'Une petite cloche en demi-cercle.', 'Dans « Bouton poussoir et sonnette », c’est B1.', 'schemas:sonnette'],
+    sonnette: ['La sonnette de la porte d’entrée : elle sonne tant qu’on appuie sur son bouton.', 'Une petite cloche en demi-cercle.', 'Dans « Bouton poussoir et sonnette », c’est la sonnette B1.', 'schemas:sonnette'],
     prise: ['La prise de courant où l’on branche les appareils.', 'Un demi-cercle, la prise, avec ses trois fils : phase, neutre et terre. « 2P+T » veut dire deux pôles, phase et neutre, plus la terre.', 'À l’examen pratique (espace n°1), PC2 est la prise de la machine à laver.', 'examen:1'],
     baes: ['Le bloc lumineux de secours, souvent marqué « Sortie ». Il s’allume tout seul en cas de coupure de courant, pour qu’on trouve la sortie.', 'Un rectangle avec une flèche vers la sortie.', 'À l’examen pratique (espace n°3), déclenche Q2 : l’éclairage s’arrête et le BAES s’allume sur sa batterie.', 'examen:3'],
     borne: ['Un point de connexion où plusieurs fils se rejoignent.', 'Un simple point : tous les fils qui y arrivent sont reliés entre eux.', 'Dans « Télérupteur », la borne X1 répartit la phase vers les trois boutons poussoirs.', 'schemas:tele'],
   };
   const FAM = [
-    ['Alimenter et protéger', 'D’où vient l’électricité, et ce qui coupe tout en cas de danger.', ['src', 'dpn', 'disj', 'fus', 'terre']],
-    ['Allumer et éteindre à la main', 'Les interrupteurs et les boutons que tu actionnes toi-même.', ['inter', 'vav', 'perm', 'bp', 'radio']],
-    ['Les automatismes', 'Des appareils qui allument ou éteignent à ta place, sur un ordre ou tout seuls.', ['tele', 'tele2', 'cont', 'minu', 'yokis', 'detect']],
-    ['Ce qui consomme', 'Les appareils qu’on alimente : c’est pour eux que le circuit existe.', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']],
-    ['Raccorder', 'Là où les fils se rejoignent.', ['borne']],
+    ['1 · D’où vient l’électricité', 'Le point de départ de tous les schémas.', ['src']],
+    ['2 · Ce qui consomme', 'Les appareils qu’on alimente : c’est pour eux que le circuit existe.', ['lampe', 'voyant', 'sonnette', 'prise', 'rad', 'moteur']],
+    ['3 · Allumer et éteindre à la main', 'Les interrupteurs et les boutons que tu actionnes toi-même.', ['inter', 'vav', 'perm', 'bp', 'radio']],
+    ['4 · Protéger', 'Ce qui coupe le courant tout seul en cas de danger.', ['dpn', 'disj', 'fus', 'terre']],
+    ['5 · Les automatismes', 'Des appareils qui allument ou éteignent à ta place, sur un ordre ou tout seuls.', ['tele', 'tele2', 'cont', 'minu', 'yokis', 'detect', 'baes']],
+    ['6 · Raccorder', 'Là où les fils se rejoignent.', ['borne']],
   ];
   const card = (k) => {
     const a = AIDE[k] || [DEF[k].desc, '', '', ''];
@@ -3945,7 +3957,7 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
   };
   const vus = new Set(FAM.flatMap((f) => f[2]));
   const reste = order.filter((k) => !vus.has(k));
-  if (reste.length) FAM[3][2].push(...reste);
+  if (reste.length) FAM[1][2].push(...reste);
   const egal = () => {
     const cs = [...document.querySelectorAll('#sym-grid .symcard')];
     cs.forEach((c) => { c.style.minHeight = ''; });
@@ -5276,22 +5288,22 @@ window.addEventListener('resize', sizeEd);
 const GLOSSAIRE = [
   // [clé, motif (expression régulière), titre, définition, dans le lexique de début ?]
   ['circuit', 'circuits?', 'Circuit', 'Le chemin que suit l’électricité : du tableau jusqu’à l’appareil, puis retour au tableau. C’est une boucle : si elle est coupée quelque part, rien ne marche.', 1],
-  ['allerretour', 'l’aller et le retour|aller et retour', 'Aller et retour', 'Le courant part du tableau par la phase (l’aller), traverse l’appareil, puis revient au tableau par le neutre (le retour). Sans retour, pas de courant.', 1],
   ['phase', 'phases?', 'Phase (L)', 'Le fil qui amène l’électricité. C’est lui qui est dangereux : on dit qu’il est « sous tension ». Souvent rouge, marron ou noir.', 1],
   ['neutre', 'neutres?', 'Neutre (N)', 'Le fil de retour, qui ramène le courant au tableau. Toujours bleu.', 1],
-  ['terre', 'terre|PE', 'Terre (PE)', 'Le fil de sécurité, vert et jaune, relié à un piquet planté dans le sol. En cas de défaut sur un appareil métallique, le courant part dans la terre plutôt que dans ton corps, et le différentiel coupe aussitôt.', 1],
+  ['allerretour', 'l’aller et le retour|aller et retour', 'Aller et retour', 'Le courant part du tableau par la phase (l’aller), traverse l’appareil, puis revient au tableau par le neutre (le retour). Sans retour, pas de courant.', 1],
   ['soustension', 'sous tension', 'Sous tension', 'Un fil ou un appareil est sous tension quand il est relié à la phase : il est dangereux, même si aucun courant ne circule.', 1],
-  ['retourlampe', 'retours? lampes?', 'Retour lampe', 'Le fil qui va de l’interrupteur à la lampe. Quand l’interrupteur est fermé, il amène la phase jusqu’à la lampe.', 1],
-  ['navette', 'navettes?', 'Navettes', 'Les deux fils qui relient deux va-et-vient entre eux. Le courant passe par l’une ou par l’autre.', 1],
   ['cc', 'courts?-circuits?', 'Court-circuit', 'La phase touche directement le neutre, sans passer par un appareil. Le courant devient énorme et chauffe les fils : les protections coupent tout de suite.', 1],
   ['surcharge', 'surcharges?', 'Surcharge', 'Trop d’appareils branchés sur le même circuit : le courant dépasse ce que les fils supportent. Le disjoncteur coupe au bout de quelques secondes ou minutes.', 1],
-  ['surint', 'surintensités?', 'Surintensité', 'Un courant plus fort que prévu : soit une surcharge (trop d’appareils), soit un court-circuit. Le disjoncteur est fait pour la couper.', 0],
-  ['contact', 'contacts?', 'Contact', 'La pièce mobile d’un interrupteur ou d’un relais. Fermé, le courant passe ; ouvert, il ne passe plus, comme un pont-levis levé.', 1],
-  ['bobine', 'bobines?', 'Bobine (A1-A2)', 'Un petit électroaimant caché dans l’appareil. Quand on l’alimente, il fait bouger un contact tout seul. Ses deux bornes s’appellent A1 et A2.', 1],
-  ['impulsion', 'impulsions?', 'Impulsion', 'Un appui bref sur un bouton, qui envoie du courant pendant une fraction de seconde.', 1],
-  ['borne', 'bornes? de connexion', 'Borne', 'L’endroit où l’on fixe un fil sur un appareil : une vis ou un trou où on l’enfiche.', 1],
   ['disj', 'disjoncteurs?(?: divisionnaires?)?', 'Disjoncteur', 'Un interrupteur automatique placé au tableau : il coupe le circuit en cas de court-circuit ou de surcharge. On le réarme à la main.', 1],
   ['diff', 'interrupteurs? différentiels?|différentiels?|DDR', 'Différentiel (30 mA)', 'Il compare le courant qui part par la phase et celui qui revient par le neutre. S’il en manque, c’est qu’une fuite passe ailleurs, peut-être par une personne : il coupe en une fraction de seconde. 30 mA est le seuil qui protège les personnes.', 1],
+  ['terre', 'terre|PE', 'Terre (PE)', 'Le fil de sécurité, vert et jaune, relié à un piquet planté dans le sol. En cas de défaut sur un appareil métallique, le courant part dans la terre plutôt que dans ton corps, et le différentiel coupe aussitôt.', 1],
+  ['contact', 'contacts?', 'Contact', 'La pièce mobile d’un interrupteur ou d’un relais. Fermé, le courant passe ; ouvert, il ne passe plus, comme un pont-levis levé.', 1],
+  ['retourlampe', 'retours? lampes?', 'Retour lampe', 'Le fil qui va de l’interrupteur à la lampe. Quand l’interrupteur est fermé, il amène la phase jusqu’à la lampe.', 1],
+  ['navette', 'navettes?', 'Navettes', 'Les deux fils qui relient deux va-et-vient entre eux. Le courant passe par l’une ou par l’autre.', 1],
+  ['impulsion', 'impulsions?', 'Impulsion', 'Un appui bref sur un bouton, qui envoie du courant pendant une fraction de seconde.', 1],
+  ['borne', 'bornes? de connexion', 'Borne', 'L’endroit où l’on fixe un fil sur un appareil : une vis ou un trou où on l’enfiche.', 1],
+  ['bobine', 'bobines?', 'Bobine (A1-A2)', 'Un petit électroaimant caché dans l’appareil. Quand on l’alimente, il fait bouger un contact tout seul. Ses deux bornes s’appellent A1 et A2.', 1],
+  ['surint', 'surintensités?', 'Surintensité', 'Un courant plus fort que prévu : soit une surcharge (trop d’appareils), soit un court-circuit. Le disjoncteur est fait pour la couper.', 0],
   ['agcp', 'AGCP|disjoncteurs? de branchement', 'AGCP (disjoncteur de branchement)', 'Le gros disjoncteur à l’entrée du logement, près du compteur. Il coupe toute la maison et protège contre les surcharges de l’abonnement.', 0],
   ['tableau', 'tableaux? (?:électriques?|de répartition)', 'Tableau électrique', 'La boîte qui regroupe les protections de la maison : différentiels et disjoncteurs, un par circuit.', 0],
   ['peigne', 'peignes?', 'Peigne', 'Une barrette de cuivre qui relie les disjoncteurs d’une même rangée au tableau, pour éviter de câbler fil par fil.', 0],
@@ -5325,7 +5337,9 @@ const GLOSSAIRE = [
   const PAR = Object.fromEntries(G.map((g) => [g.k, g]));
   /* lexique de début de parcours */
   const ll = $('#lex-list');
-  if (ll) ll.innerHTML = G.filter((g) => g.lex).map((g) => `<div><dt>${g.titre}</dt><dd>${g.def}</dd></div>`).join('');
+  if (ll) { const L = G.filter((g) => g.lex); ll.innerHTML = L.map((g) => `<div><dt>${g.titre}</dt><dd>${g.def}</dd></div>`).join(''); const n = $('#lex-n'); if (n) n.textContent = L.length; }
+  /* le lien du sommaire ouvre le lexique */
+  document.addEventListener('click', (e) => { if (e.target.closest('a[href="#lexique"]')) { const d = $('#lex-det'); if (d) d.open = true; } });
   /* un seul motif, le plus long d'abord ; les mots courts en majuscules (PE, TT…) restent sensibles à la casse */
   const sensibles = new Set(['terre', 'tt', 'courbe', 'vat', 'epi', 'tbt', 'baes', 'ssi', 'dcl', 'icta', 'irl', 'agcp', 'diff']);
   const alts = [];
