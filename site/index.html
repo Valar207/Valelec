@@ -488,7 +488,7 @@ details.more[open]>summary::before{content:"−"}
 .t.c{text-anchor:middle}.t.sm{font-size:10px;fill:#9AABBD}
 .t.ref{fill:#E8EDF2;font-size:13px}.t.lab{fill:#9AABBD;font-size:12px}
 .t.e{text-anchor:start}
-.view .t.ref{font-size:17px}.view .t.lab{font-size:14px}.view .t.sm{font-size:12px}
+.view .t.ref{font-size:17px}.view .t.lab{font-size:14px}.t.lab.x2{font-size:11px;opacity:.85}.view .t.lab.x2{font-size:12px}.view .t.sm{font-size:12px}
 .lamp{fill:#0E151D;stroke:#E8EDF2;stroke-width:2.5;transition:fill .25s}
 .lamp.on{fill:#FFE58A}
 .lampx{fill:none;stroke:#8E9BAA;stroke-width:2}
@@ -903,6 +903,13 @@ body.fs-lock{overflow:hidden}
 @keyframes pnflick{0%,100%{opacity:.95}40%{opacity:.6}48%{opacity:1}54%{opacity:.35}60%{opacity:.9}}
 
 .v3d:empty::after{content:"Chargement de la vue 3D…";position:absolute;inset:0;display:grid;place-items:center;color:#aab4c2;font:500 14px var(--f-mono)}
+
+/* Barre d'état des schémas : hauteur fixe, pour que le schéma ne bouge pas quand l'état change */
+.statusbar{flex-wrap:nowrap;align-items:center;gap:12px}
+.statusbar>.row{flex:1 1 auto;min-width:0}
+.statusbar strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.statusbar span.d{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;line-height:1.45;height:2.9em}
+.statusbar .metric{flex:none;max-width:46%;white-space:normal;text-align:right}
 
 /* ---------- 5. Mouvement ---------- */
 [data-page]:not([hidden]){animation:pgin .45s var(--ease)}
@@ -2252,6 +2259,19 @@ function stateText(c, on, power) {
     default: return on ? 'Alimenté · ' + wattOf(c).toLocaleString('fr-FR') + ' W' : 'Non alimenté';
   }
 }
+const KIND = { disj: 'disjoncteur', dpn: 'disjoncteur', fus: 'fusible', inter: 'interrupteur', vav: 'va-et-vient', perm: 'permutateur', bp: 'poussoir', radio: 'poussoir radio', detect: 'détecteur', tele: 'télérupteur', tele2: 'télérupteur', cont: 'contacteur', minu: 'minuterie', yokis: 'micromodule', lampe: 'lampe', voyant: 'voyant', rad: 'radiateur', moteur: 'moteur', sonnette: 'sonnette', prise: 'prise', baes: 'secours', pv: 'panneaux solaires', ond: 'onduleur', cpt: 'compteur', spd: 'parafoudre', evse: 'borne de recharge', ev: 'voiture électrique' };
+const LAB_LIEU = /^(salon|séjour|salle à manger|chambre|entrée|couloir|cuisine|bas d’escalier|haut d’escalier|porte d’entrée|rdc|1er|2e)$/i;
+const LAB_SEUL = /^(sectionneur|chauffe-eau|onduleur|parafoudre|arrêt|borne|wallbox|boîtier|prise|contact|marche)/i;
+/* [nom de l'appareil, précision] affichés sous le repère d'un composant */
+function subOf(c) {
+  let k = KIND[c.type] || '';
+  if (c.type === 'dpn' || c.type === 'disj') { if (/^ID/.test(c.ref)) k = 'différentiel'; else if (c.ref === 'AGCP') k = 'disj. de branchement'; }
+  const lab = c.lab && !LAB_LIEU.test(c.lab) ? c.lab : '';
+  if (lab && k === 'disjoncteur') k = 'disj.';
+  if (lab && LAB_SEUL.test(lab)) return [lab, ''];
+  return [k, lab];
+}
+const ctlLab = (c) => { const s = subOf(c); return s[1] || s[0]; };
 const ON_WORD = { ev: 'en charge', lampe: 'allumée', voyant: 'allumé', rad: 'chauffe', moteur: 'tourne', sonnette: 'sonne', prise: 'appareil en marche' };
 
 /* Dessin d’un symbole dans son repère local (0..w, 0..h) */
@@ -2466,7 +2486,7 @@ class Board {
     let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     this.C.comps.forEach((c) => {
       const b = boxOf(c), right = (c.rot || 0) % 180 !== 0;
-      x0 = Math.min(x0, c.x - b.W / 2); x1 = Math.max(x1, c.x + b.W / 2 + (right ? 110 : 0));
+      x0 = Math.min(x0, c.x - b.W / 2); x1 = Math.max(x1, c.x + b.W / 2 + (right ? 130 : 0));
       y0 = Math.min(y0, c.y - b.H / 2); y1 = Math.max(y1, c.y + b.H / 2 + (right ? 0 : 40));
     });
     this.C.wires.forEach((w) => [w.a, w.b].forEach((k) => {
@@ -2654,15 +2674,17 @@ class Board {
       if (sel) h += `<rect class="selbox" x="${-d.w / 2 - 8}" y="${-d.h / 2 - 8}" width="${d.w + 16}" height="${d.h + 16}" rx="8"/>`;
       h += `<g transform="translate(${-d.w / 2} ${-d.h / 2})">${sym(c, on, now)}</g></g>`;
       if (['src', 'borne', 'terre'].includes(c.type)) return;
-      const b = boxOf(c), right = (c.rot || 0) % 180 !== 0;
+      const b = boxOf(c), right = (c.rot || 0) % 180 !== 0 || c.type === 'radio';
       if (right) {
         const x = c.x + b.W / 2 + 10;
-        h += `<text x="${x}" y="${c.y + (c.lab ? -2 : 5)}" class="t ref e">${esc(c.ref)}</text>`;
-        if (c.lab) h += `<text x="${x}" y="${c.y + 14}" class="t lab e">${esc(c.lab)}</text>`;
+        const sb = subOf(c), s1 = sb.filter(Boolean).join(' · ');
+        h += `<text x="${x}" y="${c.y - 2}" class="t ref e">${esc(c.ref)}</text>`;
+        if (s1) h += `<text x="${x}" y="${c.y + 14}" class="t lab e${s1.length > 22 ? ' x2' : ''}">${esc(s1)}</text>`;
       } else {
         const y = c.y + b.H / 2 + 18;
         h += `<text x="${c.x}" y="${y}" class="t ref c">${esc(c.ref)}</text>`;
-        if (c.lab) h += `<text x="${c.x}" y="${y + 15}" class="t lab c">${esc(c.lab)}</text>`;
+        const sb = subOf(c), s1 = sb.filter(Boolean).join(' · ');
+        if (s1) h += `<text x="${c.x}" y="${y + 15}" class="t lab c${s1.length > 22 ? ' x2' : ''}">${esc(s1)}</text>`;
       }
     });
     if (this.edit) {
@@ -3848,7 +3870,7 @@ function simUpd() {
   const ops = simC.comps.filter((c) => DEF[c.type].op && opLabel(c));
   $('#sim-ctls').innerHTML = ops.map((c) => {
     const pressed = (c.type === 'inter' && c.st.on) || (c.type === 'bp' && c.st.pressed) || (c.type === 'prise' && c.st.plug);
-    return `<button class="ctl" type="button" data-op="${c.id}"${['inter', 'bp', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span>${c.lab && c.type !== 'disj' && c.type !== 'dpn' ? `<span class="c-lab">${esc(c.lab)}</span>` : ''}<span class="c-act">${opLabel(c)}</span></button>`;
+    return `<button class="ctl" type="button" data-op="${c.id}"${['inter', 'bp', 'prise'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span>${c.type !== 'disj' && c.type !== 'dpn' ? `<span class="c-lab">${esc(ctlLab(c))}</span>` : ''}<span class="c-act">${opLabel(c)}</span></button>`;
   }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
 }
 simC.listeners.push(simUpd);
@@ -3981,7 +4003,7 @@ function exUpd() {
   const ops = exC.comps.filter((c) => DEF[c.type].op && opLabel(c)).sort((a, b) => order.indexOf(a.ref) - order.indexOf(b.ref));
   $('#ex-ctls').innerHTML = ops.map((c) => {
     const pressed = ((c.type === 'bp' || c.type === 'radio') && c.st.pressed) || (c.type === 'prise' && c.st.plug) || (c.type === 'inter' && c.st.on !== !!c.inv);
-    return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise', 'inter'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span>${c.lab ? `<span class="c-lab">${esc(c.lab)}</span>` : ''}<span class="c-act">${opLabel(c)}</span></button>`;
+    return `<button class="ctl" type="button" data-op="${c.id}"${['bp', 'radio', 'prise', 'inter'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span><span class="c-lab">${esc(ctlLab(c))}</span><span class="c-act">${opLabel(c)}</span></button>`;
   }).join('') + `<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>`;
 }
 exC.listeners.push(exUpd);
@@ -5045,7 +5067,7 @@ function makeLab(p, presets) {
     $p('dot').className = 'sdot' + (s.dot ? ' ' + s.dot : ''); $p('st').textContent = s.title; $p('sd').textContent = s.detail; $p('metric').textContent = metricTxt(C.res); V.sync(C);
     $p('ctls').innerHTML = C.comps.filter((c) => DEF[c.type].op && !c.fixed && opLabel(c)).map((c) => {
       const pressed = (c.type === 'prise' && c.st.plug) || (c.type === 'ev' && c.st.plug) || (c.type === 'evse' && c.st.charge) || (c.type === 'pv' && c.st.sun);
-      return `<button class="ctl" type="button" data-op="${c.id}"${['prise', 'ev', 'evse', 'pv'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span>${c.lab && c.type !== 'dpn' ? `<span class="c-lab">${esc(c.lab)}</span>` : ''}<span class="c-act">${opLabel(c)}</span></button>`;
+      return `<button class="ctl" type="button" data-op="${c.id}"${['prise', 'ev', 'evse', 'pv'].includes(c.type) ? ` aria-pressed="${pressed}"` : ''}><span class="c-ref">${c.ref}</span><span class="c-lab">${esc(ctlLab(c))}</span><span class="c-act">${opLabel(c)}</span></button>`;
     }).join('') + '<button class="ctl ghost" type="button" data-reset="1">Réinitialiser</button>';
   };
   C.listeners.push(upd);
