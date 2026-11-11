@@ -966,8 +966,25 @@ html.fx .tilt:hover{--ty:-4px}
 .symmore>summary{min-height:40px;font-size:14.5px;color:var(--accent)}
 .symmore p{font-size:14px;margin:6px 0 0;color:var(--ink-2)}
 .symmore p b{color:var(--ink)}
-.symmore dl{display:grid;gap:8px;margin:10px 0 2px;padding:10px 12px;border-radius:12px;background:var(--paper-3)}
-.symmore dd{font-size:13.5px}
+.symgo{display:inline-flex;align-items:center;min-height:40px;margin-top:10px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:600 14px var(--f-body);cursor:pointer}
+.symgo:hover{border-color:var(--accent);color:var(--accent)}
+.lex-box{border:1.5px solid var(--line);border-radius:22px;background:var(--paper-2);padding:22px 22px 8px}
+.lex-box h2{font-size:clamp(24px,3vw,32px);margin:0 0 8px}
+.lex-hint{margin:0 0 16px;color:var(--ink-2)}
+.lex{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:12px 24px;margin:0 0 14px}
+.lex div{margin:0}
+.lex dt{font-weight:700;color:var(--ink)}
+.lex dd{margin:2px 0 0;font-size:14.5px;color:var(--ink-2)}
+.gl,.gl-demo{text-decoration:underline dotted;text-decoration-thickness:1.5px;text-underline-offset:3px;text-decoration-color:var(--accent);cursor:help}
+.gl{border-radius:3px}
+.gl:hover,.gl[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+#gltip{position:fixed;z-index:200;max-width:min(320px,calc(100vw - 24px));padding:10px 14px;border-radius:12px;background:var(--ink);color:var(--paper);font:400 14.5px/1.45 var(--f-body);box-shadow:0 14px 34px -12px rgba(0,0,0,.5);pointer-events:auto}
+#gltip b{display:block;margin-bottom:2px;font-weight:700}
+#gltip[hidden]{display:none}
+.v3d-help summary{min-height:44px;display:flex;align-items:center}
+.qz-chk{min-height:44px;display:inline-flex;align-items:center;gap:10px}
+.qz-chk input{width:22px;height:22px}
+footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
 @media (prefers-reduced-motion:reduce){.gloss-box>summary::before,.symmore>summary::before{transition:none}}
 </style>
 <header class="top">
@@ -1052,7 +1069,7 @@ html.fx .tilt:hover{--ty:-4px}
       <p style="margin:0;color:#B7C3D0;max-width:46ch">La couleur du fil dit son rôle, le mouvement dit si le courant passe. En alternatif, le courant change de sens 50 fois par seconde : l’animation montre le sens conventionnel pour suivre le trajet.</p>
     </div>
     <ul class="legend">
-      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w ph"/></svg><span><b>Phase</b><small>le fil « chargé »</small></span></li>
+      <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w ph"/></svg><span><b>Phase</b><small>le fil sous tension</small></span></li>
       <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w ne"/></svg><span><b>Neutre</b><small>le retour vers le tableau</small></span></li>
       <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w rt"/></svg><span><b>Retour lampe, navettes</b><small>après l’interrupteur</small></span></li>
       <li><svg width="56" height="16" viewBox="0 0 56 16" aria-hidden="true"><path d="M4 8 H52" class="w pe"/><path d="M4 8 H52" class="w pey"/></svg><span><b>Terre</b><small>protection des personnes</small></span></li>
@@ -1076,9 +1093,17 @@ html.fx .tilt:hover{--ty:-4px}
     <h1 class="display" style="margin:0;font-size:clamp(42px,5.6vw,72px);max-width:16ch">Tension, intensité, résistance.</h1>
     <p class="lead">Trois grandeurs suffisent pour comprendre presque tout ce qui se passe dans une installation électrique. Pour les retenir, pense à un tuyau d’eau.</p>
     <nav class="toc" aria-label="Sommaire de la leçon">
-      <a href="#grandeurs">1 · Les trois grandeurs</a><a href="#ohm">2 · La loi d’Ohm</a><a href="#puissance">3 · La puissance</a><a href="#symboles">4 · Les symboles</a><a href="#couleurs">5 · Les couleurs des fils</a>
+      <a href="#lexique">0 · Les mots de base</a><a href="#grandeurs">1 · Les trois grandeurs</a><a href="#ohm">2 · La loi d’Ohm</a><a href="#puissance">3 · La puissance</a><a href="#symboles">4 · Les symboles</a><a href="#couleurs">5 · Les couleurs des fils</a>
     </nav>
   </div>
+
+  <section id="lexique" class="wrap" style="padding-top:44px;scroll-margin-top:90px">
+    <div class="lex-box">
+      <h2>Avant de commencer&nbsp;: les mots de base</h2>
+      <p class="lex-hint">Pas besoin de tout retenir. Partout sur le site, les mots techniques sont <span class="gl-demo">soulignés en pointillé</span> : passe la souris dessus ou touche-les pour revoir leur définition.</p>
+      <dl class="lex" id="lex-list"></dl>
+    </div>
+  </section>
 
   <section id="grandeurs" class="wrap" style="padding-top:44px;scroll-margin-top:90px">
     <h2 class="sr-only">Les trois grandeurs</h2>
@@ -1122,7 +1147,7 @@ html.fx .tilt:hover{--ty:-4px}
       <p class="eyebrow">3 · Puissance</p>
       <h2 class="display" style="margin:0;font-size:clamp(30px,3.6vw,46px)">P = U × I</h2>
       <p style="margin:0;color:var(--ink-2)">La puissance, en watts, mesure l’énergie consommée chaque seconde. À la maison, la tension est fixe (230 V) : plus un appareil est puissant, plus il tire d’intensité.</p>
-      <p style="margin:0;color:var(--ink-2)">Et plus l’intensité est grande, plus le fil doit être gros pour ne pas chauffer : 1,5 mm² pour l’éclairage, 2,5 mm² pour les prises.</p>
+      <p style="margin:0;color:var(--ink-2)">Et plus l’intensité est grande, plus le fil doit être gros pour ne pas chauffer : 1,5 mm² pour l’éclairage (disjoncteur 16 A), 2,5 mm² pour les prises (disjoncteur 20 A). Des prises en 1,5 mm² sont aussi permises, avec un disjoncteur 16 A et moins de prises sur le circuit.</p>
     </div>
     <div class="tbl-box"><table>
       <caption>Ordres de grandeur sous 230 V</caption>
@@ -1137,8 +1162,7 @@ html.fx .tilt:hover{--ty:-4px}
   </section>
 
   <section id="symboles" class="wrap" style="padding-top:80px;scroll-margin-top:90px">
-    <div class="sec-head"><div><p class="eyebrow">4 · Module 2 · Lire un schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les symboles à connaître</h2></div><p>Un schéma, c’est un plan : chaque appareil a son dessin, et les traits sont les fils. Lis d’abord la phrase en clair sous chaque symbole, puis ouvre « Comprendre en détail » pour aller plus loin.</p></div>
-    <div class="gloss" id="sym-gloss"></div>
+    <div class="sec-head"><div><p class="eyebrow">4 · Module 2 · Lire un schéma</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Les symboles à connaître</h2></div><p>Un schéma, c’est un plan : chaque appareil a son dessin, et les traits sont les fils. Sous chaque symbole, une phrase en clair. Ouvre « Sur le schéma » pour voir comment il est dessiné et où il sert dans les schémas du site.</p></div>
     <div id="sym-grid"></div>
   </section>
 
@@ -1147,7 +1171,7 @@ html.fx .tilt:hover{--ty:-4px}
     <div class="grid">
       <div class="card cond"><div class="sw" style="display:grid;grid-template-columns:repeat(3,1fr)"><span style="background:#C8321F"></span><span style="background:#7A4A28"></span><span style="background:#1E1F22"></span></div><div class="t"><h3>Phase</h3><p>Toute couleur sauf le bleu et le vert/jaune, le plus souvent rouge, marron ou noir. Les retours lampe et les navettes prennent une autre couleur (orange, violet…).</p></div></div>
       <div class="card cond"><div class="sw" style="background:#5B9BD8"></div><div class="t"><h3>Neutre</h3><p>Toujours bleu clair. Il ramène le courant au tableau et ne passe jamais par un interrupteur.</p></div></div>
-      <div class="card cond"><div class="sw" style="background:repeating-linear-gradient(115deg,#3E9A3A 0 22px,#F2CB2E 22px 44px)"></div><div class="t"><h3>Terre</h3><p>Toujours vert et jaune. Elle protège les personnes en évacuant un défaut vers le sol.</p></div></div>
+      <div class="card cond"><div class="sw" style="background:repeating-linear-gradient(115deg,#3E9A3A 0 22px,#F2CB2E 22px 44px)"></div><div class="t"><h3>Terre</h3><p>Toujours vert et jaune. Elle protège les personnes avec le différentiel : en cas de défaut, le courant part dans la terre, le différentiel le détecte et coupe aussitôt.</p></div></div>
     </div>
   </section>
 
@@ -1332,7 +1356,7 @@ html.fx .tilt:hover{--ty:-4px}
         <li>En minuterie, les boutons-poussoirs S1 et S2 sont <strong>en parallèle</strong> : n’importe lequel envoie une impulsion à la bobine de KT1.</li>
         <li>Le câble C4 transporte deux retours distincts : le <strong>retour BP</strong> (vers la bobine) et le <strong>retour lampes</strong> (depuis le contact de la minuterie).</li>
         <li>Le circuit SSI (sécurité incendie) est un circuit à part, en très basse tension : on ne le mélange jamais avec les câbles 230 V.</li>
-        <li>C9 est un câble <strong>CR1</strong>, résistant au feu (C1 = non propagateur de la flamme) : le circuit doit rester opérationnel pendant un incendie.</li>
+        <li>C9 est un câble <strong>CR1-C1</strong> : CR1 = résistant au feu, C1 = non propagateur de l’incendie (C2 voudrait dire non propagateur de la flamme) : le circuit doit rester opérationnel pendant un incendie.</li>
         <li>C9 sera relié à une centrale d’alarme incendie, à un voyant de signalisation, ou laissé en attente. Le schéma le représente par un voyant H1.</li>
         <li>Le type de contact des déclencheurs (ouvert ou fermé au repos, résistance de fin de ligne) dépend de la centrale : suis le schéma de bornier de la boîte 8.</li>
         <li>Parties communes : tout le matériel est <strong>étanche et en saillie</strong> (boîtes, patères, poussoirs, prise).</li>
@@ -1437,6 +1461,7 @@ html.fx .tilt:hover{--ty:-4px}
 
 <!-- ============ BAC À SABLE ============ -->
 <div id="page-bac-a-sable" data-page="bac-a-sable" hidden>
+  <h1 class="sr-only">Bac à sable</h1>
   <div class="ed-bar"><div class="wrap wide" role="toolbar" aria-label="Outils du bac à sable">
     <div style="display:flex;flex-direction:column;margin-right:6px"><span class="mono muted" style="font-size:11px">Bac à sable</span><b style="font-family:var(--f-display);font-size:18px">Schéma libre</b></div>
     <div class="tgroup">
@@ -1575,7 +1600,7 @@ html.fx .tilt:hover{--ty:-4px}
         <div><div class="kv"><label for="pv-g">Ensoleillement</label><span class="mono" style="font-size:18px" id="pv-g-v">1 000 W/m²</span></div><input id="pv-g" type="range" min="100" max="1100" step="50" value="1000"></div>
         <div><div class="kv"><label for="pv-t">Température des cellules</label><span class="mono" style="font-size:18px" id="pv-t-v">25 °C</span></div><input id="pv-t" type="range" min="-10" max="75" step="5" value="25"></div>
         <div class="tiles"><div class="tile"><small>Puissance max</small><b id="pv-pm">430 W</b></div><div class="tile"><small>Tension à vide Voc</small><b id="pv-voc">38,6 V</b></div><div class="tile"><small>Courant Impp</small><b id="pv-im">13,4 A</b></div><div class="tile"><small>Tension Vmpp</small><b id="pv-vm">32,2 V</b></div></div>
-        <p style="margin:0;font-size:14px;color:var(--muted)">Modèle simplifié d’un module de 430 Wc. Essaie −10 °C : la tension à vide dépasse 42 V. Multipliée par le nombre de modules en série, c’est elle qui doit rester sous la tension maximale de l’onduleur.</p>
+        <p style="margin:0;font-size:14px;color:var(--muted)">Modèle simplifié d’un module de 430 Wc : ses valeurs s’écartent un peu de la fiche technique ci-dessous. Essaie −10 °C : la tension à vide dépasse 42 V. Multipliée par le nombre de modules en série, c’est elle qui doit rester sous la tension maximale de l’onduleur.</p>
       </div>
     </div>
     <details class="more"><summary>Voir le tableau : lire la fiche technique d’un module</summary><div class="tbl-box" style="margin-top:28px"><table>
@@ -1658,6 +1683,7 @@ html.fx .tilt:hover{--ty:-4px}
         <p>En plein été, les cellules dépassent souvent 70 °C. La tension de fonctionnement baisse et ne doit pas sortir de la plage MPPT, sinon l’onduleur décroche.</p>
         <p class="formula">Vmpp chaud = Vmpp × (1 + coef × (Tcellule max − 25))</p>
         <p class="formula">N min = arrondi supérieur de (Umppt min ÷ Vmpp chaud)</p>
+        <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Le calculateur prend le coefficient de Voc pour les deux calculs. Celui de Vmpp est souvent un peu plus fort (vers −0,3 à −0,4 %/°C) : garde un module de marge au-dessus de N min.</p>
         <p>On vérifie aussi que le courant de la chaîne (Isc) reste sous le courant d’entrée maximal de l’onduleur.</p>
       </div>
     </div>
@@ -1914,7 +1940,7 @@ html.fx .tilt:hover{--ty:-4px}
     <div class="sec-head"><div><p class="eyebrow">5 · Dimensionnement</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Dimensionner et protéger le circuit</h2></div><p>Une voiture tire sa pleine puissance pendant des heures : le circuit travaille à fond, longtemps. Les marges doivent être sérieuses.</p></div>
     <div class="grid">
       <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Un circuit dédié</h3><p>Chaque point de recharge a son propre circuit depuis le tableau, avec son propre disjoncteur. Rien d’autre ne doit être branché dessus.</p></div>
-      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Un différentiel 30 mA par point</h3><p>Chaque point de recharge AC est protégé par son propre différentiel 30 mA. Le réenclenchement automatique est interdit.</p></div>
+      <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Un différentiel 30 mA par point</h3><p>Chaque point de recharge AC est protégé par son propre différentiel 30 mA, qui ne protège rien d’autre.</p></div>
       <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">Le bon type de différentiel</h3><p>Une voiture peut créer des fuites en courant continu qui « aveuglent » un différentiel classique. <b>Mode 2 monophasé</b> : type A ou F. <b>Mode 2 triphasé</b> : type B. <b>Mode 3</b> : type B, ou type A ou F si la borne intègre une détection de courant continu 6 mA (IEC 62955).</p></div>
       <div class="card"><h3 style="font-family:var(--f-body);font-size:19px;font-weight:600">La puissance souscrite</h3><p>Avec un abonnement 9 kVA, une borne 7,4 kW ne laisse presque rien au reste de la maison. Il faut augmenter l’abonnement, régler la borne plus bas, ou ajouter un délestage qui réduit la charge quand la maison consomme.</p></div>
     </div>
@@ -2002,9 +2028,9 @@ html.fx .tilt:hover{--ty:-4px}
       <caption>Les niveaux de qualification IRVE</caption>
       <thead><tr><th scope="col">Niveau</th><th scope="col">Ce qu’il couvre</th><th scope="col">Formation</th></tr></thead>
       <tbody>
-        <tr><td><b>P1</b></td><td>Bornes AC autonomes, sans pilotage ni supervision à distance.</td><td class="mono">1 jour</td></tr>
-        <tr><td><b>P2</b></td><td>Bornes AC communicantes, en grappe, avec pilotage énergétique (copropriété, entreprise).</td><td class="mono">2 jours après P1</td></tr>
-        <tr><td><b>P3</b></td><td>Recharge rapide en courant continu.</td><td class="mono">2 jours après P1</td></tr>
+        <tr><td><b>P1</b></td><td>Bornes AC autonomes, sans pilotage ni supervision à distance.</td><td class="mono">Formation de base</td></tr>
+        <tr><td><b>P2</b></td><td>Bornes AC communicantes, en grappe, avec pilotage énergétique (copropriété, entreprise).</td><td class="mono">En complément de P1</td></tr>
+        <tr><td><b>P3</b></td><td>Recharge rapide en courant continu.</td><td class="mono">En complément de P1</td></tr>
       </tbody>
     </table></div>
     <div class="grid" style="margin-top:20px">
@@ -2971,13 +2997,14 @@ const PRESETS = [
         wr(y, 'S', l1, '1'), wr(l1, '1', l2, '1'), wr(l2, '1', l3, '1'),
         wr(l1, '2', xn, 'P', true), wr(l2, '2', l1, '2'), wr(l3, '2', l2, '2')] }; } },
   { id: 'hc', group: 'adv', title: 'Contacteur heures creuses', sub: 'Le chauffe-eau ne chauffe que pendant les heures creuses, sauf si l’on force la marche.',
-    ret: ['Le compteur ferme un contact sec quand les heures creuses commencent.', 'Ce contact alimente la bobine KM, qui ferme le circuit de puissance du chauffe-eau.', 'L’interrupteur de marche forcée, en parallèle, permet de chauffer à tout moment.'],
+    ret: ['Le compteur ferme un contact sec quand les heures creuses commencent.', 'Ce contact alimente la bobine KM, qui ferme le circuit de puissance du chauffe-eau.', 'L’interrupteur de marche forcée, en parallèle, permet de chauffer à tout moment.', 'La commande (bobine) a son propre disjoncteur Q2 de 2 A : ses fils de 1,5 mm² ne seraient pas protégés par le 20 A du chauffe-eau.'],
     essai: 'Ferme S1 (début des heures creuses), puis ouvre-le et force la marche avec S2.',
-    mat: ['1 contacteur jour/nuit 20 A', '1 chauffe-eau 3 000 W', 'Disjoncteur 20 A · fils 2,5 mm²'],
-    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '20 A' }), x1 = mk('borne', 320, 220, 0, 'X1'), xn = mk('borne', 180, 460, 0, 'X2'),
-        s1 = mk('inter', 420, 300, 0, 'S1', { lab: 'contact HC' }), s2 = mk('inter', 420, 380, 0, 'S2', { lab: 'marche forcée' }), km = mk('cont', 620, 320, 0, 'KM1'), r = mk('rad', 800, 380, 90, 'R1', { lab: 'chauffe-eau', watt: 3000 });
-      return { comps: [src, q, x1, xn, s1, s2, km, r], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', x1, 'P'), wr(x1, 'P', s1, '1', true), wr(x1, 'P', s2, '1', true), wr(s2, '2', s1, '2'), wr(s1, '2', km, 'A1'),
-        wr(q, 'N2', xn, 'P'), wr(km, 'A2', xn, 'P', true), wr(x1, 'P', km, '1'), wr(km, '2', r, '1'), wr(r, '2', xn, 'P', true)] }; } },
+    mat: ['1 contacteur jour/nuit 20 A', '1 chauffe-eau 3 000 W', 'Disjoncteur 20 A · fils 2,5 mm² (puissance)', 'Disjoncteur 2 A · fils 1,5 mm² (commande)'],
+    build() { const src = mk('src', 100, 300, 0, 'ALIM'), q = mk('dpn', 360, 140, 0, 'Q1', { lab: '20 A' }), q2 = mk('dpn', 360, 480, 0, 'Q2', { lab: '2 A' }), x1 = mk('borne', 500, 460, 0, 'X1'),
+        s1 = mk('inter', 620, 420, 0, 'S1', { lab: 'contact HC' }), s2 = mk('inter', 620, 540, 0, 'S2', { lab: 'marche forcée' }), km = mk('cont', 820, 260, 0, 'KM1'), r = mk('rad', 1020, 260, 90, 'R1', { lab: 'chauffe-eau', watt: 3000 });
+      return { comps: [src, q, q2, x1, s1, s2, km, r], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(src, 'L', q2, '1'), wr(src, 'N', q2, 'N1'),
+        wr(q2, '2', x1, 'P'), wr(x1, 'P', s1, '1', true), wr(x1, 'P', s2, '1', true), wr(s1, '2', km, 'A1'), wr(s2, '2', km, 'A1'), wr(km, 'A2', q2, 'N2', true),
+        wr(q, '2', km, '1'), wr(km, '2', r, '1'), wr(r, '2', q, 'N2', true)] }; } },
   { id: 'court', group: 'adv', title: 'Court-circuit et disjoncteur', sub: 'Que se passe-t-il quand la phase touche directement le neutre ?',
     ret: ['Sans récepteur pour le limiter, le courant devient énorme.', 'Le disjoncteur détecte cette surintensité et coupe le circuit en quelques millisecondes.', 'Il faut trouver et réparer le défaut avant de réarmer.'],
     essai: 'Allume la lampe avec S1, puis ferme S2 pour simuler un défaut. Rouvre S2, puis réarme Q1.',
@@ -3874,46 +3901,32 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
 })();
 (function symbols() {
   const order = ['src', 'dpn', 'disj', 'fus', 'terre', 'inter', 'vav', 'perm', 'bp', 'radio', 'detect', 'tele', 'tele2', 'cont', 'minu', 'yokis', 'lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes', 'borne'];
-  /* Lexique : les mots qui reviennent dans les descriptions techniques */
-  const MOTS = {
-    circuit: ['Circuit', 'Le chemin que suit l’électricité : du tableau jusqu’à l’appareil, puis retour au tableau. C’est une boucle : si elle est coupée quelque part, rien ne marche.'],
-    phase: ['Phase (L)', 'Le fil qui amène l’électricité. C’est lui qui est dangereux : on dit qu’il est « sous tension ». Souvent rouge, marron ou noir.'],
-    neutre: ['Neutre (N)', 'Le fil de retour, qui ramène le courant au tableau. Toujours bleu.'],
-    terre: ['Terre (PE)', 'Le fil de sécurité, vert et jaune. Normalement, aucun courant n’y passe. En cas de défaut, il envoie le courant dans le sol plutôt que dans ton corps.'],
-    cc: ['Court-circuit', 'La phase touche directement le neutre, sans passer par un appareil. Le courant devient énorme et chauffe les fils : les protections coupent tout de suite.'],
-    surcharge: ['Surcharge', 'Trop d’appareils branchés sur le même circuit : le courant dépasse ce que les fils supportent. Le disjoncteur coupe au bout de quelques secondes ou minutes.'],
-    contact: ['Contact', 'La pièce mobile d’un interrupteur ou d’un relais. Fermé, le courant passe ; ouvert, il ne passe plus, comme un pont-levis levé.'],
-    bobine: ['Bobine (A1-A2)', 'Un petit électroaimant caché dans l’appareil. Quand on l’alimente, il fait bouger un contact tout seul. Ses deux bornes s’appellent A1 et A2.'],
-    impulsion: ['Impulsion', 'Un appui bref sur un bouton, qui envoie du courant pendant une fraction de seconde.'],
-    navette: ['Navettes', 'Les deux fils qui relient deux va-et-vient entre eux. Le courant passe par l’une ou par l’autre.'],
-    borne: ['Borne', 'L’endroit où l’on fixe un fil sur un appareil : une vis ou un trou où on l’enfiche.'],
-  };
-  /* Pour chaque symbole : la phrase en clair, où on le croise, un détail utile, les mots du lexique concernés */
+  /* Pour chaque symbole : [phrase en clair, ce que montre le dessin, exemple dans un schéma du site, lien vers ce schéma] */
   const AIDE = {
-    src: ['Le point de départ : le tableau électrique, qui envoie l’électricité vers tous les circuits de la maison.', 'Sur un schéma, tout part de là, comme l’eau part du robinet principal.', '', ['phase', 'neutre', 'terre']],
-    dpn: ['Le gardien d’un circuit : s’il y a un problème, il coupe le courant tout seul. Il coupe les deux fils, l’aller et le retour.', 'Dans ton tableau, c’est la rangée de petits interrupteurs à levier, chacun avec son étiquette : « cuisine », « chambres »…', '« 1P+N » veut dire : un pôle protégé (la phase), plus le neutre coupé en même temps.', ['circuit', 'phase', 'neutre', 'cc', 'surcharge']],
-    disj: ['Il coupe le courant automatiquement en cas de problème. Ici, il est dessiné sur un seul fil.', 'Quand « ça saute » parce qu’on a branché trop d’appareils, c’est lui qui a coupé.', '', ['cc', 'surcharge']],
-    fus: ['Une protection à usage unique : un petit fil à l’intérieur fond s’il passe trop de courant, ce qui coupe le circuit.', 'Dans les vieux tableaux, les multiprises et certains appareils. Une fois fondu, il faut le remplacer.', '', ['cc']],
-    terre: ['Le raccordement de sécurité au sol. Si un appareil métallique a un défaut, le courant part dans la terre plutôt que dans toi.', 'La broche ronde qui dépasse des prises, et tous les fils vert et jaune.', '', ['terre']],
-    inter: ['L’interrupteur classique : il ouvre ou ferme le chemin de l’électricité. Fermé, la lampe s’allume. Ouvert, elle s’éteint.', 'L’interrupteur sur le mur de ta chambre.', 'Le petit trait penché du dessin, c’est le contact ouvert : le courant ne peut pas passer.', ['contact', 'circuit']],
-    vav: ['Pour allumer et éteindre la même lampe depuis deux endroits.', 'En haut et en bas d’un escalier, ou aux deux bouts d’un couloir.', 'Il a trois bornes : une commune (C) et deux navettes. Il envoie le courant soit sur une navette, soit sur l’autre. La lampe s’allume quand les deux va-et-vient choisissent la même navette.', ['navette', 'borne']],
-    perm: ['Pour commander la même lampe depuis un troisième endroit, ou plus.', 'Un long couloir avec trois portes.', 'Il se place entre deux va-et-vient et croise les deux navettes à chaque appui.', ['navette']],
-    bp: ['Un bouton qui ne laisse passer le courant que pendant que tu appuies, comme une sonnette.', 'Le bouton de sonnette, ou les boutons lumineux d’un hall d’immeuble.', 'Seul, il ne peut pas garder une lampe allumée : on l’associe à un télérupteur ou à une minuterie, qui retient l’ordre.', ['impulsion']],
-    radio: ['Un bouton poussoir sans fil : il envoie l’ordre par radio, comme une télécommande.', 'Pratique pour ajouter un interrupteur sans percer le mur ni tirer de câble.', '', ['impulsion']],
-    tele: ['Un interrupteur commandé à distance : un appui sur un bouton poussoir allume, l’appui suivant éteint.', 'Quand on veut commander une lampe depuis beaucoup d’endroits : on ajoute autant de boutons poussoirs qu’on veut.', 'Il est rangé dans le tableau. Les boutons poussoirs lui envoient des impulsions, et il se souvient de l’état allumé ou éteint.', ['bobine', 'impulsion', 'contact']],
-    tele2: ['Un télérupteur qui commande deux choses à la fois : ses deux contacts bougent ensemble.', 'Allumer ou éteindre deux circuits d’un coup, ou couper la phase et le neutre en même temps.', '', ['bobine', 'contact']],
-    cont: ['Un gros interrupteur commandé à distance : il reste fermé tant qu’on l’alimente, et s’ouvre dès qu’on arrête.', 'Le contacteur heures creuses, qui fait chauffer le ballon d’eau chaude la nuit.', 'Différence avec le télérupteur : le télérupteur change d’état à chaque appui et s’en souvient ; le contacteur suit son ordre en continu.', ['bobine', 'contact']],
-    minu: ['Elle allume la lumière pendant un temps donné, puis l’éteint toute seule.', 'La lumière d’une cage d’escalier qui s’éteint au bout de quelques minutes. Ici, 8 secondes pour la démonstration.', '', ['impulsion', 'bobine']],
-    yokis: ['Un petit télérupteur caché dans une boîte au mur, au lieu d’être dans le tableau.', 'En rénovation : pas besoin de tirer de nouveaux fils jusqu’au tableau.', 'S est la sortie vers les lampes, BP l’entrée des boutons poussoirs.', ['phase', 'neutre', 'impulsion']],
-    detect: ['Il allume la lumière tout seul quand quelqu’un passe, puis l’éteint après un moment.', 'L’éclairage d’une entrée, d’un garage ou d’une allée.', 'S est la sortie vers les lampes.', ['phase', 'neutre']],
-    lampe: ['Le point lumineux : ce qu’on veut allumer.', 'Un plafonnier, une applique murale.', '', []],
-    voyant: ['Une toute petite lumière témoin, qui montre qu’un appareil est en marche.', 'Le petit point lumineux d’un interrupteur, visible dans le noir.', '', []],
-    rad: ['Un radiateur électrique : il transforme l’électricité en chaleur.', 'Le radiateur de la salle de bain.', '', []],
-    moteur: ['Un appareil qui transforme l’électricité en mouvement.', 'Un volet roulant, une ventilation (VMC).', '', []],
-    sonnette: ['La sonnette de la porte d’entrée : elle sonne tant qu’on appuie sur son bouton.', 'À l’entrée de la maison.', '', []],
-    prise: ['La prise de courant où l’on branche les appareils.', 'Partout dans la maison.', '« 2P+T » veut dire deux trous (phase et neutre) plus la terre, la broche ronde.', ['phase', 'neutre', 'terre']],
-    baes: ['Le bloc lumineux de secours, souvent marqué « Sortie ». Il s’allume tout seul en cas de coupure de courant, pour qu’on trouve la sortie.', 'Au-dessus des portes, dans les écoles, les magasins et les immeubles.', '', []],
-    borne: ['Un point de connexion où plusieurs fils se rejoignent.', 'Comme les connecteurs Wago dans une boîte de dérivation.', '', ['borne']],
+    src: ['Le point de départ : le tableau électrique, qui envoie l’électricité vers tous les circuits de la maison.', 'Un rectangle avec trois sorties : L pour la phase, N pour le neutre et PE pour la terre.', 'Dans « Simple allumage », tout part de là : la phase et le neutre vont d’abord au disjoncteur Q1.', 'schemas:simple'],
+    dpn: ['Le gardien d’un circuit : s’il y a un problème, il coupe le courant tout seul, sur la phase et sur le neutre.', 'Deux contacts l’un au-dessus de l’autre, un sur la phase et un sur le neutre (N), reliés par un pointillé : ils s’ouvrent ensemble. « 1P+N » veut dire un pôle protégé, la phase, plus le neutre coupé.', 'Dans « Court-circuit et disjoncteur », ferme S2 : Q1 coupe aussitôt, et la lampe s’éteint.', 'schemas:court'],
+    disj: ['Il coupe le courant automatiquement en cas de problème. Ici, il est dessiné sur un seul fil.', 'Un contact sur un seul fil, marqué d’une croix : il ne coupe que ce fil.', 'Dans le tableau américain de la page « Tableaux FR / US », chaque circuit 120 V a ce type de disjoncteur : il coupe la phase, jamais le neutre.', 'tableaux'],
+    fus: ['Une protection à usage unique : un petit fil à l’intérieur fond s’il passe trop de courant, ce qui coupe le circuit.', 'Un petit rectangle traversé par le fil : c’est le fil fin, à l’intérieur, qui fond.', '', ''],
+    terre: ['Le raccordement de sécurité au sol. Si un appareil métallique a un défaut, le courant part dans la terre et le différentiel coupe aussitôt.', 'Des traits de plus en plus courts, comme un piquet planté dans le sol.', 'Dans « Tableaux FR / US », provoque un défaut sur le lave-linge : le courant de défaut part à la terre et le différentiel coupe.', 'tableaux'],
+    inter: ['L’interrupteur classique : il ouvre ou ferme le chemin de l’électricité. Fermé, la lampe s’allume. Ouvert, elle s’éteint.', 'Un trait penché : c’est le contact, ouvert. Quand on actionne l’interrupteur, il se referme sur l’autre borne.', 'Dans « Simple allumage », S1 coupe la phase qui va à la lampe L1.', 'schemas:simple'],
+    vav: ['Pour allumer et éteindre la même lampe depuis deux endroits.', 'Un trait qui pivote entre deux bornes : il bascule d’une navette à l’autre.', 'Dans « Va-et-vient », S1 et S2 commandent la même lampe L1, chacun de son côté.', 'schemas:vav'],
+    perm: ['Pour commander la même lampe depuis un troisième endroit, ou plus.', 'Deux contacts qui se croisent : à chaque appui, il échange les deux navettes.', 'Dans « Commande depuis 3 endroits », S2 est placé entre les deux va-et-vient S1 et S3.', 'schemas:perm'],
+    bp: ['Un bouton qui ne laisse passer le courant que pendant que tu appuies, comme une sonnette.', 'Un contact ouvert surmonté d’un petit poussoir : il ne se ferme que pendant l’appui.', 'Dans « Bouton poussoir et sonnette », BP1 fait sonner B1 tant que tu appuies.', 'schemas:sonnette'],
+    radio: ['Un bouton poussoir sans fil : il envoie l’ordre par radio, comme une télécommande.', 'Un boîtier avec des ondes : il émet l’ordre sans fil de commande.', 'À l’examen pratique (espace n°1), E1 et E2 commandent les lampes par radio.', 'examen:1'],
+    tele: ['Un interrupteur commandé à distance : un appui sur un bouton poussoir allume, l’appui suivant éteint.', 'À gauche, la bobine (le carré A1-A2). À droite, le contact qu’elle fait basculer à chaque impulsion.', 'Dans « Télérupteur », BP1, BP2 et BP3 envoient chacun une impulsion à KA1, qui allume ou éteint L1.', 'schemas:tele'],
+    tele2: ['Un télérupteur qui commande deux choses à la fois : ses deux contacts bougent ensemble.', 'Une bobine A1-A2 et deux contacts, 1-2 et 3-4, reliés par un pointillé : ils basculent ensemble.', 'Dans « Télérupteur Legrand 412412 », le contact 1-2 coupe la phase de la lampe et le contact 3-4 son neutre.', 'schemas:tele412'],
+    cont: ['Un gros interrupteur commandé à distance : il reste fermé tant qu’on l’alimente, et s’ouvre dès qu’on arrête.', 'Une bobine A1-A2 et son contact : tant que la bobine est alimentée, le contact reste fermé.', 'Dans « Contacteur heures creuses », KM1 fait chauffer le chauffe-eau tant que le contact heures creuses S1 est fermé.', 'schemas:hc'],
+    minu: ['Elle allume la lumière pendant un temps donné, puis l’éteint toute seule.', 'Une bobine marquée d’une petite horloge, et son contact : il reste fermé pendant le temps réglé.', 'Dans « Minuterie d’escalier », un appui sur un bouton allume la lampe pendant 8 secondes.', 'schemas:minu'],
+    yokis: ['Un petit télérupteur caché dans une boîte au mur, au lieu d’être dans le tableau.', 'Un boîtier marqué μTR et ses quatre bornes : L et N pour l’alimenter, BP pour les boutons, S vers les lampes.', 'Dans « Micromodule Yokis : 3 lampes », trois boutons commandent trois lampes par ce seul boîtier.', 'schemas:yokis'],
+    detect: ['Il allume la lumière tout seul quand quelqu’un passe, puis l’éteint après un moment.', 'Un boîtier avec un œil en demi-cercle : le capteur qui voit passer les gens. Sa sortie S va vers les lampes.', 'À l’examen pratique (espace n°3), le détecteur S2 allume L1 et L2 quand quelqu’un passe.', 'examen:3'],
+    lampe: ['Le point lumineux : ce qu’on veut allumer.', 'Un rond barré d’une croix.', 'Dans « Simple allumage », c’est L1, commandée par l’interrupteur S1.', 'schemas:simple'],
+    voyant: ['Une toute petite lumière témoin, qui montre qu’un appareil est en marche.', 'Le même dessin que la lampe, en plus petit.', 'À l’examen pratique (espace n°2), le voyant H1 s’allume quand on actionne un déclencheur d’alarme incendie.', 'examen:2'],
+    rad: ['Un radiateur électrique : il transforme l’électricité en chaleur.', 'Un rectangle avec un zigzag : la résistance qui chauffe.', 'Dans « Contacteur heures creuses », le chauffe-eau R1 est dessiné ainsi.', 'schemas:hc'],
+    moteur: ['Un appareil qui transforme l’électricité en mouvement, comme un volet roulant ou une ventilation.', 'Un rond avec la lettre M.', '', ''],
+    sonnette: ['La sonnette de la porte d’entrée : elle sonne tant qu’on appuie sur son bouton.', 'Une petite cloche en demi-cercle.', 'Dans « Bouton poussoir et sonnette », c’est B1.', 'schemas:sonnette'],
+    prise: ['La prise de courant où l’on branche les appareils.', 'Un demi-cercle, la prise, avec ses trois fils : phase, neutre et terre. « 2P+T » veut dire deux pôles, phase et neutre, plus la terre.', 'À l’examen pratique (espace n°1), PC2 est la prise de la machine à laver.', 'examen:1'],
+    baes: ['Le bloc lumineux de secours, souvent marqué « Sortie ». Il s’allume tout seul en cas de coupure de courant, pour qu’on trouve la sortie.', 'Un rectangle avec une flèche vers la sortie.', 'À l’examen pratique (espace n°3), déclenche Q2 : l’éclairage s’arrête et le BAES s’allume sur sa batterie.', 'examen:3'],
+    borne: ['Un point de connexion où plusieurs fils se rejoignent.', 'Un simple point : tous les fils qui y arrivent sont reliés entre eux.', 'Dans « Télérupteur », la borne X1 répartit la phase vers les trois boutons poussoirs.', 'schemas:tele'],
   };
   const FAM = [
     ['Alimenter et protéger', 'D’où vient l’électricité, et ce qui coupe tout en cas de danger.', ['src', 'dpn', 'disj', 'fus', 'terre']],
@@ -3922,15 +3935,12 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
     ['Ce qui consomme', 'Les appareils qu’on alimente : c’est pour eux que le circuit existe.', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']],
     ['Raccorder', 'Là où les fils se rejoignent.', ['borne']],
   ];
-  const motsUtilises = new Set(Object.values(AIDE).flatMap((a) => a[3]));
-  $('#sym-gloss').innerHTML = `<details class="gloss-box"${matchMedia('(min-width:700px)').matches ? ' open' : ''}><summary><span>Les ${motsUtilises.size} mots à connaître avant de commencer</span></summary><dl>${Object.keys(MOTS).filter((k) => motsUtilises.has(k)).map((k) => `<div><dt>${MOTS[k][0]}</dt><dd>${MOTS[k][1]}</dd></div>`).join('')}</dl></details>`;
   const card = (k) => {
-    const a = AIDE[k] || [DEF[k].desc, '', '', []];
+    const a = AIDE[k] || [DEF[k].desc, '', '', ''];
+    const lien = a[3] ? `<button type="button" class="symgo" data-ouvrir="${a[3]}">${a[3].startsWith('schemas') ? 'Ouvrir ce schéma' : a[3].startsWith('examen') ? 'Ouvrir cet espace d’examen' : 'Ouvrir la page'} →</button>` : '';
     return `<div class="symcard"><div class="tilebd">${symIcon(k, 12)}</div><h3>${DEF[k].name}</h3><p class="clair">${a[0]}</p>
-      <details class="symmore"><summary>Comprendre en détail</summary>
-        ${a[1] ? `<p><b>Où tu le croises :</b> ${a[1]}</p>` : ''}${a[2] ? `<p>${a[2]}</p>` : ''}
-        <p><b>Version technique :</b> ${DEF[k].desc}</p>
-        ${a[3].length ? `<dl>${a[3].map((m) => `<div><dt>${MOTS[m][0]}</dt><dd>${MOTS[m][1]}</dd></div>`).join('')}</dl>` : ''}
+      <details class="symmore"><summary>Sur le schéma</summary>
+        ${a[1] ? `<p><b>Le dessin :</b> ${a[1]}</p>` : ''}${a[2] ? `<p><b>Exemple :</b> ${a[2]}</p>` : ''}${lien}
       </details></div>`;
   };
   const vus = new Set(FAM.flatMap((f) => f[2]));
@@ -4795,7 +4805,7 @@ const tableaux = (() => {
     $('#pc-nmin').textContent = nMin; $('#pc-nmax').textContent = nMax;
     $('#pc-uoc').textContent = Math.round(n * vocCold) + ' V';
     $('#pc-ump').textContent = Math.round(n * vmpHot) + ' V';
-    $('#pc-eq').innerHTML = `Voc froid = ${fr(voc, 1)} × (1 ${k < 0 ? '−' : '+'} ${fr(Math.abs(k * 100), 2)} % × ${fr(25 - tmin, 0)}) = ${fr(vocCold, 2)} V par module<br>Vmpp chaud = ${fr(vmp, 1)} × (1 − ${fr(Math.abs(k * 100), 2)} % × ${fr(tmax - 25, 0)}) = ${fr(vmpHot, 2)} V par module`;
+    $('#pc-eq').innerHTML = `Voc froid = ${fr(voc, 1)} × (1 ${k < 0 ? '+' : '−'} ${fr(Math.abs(k * 100), 2)} % × ${fr(25 - tmin, 0)}) = ${fr(vocCold, 2)} V par module<br>Vmpp chaud = ${fr(vmp, 1)} × (1 − ${fr(Math.abs(k * 100), 2)} % × ${fr(tmax - 25, 0)}) = ${fr(vmpHot, 2)} V par module`;
     const ch = [];
     if (n * vocCold > umax) ch.push(verdict('bad', `<b>${n} modules : trop.</b> Par grand froid, la chaîne atteint ${Math.round(n * vocCold)} V à vide, au-delà des ${kfmt(umax)} V de l’onduleur. Risque de le détruire : ${nMaxV} modules au plus.`));
     else ch.push(verdict('ok', `Tension max : ${Math.round(n * vocCold)} V à vide par grand froid, sous les ${kfmt(umax)} V de l’onduleur.`));
@@ -5151,7 +5161,7 @@ document.addEventListener('keydown', (e) => {
 /* ---------------- Câblage PV et IRVE (2D + 3D) ---------------- */
 function buildPV() {
   const pv = mk('pv', 120, 220, 0, 'PV', { lab: '10 modules · 4,3 kWc' }), qdc = mk('dpn', 340, 200, 0, 'QDC', { lab: 'sectionneur DC' }), f1 = mk('spd', 340, 360, 0, 'F1', { lab: 'parafoudre DC' });
-  const ond = mk('ond', 560, 220, 0, 'OND', { lab: 'onduleur 3 kW' }), qac = mk('dpn', 780, 200, 0, 'QPV', { lab: '20 A · 30 mA' }), f2 = mk('spd', 780, 360, 0, 'F2', { lab: 'parafoudre AC' });
+  const ond = mk('ond', 560, 220, 0, 'OND', { lab: 'onduleur 3,6 kW', watt: 3400 }), qac = mk('dpn', 780, 200, 0, 'QPV', { lab: '20 A · 30 mA' }), f2 = mk('spd', 780, 360, 0, 'F2', { lab: 'parafoudre AC' });
   const src = mk('src', 100, 600, 0, 'RÉSEAU'), cpt = mk('cpt', 280, 560, 0, 'CPT', { lab: 'Linky' }), agcp = mk('dpn', 460, 540, 0, 'AGCP', { lab: '500 mA' });
   const xl = mk('borne', 960, 520, 0, 'XL'), xn = mk('borne', 960, 560, 0, 'XN'), q2 = mk('dpn', 1100, 520, 0, 'Q2', { lab: '20 A' }), pc = mk('prise', 1300, 560, 0, 'PC', { lab: 'consommation', st: { plug: true } });
   return { comps: [pv, qdc, f1, ond, qac, f2, src, cpt, agcp, xl, xn, q2, pc], wires: [
@@ -5261,6 +5271,169 @@ function sizeEd() {
   if (extra > 0 && hgt - extra >= 480) document.documentElement.style.setProperty('--ed-h', (hgt - extra) + 'px');
 }
 window.addEventListener('resize', sizeEd);
+
+/* ---------------- Lexique et infobulles ---------------- */
+const GLOSSAIRE = [
+  // [clé, motif (expression régulière), titre, définition, dans le lexique de début ?]
+  ['circuit', 'circuits?', 'Circuit', 'Le chemin que suit l’électricité : du tableau jusqu’à l’appareil, puis retour au tableau. C’est une boucle : si elle est coupée quelque part, rien ne marche.', 1],
+  ['allerretour', 'l’aller et le retour|aller et retour', 'Aller et retour', 'Le courant part du tableau par la phase (l’aller), traverse l’appareil, puis revient au tableau par le neutre (le retour). Sans retour, pas de courant.', 1],
+  ['phase', 'phases?', 'Phase (L)', 'Le fil qui amène l’électricité. C’est lui qui est dangereux : on dit qu’il est « sous tension ». Souvent rouge, marron ou noir.', 1],
+  ['neutre', 'neutres?', 'Neutre (N)', 'Le fil de retour, qui ramène le courant au tableau. Toujours bleu.', 1],
+  ['terre', 'terre|PE', 'Terre (PE)', 'Le fil de sécurité, vert et jaune, relié à un piquet planté dans le sol. En cas de défaut sur un appareil métallique, le courant part dans la terre plutôt que dans ton corps, et le différentiel coupe aussitôt.', 1],
+  ['soustension', 'sous tension', 'Sous tension', 'Un fil ou un appareil est sous tension quand il est relié à la phase : il est dangereux, même si aucun courant ne circule.', 1],
+  ['retourlampe', 'retours? lampes?', 'Retour lampe', 'Le fil qui va de l’interrupteur à la lampe. Quand l’interrupteur est fermé, il amène la phase jusqu’à la lampe.', 1],
+  ['navette', 'navettes?', 'Navettes', 'Les deux fils qui relient deux va-et-vient entre eux. Le courant passe par l’une ou par l’autre.', 1],
+  ['cc', 'courts?-circuits?', 'Court-circuit', 'La phase touche directement le neutre, sans passer par un appareil. Le courant devient énorme et chauffe les fils : les protections coupent tout de suite.', 1],
+  ['surcharge', 'surcharges?', 'Surcharge', 'Trop d’appareils branchés sur le même circuit : le courant dépasse ce que les fils supportent. Le disjoncteur coupe au bout de quelques secondes ou minutes.', 1],
+  ['surint', 'surintensités?', 'Surintensité', 'Un courant plus fort que prévu : soit une surcharge (trop d’appareils), soit un court-circuit. Le disjoncteur est fait pour la couper.', 0],
+  ['contact', 'contacts?', 'Contact', 'La pièce mobile d’un interrupteur ou d’un relais. Fermé, le courant passe ; ouvert, il ne passe plus, comme un pont-levis levé.', 1],
+  ['bobine', 'bobines?', 'Bobine (A1-A2)', 'Un petit électroaimant caché dans l’appareil. Quand on l’alimente, il fait bouger un contact tout seul. Ses deux bornes s’appellent A1 et A2.', 1],
+  ['impulsion', 'impulsions?', 'Impulsion', 'Un appui bref sur un bouton, qui envoie du courant pendant une fraction de seconde.', 1],
+  ['borne', 'bornes? de connexion', 'Borne', 'L’endroit où l’on fixe un fil sur un appareil : une vis ou un trou où on l’enfiche.', 1],
+  ['disj', 'disjoncteurs?(?: divisionnaires?)?', 'Disjoncteur', 'Un interrupteur automatique placé au tableau : il coupe le circuit en cas de court-circuit ou de surcharge. On le réarme à la main.', 1],
+  ['diff', 'interrupteurs? différentiels?|différentiels?|DDR', 'Différentiel (30 mA)', 'Il compare le courant qui part par la phase et celui qui revient par le neutre. S’il en manque, c’est qu’une fuite passe ailleurs, peut-être par une personne : il coupe en une fraction de seconde. 30 mA est le seuil qui protège les personnes.', 1],
+  ['agcp', 'AGCP|disjoncteurs? de branchement', 'AGCP (disjoncteur de branchement)', 'Le gros disjoncteur à l’entrée du logement, près du compteur. Il coupe toute la maison et protège contre les surcharges de l’abonnement.', 0],
+  ['tableau', 'tableaux? (?:électriques?|de répartition)', 'Tableau électrique', 'La boîte qui regroupe les protections de la maison : différentiels et disjoncteurs, un par circuit.', 0],
+  ['peigne', 'peignes?', 'Peigne', 'Une barrette de cuivre qui relie les disjoncteurs d’une même rangée au tableau, pour éviter de câbler fil par fil.', 0],
+  ['section', 'mm²', 'Section (mm²)', 'La grosseur du cuivre d’un fil. Plus le courant est fort, plus le fil doit être gros : 1,5 mm² pour l’éclairage, 2,5 mm² pour les prises.', 0],
+  ['courbe', 'C10|C16|C20|C32', 'Calibre et courbe (C16, C20…)', 'C16 = disjoncteur de courbe C, qui coupe à 16 A. La courbe C est celle des circuits de la maison.', 0],
+  ['1pn', '1P\\+N', '1P+N', 'Un disjoncteur qui protège la phase (1 pôle) et coupe aussi le neutre en même temps. C’est le modèle des tableaux français.', 0],
+  ['2pt', '2P\\+T', '2P+T', 'Une prise à deux pôles, phase et neutre, plus la terre : la broche ronde.', 0],
+  ['dcl', 'DCL', 'DCL', 'Dispositif de connexion pour luminaire : la petite prise au plafond où l’on branche une lampe sans toucher aux fils.', 0],
+  ['bd', 'boîtes? de dérivation', 'Boîte de dérivation', 'Une boîte encastrée ou en saillie où l’on raccorde les fils entre eux, avec des connecteurs.', 0],
+  ['wago', 'Wago', 'Wago', 'Une marque de connecteurs à levier : on y enfiche les fils pour les relier entre eux, sans vis.', 0],
+  ['icta', 'ICTA', 'Gaine ICTA', 'Une gaine souple annelée, souvent grise, qu’on noie dans les murs ou les cloisons pour y passer les fils.', 0],
+  ['irl', 'IRL', 'Tube IRL', 'Un tube rigide en plastique, posé en apparent sur les murs, pour protéger les fils.', 0],
+  ['goulotte', 'goulottes?', 'Goulotte', 'Un boîtier en plastique qu’on fixe au mur pour faire courir les fils et y poser prises et interrupteurs.', 0],
+  ['moulure', 'moulures?', 'Moulure', 'Une petite goulotte, fine, pour passer quelques fils le long d’un mur.', 0],
+  ['vat', 'VAT', 'VAT', 'Vérificateur d’absence de tension : l’appareil qui confirme qu’un circuit est bien coupé avant d’y toucher.', 0],
+  ['consigner', 'consignée?s?|consignation|consigner', 'Consignation', 'Mettre un circuit hors tension en sécurité : couper, empêcher qu’on le remette (cadenas), vérifier l’absence de tension au VAT.', 0],
+  ['habil', 'habilitations?(?: électriques?)?', 'Habilitation électrique', 'Le titre, délivré par l’employeur après une formation, qui autorise à travailler sur ou près d’installations électriques.', 0],
+  ['epi', 'EPI', 'EPI', 'Équipements de protection individuelle : gants isolants, écran facial, vêtements adaptés…', 0],
+  ['tbt', 'très basse tension|TBT', 'Très basse tension', 'Une tension de 50 V au plus (12 V, 24 V…) : sans danger au toucher. Sonnettes, alarmes, interphones.', 0],
+  ['baes', 'BAES', 'BAES', 'Bloc autonome d’éclairage de sécurité : il s’allume sur sa batterie en cas de coupure, pour montrer la sortie.', 0],
+  ['ssi', 'SSI', 'SSI', 'Système de sécurité incendie : détection, alarme et commande des dispositifs de sécurité d’un bâtiment.', 0],
+  ['masse', 'masses?', 'Masse', 'Une partie métallique d’un appareil (carcasse d’un lave-linge, d’un four…) qui n’est pas sous tension normalement, mais pourrait l’être en cas de défaut. Elle est reliée à la terre.', 0],
+  ['isolement', 'isolement|défauts? d’isolement', 'Isolement', 'La qualité de l’isolant autour des fils. Un défaut d’isolement, c’est un fil abîmé qui touche une masse ou un autre fil.', 0],
+  ['tt', 'régime TT|schéma TT|TT', 'Régime TT', 'Le système français : le neutre est relié à la terre chez le distributeur, et la maison a sa propre prise de terre. Ce sont les différentiels qui protègent les personnes.', 0],
+  ['ac', 'courant alternatif', 'Courant alternatif', 'Le courant du réseau : il change de sens 50 fois par seconde (50 Hz). C’est celui des prises de la maison.', 0],
+  ['dc', 'courant continu', 'Courant continu', 'Un courant qui circule toujours dans le même sens : celui des piles, des batteries et des panneaux solaires.', 0],
+  ['onduleur', 'onduleurs?', 'Onduleur', 'L’appareil qui transforme le courant continu des panneaux solaires en courant alternatif 230 V.', 0],
+];
+(function glossaire() {
+  const G = GLOSSAIRE.map(([k, motif, titre, def, lex]) => ({ k, titre, def, lex, motif }));
+  const PAR = Object.fromEntries(G.map((g) => [g.k, g]));
+  /* lexique de début de parcours */
+  const ll = $('#lex-list');
+  if (ll) ll.innerHTML = G.filter((g) => g.lex).map((g) => `<div><dt>${g.titre}</dt><dd>${g.def}</dd></div>`).join('');
+  /* un seul motif, le plus long d'abord ; les mots courts en majuscules (PE, TT…) restent sensibles à la casse */
+  const sensibles = new Set(['terre', 'tt', 'courbe', 'vat', 'epi', 'tbt', 'baes', 'ssi', 'dcl', 'icta', 'irl', 'agcp', 'diff']);
+  const alts = [];
+  /* découpe un motif sur les | de premier niveau seulement */
+  const decoupe = (s) => { const out = []; let d = 0, cur = ''; for (const ch of s) { if (ch === '(') d++; if (ch === ')') d--; if (ch === '|' && d === 0) { out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out; };
+  for (const g of G) for (const m of decoupe(g.motif)) alts.push({ m, k: g.k, cs: sensibles.has(g.k) && /^[A-Z0-9+\\]+$/.test(m.replace(/\(\?:[^)]*\)\??/g, '')) });
+  alts.sort((a, b) => b.m.length - a.m.length);
+  const RE = new RegExp('(^|[^\\p{L}\\p{N}])(' + alts.map((a, i) => `(?<g${i}>${a.m})`).join('|') + ')(?![\\p{L}\\p{N}])', 'giu');
+  const BLOCS = 'p,li,td,dd,figcaption,.lead,#qz-q';
+  const EXCLU = 'a,button,label,summary,svg,h1,h2:not(#qz-q),h3,h4,input,select,textarea,.gl,.board,.statusbar,.v3d,.v3d-wrap,nav,header,footer,.chip,.formula,.mono,#gltip,#lexique,.lex-box,code,kbd,[data-gl-non]';
+  let vus = new Map();
+  function portee(el) { return el.closest('section,.card,.box,details,article,.qz-card,[data-page]') || document.body; }
+  function traiter(bloc) {
+    if (bloc.closest(EXCLU)) return;
+    const sc = portee(bloc); let deja = vus.get(sc); if (!deja) { deja = new Set([...sc.querySelectorAll('.gl')].map((x) => x.dataset.gk)); vus.set(sc, deja); }
+    const tw = document.createTreeWalker(bloc, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement.closest(EXCLU) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+    const noeuds = []; while (tw.nextNode()) noeuds.push(tw.currentNode);
+    for (const n of noeuds) {
+      const s = n.nodeValue; if (!s || s.length < 2) continue;
+      RE.lastIndex = 0; let m, pos = 0; const frag = document.createDocumentFragment(); let change = false;
+      while ((m = RE.exec(s))) {
+        const i = Object.keys(m.groups).find((g) => m.groups[g] !== undefined); const a = alts[+i.slice(1)];
+        const mot = m[2];
+        if (a.cs && !new RegExp('^(?:' + a.m + ')$').test(mot)) continue;
+        if (deja.has(a.k)) continue;
+        deja.add(a.k); change = true;
+        const debut = m.index + m[1].length;
+        frag.append(s.slice(pos, debut));
+        const sp = document.createElement('span'); sp.className = 'gl'; sp.tabIndex = 0; sp.setAttribute('role', 'button'); sp.setAttribute('aria-expanded', 'false'); sp.dataset.gk = a.k; sp.textContent = mot;
+        frag.append(sp); pos = debut + mot.length;
+      }
+      if (change) { frag.append(s.slice(pos)); n.replaceWith(frag); }
+    }
+  }
+  function balayer(racine) { vus = new Map(); (racine || document).querySelectorAll(BLOCS).forEach((b) => { if (b.offsetParent !== null || b.closest('details')) traiter(b); }); }
+  let tmr = 0;
+  const planifier = () => { clearTimeout(tmr); tmr = setTimeout(() => { const pg = document.querySelector('[data-page]:not([hidden])'); if (pg) balayer(pg); }, 120); };
+  new MutationObserver((ms) => { if (ms.some((m) => !(m.target.closest && m.target.closest('svg,.board,.v3d,.statusbar,#gltip')) && [...m.addedNodes].some((x) => x.nodeType === 3 || (x.nodeType === 1 && !(x.classList && x.classList.contains('gl')))))) planifier(); }).observe(document.querySelector('main') || document.body, { childList: true, subtree: true });
+  addEventListener('hashchange', planifier); addEventListener('load', planifier); planifier();
+  document.addEventListener('toggle', (e) => { if (e.target.tagName === 'DETAILS' && e.target.open) balayer(e.target); }, true);
+
+  /* l'infobulle : survol à la souris, toucher ou clic sur mobile, Entrée ou Espace au clavier ; fermée par un clic ailleurs ou Échap */
+  const tip = document.createElement('div'); tip.id = 'gltip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true; document.body.appendChild(tip);
+  let cible = null, epingle = false, tHide = 0;
+  function montrer(el, pin) {
+    clearTimeout(tHide);
+    const g = PAR[el.dataset.gk]; if (!g) return;
+    if (cible && cible !== el) cible.setAttribute('aria-expanded', 'false');
+    cible = el; epingle = !!pin;
+    tip.innerHTML = `<b>${g.titre}</b>${g.def}`; tip.hidden = false;
+    el.setAttribute('aria-expanded', 'true'); el.setAttribute('aria-describedby', 'gltip');
+    const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = Math.min(Math.max(12, r.left + r.width / 2 - w / 2), innerWidth - w - 12);
+    let y = r.bottom + 8; if (y + h > innerHeight - 8) y = Math.max(8, r.top - h - 8);
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function cacher() { tip.hidden = true; epingle = false; if (cible) { cible.setAttribute('aria-expanded', 'false'); cible.removeAttribute('aria-describedby'); } cible = null; }
+  const fin = matchMedia('(hover:hover) and (pointer:fine)');
+  document.addEventListener('mouseover', (e) => { if (!fin.matches) return; const g = e.target.closest('.gl'); if (g) { if (!epingle || g !== cible) montrer(g, false); } else if (cible && !epingle && !e.target.closest('#gltip')) { clearTimeout(tHide); tHide = setTimeout(cacher, 180); } });
+  document.addEventListener('click', (e) => {
+    const g = e.target.closest('.gl');
+    if (g) { e.preventDefault(); if (cible === g && epingle) cacher(); else montrer(g, true); return; }
+    if (!e.target.closest('#gltip') && cible) cacher();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cible) { const c = cible; cacher(); c.focus(); return; }
+    const g = e.target.closest && e.target.closest('.gl');
+    if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); if (cible === g && epingle) cacher(); else montrer(g, true); }
+  });
+  document.addEventListener('focusin', (e) => { const g = e.target.closest && e.target.closest('.gl'); if (g) montrer(g, false); else if (cible && !e.target.closest('#gltip')) cacher(); });
+  addEventListener('scroll', () => { if (cible) cacher(); }, { passive: true });
+  addEventListener('hashchange', cacher);
+})();
+
+/* Boutons « Ouvrir ce schéma » des symboles */
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-ouvrir]'); if (!b) return;
+  const [pg, arg] = b.dataset.ouvrir.split(':');
+  location.hash = pg;
+  setTimeout(() => {
+    if (pg === 'schemas' && arg) { const x = document.querySelector(`#sim-nav [data-preset="${arg}"]`); if (x) x.click(); }
+    if (pg === 'examen' && arg) { const x = document.querySelectorAll('.extab')[+arg - 1]; if (x) x.click(); }
+    window.scrollTo(0, 0);
+  }, 80);
+});
+
+/* Tableaux qui défilent sur petit écran : atteignables et lisibles au clavier */
+document.querySelectorAll('.tbl-box').forEach((b) => {
+  const cap = b.querySelector('caption'), sec = b.closest('section'), h = sec && sec.querySelector('h2');
+  b.tabIndex = 0; b.setAttribute('role', 'region');
+  b.setAttribute('aria-label', (cap ? cap.textContent : h ? h.textContent : 'Tableau') + ' (défile horizontalement)');
+});
+
+/* Tableaux FR / US : zones de clic agrandies autour des disjoncteurs et appareils, pour le toucher */
+(function cibles() {
+  const pg = document.getElementById('page-tableaux'); if (!pg) return;
+  const agrandir = () => pg.querySelectorAll('g.clk').forEach((g) => {
+    if (g.querySelector(':scope > rect.hit')) return;
+    let b; try { b = g.getBBox(); } catch (e) { return; }
+    if (!b.width) return;
+    const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect'), m = 6;
+    r.setAttribute('class', 'hit'); r.setAttribute('x', b.x - m); r.setAttribute('y', b.y - m); r.setAttribute('width', b.width + 2 * m); r.setAttribute('height', b.height + 2 * m);
+    r.setAttribute('fill', '#000'); r.setAttribute('fill-opacity', '0'); g.insertBefore(r, g.firstChild);
+  });
+  let t = 0; new MutationObserver(() => { clearTimeout(t); t = setTimeout(agrandir, 50); }).observe(pg, { childList: true, subtree: true });
+  addEventListener('hashchange', () => setTimeout(agrandir, 200)); setTimeout(agrandir, 300);
+})();
+
 window.addEventListener('hashchange', route);
 route();
 })();
