@@ -878,6 +878,27 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 @media (max-height:560px),(max-width:520px){.v3d-wrap.fs .v3d-leg{display:none}}
 body.fs-lock{overflow:hidden}
 
+/* Téléphone : schéma 2D et vue 3D côte à côte, on glisse de l'un à l'autre (le suivant dépasse un peu) */
+.swp{display:none}
+@container (max-width:759px){
+  .stage:not(.has-fs) .dual{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;margin-inline:-16px;padding:4px 16px 26px;scroll-padding-inline:16px;scrollbar-width:none}
+  .stage:not(.has-fs) .dual::-webkit-scrollbar{display:none}
+  .stage:not(.has-fs) .dual>:is(.col2d,.v3d-wrap){flex:0 0 87%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always}
+  .stage:not(.has-fs) .d2-head span{display:none}
+  .stage:not(.has-fs) .swp{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:999px;background:var(--g-live);background-size:200% 100%;color:#fff;font:700 13px var(--f-body);cursor:pointer;box-shadow:var(--glow);animation:gshift 6s ease-in-out infinite alternate}
+  .swp i{font-style:normal;display:inline-block;animation:nudge 1.3s ease-in-out infinite}
+  .swp.back i{animation-name:nudgeb}
+}
+@keyframes nudge{50%{transform:translateX(5px)}}
+@keyframes nudgeb{50%{transform:translateX(-5px)}}
+
+/* Fil sous tension sans courant : des étincelles crépitent sur place (la tension est là, rien ne circule).
+   Fil parcouru par le courant : les tirets jaunes avancent. */
+.cur.live{opacity:1;stroke:#FFF3D6;stroke-width:5;stroke-dasharray:1 19;filter:drop-shadow(0 0 3px #FF6B52) drop-shadow(0 0 8px #FF2E1F);animation:pncrack .8s steps(1) infinite,pnflick 1.6s ease-in-out infinite}
+.cur.on{filter:drop-shadow(0 0 3px #FFD84A) drop-shadow(0 0 7px #FFB020)}
+@keyframes pncrack{0%{stroke-dashoffset:0}16%{stroke-dashoffset:-7}33%{stroke-dashoffset:-13}50%{stroke-dashoffset:-3}66%{stroke-dashoffset:-17}83%{stroke-dashoffset:-9}}
+@keyframes pnflick{0%,100%{opacity:.95}40%{opacity:.6}48%{opacity:1}54%{opacity:.35}60%{opacity:.9}}
+
 /* ---------- 5. Mouvement ---------- */
 [data-page]:not([hidden]){animation:pgin .45s var(--ease)}
 @keyframes pgin{from{opacity:0}}
@@ -889,6 +910,7 @@ html.fx .tilt:hover{--ty:-4px}
 @media (prefers-reduced-motion: reduce){
   #fx i,.hero h1,.sec-head h2,.qz-top h1,#ex-title,#sim-title,.eyebrow::before,.ticker div,.brand svg path.flow,.box.inv,[data-page]:not([hidden]),.nav a[aria-current="page"],.btn.pri,.extab[aria-pressed="true"],.side[aria-current="true"],.nextbar a.nx,.sdot.on{animation:none !important}
   #fx b{transition:none}
+  .cur.live{animation:none !important;opacity:.8}
 }
 </style><!-- /ds-tension -->
 <header class="top">
@@ -5137,6 +5159,16 @@ route();
   });
   D.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const w = D.querySelector('.v3d-wrap.fs'); if (w) fsSet(w, false); } });
   addEventListener('hashchange', () => { const w = D.querySelector('.v3d-wrap.fs'); if (w) fsSet(w, false); });
+
+  // Téléphone : boutons « 3D → » et « ← 2D » pour passer d'un schéma à l'autre (en plus du glissement)
+  D.querySelectorAll('.dual').forEach((dual) => {
+    const a = dual.querySelector('.d2-head'), b = dual.querySelector('.v3d-head'); if (!a || !b) return;
+    const mk = (cls, html, lab) => { const x = D.createElement('button'); x.type = 'button'; x.className = 'swp ' + cls; x.innerHTML = html; x.setAttribute('aria-label', lab); return x; };
+    const go3 = mk('', '3D <i aria-hidden="true">→</i>', 'Voir la vue 3D'), go2 = mk('back', '<i aria-hidden="true">←</i> 2D', 'Revenir au schéma 2D');
+    a.appendChild(go3); b.insertBefore(go2, b.firstChild);
+    go3.addEventListener('click', () => dual.scrollTo({ left: dual.scrollWidth, behavior: 'smooth' }));
+    go2.addEventListener('click', () => dual.scrollTo({ left: 0, behavior: 'smooth' }));
+  });
 
   // Inclinaison 3D des cartes sous le pointeur
   if (fine && !calm) D.querySelectorAll('a.card,.goals a').forEach((el) => {
