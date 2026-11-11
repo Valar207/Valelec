@@ -71,7 +71,7 @@ La section « Les symboles à connaître » est générée par `symbols()` : un 
 
 ## Lexique et infobulles
 
-`GLOSSAIRE` (avant le routeur) liste les mots techniques : clé, motif, titre, définition, et s’il figure dans le lexique de début (section `#lexique` en tête des Bases, bloc repliable `#lex-det` fermé au départ, ouvert par le lien du sommaire). Ordre du lexique et des familles de symboles : chaque explication ne s’appuie que sur des mots ou des appareils déjà présentés avant elle. Chaque mot du lexique est écrit en italique, suivi d’une astérisque, une fois par section ; survol à la souris, toucher sur mobile, Entrée au clavier ; fermeture par clic ailleurs ou Échap. Le balayage se relance quand le contenu change (MutationObserver). Les cartes de symboles (`AIDE`) affichent « Sur le schéma » : le dessin, un exemple dans un schéma du site et un bouton qui l’ouvre (`data-ouvrir`).
+`GLOSSAIRE` (avant le routeur) liste les mots techniques : clé, motif, titre, définition, et s’il figure dans le lexique de début (section `#lexique` en tête des Bases, bloc repliable `#lex-det` fermé au départ, ouvert par le lien du sommaire). Ordre du lexique et des familles de symboles : chaque explication ne s’appuie que sur des mots ou des appareils déjà présentés avant elle. Chaque mot du lexique est écrit en italique, finement souligné et suivi d’une astérisque, une fois par section ; survol à la souris, toucher sur mobile, Entrée au clavier ; fermeture par clic ailleurs ou Échap. Le balayage se relance quand le contenu change (MutationObserver). Les cartes de symboles (`AIDE`) affichent « Sur le schéma » : le dessin, un exemple dans un schéma du site et un bouton qui l’ouvre (`data-ouvrir`).
 
 ## Ajouter un composant
 

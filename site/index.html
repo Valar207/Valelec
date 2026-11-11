@@ -985,8 +985,9 @@ html.fx .tilt:hover{--ty:-4px}
 .lex div{margin:0}
 .lex dt{font-weight:700;color:var(--ink)}
 .lex dd{margin:2px 0 0;font-size:14.5px;color:var(--ink-2)}
-.gl,.gl-demo{font-style:italic;cursor:help;border-radius:3px}
-.gl::after,.gl-demo::after{content:"*";content:"*" / "";margin-left:1px;font-style:normal;font-weight:700;font-size:.8em;vertical-align:super;line-height:0;color:var(--accent)}
+.gl,.gl-demo{font-style:italic;cursor:pointer;border-radius:3px;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,currentColor 55%,transparent)}
+.gl:hover,.gl:focus-visible{text-decoration-color:currentColor}
+.gl::after,.gl-demo::after{content:"*";content:"*" / "";display:inline-block;text-decoration:none;margin-left:1px;font-style:normal;font-weight:700;font-size:.8em;vertical-align:super;line-height:0;color:var(--accent)}
 .gl:hover,.gl[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 12%,transparent)}
 @media (prefers-reduced-motion:reduce){.lex-go::before{transition:none}}
 #gltip{position:fixed;z-index:200;max-width:min(320px,calc(100vw - 24px));padding:10px 14px;border-radius:12px;background:var(--ink);color:var(--paper);font:400 14.5px/1.45 var(--f-body);box-shadow:0 14px 34px -12px rgba(0,0,0,.5);pointer-events:auto}
