@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Valelec · présentation pour les centres de formation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{--paper:#F6F4FC;--card:#fff;--line:#DCD6EF;--ink:#14122B;--ink-2:#3A3757;--muted:#625E80;--accent:#C8195F;
+  --g-live:linear-gradient(120deg,#5B3BFF,#B83DFF 38%,#FF3D81 68%,#FF7A3D);--g-arc:linear-gradient(100deg,#FFD84A,#FF6A3D 28%,#FF3D81 54%,#8B5CFF 78%,#27C4FF)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{padding:56px 0 36px;background:radial-gradient(60% 120% at 0% 0%,rgba(139,92,255,.28),transparent 70%),radial-gradient(50% 110% at 100% 20%,rgba(255,61,129,.22),transparent 70%)}
+.eyebrow{margin:0 0 14px;font:500 13px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.04em;line-height:1.08;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,5.4vw,60px);font-weight:800}
+h1 span{background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(24px,3.2vw,34px);margin-bottom:18px}
+h3{font-size:18px;margin-bottom:6px;letter-spacing:-.02em}
+.lead{font-size:clamp(17px,2vw,20px);color:var(--ink-2);max-width:62ch;margin:18px 0 26px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 24px;border-radius:999px;background:var(--g-live);color:#fff;font-weight:600;text-decoration:none;box-shadow:0 20px 44px -20px rgba(139,92,255,.8)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+section{padding:44px 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:34px}
+.facts div{padding:16px 18px;border:1.5px solid var(--line);border-radius:16px;background:var(--card)}
+.facts b{display:block;font:800 30px 'Sora',sans-serif;letter-spacing:-.04em;background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
+.facts span{font-size:14px;color:var(--ink-2)}
+.shots{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+figure{margin:0}
+figure img{display:block;width:100%;height:auto;border-radius:16px;border:1.5px solid var(--line);box-shadow:0 30px 60px -36px rgba(20,18,43,.5)}
+figcaption{margin-top:8px;font-size:13.5px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:14px}
+.card{padding:20px 22px;border:1.5px solid var(--line);border-radius:18px;background:var(--card)}
+.card p{margin:0;color:var(--ink-2);font-size:15px}
+ul{margin:0;padding-left:20px;color:var(--ink-2)}
+li{margin-bottom:6px}
+.ask{border:2px solid transparent;border-radius:22px;background:linear-gradient(var(--card),var(--card)) padding-box,var(--g-arc) border-box;padding:28px}
+.ask ol{margin:0;padding-left:22px;color:var(--ink-2)}
+.ask li{margin-bottom:10px}
+.ask b{color:var(--ink)}
+footer{padding:28px 0 48px;font-size:14px;color:var(--muted)}
+@media (max-width:760px){.shots{grid-template-columns:1fr 1fr}.shots figure:first-child{grid-column:1/-1}}
+@media print{header{background:none}.btn{box-shadow:none}section{padding:22px 0;break-inside:avoid}}
+</style>
+
+<header><div class="wrap">
+  <p class="eyebrow">Titre professionnel Électricien d’équipement du bâtiment</p>
+  <h1>Valelec, l’outil de révision <span>créé par un stagiaire, pour les stagiaires.</span></h1>
+  <p class="lead">Un site sans installation ni compte, pour comprendre les schémas et préparer les deux épreuves du titre : l’examen pratique et le questionnaire professionnel. Il fonctionne sur téléphone comme sur ordinateur.</p>
+  <div class="row"><a class="btn" href="./">Essayer le site →</a><a class="btn ghost" href="./#examen">Voir l’examen pratique</a></div>
+  <div class="facts">
+    <div><b>3</b><span>espaces de travail de l’examen pratique, en 2D et en 3D</span></div>
+    <div><b>60</b><span>questions du QCM, corrigées et expliquées une à une</span></div>
+    <div><b>11</b><span>schémas animés, du simple allumage au contacteur heures creuses</span></div>
+    <div><b>4</b><span>modes de recharge IRVE, plus un module photovoltaïque</span></div>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <h2>Ce que le stagiaire a sous les yeux</h2>
+  <div class="shots">
+    <figure><img src="presentation/examen.jpg" alt="Page Examen pratique : le schéma électrique et la vue 3D côte à côte"><figcaption>Le schéma développé et l’installation en 3D, côte à côte. On actionne un disjoncteur ou un poussoir, et les deux réagissent ensemble.</figcaption></figure>
+    <figure><img src="presentation/pas-a-pas.jpg" alt="Construction pas à pas de l’installation en 3D sur téléphone"><figcaption>La construction pas à pas : du mur nu au dernier fil, comme sur le chantier.</figcaption></figure>
+    <figure><img src="presentation/qcm.jpg" alt="QCM sur téléphone avec la correction d’une question"><figcaption>Le QCM : la bonne réponse et son explication après chaque question, la note à la fin.</figcaption></figure>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Ce que le site apporte</h2>
+  <div class="grid">
+    <div class="card"><h3>Comprendre avant de câbler</h3><p>Chaque schéma est vivant : on voit quel fil est sous tension, où le courant circule, et ce qui se passe quand on déclenche une protection. Le câblage suit les règles françaises, avec un disjoncteur phase + neutre par circuit.</p></div>
+    <div class="card"><h3>Voir l’installation réelle</h3><p>La vue 3D reprend l’implantation de l’énoncé : tableau, boîtes de dérivation, conduits, goulottes, chaque conducteur à sa couleur. On peut ouvrir une boîte pour voir les connexions une à une.</p></div>
+    <div class="card"><h3>Suivre un circuit</h3><p>Un toucher sur un fil met son circuit en surbrillance, du disjoncteur jusqu’au récepteur, et efface les autres. Utile pour repérer une erreur de raisonnement.</p></div>
+    <div class="card"><h3>S’entraîner au questionnaire</h3><p>Les 60 questions par compétence, la correction commentée, le score par compétence et la liste des erreurs à revoir.</p></div>
+    <div class="card"><h3>Réviser partout</h3><p>Aucune application à installer, aucun compte à créer. Le stagiaire révise dans les transports, sur son téléphone.</p></div>
+    <div class="card"><h3>Aller plus loin</h3><p>Des leçons sur les bases, un bac à sable pour dessiner ses propres schémas, la comparaison des tableaux français et américain, le photovoltaïque et les bornes de recharge.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Ce que le centre peut y gagner</h2>
+  <ul>
+    <li>Un support de révision que les stagiaires utilisent d’eux-mêmes, en dehors des heures d’atelier.</li>
+    <li>Un appui pour le formateur : projeter un schéma animé ou la vue 3D pour expliquer un montage à tout le groupe.</li>
+    <li>Un outil qui peut être adapté aux sujets et au matériel du centre.</li>
+    <li>Aucune donnée personnelle collectée : pas de compte, pas de cookie publicitaire.</li>
+  </ul>
+</div></section>
+
+<section><div class="wrap">
+  <div class="ask">
+    <h2>Ce que je propose</h2>
+    <ol>
+      <li><b>Valider le contenu ensemble.</b> Les espaces de l’examen pratique et le questionnaire reprennent le dossier TP-00467. Je souhaite votre accord écrit pour les utiliser, ou les remplacer par des exercices équivalents rédigés avec vous.</li>
+      <li><b>Faire relire le site par un formateur.</b> Les explications et l’ordre de câblage du pas à pas gagneraient à être vérifiés par un professionnel de la formation.</li>
+      <li><b>Lancer un essai sur une promotion.</b> Quelques semaines d’utilisation, puis un retour des stagiaires et des formateurs.</li>
+      <li><b>Discuter d’un partenariat.</b> Si l’essai est concluant : une licence pour le centre, avec les adaptations et le suivi dont vous avez besoin.</li>
+    </ol>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Valelec · conçu et développé par Valentin, stagiaire du titre professionnel Électricien d’équipement du bâtiment · <a href="./">formationeeb.pages.dev</a></div></footer>
+</html>
