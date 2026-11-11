@@ -67,7 +67,7 @@ Le fichier est découpé par des commentaires repères (chercher ces lignes) :
 
 ## Symboles expliqués (page Les bases)
 
-La section « Les symboles à connaître » est générée par `symbols()` : un lexique repliable (`MOTS`, ouvert d’office sur grand écran), puis les symboles rangés par famille (`FAM`). Chaque carte affiche une phrase en clair (`AIDE[clé][0]`) et un menu déroulant « Comprendre en détail » : où on croise l’appareil, un détail utile, la description technique (`DEF[clé].desc`) et la définition des mots du lexique utilisés. Un symbole ajouté à `order` sans entrée dans `AIDE` s’affiche quand même, avec sa description technique, dans « Ce qui consomme ». Styles : bloc `<style id="sym-aide">` juste après la couche de design.
+La section « Les symboles à connaître » est générée par `symbols()` : un lexique repliable (`MOTS`, ouvert d’office sur grand écran), puis les symboles rangés par famille (`FAM`). Chaque carte affiche une phrase en clair (`AIDE[clé][0]`) et un menu déroulant « Comprendre en détail » : où on croise l’appareil, un détail utile, la description technique (`DEF[clé].desc`) et la définition des mots du lexique utilisés. Un symbole ajouté à `order` sans entrée dans `AIDE` s’affiche quand même, avec sa description technique, dans « Ce qui consomme ». Toutes les cartes fermées prennent la même hauteur : `egal()` mesure la plus haute et l’applique en `min-height` à toutes (au chargement, au redimensionnement et à l’affichage de la page ; désactivé sous 560 px de large). Une carte ouverte s’agrandit seule. Styles : bloc `<style id="sym-aide">` juste après la couche de design.
 
 ## Ajouter un composant
 

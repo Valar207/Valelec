@@ -961,7 +961,7 @@ html.fx .tilt:hover{--ty:-4px}
 .symfam-t{font-size:22px;margin:0 0 4px}
 .symfam-s{margin:0 0 14px;color:var(--ink-2)}
 .symgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(230px,100%),1fr));gap:14px;align-items:start}
-.symcard .clair{font-size:15px;color:var(--ink)}
+.symcard .clair{font-size:15px;line-height:1.5;color:var(--ink)}
 .symmore{border-top:1px solid var(--line);padding-top:8px;margin-top:auto}
 .symmore>summary{min-height:40px;font-size:14.5px;color:var(--accent)}
 .symmore p{font-size:14px;margin:6px 0 0;color:var(--ink-2)}
@@ -3936,7 +3936,19 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
   const vus = new Set(FAM.flatMap((f) => f[2]));
   const reste = order.filter((k) => !vus.has(k));
   if (reste.length) FAM[3][2].push(...reste);
+  const egal = () => {
+    const cs = [...document.querySelectorAll('#sym-grid .symcard')];
+    cs.forEach((c) => { c.style.minHeight = ''; });
+    if (innerWidth < 560) return;
+    const fermees = cs.filter((c) => !c.querySelector('details[open]') && c.offsetParent);
+    const h = Math.max(0, ...fermees.map((c) => c.getBoundingClientRect().height));
+    if (h) cs.forEach((c) => { c.style.minHeight = h + 'px'; });
+  };
+  addEventListener('resize', () => { clearTimeout(egal.t); egal.t = setTimeout(egal, 150); });
+  if (document.fonts) document.fonts.ready.then(egal);
+  new MutationObserver(() => egal()).observe(document.querySelector('[data-page="bases"]') || document.body, { attributes: true, attributeFilter: ['hidden'] });
   $('#sym-grid').innerHTML = FAM.map(([titre, sous, ks]) => `<div class="symfam"><h3 class="symfam-t">${titre}</h3><p class="symfam-s">${sous}</p><div class="symgrid">${ks.filter((k) => DEF[k]).map(card).join('')}</div></div>`).join('');
+  setTimeout(egal, 0);
 })();
 
 /* ---------------- Schémas ---------------- */
