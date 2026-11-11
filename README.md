@@ -17,6 +17,7 @@ valelec/
 │   ├── index.html          ← le site complet (HTML + CSS + JS dans un seul fichier)
 │   ├── presentation.html   ← page de présentation pour les centres de formation (non référencée, captures dans presentation/)
 │   ├── qcm/                ← photos du QCM
+│   ├── code-route/         ← site séparé de révision du code de la route (voir plus bas)
 │   └── vendor/three.min.js ← three.js r150.1 (licence MIT), chargé seulement quand une vue 3D devient visible
 └── maquettes-design/       ← maquettes du canevas Design (format .dc.html de claude.ai), pour référence
     ├── canvas.json
@@ -97,6 +98,17 @@ Espace n°1 : La page du schéma unifilaire du tableau TR n’était pas disponi
 Espace n°2 : la minuterie KT1 et les disjoncteurs Q1 (20 A, prise) et Q2 (16 A, éclairage) représentent l’armoire des services généraux, en amont de la boîte 5 ; leur calibre est une hypothèse. Le câble C9 (SSI) est représenté par un voyant H1 alimenté en 24 V, et les déclencheurs manuels par des contacts ouverts au repos : le câblage réel dépend de la centrale.
 
 Espace n°3 : Q1 (20 A, prise), Q2 (16 A, éclairage), Q3 (2 A, commande) et le contacteur KM1 représentent l’armoire tertiaire, en amont de la boîte 7 ; leur calibre et le fait que l’arrêt d’urgence coupe la prise PC1 sont des hypothèses. L’arrêt d’urgence est représenté à manque de tension, la télécommande du BAES par un bouton « mise au repos », et les prises RJ45 ne sont pas simulées.
+
+## Code Route (`site/code-route/`)
+
+Site indépendant de révision du code de la route, publié sur https://formationeeb.pages.dev/code-route/ .
+
+- `index.html` : interface (accueil, examen blanc, entraînement, résultat, historique), CSS et logique.
+- `scenes.js` : `SCENE.render(spec)` dessine chaque illustration en SVG : panneaux, vue du conducteur (`drv`), carrefour vu du dessus (`top`), voyants (`dash`), image de thème (`card`).
+- `banque.js` : `BANQUE.Q`, questions au format `{ id, th, sc, q, o, ok, ex }`. Préfixes d'identifiant : `h` rédigées, `s`/`s2` panneaux, `p` priorités, `v` vitesses, `d` distances, `x` dépassements, `y`/`y2` voyants, `f` feux.
+- Examen blanc : 40 questions réparties par thème (`QUOTA`), 20 s par question après la lecture vocale (`speechSynthesis`, fr-FR), réussi à partir de 35. Une question n'est juste que si toutes les bonnes réponses sont cochées et aucune mauvaise.
+- Données dans `localStorage` (préfixe `cr1-`) : `hist` (examens), `stats` (vues et erreurs par question), `pref` (voix).
+- Questions et illustrations originales ; aucune question officielle reprise. Les identifiants de questions servent à l'historique : ne pas les renommer.
 
 ## Avertissement
 
