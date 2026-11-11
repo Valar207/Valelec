@@ -577,6 +577,7 @@ rect.ghost{fill:rgba(255,216,74,.08);stroke:#FFD84A;stroke-width:2;stroke-dashar
 .app:hover{border-color:var(--ink)}
 .app i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .app[aria-pressed="true"]{border-color:var(--ink);background:var(--sel)}
+.app[aria-pressed="true"] small{color:var(--ink-2)}
 .app[aria-pressed="true"] i{background:#E0A800;box-shadow:0 0 6px #E0A800}
 .app small{font:500 12px var(--f-mono);color:var(--muted)}
 .panel{display:flex;flex-direction:column;gap:12px;scroll-margin-top:90px}
@@ -696,6 +697,7 @@ rect.ghost{fill:rgba(255,216,74,.08);stroke:#FFD84A;stroke-width:2;stroke-dashar
 #page-pv .lab-ctl .tile b,#page-irve .lab-ctl .tile b{font-size:22px;white-space:nowrap}
 </style>
 
+<a class="skip" href="#main">Aller au contenu</a>
 <style id="ds-tension">
 /* =====================================================================
    DESIGN SYSTEM « TENSION »
@@ -710,6 +712,8 @@ rect.ghost{fill:rgba(255,216,74,.08);stroke:#FFD84A;stroke-width:2;stroke-dashar
   --volt:#FFD84A; --phase:#FF6A3D; --plasma:#FF3D81; --ion:#8B5CFF; --neutre:#27C4FF; --terre:#3DDC84;
   --g-arc:linear-gradient(100deg,var(--volt),var(--phase) 28%,var(--plasma) 54%,var(--ion) 78%,var(--neutre));
   --g-live:linear-gradient(120deg,#5B3BFF,#B83DFF 38%,#FF3D81 68%,#FF7A3D);
+  --g-cta:linear-gradient(120deg,#4F2FE0,#8E24C9 40%,#C5175E 72%,#B23C0C);
+  --g-text:var(--g-cta);
   --g-ring:conic-gradient(from var(--ang),var(--volt),var(--phase),var(--plasma),var(--ion),var(--neutre),var(--volt));
   --glow:0 22px 60px -22px rgba(139,92,255,.6);
   --r-s:12px; --r-m:18px; --r-l:28px;
@@ -725,12 +729,12 @@ rect.ghost{fill:rgba(255,216,74,.08);stroke:#FFD84A;stroke-width:2;stroke-dashar
   --paper:#0B0A15; --paper-2:#151329; --paper-3:#1F1C3B; --line:#2D2A52; --hover:#211E42;
   --ink:#F2EFFF; --ink-2:#C9C4E8; --muted:#9B96C2; --accent:#FF7EB0; --accent-2:#FFB3D0;
   --inv-bg:#F2EFFF; --inv-fg:#14122B; --inv-muted:#4A4670; --inv-accent:#B5179E; --sel:#3A3420;
-  --info-bg:#1F1C3B; --info-fg:#DCD7F5; --fx-a:.42}}
+  --info-bg:#1F1C3B; --info-fg:#DCD7F5; --fx-a:.42; --g-text:var(--g-live)}}
 :root[data-theme="dark"]{
   --paper:#0B0A15; --paper-2:#151329; --paper-3:#1F1C3B; --line:#2D2A52; --hover:#211E42;
   --ink:#F2EFFF; --ink-2:#C9C4E8; --muted:#9B96C2; --accent:#FF7EB0; --accent-2:#FFB3D0;
   --inv-bg:#F2EFFF; --inv-fg:#14122B; --inv-muted:#4A4670; --inv-accent:#B5179E; --sel:#3A3420;
-  --info-bg:#1F1C3B; --info-fg:#DCD7F5; --fx-a:.42}
+  --info-bg:#1F1C3B; --info-fg:#DCD7F5; --fx-a:.42; --g-text:var(--g-live)}
 
 /* ---------- 2. Fond vivant ---------- */
 html{background:var(--paper)}
@@ -752,7 +756,7 @@ body{background:transparent}
 .display{font-family:var(--f-display);font-weight:800;letter-spacing:-.045em}
 .sec-head h2{font-size:clamp(28px,3.4vw,44px)}
 .hero{grid-template-columns:repeat(auto-fit,minmax(min(480px,100%),1fr))}
-.hero h1{font-size:clamp(40px,5.2vw,72px);line-height:1;font-weight:800;background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
+.hero h1{font-size:clamp(40px,5.2vw,72px);line-height:1;font-weight:800;background:var(--g-text);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
 .eyebrow{display:flex;align-items:center;gap:9px;color:var(--accent);letter-spacing:.08em}
 .eyebrow::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--volt);box-shadow:0 0 0 3px color-mix(in srgb,var(--volt) 30%,transparent)}
 .card .eyebrow::before{background:var(--terre);box-shadow:0 0 0 0 color-mix(in srgb,var(--terre) 70%,transparent)}
@@ -766,14 +770,14 @@ body{background:transparent}
 .top::before{content:"";position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--paper) 74%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
 .top::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;background:var(--g-arc);transform:scaleX(var(--sp,0));transform-origin:left;box-shadow:0 0 14px var(--plasma);border-radius:0 3px 3px 0}
 .brand b{font-family:var(--f-display);font-size:23px;letter-spacing:-.04em}
-.brand b span{background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand b span{background:var(--g-text);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand svg{border-radius:10px;box-shadow:0 6px 18px -8px var(--ion);transition:transform .5s var(--spring)}
 .brand:hover svg{transform:rotate(-8deg) scale(1.1)}
 .brand svg path.flow{stroke:#fff;stroke-dasharray:3 9;animation:wflow 1.1s linear infinite;opacity:.9}
 @keyframes wflow{to{stroke-dashoffset:-24}}
 .nav a{border-color:color-mix(in srgb,var(--line) 80%,transparent);background:color-mix(in srgb,var(--paper-2) 70%,transparent);transition:transform .25s var(--spring),border-color .2s,box-shadow .2s,background .2s}
 .nav a:hover{border-color:var(--ion);box-shadow:0 10px 24px -14px var(--ion);transform:translateY(-2px)}
-.nav a[aria-current="page"],.btn.pri,.extab[aria-pressed="true"],.side[aria-current="true"],.nextbar a.nx,.v3d-steps .stp-go,.v3d-steps .stp-nx,.lab-tabs .ctl[aria-pressed="true"],.lab-view .ctl[aria-pressed="true"],.v3d-circ .ctl[aria-pressed="true"]{background:var(--g-live) border-box no-repeat;color:#fff;border-color:transparent;box-shadow:var(--glow)}
+.nav a[aria-current="page"],.btn.pri,.extab[aria-pressed="true"],.side[aria-current="true"],.nextbar a.nx,.v3d-steps .stp-go,.v3d-steps .stp-nx,.lab-tabs .ctl[aria-pressed="true"],.lab-view .ctl[aria-pressed="true"],.v3d-circ .ctl[aria-pressed="true"]{background:var(--g-cta) border-box no-repeat;color:#fff;border-color:transparent;box-shadow:var(--glow)}
 .nav a[aria-current="page"] small,.extab[aria-pressed="true"] .k,.extab[aria-pressed="true"] .ds,.side[aria-current="true"] .n{color:rgba(255,255,255,.82)}
 .extab[aria-pressed="true"] .go,.side[aria-current="true"] .go{color:var(--volt)}
 .snd,.burger{border-color:color-mix(in srgb,var(--line) 80%,transparent);background:color-mix(in srgb,var(--paper-2) 70%,transparent);transition:transform .4s var(--spring),border-color .2s}
@@ -804,7 +808,7 @@ body{background:transparent}
 .card,.goals a,.extab,.side,.box,.qz-card,.tbl-box,.calc-in,.nextbar a,.stp,.room,.safety{background:var(--card);border-color:color-mix(in srgb,var(--line) 85%,transparent);border-radius:var(--r-m)}
 a.card,.goals a,.extab,.side,.nextbar a{position:relative;overflow:hidden;transition:transform .35s var(--spring),box-shadow .3s,border-color .2s}
 a.card:hover,.goals a:hover,.extab:hover,.side:hover,.nextbar a:hover{border-color:transparent;background:linear-gradient(var(--paper-2),var(--paper-2)) padding-box,var(--g-ring) border-box;animation:spin 3.5s linear infinite;box-shadow:var(--glow)}
-.extab[aria-pressed="true"]:hover,.side[aria-current="true"]:hover,.nextbar a.nx:hover{background:var(--g-live) border-box no-repeat;animation:none}
+.extab[aria-pressed="true"]:hover,.side[aria-current="true"]:hover,.nextbar a.nx:hover{background:var(--g-cta) border-box no-repeat;animation:none}
 @keyframes spin{to{--ang:360deg}}
 a.card::before,.goals a::before{content:"";position:absolute;right:-34px;top:-34px;width:120px;height:120px;border-radius:50%;background:var(--g-ring);filter:blur(22px);opacity:.38;transition:transform .7s var(--ease),opacity .4s;pointer-events:none}
 a.card:hover::before,.goals a:hover::before{transform:scale(2.1) rotate(120deg);opacity:.6}
@@ -815,8 +819,8 @@ a.card>*,.goals a>*{position:relative}
 .goals a:nth-child(5)::before{filter:blur(22px) hue-rotate(290deg)}
 .goals b,.card h3{font-family:var(--f-display)}
 .chip{background:color-mix(in srgb,var(--ion) 14%,var(--paper-3));color:var(--ink-2);border-radius:999px;padding:5px 11px}
-.box.inv{background:var(--g-live) border-box no-repeat;color:#fff;border-color:transparent;box-shadow:var(--glow)}
-.box.inv h2,:is(#page-schemas,#page-examen) .box.inv h2{color:var(--volt)}
+.box.inv{background:var(--g-cta) border-box no-repeat;color:#fff;border-color:transparent;box-shadow:var(--glow)}
+.box.inv h2,:is(#page-schemas,#page-examen) .box.inv h2{color:#fff}
 .box.inv :is(p,li,ol,ul){color:#fff}
 .band.alt{background:color-mix(in srgb,var(--paper-2) 58%,transparent)}
 .band.dark{background:radial-gradient(120% 140% at 0% 0%,#2A1B6B 0,transparent 55%),radial-gradient(120% 140% at 100% 100%,#5A1447 0,transparent 55%),#0D0B1E}
@@ -835,11 +839,11 @@ a.card>*,.goals a>*{position:relative}
 .qz-o{border-radius:var(--r-s);background:var(--card);transition:transform .25s var(--spring),border-color .15s,background .15s,box-shadow .2s}
 .qz-o:hover:not(:disabled){border-color:var(--ion);transform:translateX(6px);box-shadow:-6px 0 0 -2px var(--ion)}
 .qz-o.pick{border-color:var(--ion);box-shadow:inset 0 0 0 1.5px var(--ion),0 12px 28px -18px var(--ion)}
-.qz-o.pick b{background:var(--g-live);color:#fff}
+.qz-o.pick b{background:var(--g-cta);color:#fff}
 .qz-o.good{animation:pop .5s var(--spring)}
 .qz-o.bad{animation:shake .45s}
 .qz-fb{animation:rise .5s var(--ease)}
-.qz-big{background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
+.qz-big{background:var(--g-text);-webkit-background-clip:text;background-clip:text;color:transparent}
 .qz-big small{color:var(--muted);-webkit-text-fill-color:var(--muted)}
 @keyframes pop{40%{transform:scale(1.03)}}
 @keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
@@ -849,8 +853,8 @@ a.card>*,.goals a>*{position:relative}
 .toc a{border-radius:999px;transition:background .2s,color .2s,transform .25s var(--spring)}
 .toc a:hover{background:color-mix(in srgb,var(--ion) 16%,transparent);transform:translateY(-2px)}
 details.more>summary,.selectc{border-radius:999px}
-.steps li::before{background:var(--g-live);color:#fff}
-.box ol li i{background:var(--g-live);color:#fff}
+.steps li::before{background:var(--g-cta);color:#fff}
+.box ol li i{background:var(--g-cta);color:#fff}
 footer{border-top:0;position:relative}
 footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--g-arc);opacity:.7}
 :focus-visible{outline:2px solid var(--ion);outline-offset:3px}
@@ -888,7 +892,7 @@ body.fs-lock{overflow:hidden}
   .stage:not(.has-fs) .dual::-webkit-scrollbar{display:none}
   .stage:not(.has-fs) .dual>:is(.col2d,.v3d-wrap){flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always}
   .stage:not(.has-fs) .d2-head span{display:none}
-  .stage:not(.has-fs) .swp{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:999px;background:var(--g-live) border-box no-repeat;color:#fff;font:700 13px var(--f-body);cursor:pointer;box-shadow:var(--glow)}
+  .stage:not(.has-fs) .swp{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:999px;background:var(--g-cta) border-box no-repeat;color:#fff;font:700 13px var(--f-body);cursor:pointer;box-shadow:var(--glow)}
   .swp i{font-style:normal;display:inline-block;animation:nudge 1.3s ease-in-out infinite}
   .swp.back i{animation-name:nudgeb}
 }
@@ -910,6 +914,23 @@ body.fs-lock{overflow:hidden}
 .statusbar strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .statusbar span.d{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;line-height:1.45;height:2.9em}
 .statusbar .metric{flex:none;max-width:46%;white-space:normal;text-align:right}
+
+/* Accessibilité */
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:fixed;left:12px;top:-60px;z-index:100;padding:10px 16px;border-radius:999px;background:var(--ink);color:var(--paper);font-weight:600;text-decoration:none;transition:top .2s}
+.skip:focus{top:calc(10px + env(safe-area-inset-top,0px))}
+main:focus{outline:none}
+.sim-pick{display:none}
+@media (max-width:820px){
+  .sim-pick{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:4px 0 8px;font:700 15px var(--f-display);letter-spacing:-.01em;color:var(--ink)}
+  .sim-pick span{font:500 12px var(--f-mono);letter-spacing:.03em;color:var(--muted)}
+}
+@media (max-width:560px){
+  .statusbar{padding:12px 14px}
+  .statusbar strong{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.25;height:2.5em;font-size:15px}
+  .statusbar span.d{font-size:13px}
+  .statusbar .metric{font-size:12.5px;padding:5px 8px}
+}
 
 /* ---------- 5. Mouvement ---------- */
 [data-page]:not([hidden]){animation:pgin .45s var(--ease)}
@@ -945,7 +966,7 @@ html.fx .tilt:hover{--ty:-4px}
   </div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <!-- ============ ACCUEIL ============ -->
 <div id="page-accueil" data-page="accueil">
   <div class="wrap hero">
@@ -1036,6 +1057,7 @@ html.fx .tilt:hover{--ty:-4px}
   </div>
 
   <section id="grandeurs" class="wrap" style="padding-top:44px;scroll-margin-top:90px">
+    <h2 class="sr-only">Les trois grandeurs</h2>
     <div class="grid">
       <div class="card"><div class="kv"><span class="qty">U</span><span class="mono muted" style="font-size:14px">volt · V</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">La tension</h3><p>La « poussée » qui met les charges en mouvement : la pression dans le tuyau. Une prise de la maison délivre 230 V.</p></div>
       <div class="card"><div class="kv"><span class="qty">I</span><span class="mono muted" style="font-size:14px">ampère · A</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">L’intensité</h3><p>La quantité de charges qui traverse le fil chaque seconde : le débit d’eau. Elle n’existe que si le circuit est fermé.</p></div>
@@ -1115,7 +1137,8 @@ html.fx .tilt:hover{--ty:-4px}
 <!-- ============ SCHÉMAS ============ -->
 <div id="page-schemas" data-page="schemas" hidden>
   <div class="wrap wide sim">
-    <aside class="sim-nav" id="sim-nav" aria-label="Liste des schémas"></aside>
+    <p class="sim-pick" id="sim-pick">Choisis un circuit <span>11 circuits · glisse pour les voir</span></p>
+    <aside class="sim-nav" id="sim-nav" aria-labelledby="sim-pick"></aside>
     <div class="sim-main">
       <div><p class="eyebrow" id="sim-group"></p><h1 class="display" id="sim-title"></h1><p class="lead" id="sim-sub"></p></div>
       <div class="sim-cols has3d">
@@ -1123,7 +1146,7 @@ html.fx .tilt:hover{--ty:-4px}
           <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
             <svg id="sim-svg" class="view" role="img" aria-label="Schéma animé"></svg>
             <div class="statusbar">
-              <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
+              <div class="row" role="status" aria-live="polite" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
               <span class="metric" id="sim-metric">0 W</span>
             </div>
           </div>
@@ -1168,7 +1191,7 @@ html.fx .tilt:hover{--ty:-4px}
         <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
           <svg id="ex-svg" class="view" role="img" aria-label="Schéma développé de l’espace de travail"></svg>
           <div class="statusbar">
-            <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
+            <div class="row" role="status" aria-live="polite" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
             <span class="metric" id="ex-metric">0 W</span>
           </div>
         </div>
@@ -1448,7 +1471,7 @@ html.fx .tilt:hover{--ty:-4px}
   <section class="wrap" style="padding-top:36px">
     <div class="tbl-box"><table class="cmp">
       <caption>Ce qui change pour le neutre</caption>
-      <thead><tr><th scope="col"></th><th scope="col">France</th><th scope="col">États-Unis</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Critère</span></th><th scope="col">France</th><th scope="col">États-Unis</th></tr></thead>
       <tbody>
         <tr><th scope="row">Tension</th><td><b>230 V</b> : une phase et un neutre.</td><td><b>120/240 V</b> : deux phases L1 et L2 et un neutre. 120 V entre une phase et le neutre (prises, éclairage), 240 V entre les deux phases (plaque, chauffe-eau, sèche-linge).</td></tr>
         <tr><th scope="row">Régime de neutre</th><td><b>TT</b> : le neutre du réseau est relié à la terre au poste de distribution. La maison a sa propre prise de terre (piquet), indépendante du neutre.</td><td><b>Neutre relié à la terre dans le tableau</b> : le neutre est mis à la terre au transformateur, puis relié une seconde fois à la terre dans le tableau principal (liaison neutre-terre), avec un piquet de terre.</td></tr>
@@ -1472,7 +1495,7 @@ html.fx .tilt:hover{--ty:-4px}
         <button class="app" type="button" id="tbx-reset"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8 A5 5 0 1 1 11 4 M13 2 V5 H10" class="ico"/></svg>Tout réarmer</button>
       </div></div>
     </div>
-    <div><span class="lbl mono" style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Appareils en marche (pour les deux tableaux)</span><div class="rooms" id="tbx-rooms"></div></div>
+    <div><span class="lbl mono" style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Appareils en marche (pour les deux tableaux)</span><h2 class="sr-only">Appareils en marche</h2><div class="rooms" id="tbx-rooms"></div></div>
     <ul class="mini-legend" aria-label="Légende">
       <li><span class="lsw" style="background:#E5533D"></span>Phase (FR rouge · US noire ou rouge)</li><li><span class="lsw" style="background:#4E8EF7"></span>Neutre (FR bleu · US blanc)</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#3E9A3A 0 4px,#F2CB2E 4px 8px)"></span>Terre (FR vert/jaune · US verte)</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li><li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#8E9BAA 0 4px,transparent 4px 8px)"></span>Coupé du réseau</li>
     </ul>
@@ -1550,7 +1573,7 @@ html.fx .tilt:hover{--ty:-4px}
   <section id="pv-materiel" class="wrap lesson">
     <div class="sec-head"><div><p class="eyebrow">3 · Le matériel</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Onduleur central, micro-onduleurs ou optimiseurs</h2></div><p>Trois architectures pour la même fonction : transformer le continu des modules en alternatif.</p></div>
     <div class="tbl-box"><table>
-      <thead><tr><th scope="col"></th><th scope="col">Onduleur « string »</th><th scope="col">Micro-onduleurs</th><th scope="col">Optimiseurs + onduleur</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Critère</span></th><th scope="col">Onduleur « string »</th><th scope="col">Micro-onduleurs</th><th scope="col">Optimiseurs + onduleur</th></tr></thead>
       <tbody>
         <tr><th scope="row">Principe</th><td>Un onduleur pour une ou plusieurs chaînes, souvent dans le garage ou près du tableau.</td><td>Un petit onduleur sous chaque module (ou pour deux). Le courant alternatif part directement du toit.</td><td>Un boîtier par module qui optimise sa puissance, puis un onduleur central.</td></tr>
         <tr><th scope="row">Tension sur le toit</th><td>Plusieurs centaines de volts en continu.</td><td>Environ 40 à 60 V continu par module, 230 V alternatif ensuite.</td><td>Réduite à un niveau sûr quand l’onduleur s’arrête (selon le fabricant).</td></tr>
@@ -1674,7 +1697,7 @@ html.fx .tilt:hover{--ty:-4px}
       <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
         <svg id="pvl-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
         <div class="statusbar">
-          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvl-dot"></span><div style="min-width:0"><strong id="pvl-st"></strong><span class="d" id="pvl-sd"></span></div></div>
+          <div class="row" role="status" aria-live="polite" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvl-dot"></span><div style="min-width:0"><strong id="pvl-st"></strong><span class="d" id="pvl-sd"></span></div></div>
           <span class="metric" id="pvl-metric">0 W</span>
         </div>
       </div>
@@ -1686,7 +1709,7 @@ html.fx .tilt:hover{--ty:-4px}
       <div class="board">
         <svg id="pv-svg" viewBox="0 0 1000 420" role="img" aria-label="Schéma d’une installation photovoltaïque : modules, coffret DC, onduleur, coffret AC, tableau et compteur"></svg>
         <div class="statusbar">
-          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvs-dot"></span><div style="min-width:0"><strong id="pvs-st"></strong><span class="d" id="pvs-sd"></span></div></div>
+          <div class="row" role="status" aria-live="polite" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvs-dot"></span><div style="min-width:0"><strong id="pvs-st"></strong><span class="d" id="pvs-sd"></span></div></div>
           <span class="metric" id="pvs-m">0 W</span>
         </div>
       </div>
@@ -1895,7 +1918,7 @@ html.fx .tilt:hover{--ty:-4px}
       <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
         <svg id="irvel-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
         <div class="statusbar">
-          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irvel-dot"></span><div style="min-width:0"><strong id="irvel-st"></strong><span class="d" id="irvel-sd"></span></div></div>
+          <div class="row" role="status" aria-live="polite" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irvel-dot"></span><div style="min-width:0"><strong id="irvel-st"></strong><span class="d" id="irvel-sd"></span></div></div>
           <span class="metric" id="irvel-metric">0 W</span>
         </div>
       </div>
@@ -1907,7 +1930,7 @@ html.fx .tilt:hover{--ty:-4px}
       <div class="board">
         <svg id="ir-svg" viewBox="0 95 1000 240" role="img" aria-label="Schéma d’une wallbox : compteur, disjoncteur de branchement, protections au tableau, câble, borne et voiture"></svg>
         <div class="statusbar">
-          <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irs-dot"></span><div style="min-width:0"><strong id="irs-st"></strong><span class="d" id="irs-sd"></span></div></div>
+          <div class="row" role="status" aria-live="polite" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irs-dot"></span><div style="min-width:0"><strong id="irs-st"></strong><span class="d" id="irs-sd"></span></div></div>
           <span class="metric" id="irs-m">0 kW</span>
         </div>
       </div>
@@ -3523,7 +3546,7 @@ const V3D = (() => {
       const T = window.THREE;
       this.r = this.renderer(T); if (!this.r) { this.failed = true; this.showFailure(); return false; }
       this.r.setPixelRatio(Math.min(navigator.maxTouchPoints ? 1.75 : 2, window.devicePixelRatio || 1));
-      this.el.innerHTML = '<div class="v3d-zoom" hidden><button type="button">← Vue d’ensemble</button><span></span></div>'; this.el.appendChild(this.r.domElement); this.ui = this.el.firstChild; this.ui.firstChild.addEventListener('click', () => this.closeZone());
+      this.el.innerHTML = '<div class="v3d-zoom" hidden><button type="button">← Vue d’ensemble</button><span></span></div>'; this.el.appendChild(this.r.domElement); this.r.domElement.setAttribute('role', 'img'); this.r.domElement.setAttribute('aria-label', 'Vue 3D de l’installation. Les mêmes commandes existent en boutons sous le schéma électrique.'); this.ui = this.el.firstChild; this.ui.firstChild.addEventListener('click', () => this.closeZone());
       if (T.ColorManagement) T.ColorManagement.legacyMode = false;
       this.scene = new T.Scene(); this.scene.background = new T.Color(0x18212c);
       this.cam = new T.PerspectiveCamera(34, 1, 0.05, 40);
