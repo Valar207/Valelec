@@ -522,6 +522,8 @@ details.more[open]>summary::before{content:"−"}
 .pvc{fill:#24497a;stroke:#4c6a8f;stroke-width:1}
 .pvc.on{fill:#2f64a8}
 .pvsun{fill:#FFD84A;stroke:#E0A800;stroke-width:1.5}
+.zreset{position:absolute;right:10px;top:10px;z-index:2;min-height:34px;padding:0 13px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(17,26,36,.88);color:#fff;font:600 13px var(--f-body);cursor:pointer}
+.zreset[hidden]{display:none}
 .trash{cursor:pointer}
 .trash circle{fill:#D8362A;stroke:#111A24;stroke-width:2;transition:fill .15s}
 .trash .thit2{fill:transparent;stroke:none}
@@ -1108,7 +1110,7 @@ html.fx .tilt:hover{--ty:-4px}
       <div><p class="eyebrow" id="sim-group"></p><h1 class="display" id="sim-title"></h1><p class="lead" id="sim-sub"></p></div>
       <div class="sim-cols has3d">
         <div class="stage">
-          <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+          <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
             <svg id="sim-svg" class="view" role="img" aria-label="Schéma animé"></svg>
             <div class="statusbar">
               <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="sim-dot"></span><div style="min-width:0"><strong id="sim-st"></strong><span class="d" id="sim-sd"></span></div></div>
@@ -1153,7 +1155,7 @@ html.fx .tilt:hover{--ty:-4px}
     <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p></div>
     <div class="sim-cols has3d">
       <div class="stage">
-        <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+        <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
           <svg id="ex-svg" class="view" role="img" aria-label="Schéma développé de l’espace de travail"></svg>
           <div class="statusbar">
             <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="ex-dot"></span><div style="min-width:0"><strong id="ex-st"></strong><span class="d" id="ex-sd"></span></div></div>
@@ -1659,7 +1661,7 @@ html.fx .tilt:hover{--ty:-4px}
     
     <div class="lab-view" role="group" aria-label="Choisir la vue"><button class="ctl" type="button" data-v="lab" aria-pressed="true">Câblage 2D et 3D</button><button class="ctl" type="button" data-v="sim" aria-pressed="false">Schéma de principe animé</button></div>
     <div data-lv="lab"><div class="stage">
-      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
         <svg id="pvl-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
         <div class="statusbar">
           <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="pvl-dot"></span><div style="min-width:0"><strong id="pvl-st"></strong><span class="d" id="pvl-sd"></span></div></div>
@@ -1880,7 +1882,7 @@ html.fx .tilt:hover{--ty:-4px}
     <div class="lab-tabs" id="irvel-tabs" role="group" aria-label="Choisir le mode de recharge"></div>
     <div class="lab-view" role="group" aria-label="Choisir la vue"><button class="ctl" type="button" data-v="lab" aria-pressed="true">Câblage 2D et 3D</button><button class="ctl" type="button" data-v="sim" aria-pressed="false">Schéma de principe animé</button></div>
     <div data-lv="lab"><div class="stage">
-      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner</span></div><div class="board">
+      <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
         <svg id="irvel-svg" class="view" role="img" aria-label="Schéma de câblage"></svg>
         <div class="statusbar">
           <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0"><span class="sdot" id="irvel-dot"></span><div style="min-width:0"><strong id="irvel-st"></strong><span class="d" id="irvel-sd"></span></div></div>
@@ -2446,7 +2448,8 @@ class Board {
     this.ptrs = new Map(); this.pan = null; this.pinch = null;
     circuit.listeners.push(() => this.render());
     svg.addEventListener('pointerdown', (e) => this.down(e));
-    svg.addEventListener('pointerup', (e) => { const t = this.tap; this.tap = null; if (t && Math.hypot(e.clientX - t.x, e.clientY - t.y) < 8) this.opts.onWire(t.id); });
+    svg.addEventListener('pointerup', (e) => { const t = this.tap; this.tap = null; if (t && Math.hypot(e.clientX - t.x, e.clientY - t.y) < 8) { if (t.comp) this.C.operate(t.comp); else if (this.opts.onWire) this.opts.onWire(t.id); } });
+    if (!this.edit) this.zoomInit();
     svg.addEventListener('pointercancel', () => { this.tap = null; });
     if (this.edit) {
       svg.addEventListener('pointermove', (e) => this.move(e));
@@ -2470,6 +2473,47 @@ class Board {
     const pad = 30;
     this.vb = { x: x0 - pad, y: y0 - pad, w: x1 - x0 + 2 * pad, h: y1 - y0 + 2 * pad };
     this.svg.setAttribute('viewBox', `${this.vb.x} ${this.vb.y} ${this.vb.w} ${this.vb.h}`);
+    if (this.zm) { this.zm = { k: 1, x: 0, y: 0 }; this.zoomApply(); }
+  }
+  /* Zoom des schémas en lecture : pincer (ou Ctrl + molette), glisser pour se déplacer une fois zoomé */
+  zoomApply() {
+    const z = this.zm, v = this.vb; if (!v) return;
+    z.x = Math.max(0, Math.min(1 - 1 / z.k, z.x)); z.y = Math.max(0, Math.min(1 - 1 / z.k, z.y));
+    this.svg.setAttribute('viewBox', `${v.x + z.x * v.w} ${v.y + z.y * v.h} ${v.w / z.k} ${v.h / z.k}`);
+    const on = z.k > 1.01; this.zbtn.hidden = !on; this.svg.style.touchAction = on ? 'none' : ''; this.svg.style.cursor = on ? 'grab' : '';
+  }
+  zoomInit() {
+    const s = this.svg; this.zm = { k: 1, x: 0, y: 0 };
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'zreset'; btn.textContent = 'Vue entière'; btn.hidden = true; s.parentNode.insertBefore(btn, s.nextSibling); this.zbtn = btn;
+    const reset = () => { this.zm = { k: 1, x: 0, y: 0 }; this.zoomApply(); };
+    btn.addEventListener('click', reset);
+    const zoomAt = (f, cx, cy) => { const z = this.zm, r = s.getBoundingClientRect(), u = (cx - r.left) / r.width, v = (cy - r.top) / r.height, k = Math.max(1, Math.min(6, z.k * f)), px = z.x + u / z.k, py = z.y + v / z.k; z.k = k; z.x = px - u / k; z.y = py - v / k; this.zoomApply(); };
+    const panBy = (dx, dy) => { const z = this.zm, r = s.getBoundingClientRect(); z.x -= dx / r.width / z.k; z.y -= dy / r.height / z.k; this.zoomApply(); };
+    const two = (e) => { const a = e.touches[0], b = e.touches[1]; return { d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1, x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 }; };
+    let T = null;
+    s.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) { T = two(e); this.tap = null; e.preventDefault(); }
+      else if (e.touches.length === 1 && this.zm.k > 1.01) T = { one: true, x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }, { passive: false });
+    s.addEventListener('touchmove', (e) => {
+      if (!T) return;
+      if (e.touches.length === 2 && !T.one) { const n = two(e); zoomAt(n.d / T.d, n.x, n.y); panBy(n.x - T.x, n.y - T.y); T = n; e.preventDefault(); }
+      else if (T.one && e.touches.length === 1 && this.zm.k > 1.01) { const a = e.touches[0]; if (Math.hypot(a.clientX - T.x, a.clientY - T.y) > 6) this.tap = null; panBy(a.clientX - T.x, a.clientY - T.y); T.x = a.clientX; T.y = a.clientY; e.preventDefault(); }
+    }, { passive: false });
+    const end = (e) => { T = e.touches.length === 1 && this.zm.k > 1.01 ? { one: true, x: e.touches[0].clientX, y: e.touches[0].clientY } : null; };
+    s.addEventListener('touchend', end); s.addEventListener('touchcancel', end);
+    s.addEventListener('wheel', (e) => {
+      if (e.ctrlKey || e.metaKey) { e.preventDefault(); zoomAt(Math.exp(-e.deltaY * (e.deltaMode === 0 && Math.abs(e.deltaY) < 40 ? 0.012 : 0.0015)), e.clientX, e.clientY); }
+      else if (this.zm.k > 1.01) { e.preventDefault(); panBy(-e.deltaX, -e.deltaY); }
+    }, { passive: false });
+    let gs = 1;
+    s.addEventListener('gesturestart', (e) => { e.preventDefault(); gs = 1; });
+    s.addEventListener('gesturechange', (e) => { e.preventDefault(); if (!navigator.maxTouchPoints && e.scale) { zoomAt(e.scale / gs, e.clientX || 0, e.clientY || 0); gs = e.scale; } });
+    let M = null;
+    s.addEventListener('mousedown', (e) => { if (this.zm.k > 1.01 && e.button === 0) M = { x: e.clientX, y: e.clientY }; });
+    window.addEventListener('mousemove', (e) => { if (!M) return; if (Math.hypot(e.clientX - M.x, e.clientY - M.y) > 4) this.tap = null; panBy(e.clientX - M.x, e.clientY - M.y); M = { x: e.clientX, y: e.clientY }; });
+    window.addEventListener('mouseup', () => { M = null; });
+    s.addEventListener('dblclick', (e) => { e.preventDefault(); if (this.zm.k > 1.01) reset(); else zoomAt(2.2, e.clientX, e.clientY); });
   }
   pt(e) {
     const p = this.svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
@@ -2653,7 +2697,7 @@ class Board {
   down(e) {
     const C = this.C, ui = this.ui;
     const tEl = e.target.closest('[data-term]'), cEl = e.target.closest('[data-comp]'), wEl = e.target.closest('[data-wire]');
-    if (!this.edit) { if (this.hl) this.tap = { id: null, x: e.clientX, y: e.clientY }; else if (cEl) C.operate(cEl.dataset.comp); else if (this.opts.onWire) this.tap = { id: wEl ? wEl.dataset.wire : null, x: e.clientX, y: e.clientY }; return; }
+    if (!this.edit) { if (this.hl) this.tap = { id: null, x: e.clientX, y: e.clientY }; else if (cEl) this.tap = { comp: cEl.dataset.comp, x: e.clientX, y: e.clientY }; else if (this.opts.onWire) this.tap = { id: wEl ? wEl.dataset.wire : null, x: e.clientX, y: e.clientY }; return; }
     if (e.button !== undefined && e.button !== 0) return;
     const fz = this.svg.closest('[tabindex]');
     if (fz && document.activeElement !== fz) fz.focus({ preventScroll: true });
