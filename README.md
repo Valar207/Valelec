@@ -80,6 +80,15 @@ La section « Les symboles à connaître » est générée par `symbols()` : un 
   - `consignation()` : les étapes de la NF C 18-510 à choisir dans l’ordre (`ETAPES`) parmi des pièges (`PIEGES`) : un clic sélectionne une étape, le bouton « Valider cette étape » (`#cons-ok`) la vérifie ; le tableau dessiné réagit (disjoncteur ouvert, cadenas, pancarte, VAT).
   - `panne()` : 7 pannes (`SC`) construites à partir des schémas (`PRESETS`) ou de `BASES`. Un fil en défaut porte `cut: true` : il reste dessiné mais `solve()` l’ignore. Le VAT mesure entre deux bornes (`etat()` : phase, neutre, terre ou en l’air ; un récepteur transmet le potentiel à une borne isolée). La lueur « sous tension » est masquée sur ce schéma pour ne pas trahir la panne.
 
+## Mesure d'audience (GoatCounter)
+
+Tableau de bord : https://valaris.goatcounter.com (compte de Valentin). Comptage anonyme, sans cookie, actif seulement sur `formationeeb.pages.dev` (`STAT_ON`) : les essais en local et la copie GitHub Pages ne comptent pas.
+
+- **Pages** : une vue par page du site (`/bases`, `/schemas`, `/depannage`…), calculée depuis le `#` de l’adresse (`audience()`).
+- **Événements** (`stat(nom, titre)`) : `schema/<id>`, `schema-30s/<id>`, `examen/espace-<n>`, `symbole/…`, `lexique/infobulle-<mot>`, `lexique/ouvert`, `qcm/commence`, `qcm-termine/<complet|partiel>/<tranche de note>`, `consignation/reussie`, `consignation/piege-<clé>`, `panne/choisie-<n>`, `panne/<n>-<trouvee|erreur>`, `panne/indice`, `3d/plein-ecran/<page>`, `3d/pas-a-pas/<page>`.
+- **Temps passé** : `temps/<page>/30s` et `temps/<page>/2min`, onglet visible uniquement.
+- La page de présentation compte ses visites avec le script standard.
+
 ## Ajouter un composant
 
 1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).

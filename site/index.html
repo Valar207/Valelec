@@ -2172,7 +2172,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
 
 <nav class="nextbar wrap" id="nextbar" aria-label="Suite du parcours" hidden></nav>
 
-<footer><div class="wrap"><span>Valelec · apprendre l’électricité par le schéma</span><nav class="row" style="gap:18px" aria-label="Pied de page"><a href="#bases">Les bases</a><a href="#schemas">Schémas</a><a href="#qcm">QCM</a><a href="#depannage">Dépannage</a><a href="#bac-a-sable">Bac à sable</a><a href="#tableaux">Tableaux FR / US</a><a href="#pv">Panneaux PV</a><a href="#irve">Bornes IRVE</a></nav></div></footer>
+<footer><div class="wrap"><span>Valelec · apprendre l’électricité par le schéma · mesure d’audience anonyme, sans cookie</span><nav class="row" style="gap:18px" aria-label="Pied de page"><a href="#bases">Les bases</a><a href="#schemas">Schémas</a><a href="#qcm">QCM</a><a href="#depannage">Dépannage</a><a href="#bac-a-sable">Bac à sable</a><a href="#tableaux">Tableaux FR / US</a><a href="#pv">Panneaux PV</a><a href="#irve">Bornes IRVE</a></nav></div></footer>
 
 <script>
 (() => {
@@ -5244,6 +5244,7 @@ function qzFace(r) {
 }
 function qzEnd() {
   const tot = qz.list.length, s = qzScore(), r = tot ? s / tot : 0;
+  stat('qcm-termine/' + (tot >= 60 ? 'complet' : 'partiel') + '/' + (r >= 0.75 ? 'note-75-100' : r >= 0.5 ? 'note-50-74' : 'note-0-49'), 'QCM terminé');
   qzShow('#qz-end'); store.set('pn-qcm', null);
   $('#qz-face').innerHTML = qzFace(r);
   $('#qz-final').innerHTML = s + ' <small>/ ' + tot + '</small>';
@@ -5392,6 +5393,61 @@ function sizeEd() {
 window.addEventListener('resize', sizeEd);
 
 
+
+/* ---------------- Mesure d'audience anonyme (GoatCounter, sans cookie) ----------------
+   Seulement sur l'adresse principale : les essais en local ou sur d'autres copies ne faussent pas les chiffres. */
+const STAT_ON = location.hostname === 'formationeeb.pages.dev';
+const statQ = [];
+function statEnvoi(o) { if (!STAT_ON) return; if (window.goatcounter && window.goatcounter.count) window.goatcounter.count(o); else statQ.push(o); }
+function stat(nom, titre) { statEnvoi({ path: nom, title: titre || nom, event: true }); }
+(function audience() {
+  if (STAT_ON) {
+    const s = document.createElement('script');
+    s.async = true; s.src = 'https://gc.zgo.at/count.js';
+    s.dataset.goatcounter = 'https://valaris.goatcounter.com/count';
+    s.dataset.goatcounterSettings = '{"no_onload": true}';
+    s.onload = () => { while (statQ.length) window.goatcounter.count(statQ.shift()); };
+    document.head.appendChild(s);
+  }
+  /* une page vue par page du site (#bases → /bases) */
+  let page = '', t0 = 0, cumul = 0, paliers = new Set(), tmr = 0;
+  const pageDe = () => { const h = decodeURIComponent(location.hash.slice(1)) || 'accueil'; if (PAGES.includes(h)) return h; const el = document.getElementById(h); const pg = el && el.closest('[data-page]'); return pg ? pg.dataset.page : 'accueil'; };
+  /* temps passé : repères à 30 s et 2 min sur la page en cours, pendant que l'onglet est visible */
+  const tic = () => {
+    if (document.hidden || !page) return;
+    const t = cumul + (Date.now() - t0) / 1000;
+    for (const [s, lab] of [[30, '30s'], [120, '2min']]) if (t >= s && !paliers.has(lab)) { paliers.add(lab); stat('temps/' + page + '/' + lab, 'Temps passé : ' + lab); }
+  };
+  const vue = () => {
+    const p = pageDe(); if (p === page) return;
+    page = p; t0 = Date.now(); cumul = 0; paliers = new Set();
+    statEnvoi({ path: '/' + (p === 'accueil' ? '' : p), title: document.title });
+  };
+  addEventListener('hashchange', () => setTimeout(vue, 50)); setTimeout(vue, 50);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { cumul += (Date.now() - t0) / 1000; } else t0 = Date.now(); });
+  tmr = setInterval(tic, 5000);
+
+  /* temps passé sur un schéma : repère à 30 s sur le même circuit */
+  let sch = null, schT = 0;
+  setInterval(() => { if (page !== 'schemas' || document.hidden) return; const id = (document.querySelector('#sim-nav [aria-current="true"], #sim-nav [aria-pressed="true"]') || {}).dataset; const k = id && id.preset; if (!k) return; if (k !== sch) { sch = k; schT = Date.now(); return; } if (schT && Date.now() - schT > 30000) { stat('schema-30s/' + k, 'Schéma regardé 30 s'); schT = 0; } }, 5000);
+
+  /* clics importants */
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('button,a,summary,.gl,[data-preset],[data-ouvrir]'); if (!el) return;
+    if (el.matches('#sim-nav [data-preset]')) return stat('schema/' + el.dataset.preset, 'Schéma choisi');
+    if (el.matches('.extab')) return stat('examen/espace-' + ([...document.querySelectorAll('.extab')].indexOf(el) + 1), 'Espace d’examen choisi');
+    if (el.matches('[data-ouvrir]')) return stat('symbole/ouvrir-' + el.dataset.ouvrir.replace(':', '-'), 'Symbole : ouvrir le schéma');
+    if (el.matches('.gl')) return stat('lexique/infobulle-' + el.dataset.gk, 'Infobulle ouverte');
+    if (el.matches('#lex-det > summary')) return stat('lexique/ouvert', 'Lexique ouvert');
+    if (el.matches('.symmore > summary')) return stat('symbole/detail', 'Symbole : détail ouvert');
+    if (el.matches('#qz-go')) return stat('qcm/commence', 'QCM commencé');
+    if (el.matches('.v3d-fs')) return stat('3d/plein-ecran/' + page, 'Vue 3D en plein écran');
+    if (el.matches('.stp-go')) return stat('3d/pas-a-pas/' + page, 'Construction pas à pas');
+    if (el.matches('#pn-pick [data-i]')) return stat('panne/choisie-' + (+el.dataset.i + 1), 'Panne choisie');
+    if (el.matches('#pn-hint')) return stat('panne/indice', 'Panne : indice demandé');
+  }, true);
+})();
+
 /* ---------------- U, I, R : petites animations dans les cartes ---------------- */
 (function grandeurs() {
   const cartes = $$('.qanim'); if (!cartes.length) return;
@@ -5462,10 +5518,11 @@ window.addEventListener('resize', sizeEd);
   $('#cons-ok').addEventListener('click', () => {
     const k = choisi; if (!k) return;
     const piege = PIEGES.find((x) => x[0] === k);
-    if (piege) { pieges.add(k); fb('bad', 'Non, c’est dangereux.', piege[2]); choix(); return; }
+    if (piege) { stat('consignation/piege-' + k, 'Consignation : piège choisi'); pieges.add(k); fb('bad', 'Non, c’est dangereux.', piege[2]); choix(); return; }
     const attendu = ETAPES[fait.length];
     if (k !== attendu[0]) { const e = ETAPES.find((x) => x[0] === k); fb('bad', 'Pas encore.', `« ${e[2]} » vient plus tard. Pense d’abord à l’étape qui précède logiquement.`); choisi = null; $('#cons-ok').disabled = true; $$('#cons-ch [data-k]').forEach((x) => x.setAttribute('aria-checked', 'false')); return; }
     fait.push(k); dessin(); liste(); choix();
+    if (fait.length === ETAPES.length) stat('consignation/reussie', 'Consignation réussie');
     if (fait.length === ETAPES.length) fb('ok', 'Bravo, le circuit est consigné.', 'Les étapes de la NF C 18-510 : pré-identification, séparation, condamnation, identification, vérification d’absence de tension. En basse tension, la mise à la terre et en court-circuit n’est exigée que s’il existe un risque de réalimentation ou de tension induite. Pour remettre en service (déconsigner), on fait l’inverse : ranger les outils, prévenir, retirer le cadenas, remettre sous tension, essayer.');
     else fb('ok', attendu[2] + ' : c’est juste.', attendu[3]);
   });
@@ -5585,6 +5642,7 @@ window.addEventListener('resize', sizeEd);
     const r = document.querySelector('input[name="pn-h"]:checked');
     if (!r) { $('#pn-fb').innerHTML = '<div class="fbx info"><b>Choisis une conclusion</b>Coche l’hypothèse qui correspond à tes mesures.</div>'; return; }
     const bon = +r.value === cur.ok;
+    stat('panne/' + (SC.indexOf(cur) + 1) + '-' + (bon ? 'trouvee' : 'erreur'), 'Trouve la panne');
     if (bon && cur.w) { coupe = cur.w; dots(); }
     $('#pn-fb').innerHTML = `<div class="fbx ${bon ? 'ok' : 'bad'}"><b>${bon ? 'Bien trouvé !' : 'Pas tout à fait.'}</b>${bon ? cur.ex + (cur.w ? ' La croix rouge montre le défaut.' : '') : 'Tes mesures ne vont pas dans ce sens. Utilise l’indice si besoin, puis réessaie.'}</div>`;
   });
