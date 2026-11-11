@@ -73,6 +73,13 @@ La section « Les symboles à connaître » est générée par `symbols()` : un 
 
 `GLOSSAIRE` (avant le routeur) liste les mots techniques : clé, motif, titre, définition, et s’il figure dans le lexique de début (section `#lexique` en tête des Bases, bloc repliable `#lex-det` fermé au départ, ouvert par le lien du sommaire). Ordre du lexique et des familles de symboles : chaque explication ne s’appuie que sur des mots ou des appareils déjà présentés avant elle. Chaque mot du lexique est écrit en italique, finement souligné et suivi d’une astérisque, une fois par section ; survol à la souris, toucher sur mobile, Entrée au clavier ; fermeture par clic ailleurs ou Échap. Le balayage se relance quand le contenu change (MutationObserver). Les cartes de symboles (`AIDE`) affichent « Sur le schéma » : le dessin, un exemple dans un schéma du site et un bouton qui l’ouvre (`data-ouvrir`).
 
+## U, I, R et page « Sécurité et dépannage »
+
+- **Loi d’Ohm (Bases)** : `uri()` anime l’analogie de l’eau (`#uri-svg` : pompe = U, rétrécissement = R, débit = I, moulin = la lampe) avec les mêmes curseurs que le circuit. Les onglets affichent sur `#ohm-board` le voltmètre en parallèle, l’ampèremètre en série ou l’ohmmètre hors tension (groupes `.mtr`). Animations en pause hors de l’écran et coupées si l’utilisateur réduit les animations.
+- **Page `#depannage`** (menu « S’entraîner », après l’examen théorique) :
+  - `consignation()` : les étapes de la NF C 18-510 à choisir dans l’ordre (`ETAPES`) parmi des pièges (`PIEGES`) ; le tableau dessiné réagit (disjoncteur ouvert, cadenas, pancarte, VAT).
+  - `panne()` : 7 pannes (`SC`) construites à partir des schémas (`PRESETS`) ou de `BASES`. Un fil en défaut porte `cut: true` : il reste dessiné mais `solve()` l’ignore. Le VAT mesure entre deux bornes (`etat()` : phase, neutre, terre ou en l’air ; un récepteur transmet le potentiel à une borne isolée). La lueur « sous tension » est masquée sur ce schéma pour ne pas trahir la panne.
+
 ## Ajouter un composant
 
 1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).

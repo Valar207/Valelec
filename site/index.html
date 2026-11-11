@@ -980,6 +980,76 @@ html.fx .tilt:hover{--ty:-4px}
 .lex-box[open] .lex-go::before{transform:translateY(2px) rotate(-135deg)}
 .lex-box>summary:hover .lex-go{border-color:var(--accent)}
 .lex-box[open]{padding-bottom:6px}
+/* U, I, R */
+.mtr{display:none}.mtr.on{display:inline}
+.mlead{fill:none;stroke:#FFD84A;stroke-width:2.5;stroke-dasharray:6 4}
+.mbody{fill:#0f1622;stroke:#FFD84A;stroke-width:3}
+.mtxt{fill:#FFD84A;font:700 18px var(--f-mono,monospace);text-anchor:middle}
+.mval{fill:#FFD84A;font:600 15px var(--f-mono,monospace)}.mval.c{text-anchor:middle}
+.uri{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:start;margin-top:22px}
+@media (max-width:860px){.uri{grid-template-columns:1fr}}
+.uri-board{padding:10px}
+.uri-board svg{display:block;width:100%;height:auto}
+.pipe{fill:none;stroke:#556273;stroke-width:34;stroke-linejoin:round}
+.water{fill:none;stroke:#2F7FD0;stroke-width:24;stroke-linejoin:round}
+.drops{fill:none;stroke:#DDF0FF;stroke-width:6;stroke-linecap:round;stroke-dasharray:3 15;animation:uri-flow 1s linear infinite;animation-play-state:paused;opacity:.9}
+.wall{fill:#556273}
+.dev{fill:#16202e;stroke:#8fa3bd;stroke-width:3}
+.blade{stroke:#FFD84A;stroke-width:6;stroke-linecap:round}
+.paddle{stroke:#9fd0ff;stroke-width:5}.pad{fill:#9fd0ff}
+.hub{fill:#e8eef6}
+#uri-pump,#uri-mill{transform-box:fill-box;transform-origin:center;animation:uri-spin 2s linear infinite;animation-play-state:paused}
+#uri-svg.run .drops.on,#uri-svg.run #uri-pump.on,#uri-svg.run #uri-mill.on{animation-play-state:running}
+.ulab{fill:#fff;font:800 24px var(--f-display)}
+.usub{fill:#aab6c6;font:500 13px var(--f-body)}
+.uval{fill:#FFD84A;font:600 15px var(--f-mono,monospace)}
+@keyframes uri-flow{to{stroke-dashoffset:-36}}
+@keyframes uri-spin{to{transform:rotate(360deg)}}
+.uri-side h3{margin:0 0 10px;font-size:20px}
+.uri-leg{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:10px}
+.uri-leg li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;color:var(--ink-2);font-size:15px}
+.uri-leg .k{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--g-cta);color:#fff;font:800 17px var(--f-display)}
+.uri-leg strong{color:var(--ink)}
+.uri-try{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.uri-tabs,.pn-pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.uri-tabs button,.pn-pick button,.cons-ch button,.pn-ctl button{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:600 14px var(--f-body);cursor:pointer}
+.uri-tabs button[aria-pressed="true"],.pn-pick button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.uri-mes{margin:0;font-size:15px;color:var(--ink-2)}
+/* Consignation */
+.cons,.pn{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:860px){.cons,.pn{grid-template-columns:1fr}}
+.cons-board,.pn-board{padding:10px}
+.cons-board svg,.pn-board svg{display:block;width:100%;height:auto}
+.pn-board svg{min-height:220px}
+.cons-done{margin:0 0 10px;padding-left:22px;display:grid;gap:6px;color:var(--ink-2);font-size:15px}
+.cons-done li::marker{font-weight:700;color:var(--accent)}
+.cons-done li b{color:var(--ink)}
+.cons-q{margin:0 0 8px;font-weight:700;color:var(--ink)}
+.cons-ch{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.cons-ch button{text-align:left;border-radius:14px;padding:10px 14px;line-height:1.35}
+.cons-ch button:hover,.pn-ctl button:hover,.uri-tabs button:hover,.pn-pick button:hover{border-color:var(--accent)}
+.cons-fb,.pn-fb{min-height:0;margin-bottom:10px}
+.fbx{padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.45}
+.fbx.ok{background:var(--ok-bg);color:var(--ok-fg)}.fbx.bad{background:var(--bad-bg);color:var(--bad-fg)}.fbx.info{background:var(--info-bg);color:var(--info-fg)}
+.fbx b{display:block;margin-bottom:2px}
+/* Trouve la panne */
+.pn-sym{margin:0 0 10px;padding:12px 14px;border-radius:14px;background:var(--warn-bg);color:var(--warn-fg);font-size:15px}
+.pn-ctl{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pn-vat{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;background:#10161f;color:#d7e0ec;margin-bottom:8px}
+.pn-scr{min-width:92px;padding:8px 10px;border-radius:10px;background:#1f2a1c;color:#b5f27c;font:700 22px var(--f-mono,monospace);text-align:center}
+.pn-scr.hot{background:#3a1512;color:#ff8a7a}
+#pn-vt{font-size:14px}
+.pn-log{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:4px;font:500 13.5px var(--f-mono,monospace);color:var(--ink-2)}
+.pn-hyp{border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;margin:0 0 10px}
+.pn-hyp legend{font-weight:700;padding:0 6px}
+.pn-hyp label{display:flex;gap:10px;align-items:flex-start;min-height:40px;padding:6px 0;font-size:15px;cursor:pointer}
+.pn-hyp input{width:20px;height:20px;margin-top:2px;flex:none}
+.pdot{fill:rgba(255,216,74,.18);stroke:#FFD84A;stroke-width:2;cursor:pointer}
+.pdot:hover,.pdot:focus{fill:rgba(255,216,74,.55);outline:none}
+.pdot.sel{fill:#FFD84A}
+.pcut{stroke:#FF4D3D;stroke-width:5;stroke-linecap:round}
+.pn-board .cur.live{display:none}
+@media (prefers-reduced-motion:reduce){.drops,#uri-pump,#uri-mill{animation:none}}
 .lex-hint{margin:0 0 16px;color:var(--ink-2)}
 .lex{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:12px 24px;margin:0 0 14px}
 .lex div{margin:0}
@@ -1009,7 +1079,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
     <nav class="nav" id="nav" aria-label="Navigation principale">
       <div class="nav-g nav-home"><a href="#accueil" data-nav="accueil"><b>Accueil</b><small>Choisir par où commencer</small></a></div>
       <div class="nav-g"><span class="nav-t">Apprendre</span><a href="#bases" data-nav="bases"><b>Les bases</b><small>Tension, courant, symboles, code couleur</small></a><a href="#schemas" data-nav="schemas"><b>Schémas</b><small>11 circuits animés à actionner</small></a></div>
-      <div class="nav-g"><span class="nav-t">S’entraîner</span><a href="#examen" data-nav="examen"><b>Examen pratique</b><small>Les 3 espaces de travail du TP-00467</small></a><a href="#qcm" data-nav="qcm"><b>Examen théorique</b><small>Le QCM de 60 questions, corrigé</small></a><a href="#bac-a-sable" data-nav="bac-a-sable"><b>Bac à sable</b><small>Dessiner et tester ton propre circuit</small></a></div>
+      <div class="nav-g"><span class="nav-t">S’entraîner</span><a href="#examen" data-nav="examen"><b>Examen pratique</b><small>Les 3 espaces de travail du TP-00467</small></a><a href="#qcm" data-nav="qcm"><b>Examen théorique</b><small>Le QCM de 60 questions, corrigé</small></a><a href="#depannage" data-nav="depannage"><b>Sécurité et dépannage</b><small>Consigner un circuit, puis trouver la panne</small></a><a href="#bac-a-sable" data-nav="bac-a-sable"><b>Bac à sable</b><small>Dessiner et tester ton propre circuit</small></a></div>
       <div class="nav-g"><span class="nav-t">Aller plus loin</span><a href="#tableaux" data-nav="tableaux"><b>Tableaux FR / US</b><small>Comparer les deux installations</small></a><a href="#pv" data-nav="pv"><b>Panneaux PV</b><small>Du panneau au compteur</small></a><a href="#irve" data-nav="irve"><b>Bornes IRVE</b><small>Recharger une voiture électrique</small></a></div>
     </nav>
     <div class="top-act">
@@ -1142,6 +1212,9 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
           <path d="M503 163 L537 197 M537 163 L503 197" class="lampx"/>
           <text x="560" y="185" class="t">lampe</text>
           <text x="300" y="278" class="t c" style="fill:#FFD84A;font-size:16px" id="ohm-i-t">I = 0,50 A</text>
+          <g class="mtr" id="ohm-m-u"><path d="M180 80 V156 M180 196 V290" class="mlead"/><circle cx="180" cy="176" r="20" class="mbody"/><text x="180" y="182" class="mtxt">V</text><text x="210" y="181" class="mval" id="ohm-m-u-v">12 V</text></g>
+          <g class="mtr" id="ohm-m-i"><circle cx="420" cy="290" r="19" class="mbody"/><text x="420" y="296" class="mtxt">A</text><text x="420" y="334" class="mval c" id="ohm-m-i-v">0,50 A</text></g>
+          <g class="mtr" id="ohm-m-r"><path d="M240 80 V36 H302 M338 36 H400 V80" class="mlead"/><circle cx="320" cy="36" r="17" class="mbody"/><text x="320" y="42" class="mtxt">Ω</text><text x="412" y="41" class="mval" id="ohm-m-r-v">24 Ω</text></g>
         </svg>
       </div>
       <div class="lab-ctl">
@@ -1150,6 +1223,35 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
         <div class="tiles"><div class="tile"><small>Intensité I</small><b id="ohm-i">0,50 A</b></div><div class="tile"><small>Puissance P</small><b id="ohm-p">6,0 W</b></div></div>
         <p class="mono" style="margin:0;font-size:14px;color:var(--ink-2)" id="ohm-eq">12 V ÷ 24 Ω = 0,50 A</p>
         <p style="margin:0;font-size:14px;color:var(--muted)">Générateur en très basse tension, pour expérimenter sans danger. Dans un vrai fil, les charges avancent lentement : c’est l’énergie qui se propage presque instantanément.</p>
+      </div>
+    </div>
+    <div class="uri">
+      <div class="board uri-board">
+        <svg id="uri-svg" viewBox="0 0 640 300" role="img" aria-label="Le même circuit avec de l’eau : une pompe pousse l’eau dans un tuyau en boucle, un rétrécissement la freine, et elle fait tourner un moulin.">
+          <path d="M120 230 V70 H520 V230 Z" class="pipe"/>
+          <path d="M120 230 V70 H520 V230 Z" class="water"/>
+          <path d="M120 230 V70 H520 V230 Z" class="drops" id="uri-flow"/>
+          <rect x="280" y="53" width="80" height="10" class="wall" id="uri-w1"/><rect x="280" y="77" width="80" height="10" class="wall" id="uri-w2"/>
+          <circle cx="120" cy="150" r="36" class="dev"/><g id="uri-pump"><path d="M120 122 V178 M92 150 H148 M101 131 L139 169 M139 131 L101 169" class="blade"/></g><circle cx="120" cy="150" r="6" class="hub"/>
+          <circle cx="520" cy="150" r="36" class="dev"/><g id="uri-mill"><path d="M520 120 V180 M490 150 H550" class="paddle"/><rect x="512" y="114" width="16" height="12" class="pad"/><rect x="512" y="174" width="16" height="12" class="pad"/><rect x="484" y="142" width="12" height="16" class="pad"/><rect x="544" y="142" width="12" height="16" class="pad"/></g><circle cx="520" cy="150" r="6" class="hub"/>
+          <text x="66" y="146" class="ulab" text-anchor="end">U</text><text x="66" y="166" class="usub" text-anchor="end">la pompe</text>
+          <text x="320" y="34" class="ulab" text-anchor="middle">R</text><text x="320" y="112" class="usub" text-anchor="middle">le rétrécissement</text>
+          <text x="320" y="270" class="ulab" text-anchor="middle">I</text><text x="320" y="290" class="usub" text-anchor="middle">le débit</text>
+          <text x="574" y="146" class="ulab">P</text><text x="574" y="166" class="usub">le moulin</text>
+          <text x="186" y="150" class="uval" id="uri-u">12 V</text><text x="372" y="34" class="uval" id="uri-r">24 Ω</text><text x="350" y="270" class="uval" id="uri-i">0,50 A</text>
+        </svg>
+      </div>
+      <div class="uri-side">
+        <h3>Comme de l’eau dans un tuyau</h3>
+        <ul class="uri-leg">
+          <li><b class="k">U</b><span><strong>La tension, c’est la pompe.</strong> Plus elle pousse fort, plus l’eau a envie de circuler.</span></li>
+          <li><b class="k">R</b><span><strong>La résistance, c’est le rétrécissement.</strong> Plus le tuyau est étroit, plus il freine l’eau.</span></li>
+          <li><b class="k">I</b><span><strong>L’intensité, c’est le débit</strong> : la quantité d’eau qui passe chaque seconde. Elle dépend des deux autres : I = U ÷ R.</span></li>
+        </ul>
+        <p class="uri-try">Bouge les curseurs au-dessus : la pompe, le tuyau et le moulin suivent le circuit électrique.</p>
+        <h3 style="margin-top:6px">Où mesurer chaque grandeur ?</h3>
+        <div class="uri-tabs" role="group" aria-label="Appareil de mesure affiché sur le schéma"><button type="button" data-m="u" aria-pressed="true">U · voltmètre</button><button type="button" data-m="i" aria-pressed="false">I · ampèremètre</button><button type="button" data-m="r" aria-pressed="false">R · ohmmètre</button></div>
+        <p class="uri-mes" id="uri-mes" aria-live="polite"></p>
       </div>
     </div>
   </section>
@@ -1472,6 +1574,46 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
 </div>
 
 <!-- ============ BAC À SABLE ============ -->
+<div id="page-depannage" data-page="depannage" hidden>
+  <div class="wrap" style="padding-top:52px;display:flex;flex-direction:column;gap:20px">
+    <p class="eyebrow">S’entraîner · Sécurité</p>
+    <h1 class="display" style="margin:0;font-size:clamp(40px,5.4vw,68px);max-width:18ch">Consigner, puis dépanner.</h1>
+    <p class="lead">Avant de toucher un fil, on met le circuit hors tension en sécurité : c’est la consignation. Ensuite seulement, on cherche la panne, avec un vérificateur d’absence de tension (VAT).</p>
+    <nav class="toc" aria-label="Sommaire de la page"><a href="#consignation">1 · La consignation</a><a href="#panne">2 · Trouve la panne</a></nav>
+  </div>
+
+  <section id="consignation" class="wrap" style="padding-top:44px;scroll-margin-top:90px">
+    <div class="sec-head"><div><p class="eyebrow">1 · Sécurité</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">La consignation, étape par étape</h2></div><p>Mission : remplacer la prise de la cuisine. Choisis à chaque fois la bonne étape suivante. Le tableau réagit à tes choix.</p></div>
+    <div class="cons">
+      <div class="board cons-board"><svg id="cons-svg" viewBox="0 0 640 380" role="img" aria-label="Le tableau électrique, la prise de la cuisine et une prise sous tension pour tester le VAT"></svg></div>
+      <div class="cons-side">
+        <ol class="cons-done" id="cons-done"></ol>
+        <p class="cons-q" id="cons-q">Quelle est la première étape ?</p>
+        <div class="cons-ch" id="cons-ch"></div>
+        <div class="cons-fb" id="cons-fb" role="status" aria-live="polite"></div>
+        <button type="button" class="btn ghost" id="cons-reset">Recommencer</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="panne" class="wrap" style="padding-top:80px;padding-bottom:40px;scroll-margin-top:90px">
+    <div class="sec-head"><div><p class="eyebrow">2 · Dépannage</p><h2 class="display" style="margin-top:8px;font-size:clamp(30px,3.6vw,46px)">Trouve la panne</h2></div><p>Une panne est cachée dans le schéma : le fil en défaut est dessiné comme les autres. Actionne les appareils, mesure avec le VAT entre deux bornes, puis donne ta conclusion.</p></div>
+    <div class="pn-pick" id="pn-pick" role="group" aria-label="Choisis une panne"></div>
+    <div class="pn">
+      <div class="board pn-board"><svg id="pn-svg" role="group" aria-label="Schéma en panne. Les bornes jaunes servent aux mesures."></svg></div>
+      <div class="pn-side">
+        <p class="pn-sym" id="pn-sym"></p>
+        <div class="pn-ctl" id="pn-ctl"></div>
+        <div class="pn-vat" id="pn-vat" aria-live="polite"><span class="pn-scr" id="pn-scr">— V</span><span id="pn-vt">Touche une borne jaune, puis une autre : le VAT mesure entre les deux.</span></div>
+        <ul class="pn-log" id="pn-log"></ul>
+        <fieldset class="pn-hyp" id="pn-hyp"><legend>Ta conclusion</legend></fieldset>
+        <div class="row" style="gap:10px"><button type="button" class="btn pri" id="pn-ok">Valider</button><button type="button" class="btn ghost" id="pn-hint">Un indice</button></div>
+        <div class="pn-fb" id="pn-fb" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
 <div id="page-bac-a-sable" data-page="bac-a-sable" hidden>
   <h1 class="sr-only">Bac à sable</h1>
   <div class="ed-bar"><div class="wrap wide" role="toolbar" aria-label="Outils du bac à sable">
@@ -2066,7 +2208,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
 
 <nav class="nextbar wrap" id="nextbar" aria-label="Suite du parcours" hidden></nav>
 
-<footer><div class="wrap"><span>Valelec · apprendre l’électricité par le schéma</span><nav class="row" style="gap:18px" aria-label="Pied de page"><a href="#bases">Les bases</a><a href="#schemas">Schémas</a><a href="#qcm">QCM</a><a href="#bac-a-sable">Bac à sable</a><a href="#tableaux">Tableaux FR / US</a><a href="#pv">Panneaux PV</a><a href="#irve">Bornes IRVE</a></nav></div></footer>
+<footer><div class="wrap"><span>Valelec · apprendre l’électricité par le schéma</span><nav class="row" style="gap:18px" aria-label="Pied de page"><a href="#bases">Les bases</a><a href="#schemas">Schémas</a><a href="#qcm">QCM</a><a href="#depannage">Dépannage</a><a href="#bac-a-sable">Bac à sable</a><a href="#tableaux">Tableaux FR / US</a><a href="#pv">Panneaux PV</a><a href="#irve">Bornes IRVE</a></nav></div></footer>
 
 <script>
 (() => {
@@ -2184,7 +2326,7 @@ function solve(comps, wires, power) {
   const f = (a) => { while (P[a] !== a) { P[a] = P[P[a]]; a = P[a]; } return a; };
   const u = (a, b) => { const ra = f(a), rb = f(b); if (ra !== rb) P[ra] = rb; };
   const edges = [];
-  wires.forEach((w) => { if (P[w.a] !== undefined && P[w.b] !== undefined && w.a !== w.b) { edges.push({ a: w.a, b: w.b, w: w.id }); u(w.a, w.b); } });
+  wires.forEach((w) => { if (!w.cut && P[w.a] !== undefined && P[w.b] !== undefined && w.a !== w.b) { edges.push({ a: w.a, b: w.b, w: w.id }); u(w.a, w.b); } });
   comps.forEach((c) => links(c).forEach((l) => { const a = c.id + ':' + l[0], b = c.id + ':' + l[1]; edges.push({ a, b, w: null }); u(a, b); }));
   const Ls = [], Ns = [], Es = [];
   comps.forEach((c) => {
@@ -5236,8 +5378,8 @@ document.querySelectorAll('.lab-view').forEach((g) => g.addEventListener('click'
 }));
 
 /* ---------------- Navigation ---------------- */
-const NAV_NAMES = { bases: 'Les bases', schemas: 'Schémas', examen: 'Examen pratique', qcm: 'Examen théorique', 'bac-a-sable': 'Bac à sable', tableaux: 'Tableaux FR / US', pv: 'Panneaux PV', irve: 'Bornes IRVE' };
-const NAV_ORDER = ['bases', 'schemas', 'examen', 'qcm', 'bac-a-sable', 'tableaux', 'pv', 'irve'];
+const NAV_NAMES = { bases: 'Les bases', schemas: 'Schémas', examen: 'Examen pratique', qcm: 'Examen théorique', depannage: 'Sécurité et dépannage', 'bac-a-sable': 'Bac à sable', tableaux: 'Tableaux FR / US', pv: 'Panneaux PV', irve: 'Bornes IRVE' };
+const NAV_ORDER = ['bases', 'schemas', 'examen', 'qcm', 'depannage', 'bac-a-sable', 'tableaux', 'pv', 'irve'];
 const burger = $('#burger'), topBar = $('.top');
 function closeMenu(refocus) { if (!document.body.classList.contains('menu-open')) return; document.body.classList.remove('menu-open'); burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Ouvrir le menu'); if (refocus) burger.focus(); }
 function openMenu() { document.documentElement.style.setProperty('--top-h', Math.ceil(topBar.getBoundingClientRect().bottom) + 'px'); document.body.classList.add('menu-open'); burger.setAttribute('aria-expanded', 'true'); burger.setAttribute('aria-label', 'Fermer le menu'); const f = $('#nav a'); if (f) f.focus({ preventScroll: true }); }
@@ -5245,7 +5387,7 @@ burger.addEventListener('click', () => { if (document.body.classList.contains('m
 $('#nav').addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(true); });
 window.addEventListener('resize', () => { if (window.innerWidth > 1240) closeMenu(); });
-const PAGES = ['accueil', 'bases', 'schemas', 'examen', 'qcm', 'bac-a-sable', 'tableaux', 'pv', 'irve'];
+const PAGES = ['accueil', 'bases', 'schemas', 'examen', 'qcm', 'depannage', 'bac-a-sable', 'tableaux', 'pv', 'irve'];
 function route() {
   let h = decodeURIComponent(location.hash.slice(1)) || 'accueil';
   let target = null;
@@ -5268,7 +5410,7 @@ function route() {
     const pv = NAV_ORDER[i - 1], nx = NAV_ORDER[i + 1], lk = (k, lab, c) => `<a href="#${k}"${c ? ' class="nx"' : ''}><small>${lab}</small><b>${NAV_NAMES[k]}</b></a>`;
     bar.innerHTML = (pv ? lk(pv, '← Précédent') : '') + (nx ? lk(nx, 'Suivant →', true) : '');
   }
-  document.title = { accueil: 'Valelec', bases: 'Les bases · Valelec', schemas: 'Schémas · Valelec', examen: 'Examen pratique · Valelec', qcm: 'Examen théorique · Valelec', 'bac-a-sable': 'Bac à sable · Valelec', tableaux: 'Tableaux France / États-Unis · Valelec', pv: 'Panneaux photovoltaïques · Valelec', irve: 'Bornes de recharge IRVE · Valelec' }[h];
+  document.title = { accueil: 'Valelec', bases: 'Les bases · Valelec', schemas: 'Schémas · Valelec', examen: 'Examen pratique · Valelec', qcm: 'Examen théorique · Valelec', depannage: 'Sécurité et dépannage · Valelec', 'bac-a-sable': 'Bac à sable · Valelec', tableaux: 'Tableaux France / États-Unis · Valelec', pv: 'Panneaux photovoltaïques · Valelec', irve: 'Bornes de recharge IRVE · Valelec' }[h];
   if (target) requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
   else window.scrollTo(0, 0);
   document.body.classList.toggle('ed-mode', h === 'bac-a-sable');
@@ -5284,6 +5426,216 @@ function sizeEd() {
   if (extra > 0 && hgt - extra >= 480) document.documentElement.style.setProperty('--ed-h', (hgt - extra) + 'px');
 }
 window.addEventListener('resize', sizeEd);
+
+
+/* ---------------- U, I, R : l'eau et les appareils de mesure ---------------- */
+(function uri() {
+  const u = $('#ohm-u'), r = $('#ohm-r'), svg = $('#uri-svg'); if (!u || !svg) return;
+  let mode = 'u';
+  const texte = (U, I, Rr) => ({
+    u: `La tension se mesure avec un <b>voltmètre</b>, branché <b>en parallèle</b> : ses deux fils touchent les deux côtés du générateur, sans rien couper. Ici, il affiche ${U} V. C’est comme un manomètre qui compare la pression avant et après la pompe.`,
+    i: `L’intensité se mesure avec un <b>ampèremètre</b>, placé <b>en série</b> : on ouvre le circuit et le courant passe à travers l’appareil, comme un compteur d’eau sur le tuyau. Ici, il affiche ${fr(I, 2)} A. Sur le terrain, on utilise plutôt une pince ampèremétrique, qui mesure sans couper le fil.`,
+    r: `La résistance se mesure avec un <b>ohmmètre</b>, <b>circuit hors tension</b>, aux deux bornes de l’élément. Ici, il affiche ${Rr} Ω. Si le générateur restait branché, la mesure serait fausse et l’appareil pourrait s’abîmer.`,
+  })[mode];
+  const upd = () => {
+    const U = +u.value, Rr = +r.value, I = U / Rr;
+    $('#uri-u').textContent = U + ' V'; $('#uri-r').textContent = Rr + ' Ω'; $('#uri-i').textContent = fr(I, 2) + ' A';
+    $('#ohm-m-u-v').textContent = U + ' V'; $('#ohm-m-i-v').textContent = fr(I, 2) + ' A'; $('#ohm-m-r-v').textContent = Rr + ' Ω';
+    const pump = $('#uri-pump'), flow = $('#uri-flow'), mill = $('#uri-mill');
+    pump.classList.toggle('on', U > 0); pump.style.animationDuration = (U > 0 ? 8 / U : 1).toFixed(2) + 's';
+    flow.classList.toggle('on', I > 0); flow.style.animationDuration = (I > 0 ? Math.max(0.22, Math.min(5, 1.1 / Math.sqrt(I))) : 1).toFixed(2) + 's';
+    mill.classList.toggle('on', I > 0); mill.style.animationDuration = (I > 0 ? Math.max(0.5, Math.min(8, 2.2 / Math.sqrt(I))) : 1).toFixed(2) + 's';
+    const h = 1 + 10 * (Rr - 2) / 98;
+    $('#uri-w1').setAttribute('height', 5 + h); $('#uri-w2').setAttribute('y', 87 - (5 + h)); $('#uri-w2').setAttribute('height', 5 + h);
+    $('#uri-mes').innerHTML = texte(U, I, Rr);
+  };
+  const show = () => { ['u', 'i', 'r'].forEach((m) => { $('#ohm-m-' + m).classList.toggle('on', m === mode); }); $$('.uri-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === mode))); upd(); };
+  $$('.uri-tabs button').forEach((b) => b.addEventListener('click', () => { mode = b.dataset.m; show(); }));
+  u.addEventListener('input', upd); r.addEventListener('input', upd); show();
+  if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => svg.classList.toggle('run', e.isIntersecting))).observe(svg);
+  else svg.classList.add('run');
+})();
+
+/* ---------------- Consignation pas à pas ---------------- */
+(function consignation() {
+  const svg = $('#cons-svg'); if (!svg) return;
+  const ETAPES = [
+    ['pre', 'Repérer sur le schéma et au tableau le disjoncteur « Prises cuisine »', 'Pré-identification', 'Avant de toucher quoi que ce soit, tu identifies le bon circuit sur les documents : schéma, repérage du tableau.'],
+    ['sep', 'Ouvrir le disjoncteur « Prises cuisine »', 'Séparation', 'Tu sépares le circuit de son alimentation. L’appareil de coupure doit couper tous les conducteurs actifs : la phase et le neutre.'],
+    ['cond', 'Poser un cadenas de consignation et la pancarte « Ne pas manœuvrer »', 'Condamnation', 'Personne ne peut remettre le courant pendant que tu travailles. Tu gardes la clé du cadenas sur toi.'],
+    ['id', 'Vérifier sur place que c’est bien la prise de la cuisine', 'Identification', 'Sur le lieu de travail, tu t’assures que l’ouvrage devant toi est bien celui que tu as coupé : repères, étiquettes, emplacement.'],
+    ['vat1', 'Tester le VAT sur une prise sous tension', 'Test du VAT avant', 'Tu vérifies que ton VAT fonctionne, sur une source dont tu sais qu’elle est sous tension.'],
+    ['vat', 'Mesurer l’absence de tension sur la prise : phase-neutre, phase-terre, neutre-terre', 'Vérification d’absence de tension', 'Tu mesures entre tous les conducteurs. Les trois mesures doivent donner 0 V.'],
+    ['vat2', 'Tester de nouveau le VAT sur la prise sous tension', 'Test du VAT après', 'Si ton VAT était tombé en panne pendant la mesure, l’absence de tension ne serait pas prouvée : tu le revérifies.'],
+  ];
+  const PIEGES = [
+    ['inter', 'Éteindre l’interrupteur de la lumière de la cuisine', 'Un interrupteur commande l’éclairage, pas la prise. Et il ne coupe que la phase : ce n’est pas une séparation.'],
+    ['tourn', 'Vérifier avec un tournevis testeur', 'Le tournevis testeur n’est pas un VAT : il peut rester éteint alors que la tension est là. Seul un VAT normalisé prouve l’absence de tension.'],
+    ['go', 'Démonter la prise, puisque le disjoncteur est ouvert', 'Tant que l’absence de tension n’est pas vérifiée au VAT, le circuit doit être considéré comme sous tension.'],
+  ];
+  let fait = [], pieges = new Set();
+  const melange = (a) => a.map((x) => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map((x) => x[1]);
+  let ordre = [];
+  function dessin() {
+    const has = (k) => fait.includes(k);
+    const mod = (x, lab, on) => `<g transform="translate(${x} 70)"><rect x="0" y="0" width="70" height="150" rx="8" fill="#e9edf3" stroke="#9aa6b5"/><rect x="22" y="${on ? 40 : 86}" width="26" height="30" rx="5" fill="${on ? '#1e9e4a' : '#d03a2b'}"/><text x="35" y="${on ? 61 : 107}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#fff">${on ? 'I' : 'O'}</text><text x="35" y="140" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#1a2230">${lab}</text></g>`;
+    const cuis = !has('sep');
+    let h = `<rect x="20" y="40" width="300" height="230" rx="16" fill="#cfd6df" stroke="#8b97a6" stroke-width="2"/><text x="170" y="30" text-anchor="middle" fill="#cdd6e2" font-family="IBM Plex Sans,sans-serif" font-size="14">Tableau électrique</text>`;
+    h += mod(40, 'Éclairage', true) + mod(135, 'Prises cuis.', cuis) + mod(230, 'Chauffe-eau', true);
+    if (has('pre')) h += `<rect x="129" y="62" width="82" height="166" rx="10" fill="none" stroke="#FFD84A" stroke-width="3" stroke-dasharray="7 5"/>`;
+    if (has('cond')) h += `<g transform="translate(152 236)"><path d="M8 0 V-12 a10 10 0 0 1 20 0 V0" fill="none" stroke="#c9ced6" stroke-width="5"/><rect x="0" y="0" width="36" height="28" rx="5" fill="#d03a2b"/><circle cx="18" cy="12" r="4" fill="#fff"/></g><g transform="translate(40 290)"><rect width="250" height="58" rx="6" fill="#FFD84A" stroke="#a88400"/><text x="125" y="25" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="14" fill="#1a1a1a">NE PAS MANŒUVRER</text><text x="125" y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" fill="#1a1a1a">Travaux en cours</text></g>`;
+    const prise = (x, y, lab, sous, hl) => `<g transform="translate(${x} ${y})"><rect x="-55" y="-55" width="110" height="110" rx="20" fill="#f4f6f9" stroke="${hl ? '#FFD84A' : '#9aa6b5'}" stroke-width="${hl ? 4 : 2}"/><circle r="34" fill="#e3e8ef" stroke="#9aa6b5"/><circle cx="-12" cy="4" r="5" fill="#2a3240"/><circle cx="12" cy="4" r="5" fill="#2a3240"/><rect x="-4" y="-30" width="8" height="12" rx="3" fill="#8e98a6"/><text y="80" text-anchor="middle" fill="#cdd6e2" font-family="IBM Plex Sans,sans-serif" font-size="13">${lab}</text><text y="98" text-anchor="middle" fill="${sous ? '#ff8a7a' : '#8fe3a8'}" font-family="IBM Plex Mono,monospace" font-size="12">${sous ? 'sous tension' : 'hors tension'}</text></g>`;
+    h += prise(430, 110, 'Prise cuisine', cuis, has('id')) + prise(570, 110, 'Prise du salon', true, false);
+    const der = fait[fait.length - 1];
+    if (['vat1', 'vat', 'vat2'].includes(der)) {
+      const surSalon = der !== 'vat', x = surSalon ? 570 : 430, v = surSalon ? '230 V' : '0 V';
+      h += `<g transform="translate(${x - 40} 230)"><rect width="80" height="120" rx="12" fill="#ffd400" stroke="#8a7400" stroke-width="2"/><rect x="10" y="12" width="60" height="34" rx="5" fill="#1f2a1c"/><text x="40" y="36" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="700" font-size="16" fill="${surSalon ? '#ff8a7a' : '#b5f27c'}">${v}</text><text x="40" y="70" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="14" fill="#2b2400">VAT</text><path d="M30 120 V150 M50 120 V150" stroke="#2b2400" stroke-width="4"/></g>`;
+    }
+    svg.innerHTML = h;
+  }
+  function choix() {
+    const reste = ETAPES.filter((e) => !fait.includes(e[0])), pr = PIEGES.filter((x) => !pieges.has(x[0]));
+    if (!reste.length) { $('#cons-ch').innerHTML = ''; $('#cons-q').textContent = 'Circuit consigné : tu peux travailler.'; return; }
+    if (!ordre.length) ordre = melange(ETAPES.map((e) => e[0]).concat(PIEGES.map((x) => x[0])));
+    $('#cons-q').textContent = fait.length ? 'Quelle est l’étape suivante ?' : 'Quelle est la première étape ?';
+    const lib = (k) => (ETAPES.find((e) => e[0] === k) || PIEGES.find((x) => x[0] === k))[1];
+    $('#cons-ch').innerHTML = ordre.filter((k) => reste.some((e) => e[0] === k) || pr.some((x) => x[0] === k)).map((k) => `<button type="button" data-k="${k}">${lib(k)}</button>`).join('');
+  }
+  function liste() { $('#cons-done').innerHTML = fait.map((k) => { const e = ETAPES.find((x) => x[0] === k); return `<li><b>${e[2]}</b> : ${e[1]}.</li>`; }).join(''); }
+  const fb = (cls, titre, txt) => { $('#cons-fb').innerHTML = `<div class="fbx ${cls}"><b>${titre}</b>${txt}</div>`; };
+  $('#cons-ch').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-k]'); if (!b) return; const k = b.dataset.k;
+    const piege = PIEGES.find((x) => x[0] === k);
+    if (piege) { pieges.add(k); fb('bad', 'Non, c’est dangereux.', piege[2]); choix(); return; }
+    const attendu = ETAPES[fait.length];
+    if (k !== attendu[0]) { const e = ETAPES.find((x) => x[0] === k); fb('bad', 'Pas encore.', `« ${e[2]} » vient plus tard. Pense d’abord à l’étape qui précède logiquement.`); return; }
+    fait.push(k); dessin(); liste(); choix();
+    if (fait.length === ETAPES.length) fb('ok', 'Bravo, le circuit est consigné.', 'Les étapes de la NF C 18-510 : pré-identification, séparation, condamnation, identification, vérification d’absence de tension. En basse tension, la mise à la terre et en court-circuit n’est exigée que s’il existe un risque de réalimentation ou de tension induite. Pour remettre en service (déconsigner), on fait l’inverse : ranger les outils, prévenir, retirer le cadenas, remettre sous tension, essayer.');
+    else fb('ok', attendu[2] + ' : c’est juste.', attendu[3]);
+  });
+  $('#cons-reset').addEventListener('click', () => { fait = []; pieges = new Set(); ordre = []; $('#cons-fb').innerHTML = ''; dessin(); liste(); choix(); });
+  dessin(); liste(); choix();
+})();
+
+/* ---------------- Trouve la panne ---------------- */
+(function panne() {
+  const svg = $('#pn-svg'); if (!svg) return;
+  const C = new Circuit(), B = new Board(svg, C, {});
+  const P = (id) => PRESETS.find((x) => x.id === id);
+  const fil = (d, a, b) => d.wires.find((w) => (ref(d, w.a) === a && ref(d, w.b) === b) || (ref(d, w.a) === b && ref(d, w.b) === a));
+  const ref = (d, k) => { const [id, tn] = k.split(':'); const c = d.comps.find((x) => x.id === id); return c ? c.ref + ':' + tn : k; };
+  const couper = (a, b) => (d) => { const w = fil(d, a, b); if (w) w.cut = true; return w; };
+  const SC = [
+    { t: 'La lampe ne s’allume plus (1)', base: 'simple', faute: couper('S1:2', 'L1:1'), sym: 'Simple allumage : quand on ferme S1, la lampe reste éteinte. Le disjoncteur est enclenché.',
+      hyp: ['Le fil entre S1 et la lampe (retour lampe) est coupé', 'Le neutre entre la lampe et le disjoncteur est coupé', 'La phase entre le disjoncteur et S1 est coupée', 'Le disjoncteur Q1 est déclenché'], ok: 0,
+      indice: 'Ferme S1, puis mesure entre la sortie de S1 (borne 2) et le neutre, puis aux deux bornes de la lampe.',
+      ex: 'S1 fermé, sa borne 2 donne 230 V par rapport au neutre : la phase arrive jusqu’à la sortie de l’interrupteur. Mais aux bornes de la lampe, on lit 0 V : la phase s’arrête entre S1 et la lampe. Le retour lampe est coupé.' },
+    { t: 'La lampe ne s’allume plus (2)', base: 'simple', faute: couper('L1:2', 'Q1:N2'), sym: 'Simple allumage : quand on ferme S1, la lampe reste éteinte. Le disjoncteur est enclenché.',
+      hyp: ['Le fil entre S1 et la lampe (retour lampe) est coupé', 'Le neutre entre la lampe et le disjoncteur est coupé', 'La phase entre le disjoncteur et S1 est coupée', 'Le disjoncteur Q1 est déclenché'], ok: 1,
+      indice: 'Ferme S1, puis mesure entre chaque borne de la lampe et la terre (PE de l’alimentation).',
+      ex: 'Les deux bornes de la lampe donnent 230 V par rapport à la terre, et 0 V entre elles. La phase traverse la lampe sans pouvoir revenir : le neutre est coupé entre la lampe et le disjoncteur. Piège : le fil de neutre de la lampe est alors sous tension.' },
+    { t: 'La lampe ne s’allume plus (3)', base: 'simple', faute: couper('Q1:2', 'S1:1'), sym: 'Simple allumage : quand on ferme S1, la lampe reste éteinte. Le disjoncteur est enclenché.',
+      hyp: ['Le fil entre S1 et la lampe (retour lampe) est coupé', 'Le neutre entre la lampe et le disjoncteur est coupé', 'La phase entre le disjoncteur et S1 est coupée', 'Le disjoncteur Q1 est déclenché'], ok: 2,
+      indice: 'Mesure entre la sortie du disjoncteur (borne 2 de Q1) et le neutre, puis entre l’entrée de S1 (borne 1) et le neutre.',
+      ex: 'La sortie de Q1 donne 230 V, l’entrée de S1 donne 0 V : la phase n’arrive pas à l’interrupteur. Le fil entre le disjoncteur et S1 est coupé.' },
+    { t: 'Va-et-vient capricieux', base: 'vav', faute: couper('S1:1', 'S2:2'), sym: 'Va-et-vient : la lampe ne s’allume que dans certaines positions des interrupteurs.',
+      hyp: ['Une des deux navettes est coupée', 'Le retour lampe est coupé', 'Le neutre de la lampe est coupé', 'Le disjoncteur est trop faible'], ok: 0,
+      indice: 'Essaie les quatre combinaisons de S1 et S2. Puis, dans une position où la lampe reste éteinte, mesure chaque navette par rapport au neutre, à ses deux bouts.',
+      ex: 'La lampe marche quand le courant passe par une navette, jamais par l’autre. Sur cette navette, un bout donne 230 V et l’autre 0 V : elle est coupée. Le retour lampe et le neutre, eux, servent dans toutes les positions.' },
+    { t: 'Ça marche, mais c’est dangereux', base: 'inv', faute: null, sym: 'Simple allumage : tout fonctionne. Pourtant, en changeant l’ampoule, lampe éteinte, un collègue a pris un coup de jus.',
+      hyp: ['L’interrupteur coupe le neutre au lieu de la phase', 'Tout est conforme, c’était de l’électricité statique', 'La lampe est mal vissée', 'Le disjoncteur est trop fort'], ok: 0,
+      indice: 'Ouvre S1 (lampe éteinte), puis mesure entre chaque borne de la lampe et la terre.',
+      ex: 'Lampe éteinte, une borne de la lampe donne encore 230 V par rapport à la terre : la phase arrive directement sur la lampe, et c’est le neutre qui passe par l’interrupteur. Il faut inverser : l’interrupteur coupe toujours la phase.' },
+    { t: 'Télérupteur muet', base: 'tele', faute: couper('KA1:A2', 'X2:P'), sym: 'Télérupteur : aucun des trois boutons poussoirs ne fait réagir la lampe.',
+      hyp: ['Le neutre de la bobine (A2) est coupé', 'Un des boutons poussoirs est hors service', 'La lampe est grillée', 'Le disjoncteur est déclenché'], ok: 0,
+      indice: 'Comme les trois poussoirs sont en panne en même temps, cherche ce qui leur est commun. Appuie sur un poussoir et mesure aux bornes de la bobine, A1 et A2, et entre A2 et le neutre.',
+      ex: 'Pendant l’appui, A1 et A2 sont tous les deux à 230 V par rapport au neutre, et on lit 0 V entre eux : la bobine ne reçoit pas de courant, car son neutre est coupé. Une panne commune à tous les poussoirs se trouve dans la partie qu’ils partagent.' },
+    { t: 'Prise sans terre', base: 'prise', faute: couper('ALIM:PE', 'PC1:PE'), sym: 'La prise alimente bien les appareils. Mais l’électricien chargé du contrôle refuse l’installation.',
+      hyp: ['La terre de la prise n’est pas raccordée', 'Le neutre de la prise est coupé', 'La phase et le neutre sont inversés', 'La prise est conforme'], ok: 0,
+      indice: 'Mesure entre la phase de la prise (L) et le neutre (N), puis entre la phase et la terre (PE).',
+      ex: 'Phase-neutre donne 230 V, mais phase-terre donne 0 V : la borne de terre de la prise n’est reliée à rien. En cas de défaut sur un appareil métallique, le différentiel ne verrait rien et la carcasse resterait sous tension.' },
+  ];
+  const BASES = {
+    inv() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), s = mk('inter', 640, 360, 0, 'S1'), l = mk('lampe', 480, 260, 90, 'L1');
+      return { comps: [src, q, s, l], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', l, '1'), wr(l, '2', s, '1'), wr(s, '2', q, 'N2')] }; },
+    prise() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 260, 240, 0, 'Q1', { lab: '20 A' }), pc = mk('prise', 480, 300, 0, 'PC1', { st: { plug: true } });
+      return { comps: [src, q, pc], wires: [wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', pc, 'L'), wr(q, 'N2', pc, 'N'), wr(src, 'PE', pc, 'PE')] }; },
+  };
+  let cur = null, sel = null, coupe = null;
+  /* potentiel de chaque borne : phase (L), neutre (N), terre (E) ou en l'air ; un récepteur transmet la phase ou le neutre à une borne isolée */
+  function etat() {
+    const Pn = {}; C.comps.forEach((c) => DEF[c.type].t.forEach((tt) => { const k = c.id + ':' + tt[0]; Pn[k] = k; }));
+    const f = (a) => { while (Pn[a] !== a) { Pn[a] = Pn[Pn[a]]; a = Pn[a]; } return a; };
+    const un = (a, b) => { const ra = f(a), rb = f(b); if (ra !== rb) Pn[ra] = rb; };
+    C.wires.forEach((w) => { if (!w.cut && Pn[w.a] !== undefined && Pn[w.b] !== undefined) un(w.a, w.b); });
+    C.comps.forEach((c) => links(c).forEach((l) => un(c.id + ':' + l[0], c.id + ':' + l[1])));
+    const cl = {};
+    C.comps.forEach((c) => { if (c.type === 'src') { cl[f(c.id + ':L')] = 'L'; cl[f(c.id + ':N')] = 'N'; cl[f(c.id + ':PE')] = cl[f(c.id + ':PE')] || 'E'; } });
+    for (let i = 0; i < 6; i++) C.comps.forEach((c) => { const lp = loadPair(c); if (!lp) return; const a = f(c.id + ':' + lp[0]), b = f(c.id + ':' + lp[1]); if (cl[a] && !cl[b]) cl[b] = cl[a] === 'E' ? 'N' : cl[a]; else if (cl[b] && !cl[a]) cl[a] = cl[b] === 'E' ? 'N' : cl[b]; });
+    return (k) => cl[f(k)] || null;
+  }
+  const nom = (k) => { const [id, tn] = k.split(':'); const c = C.find(id); return (c ? c.ref : id) + ' · ' + tn; };
+  function mesure(a, b) {
+    const e = etat(), ca = e(a), cb = e(b);
+    const v = (ca === 'L') !== (cb === 'L') && ca && cb ? 230 : 0;
+    return v;
+  }
+  function dots() {
+    const old = svg.querySelector('g.pdots'); if (old) old.remove();
+    const g = document.createElementNS(SVGNS, 'g'); g.setAttribute('class', 'pdots');
+    C.comps.forEach((c) => { if (c.type === 'borne') return; DEF[c.type].t.forEach((tt) => {
+      const k = c.id + ':' + tt[0], p = tp(c, tt[0]);
+      const d = document.createElementNS(SVGNS, 'circle'); d.setAttribute('cx', p.x); d.setAttribute('cy', p.y); d.setAttribute('r', 9);
+      d.setAttribute('class', 'pdot' + (sel === k ? ' sel' : '')); d.setAttribute('tabindex', '0'); d.setAttribute('role', 'button'); d.setAttribute('aria-label', 'Borne ' + nom(k)); d.dataset.k = k;
+      g.appendChild(d); }); });
+    if (coupe) { const pa = tp(C.find(coupe.a.split(':')[0]), coupe.a.split(':')[1]), pb = tp(C.find(coupe.b.split(':')[0]), coupe.b.split(':')[1]); const mx = (pa.x + pb.x) / 2, my = (pa.y + pb.y) / 2;
+      const x = document.createElementNS(SVGNS, 'path'); x.setAttribute('d', `M${mx - 12} ${my - 12} L${mx + 12} ${my + 12} M${mx + 12} ${my - 12} L${mx - 12} ${my + 12}`); x.setAttribute('class', 'pcut'); g.appendChild(x); }
+    B.root.appendChild(g);
+  }
+  C.listeners.push(() => setTimeout(dots, 0));
+  function toucher(k) {
+    if (!sel) { sel = k; $('#pn-scr').textContent = '…'; $('#pn-scr').classList.remove('hot'); $('#pn-vt').textContent = 'Point 1 : ' + nom(k) + '. Touche une deuxième borne.'; dots(); return; }
+    if (sel === k) { sel = null; $('#pn-vt').textContent = 'Mesure annulée. Touche une borne jaune.'; dots(); return; }
+    const v = mesure(sel, k);
+    $('#pn-scr').textContent = v + ' V'; $('#pn-scr').classList.toggle('hot', v > 0);
+    $('#pn-vt').textContent = `Entre ${nom(sel)} et ${nom(k)} : ${v ? 'présence de tension' : 'absence de tension'}.`;
+    const li = document.createElement('li'); li.textContent = `${nom(sel)} ↔ ${nom(k)} : ${v} V`; $('#pn-log').prepend(li); while ($('#pn-log').children.length > 5) $('#pn-log').lastChild.remove();
+    sel = null; dots();
+  }
+  svg.addEventListener('pointerdown', (e) => { const d = e.target.closest('.pdot'); if (d) { e.stopPropagation(); e.preventDefault(); toucher(d.dataset.k); } }, true);
+  svg.addEventListener('keydown', (e) => { const d = e.target.closest && e.target.closest('.pdot'); if (d && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toucher(d.dataset.k); } });
+  function ctl() {
+    const ops = C.comps.filter((c) => ['inter', 'vav', 'bp', 'dpn', 'prise'].includes(c.type));
+    $('#pn-ctl').innerHTML = ops.map((c) => `<button type="button" data-op="${c.id}">${c.ref} : ${c.type === 'bp' ? 'appuyer' : c.type === 'prise' ? (c.st.plug ? 'débrancher l’appareil' : 'brancher un appareil') : c.type === 'dpn' ? (c.st.closed ? 'déclencher' : 'réarmer') : c.type === 'vav' ? 'basculer (position ' + (c.st.pos || 1) + ')' : (c.st.on ? 'ouvrir' : 'fermer')}</button>`).join('');
+  }
+  $('#pn-ctl').addEventListener('click', (e) => { const b = e.target.closest('[data-op]'); if (b) C.operate(b.dataset.op); });
+  C.listeners.push(() => ctl());
+  function charger(i) {
+    cur = SC[i]; sel = null; coupe = null;
+    const d = cur.base in BASES ? BASES[cur.base]() : P(cur.base).build();
+    const w = cur.faute ? cur.faute(d) : null; cur.w = w;
+    C.power = true; C.load(d); B.fit(); B.render();
+    $$('#pn-pick button').forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
+    $('#pn-sym').textContent = cur.sym;
+    $('#pn-hyp').innerHTML = '<legend>Ta conclusion</legend>' + cur.hyp.map((h, j) => `<label><input type="radio" name="pn-h" value="${j}"> <span>${h}</span></label>`).join('');
+    $('#pn-fb').innerHTML = ''; $('#pn-log').innerHTML = ''; $('#pn-scr').textContent = '— V'; $('#pn-scr').classList.remove('hot');
+    $('#pn-vt').textContent = 'Touche une borne jaune, puis une autre : le VAT mesure entre les deux.';
+    ctl(); dots();
+  }
+  $('#pn-pick').innerHTML = SC.map((s, i) => `<button type="button" data-i="${i}">${i + 1} · ${s.t}</button>`).join('');
+  $('#pn-pick').addEventListener('click', (e) => { const b = e.target.closest('[data-i]'); if (b) charger(+b.dataset.i); });
+  $('#pn-hint').addEventListener('click', () => { $('#pn-fb').innerHTML = `<div class="fbx info"><b>Indice</b>${cur.indice}</div>`; });
+  $('#pn-ok').addEventListener('click', () => {
+    const r = document.querySelector('input[name="pn-h"]:checked');
+    if (!r) { $('#pn-fb').innerHTML = '<div class="fbx info"><b>Choisis une conclusion</b>Coche l’hypothèse qui correspond à tes mesures.</div>'; return; }
+    const bon = +r.value === cur.ok;
+    if (bon && cur.w) { coupe = cur.w; dots(); }
+    $('#pn-fb').innerHTML = `<div class="fbx ${bon ? 'ok' : 'bad'}"><b>${bon ? 'Bien trouvé !' : 'Pas tout à fait.'}</b>${bon ? cur.ex + (cur.w ? ' La croix rouge montre le défaut.' : '') : 'Tes mesures ne vont pas dans ce sens. Utilise l’indice si besoin, puis réessaie.'}</div>`;
+  });
+  let pret = false;
+  const init = () => { if (pret || location.hash.slice(1) !== 'depannage' && location.hash.slice(1) !== 'panne') return; pret = true; charger(0); };
+  addEventListener('hashchange', () => setTimeout(init, 60)); setTimeout(init, 60);
+})();
 
 /* ---------------- Lexique et infobulles ---------------- */
 const GLOSSAIRE = [
