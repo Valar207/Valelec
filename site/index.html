@@ -9,7 +9,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 /* Layout : pages papier, schémas sur tableau sombre quadrillé ; un seul moteur de simulation pour tout le site */
 :root{
@@ -717,7 +717,7 @@ details.more[open]>summary::before{content:"−"}
   --inv-bg:#14122B; --inv-fg:#F6F4FC; --inv-muted:#C9C5E6; --inv-accent:#FFD84A; --sel:#FFF0B8;
   --info-bg:#ECE8F9; --info-fg:#24213F;
   --fx-a:.5; --card:color-mix(in srgb,var(--paper-2) 82%,transparent);
-  --f-display:'Syne','Bricolage Grotesque','Avenir Next',system-ui,sans-serif;
+  --f-display:'Sora','Bricolage Grotesque','Avenir Next',system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0B0A15; --paper-2:#151329; --paper-3:#1F1C3B; --line:#2D2A52; --hover:#211E42;
@@ -746,10 +746,10 @@ body{background:transparent}
 @keyframes fxc{to{transform:translate(-16vmax,-30vmax) scale(1.2)}}
 
 /* ---------- 3. Typographie ---------- */
-.display{font-family:var(--f-display);font-weight:700;letter-spacing:-.04em}
-.sec-head h2{font-size:clamp(26px,3.1vw,40px)}
+.display{font-family:var(--f-display);font-weight:800;letter-spacing:-.045em}
+.sec-head h2{font-size:clamp(28px,3.4vw,44px)}
 .hero{grid-template-columns:repeat(auto-fit,minmax(min(480px,100%),1fr))}
-.hero h1{font-size:clamp(33px,4.1vw,58px);line-height:1.02;font-weight:800;background:var(--g-live);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gshift 7s ease-in-out infinite alternate;padding-bottom:.08em}
+.hero h1{font-size:clamp(40px,5.2vw,72px);line-height:1;font-weight:800;background:var(--g-live);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gshift 7s ease-in-out infinite alternate;padding-bottom:.08em}
 .eyebrow{display:flex;align-items:center;gap:9px;color:var(--accent);letter-spacing:.08em}
 .eyebrow::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--volt);box-shadow:0 0 0 0 color-mix(in srgb,var(--volt) 70%,transparent);animation:led 2.2s ease-out infinite}
 .card .eyebrow::before{background:var(--terre);box-shadow:0 0 0 0 color-mix(in srgb,var(--terre) 70%,transparent)}
@@ -762,7 +762,7 @@ body{background:transparent}
 .top{background:transparent;border-bottom:0}
 .top::before{content:"";position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--paper) 74%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
 .top::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;background:var(--g-arc);transform:scaleX(var(--sp,0));transform-origin:left;box-shadow:0 0 14px var(--plasma);border-radius:0 3px 3px 0}
-.brand b{font-family:var(--f-display);font-size:23px}
+.brand b{font-family:var(--f-display);font-size:23px;letter-spacing:-.04em}
 .brand b span{background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand svg{border-radius:10px;box-shadow:0 6px 18px -8px var(--ion);transition:transform .5s var(--spring)}
 .brand:hover svg{transform:rotate(-8deg) scale(1.1)}
@@ -854,7 +854,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
 /* Bandeau défilant sous l'accueil */
 .ticker{overflow:hidden;border-block:1px solid color-mix(in srgb,var(--line) 70%,transparent);background:color-mix(in srgb,var(--paper-2) 40%,transparent);padding:14px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-.ticker div{display:flex;gap:44px;width:max-content;animation:tick 38s linear infinite;font:800 clamp(22px,3.4vw,40px)/1 var(--f-display);letter-spacing:-.02em;white-space:nowrap}
+.ticker div{display:flex;gap:44px;width:max-content;animation:tick 38s linear infinite;font:800 clamp(22px,3.2vw,38px)/1 var(--f-display);letter-spacing:-.04em;white-space:nowrap}
 .ticker span{color:transparent;-webkit-text-stroke:1.2px color-mix(in srgb,var(--ink) 55%,transparent)}
 .ticker span:nth-child(3n+1){-webkit-text-stroke:0;background:var(--g-arc);-webkit-background-clip:text;background-clip:text}
 .ticker:hover div{animation-play-state:paused}
@@ -862,6 +862,21 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 #hero-waves{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:0;opacity:.9}
 #page-accueil{position:relative}
 #page-accueil .hero{position:relative;z-index:1}
+
+/* Vue 3D en plein écran : la scène prend tout l'écran, le pas à pas et les circuits restent dessous */
+.v3d-fs{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font:600 13px var(--f-body);cursor:pointer;transition:transform .25s var(--spring),border-color .2s}
+.v3d-fs:hover{border-color:var(--ion);transform:translateY(-1px)}
+.v3d-head{align-items:center}
+.stage.has-fs{container-type:normal}
+.dual .v3d-wrap.fs,.v3d-wrap.fs{display:flex !important;flex-direction:column;gap:8px;position:fixed;inset:0;z-index:60;margin:0;background:var(--paper);padding:calc(8px + env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));animation:pgin .3s var(--ease)}
+.v3d-wrap.fs .v3d{flex:1 1 auto;min-height:0;height:auto;aspect-ratio:auto;border-radius:var(--r-m)}
+.v3d-wrap.fs :is(.v3d-steps,.v3d-circ){flex:none;max-height:34vh;overflow:auto}
+.v3d-wrap.fs .v3d-leg{flex:none;font-size:12px;gap:4px 14px}
+.v3d-wrap.fs .v3d-help{display:none}
+.v3d-wrap.fs .stp{padding:10px 12px;gap:6px}
+.v3d-wrap.fs .stp-p{min-height:0;font-size:13.5px}
+@media (max-height:560px),(max-width:520px){.v3d-wrap.fs .v3d-leg{display:none}}
+body.fs-lock{overflow:hidden}
 
 /* ---------- 5. Mouvement ---------- */
 [data-page]:not([hidden]){animation:pgin .45s var(--ease)}
@@ -2970,6 +2985,7 @@ const V3D = (() => {
     }
     /* ombre douce derrière un appareil */
     soft(w, h, x, y, round) {
+      return;
       if (!this.sm) this.sm = new this.T.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.17, depthWrite: false });
       const o = new this.T.Mesh(round ? new this.T.CircleGeometry(w / 2 + 0.007, 28) : new this.T.PlaneGeometry(w + 0.014, h + 0.014), this.sm); o.position.set(x + 0.005, y - 0.008, 0.0015); this.g.add(o);
     }
@@ -2990,7 +3006,7 @@ const V3D = (() => {
     wire(P, c, key, wid, rad) { const m = this.tube(P, 0.0034, this.wmat(c), rad === undefined ? 0.03 : rad); if (m) this.wires.push({ mesh: m, mat: m.material, key, wid, pts: P, sk: this.curK, cls: c === 'vj' ? 2 : c === 'bleu' ? 1 : c === 'rouge' || c === 'marron' ? 0 : 3 }); return m; }
     /* voyant vert d'un appareil alimenté : caché tant que l'appareil ne fonctionne pas */
     led(x, y, z) { const m = new this.T.Mesh(new this.T.SphereGeometry(0.011, 10, 8), new this.T.MeshBasicMaterial({ color: 0x4ade80 })); m.position.set(x, y, z); m.visible = false; this.g.add(m); return m; }
-    mat(c, o) { const k = c + JSON.stringify(o || {}); if (!this.mats[k]) this.mats[k] = new this.T.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.62, metalness: 0.02 }, o || {})); return this.mats[k]; }
+    mat(c, o) { const k = c + JSON.stringify(o || {}); if (!this.mats[k]) this.mats[k] = new this.T.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.48, metalness: 0.02, envMapIntensity: 0.4 }, o || {})); return this.mats[k]; }
     glass(c, op) { return this.mat(c, { transparent: true, opacity: op, depthWrite: false, roughness: 0.4 }); }
     vj() { if (!this.vjT) { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const x = c.getContext('2d'); x.fillStyle = '#2f9e44'; x.fillRect(0, 0, 64, 8); x.fillStyle = '#f2c81e'; x.fillRect(0, 0, 32, 8); this.vjT = new this.T.CanvasTexture(c); this.vjT.wrapS = this.vjT.wrapT = this.T.RepeatWrapping; this.vjT.repeat.set(26, 1); } return this.mat(0xffffff, { map: this.vjT }); }
     wmat(c) { return c === 'vj' ? this.vj() : this.mat(COL[c] === undefined ? 0x888888 : COL[c]); }
@@ -3003,8 +3019,9 @@ const V3D = (() => {
     }
     _wall(W, H, cx, cy) {
       if (!this.tex.wall) { const c = document.createElement('canvas'); c.width = c.height = 256; const q = c.getContext('2d'); q.fillStyle = '#ffffff'; q.fillRect(0, 0, 256, 256); let sd = 73; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647; for (let i = 0; i < 5200; i++) { q.fillStyle = 'rgba(90,80,60,' + (0.015 + rnd() * 0.05) + ')'; q.fillRect(rnd() * 256, rnd() * 256, 1 + rnd() * 2.4, 1 + rnd() * 2.4); } this.tex.wall = new this.T.CanvasTexture(c); this.tex.wall.wrapS = this.tex.wall.wrapT = this.T.RepeatWrapping; this.tex.wall.repeat.set(5, 5); }
-      this.box(W, H, 0.04, this.mat(0xdcd6ca, { roughness: 0.95, map: this.tex.wall }), cx, cy, -0.02);
-      this.box(W + 0.2, 0.05, 0.5, 0xa98f6d, cx, cy - H / 2 - 0.025, 0.22);
+      this.box(W, H, 0.04, this.mat(0xc9c2b4, { roughness: 0.95, map: this.tex.wall, bumpMap: this.tex.wall, bumpScale: 0.0035, envMapIntensity: 0.15 }), cx, cy, -0.02);
+      if (!this.tex.wood) { const c = document.createElement('canvas'); c.width = 512; c.height = 128; const q = c.getContext('2d'); let sd = 11; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647; for (let i = 0; i < 4; i++) { q.fillStyle = ['#b08a5e', '#a67f55', '#b89266', '#9f784f'][i]; q.fillRect(0, i * 32, 512, 32); for (let k = 0; k < 60; k++) { q.fillStyle = 'rgba(60,35,15,' + (0.04 + rnd() * 0.08) + ')'; q.fillRect(rnd() * 512, i * 32 + rnd() * 32, 40 + rnd() * 160, 1); } q.fillStyle = 'rgba(40,24,10,.5)'; q.fillRect(0, i * 32, 512, 1); q.fillRect((i * 173) % 512, i * 32, 1.5, 32); } this.tex.wood = new this.T.CanvasTexture(c); this.tex.wood.wrapS = this.tex.wood.wrapT = this.T.RepeatWrapping; this.tex.wood.repeat.set(Math.max(1, W / 1.6), 1); }
+      this.box(W + 0.6, 0.05, 0.9, this.mat(0xffffff, { map: this.tex.wood, roughness: 0.42, envMapIntensity: 0.7 }), cx, cy - H / 2 - 0.025, 0.42);
       this.box(W, 0.08, 0.014, 0xf4f2ec, cx, cy - H / 2 + 0.04, 0.007);
       // trait de référence à 1 m
       for (let x = cx - W / 2 + 0.05; x < cx + W / 2; x += 0.1) this.box(0.06, 0.006, 0.002, 0x55606b, x, 1, 0.002);
@@ -3408,10 +3425,22 @@ const V3D = (() => {
       this.r = this.renderer(T); if (!this.r) { this.failed = true; this.showFailure(); return false; }
       this.r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
       this.el.innerHTML = '<div class="v3d-zoom" hidden><button type="button">← Vue d’ensemble</button><span></span></div>'; this.el.appendChild(this.r.domElement); this.ui = this.el.firstChild; this.ui.firstChild.addEventListener('click', () => this.closeZone());
+      if (T.ColorManagement) T.ColorManagement.legacyMode = false;
       this.scene = new T.Scene(); this.scene.background = new T.Color(0x18212c);
       this.cam = new T.PerspectiveCamera(34, 1, 0.05, 40);
-      this.hemi = new T.HemisphereLight(0xffffff, 0x7a818a, 0.78); this.scene.add(this.hemi);
-      const d = new T.DirectionalLight(0xffffff, 0.42); d.position.set(-2, 4, 5); this.scene.add(d); this.sun = d;
+      this.H0 = 0.3; this.S0 = 1.05;
+      this.hemi = new T.HemisphereLight(0xfff6e8, 0x6f7480, this.H0); this.scene.add(this.hemi);
+      const d = new T.DirectionalLight(0xfff1dc, this.S0); d.position.set(-2, 4, 5); this.scene.add(d); this.scene.add(d.target);
+      const R3 = this.r; R3.outputEncoding = T.sRGBEncoding; R3.toneMapping = T.ACESFilmicToneMapping; R3.toneMappingExposure = 0.92;
+      R3.shadowMap.enabled = true; R3.shadowMap.type = T.PCFSoftShadowMap;
+      d.castShadow = true; d.shadow.mapSize.set(2048, 2048); d.shadow.bias = -0.0005; d.shadow.normalBias = 0.012; d.shadow.radius = 3;
+      /* ambiance : une petite pièce (plafond lumineux, fenêtre, sol sombre) dont les reflets donnent du relief aux plastiques et aux métaux */
+      try {
+        const pm = new T.PMREMGenerator(R3), es = new T.Scene(), pan = (c, w, h, x, y, z, rx, ry) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color: c, side: T.DoubleSide })); m.position.set(x, y, z); m.rotation.set(rx || 0, ry || 0, 0); es.add(m); };
+        es.background = new T.Color(0x5d6470);
+        pan(0xffffff, 8, 8, 0, 5, 0, Math.PI / 2); pan(0x2a2622, 12, 12, 0, -4, 0, Math.PI / 2); pan(0xfff0d0, 5, 4, -6, 1, 2, 0, Math.PI / 2); pan(0xbcd4ff, 4, 3, 6, 1, 3, 0, Math.PI / 2); pan(0xd9d2c6, 14, 9, 0, 0, -6);
+        this.scene.environment = pm.fromScene(es, 0.03).texture; pm.dispose();
+      } catch (e) {} this.sun = d;
       this.yaw = 0.2; this.pitch = 0.09; this.target = new T.Vector3(); this.rad = 4; this.ctr = null;
       const c = this.r.domElement; c.style.touchAction = 'none'; const pts = new Map(); let pd = 0, pc = null, multi = false, raf = 0, tap = null, t0 = null, d0 = 0, c0 = null, mode2 = null;
       /* écart et milieu des deux doigts ; lu une fois par image, quand les deux doigts ont bougé */
@@ -3474,6 +3503,12 @@ const V3D = (() => {
       this.done = q; const [make, ctx] = q;
       if (this.b) { this.scene.remove(this.b.g); free(this.b.g); }
       const T = window.THREE, ops = new Set(ctx.comps.filter((c) => DEF[c.type].op && !c.fixed && opLabel(c)).map((c) => c.ref)), circ = { list: circuitsOf(ctx), ctx }, dry = new Builder(T, ops, null, circ), plan = {}; make(dry, ctx); Object.keys(dry.nodes).forEach((k) => { if (dry.nodes[k].cnt) plan[k] = dry.nodes[k].cnt; }); free(dry.g); const b = new Builder(T, ops, plan, circ); this.b = b; this.ctx = ctx; this.closeZone(true); const v = make(b, ctx); b.finish(); this.stopAnim(); this.stepOn = false; this.scene.add(b.g);
+      b.g.traverse((o) => {
+        const m = o.material; if (!m) return;
+        if (m.map && m.map.encoding !== T.sRGBEncoding) { m.map.encoding = T.sRGBEncoding; m.map.needsUpdate = true; }
+        if (o.isMesh && !m.transparent && !m.isMeshBasicMaterial) { o.castShadow = true; o.receiveShadow = true; }
+      });
+      { const s = this.sun, k = v.r * 0.62; s.target.position.set(v.cx, v.cy, 0); s.position.set(v.cx - v.r * 0.42, v.cy + v.r * 0.62, v.r * 0.9); const c = s.shadow.camera; c.left = -k; c.right = k; c.top = k; c.bottom = -k; c.near = 0.1; c.far = v.r * 4; c.updateProjectionMatrix(); }
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.renderSteps(); this.draw();
     }
@@ -3599,7 +3634,7 @@ const V3D = (() => {
       Object.values(b.lamps).forEach((L) => { if (L && L.glow) L.glow.material.opacity = 1; });
       if (!b.ghosts) { b.ghosts = new Map(); b.lits = new Map(); }
       /* le reste de la scène passe dans l'ombre, sans perdre ses couleurs */
-      this.hemi.intensity = c ? 0.58 : 0.78; this.sun.intensity = c ? 0.28 : 0.42;
+      this.hemi.intensity = this.H0 * (c ? 0.7 : 1); this.sun.intensity = this.S0 * (c ? 0.6 : 1);
       b.wires.forEach((r) => {
         r.mesh.material = r.mat;
         if (!c || !(r.wid ? c.wires.has(r.wid) : r.key === c.key)) return;
@@ -5086,6 +5121,22 @@ route();
     const sweep = () => D.querySelectorAll('.rv:not(.in)').forEach((el) => { const r = el.getBoundingClientRect(); if (r.width && r.top < innerHeight && r.bottom > 0) { el.classList.add('in'); setTimeout(() => el.classList.remove('rv', 'in'), 1200); } });
     addEventListener('hashchange', () => setTimeout(sweep, 900)); setTimeout(sweep, 1500); setInterval(sweep, 4000);
   }
+
+  // Vue 3D en plein écran (le pas à pas, les circuits et les gestes restent actifs)
+  const fsSet = (w, on) => {
+    const st = w.closest('.stage'), b = w.querySelector('.v3d-fs');
+    w.classList.toggle('fs', on); if (st) st.classList.toggle('has-fs', on); D.body.classList.toggle('fs-lock', on);
+    b.setAttribute('aria-pressed', String(on)); b.lastChild.textContent = on ? 'Quitter le plein écran' : 'Plein écran';
+    if (!on) w.scrollIntoView({ block: 'center' });
+  };
+  D.querySelectorAll('.v3d-head').forEach((h) => {
+    const b = D.createElement('button'); b.type = 'button'; b.className = 'v3d-fs'; b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Plein écran</span>';
+    h.insertBefore(b, h.children[1] || null);
+    b.addEventListener('click', () => { const w = b.closest('.v3d-wrap'); fsSet(w, !w.classList.contains('fs')); });
+  });
+  D.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const w = D.querySelector('.v3d-wrap.fs'); if (w) fsSet(w, false); } });
+  addEventListener('hashchange', () => { const w = D.querySelector('.v3d-wrap.fs'); if (w) fsSet(w, false); });
 
   // Inclinaison 3D des cartes sous le pointeur
   if (fine && !calm) D.querySelectorAll('a.card,.goals a').forEach((el) => {
