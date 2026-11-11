@@ -881,9 +881,9 @@ body.fs-lock{overflow:hidden}
 /* Téléphone : schéma 2D et vue 3D côte à côte, on glisse de l'un à l'autre (le suivant dépasse un peu) */
 .swp{display:none}
 @container (max-width:759px){
-  .stage:not(.has-fs) .dual{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;margin-inline:-16px;padding:4px 16px 26px;scroll-padding-inline:16px;scrollbar-width:none}
+  .stage:not(.has-fs) .dual{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;margin-inline:-16px;padding:4px 24px 26px;gap:10px;scrollbar-width:none}
   .stage:not(.has-fs) .dual::-webkit-scrollbar{display:none}
-  .stage:not(.has-fs) .dual>:is(.col2d,.v3d-wrap){flex:0 0 87%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always}
+  .stage:not(.has-fs) .dual>:is(.col2d,.v3d-wrap){flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always}
   .stage:not(.has-fs) .d2-head span{display:none}
   .stage:not(.has-fs) .swp{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:999px;background:var(--g-live);background-size:200% 100%;color:#fff;font:700 13px var(--f-body);cursor:pointer;box-shadow:var(--glow);animation:gshift 6s ease-in-out infinite alternate}
   .swp i{font-style:normal;display:inline-block;animation:nudge 1.3s ease-in-out infinite}
