@@ -980,41 +980,36 @@ html.fx .tilt:hover{--ty:-4px}
 .lex-box[open] .lex-go::before{transform:translateY(2px) rotate(-135deg)}
 .lex-box>summary:hover .lex-go{border-color:var(--accent)}
 .lex-box[open]{padding-bottom:6px}
-/* U, I, R */
-.mtr{display:none}.mtr.on{display:inline}
-.mlead{fill:none;stroke:#FFD84A;stroke-width:2.5;stroke-dasharray:6 4}
-.mbody{fill:#0f1622;stroke:#FFD84A;stroke-width:3}
-.mtxt{fill:#FFD84A;font:700 18px var(--f-mono,monospace);text-anchor:middle}
-.mval{fill:#FFD84A;font:600 15px var(--f-mono,monospace)}.mval.c{text-anchor:middle}
-.uri{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:start;margin-top:22px}
-@media (max-width:860px){.uri{grid-template-columns:1fr}}
-.uri-board{padding:10px}
-.uri-board svg{display:block;width:100%;height:auto}
-.pipe{fill:none;stroke:#556273;stroke-width:34;stroke-linejoin:round}
-.water{fill:none;stroke:#2F7FD0;stroke-width:24;stroke-linejoin:round}
-.drops{fill:none;stroke:#DDF0FF;stroke-width:6;stroke-linecap:round;stroke-dasharray:3 15;animation:uri-flow 1s linear infinite;animation-play-state:paused;opacity:.9}
-.wall{fill:#556273}
+/* U, I, R : animations des cartes */
+.qanim{display:block;width:100%;height:auto;margin:6px 0 10px;border-radius:14px;background:var(--board)}
+.pipe{fill:none;stroke:#556273;stroke-width:30;stroke-linecap:round}
+.water{fill:none;stroke:#2F7FD0;stroke-width:20;stroke-linecap:round}
+.drops{fill:none;stroke:#DDF0FF;stroke-width:5;stroke-linecap:round;stroke-dasharray:3 15;animation:q-flow 1.6s linear infinite;animation-play-state:paused}
+.qanim.b .drops{animation-duration:.55s}
+.qi .drops{stroke-dasharray:3 26;animation-duration:1.4s}
+.qi.b .drops{stroke-dasharray:3 6;animation-duration:.7s}
+.qr .drops{animation-duration:.7s}
+.qr.b .drops{animation-duration:2.2s}
+.wall{fill:#556273;transition:transform .9s ease;transform-box:fill-box}
+.qr.b .wall.t{transform:translateY(7px)}.qr.b .wall.d{transform:translateY(-7px)}
 .dev{fill:#16202e;stroke:#8fa3bd;stroke-width:3}
-.blade{stroke:#FFD84A;stroke-width:6;stroke-linecap:round}
-.paddle{stroke:#9fd0ff;stroke-width:5}.pad{fill:#9fd0ff}
+.blade{stroke:#FFD84A;stroke-width:5;stroke-linecap:round}
 .hub{fill:#e8eef6}
-#uri-pump,#uri-mill{transform-box:fill-box;transform-origin:center;animation:uri-spin 2s linear infinite;animation-play-state:paused}
-#uri-svg.run .drops.on,#uri-svg.run #uri-pump.on,#uri-svg.run #uri-mill.on{animation-play-state:running}
-.ulab{fill:#fff;font:800 24px var(--f-display)}
-.usub{fill:#aab6c6;font:500 13px var(--f-body)}
-.uval{fill:#FFD84A;font:600 15px var(--f-mono,monospace)}
-@keyframes uri-flow{to{stroke-dashoffset:-36}}
-@keyframes uri-spin{to{transform:rotate(360deg)}}
-.uri-side h3{margin:0 0 10px;font-size:20px}
-.uri-leg{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:10px}
-.uri-leg li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;color:var(--ink-2);font-size:15px}
-.uri-leg .k{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--g-cta);color:#fff;font:800 17px var(--f-display)}
-.uri-leg strong{color:var(--ink)}
-.uri-try{margin:0 0 12px;font-size:14px;color:var(--muted)}
-.uri-tabs,.pn-pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.uri-tabs button,.pn-pick button,.cons-ch button,.pn-ctl button{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:600 14px var(--f-body);cursor:pointer}
-.uri-tabs button[aria-pressed="true"],.pn-pick button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.uri-mes{margin:0;font-size:15px;color:var(--ink-2)}
+.qpump{transform-box:fill-box;transform-origin:center;animation:q-spin 3s linear infinite;animation-play-state:paused}
+.qanim.b .qpump{animation-duration:.6s}
+.needle{stroke:#FF6B52;stroke-width:3;stroke-linecap:round;transform-box:view-box;transform-origin:236px 34px;transform:rotate(-55deg);transition:transform .9s ease}
+.qanim.b .needle{transform:rotate(45deg)}
+.gauge{fill:#16202e;stroke:#8fa3bd;stroke-width:2}
+.qanim.run .drops,.qanim.run .qpump{animation-play-state:running}
+@keyframes q-flow{to{stroke-dashoffset:-36}}
+@keyframes q-spin{to{transform:rotate(360deg)}}
+.qcap{margin:0 0 8px !important;font-size:14px !important;color:var(--ink-2);min-height:2.9em}
+.qmes{margin:10px 0 0 !important;padding-top:10px;border-top:1px solid var(--line);font-size:14px !important;color:var(--ink-2)}
+.qmes b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.drops,.qpump{animation:none}.wall,.needle{transition:none}}
+.pn-pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pn-pick button,.cons-ch button,.pn-ctl button{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:600 14px var(--f-body);cursor:pointer}
+.pn-pick button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* Consignation */
 .cons,.pn{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
 @media (max-width:860px){.cons,.pn{grid-template-columns:1fr}}
@@ -1027,7 +1022,7 @@ html.fx .tilt:hover{--ty:-4px}
 .cons-q{margin:0 0 8px;font-weight:700;color:var(--ink)}
 .cons-ch{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .cons-ch button{text-align:left;border-radius:14px;padding:10px 14px;line-height:1.35}
-.cons-ch button:hover,.pn-ctl button:hover,.uri-tabs button:hover,.pn-pick button:hover{border-color:var(--accent)}
+.cons-ch button:hover,.pn-ctl button:hover,.pn-pick button:hover{border-color:var(--accent)}
 .cons-fb,.pn-fb{min-height:0;margin-bottom:10px}
 .fbx{padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.45}
 .fbx.ok{background:var(--ok-bg);color:var(--ok-fg)}.fbx.bad{background:var(--bad-bg);color:var(--bad-fg)}.fbx.info{background:var(--info-bg);color:var(--info-fg)}
@@ -1049,7 +1044,7 @@ html.fx .tilt:hover{--ty:-4px}
 .pdot.sel{fill:#FFD84A}
 .pcut{stroke:#FF4D3D;stroke-width:5;stroke-linecap:round}
 .pn-board .cur.live{display:none}
-@media (prefers-reduced-motion:reduce){.drops,#uri-pump,#uri-mill{animation:none}}
+
 .lex-hint{margin:0 0 16px;color:var(--ink-2)}
 .lex{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:12px 24px;margin:0 0 14px}
 .lex div{margin:0}
@@ -1190,9 +1185,9 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
   <section id="grandeurs" class="wrap" style="padding-top:44px;scroll-margin-top:90px">
     <h2 class="sr-only">Les trois grandeurs</h2>
     <div class="grid">
-      <div class="card"><div class="kv"><span class="qty">U</span><span class="mono muted" style="font-size:14px">volt · V</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">La tension</h3><p>La « poussée » qui met les charges en mouvement : la pression dans le tuyau. Une prise de la maison délivre 230 V.</p></div>
-      <div class="card"><div class="kv"><span class="qty">I</span><span class="mono muted" style="font-size:14px">ampère · A</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">L’intensité</h3><p>La quantité de charges qui traverse le fil chaque seconde : le débit d’eau. Elle n’existe que si le circuit est fermé.</p></div>
-      <div class="card"><div class="kv"><span class="qty">R</span><span class="mono muted" style="font-size:14px">ohm · Ω</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">La résistance</h3><p>Ce qui freine le passage du courant, comme un rétrécissement du tuyau. Une lampe, un radiateur, un grille-pain sont des résistances.</p></div>
+      <div class="card"><div class="kv"><span class="qty">U</span><span class="mono muted" style="font-size:14px">volt · V</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">La tension</h3><p>La « poussée » qui met les charges en mouvement : la pression dans le tuyau. Une prise de la maison délivre 230 V.</p><svg class="qanim qu" viewBox="0 0 300 100" aria-hidden="true"><path d="M80 60 H270" class="pipe"/><path d="M80 60 H270" class="water"/><path d="M80 60 H270" class="drops"/><circle cx="54" cy="60" r="28" class="dev"/><g class="qpump"><path d="M54 36 V84 M30 60 H78 M37 43 L71 77 M71 43 L37 77" class="blade"/></g><circle cx="54" cy="60" r="5" class="hub"/><path d="M214 34 A22 22 0 0 1 258 34" class="gauge"/><path d="M236 34 V20" class="needle"/><circle cx="236" cy="34" r="3.5" class="hub"/></svg><p class="qcap" data-a="Une pile de 12 V : la pompe pousse doucement." data-b="Une prise de 230 V : la pompe pousse fort."></p><p class="qmes"><b>Se mesure avec</b> un voltmètre, branché en parallèle : ses deux fils touchent les deux côtés de l’appareil, sans rien couper.</p></div>
+      <div class="card"><div class="kv"><span class="qty">I</span><span class="mono muted" style="font-size:14px">ampère · A</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">L’intensité</h3><p>La quantité de charges qui traverse le fil chaque seconde : le débit d’eau. Elle n’existe que si le circuit est fermé.</p><svg class="qanim qi" viewBox="0 0 300 100" aria-hidden="true"><path d="M30 60 H270" class="pipe"/><path d="M30 60 H270" class="water"/><path d="M30 60 H270" class="drops"/><rect x="128" y="36" width="44" height="48" rx="6" fill="none" stroke="#FFD84A" stroke-width="2.5" stroke-dasharray="5 4"/><text x="150" y="28" text-anchor="middle" fill="#FFD84A" font-family="IBM Plex Mono,monospace" font-size="12">compteur</text></svg><p class="qcap" data-a="Une ampoule LED : un petit débit, environ 0,03 A." data-b="Une bouilloire : un gros débit, environ 8,7 A."></p><p class="qmes"><b>Se mesure avec</b> un ampèremètre placé en série, comme un compteur d’eau sur le tuyau, ou avec une pince ampèremétrique autour du fil.</p></div>
+      <div class="card"><div class="kv"><span class="qty">R</span><span class="mono muted" style="font-size:14px">ohm · Ω</span></div><h3 style="font-family:var(--f-body);font-size:21px;font-weight:600">La résistance</h3><p>Ce qui freine le passage du courant, comme un rétrécissement du tuyau. Une lampe, un radiateur, un grille-pain sont des résistances.</p><svg class="qanim qr" viewBox="0 0 300 100" aria-hidden="true"><path d="M30 60 H270" class="pipe"/><path d="M30 60 H270" class="water"/><path d="M30 60 H270" class="drops"/><rect x="120" y="40" width="60" height="12" class="wall t"/><rect x="120" y="68" width="60" height="12" class="wall d"/></svg><p class="qcap" data-a="Peu de résistance : l’eau passe facilement." data-b="Beaucoup de résistance : le tuyau se resserre, l’eau ralentit."></p><p class="qmes"><b>Se mesure avec</b> un ohmmètre, toujours hors tension, aux deux bornes de l’élément.</p></div>
     </div>
   </section>
 
@@ -1212,9 +1207,6 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
           <path d="M503 163 L537 197 M537 163 L503 197" class="lampx"/>
           <text x="560" y="185" class="t">lampe</text>
           <text x="300" y="278" class="t c" style="fill:#FFD84A;font-size:16px" id="ohm-i-t">I = 0,50 A</text>
-          <g class="mtr" id="ohm-m-u"><path d="M180 80 V156 M180 196 V290" class="mlead"/><circle cx="180" cy="176" r="20" class="mbody"/><text x="180" y="182" class="mtxt">V</text><text x="210" y="181" class="mval" id="ohm-m-u-v">12 V</text></g>
-          <g class="mtr" id="ohm-m-i"><circle cx="420" cy="290" r="19" class="mbody"/><text x="420" y="296" class="mtxt">A</text><text x="420" y="334" class="mval c" id="ohm-m-i-v">0,50 A</text></g>
-          <g class="mtr" id="ohm-m-r"><path d="M240 80 V36 H302 M338 36 H400 V80" class="mlead"/><circle cx="320" cy="36" r="17" class="mbody"/><text x="320" y="42" class="mtxt">Ω</text><text x="412" y="41" class="mval" id="ohm-m-r-v">24 Ω</text></g>
         </svg>
       </div>
       <div class="lab-ctl">
@@ -1223,35 +1215,6 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
         <div class="tiles"><div class="tile"><small>Intensité I</small><b id="ohm-i">0,50 A</b></div><div class="tile"><small>Puissance P</small><b id="ohm-p">6,0 W</b></div></div>
         <p class="mono" style="margin:0;font-size:14px;color:var(--ink-2)" id="ohm-eq">12 V ÷ 24 Ω = 0,50 A</p>
         <p style="margin:0;font-size:14px;color:var(--muted)">Générateur en très basse tension, pour expérimenter sans danger. Dans un vrai fil, les charges avancent lentement : c’est l’énergie qui se propage presque instantanément.</p>
-      </div>
-    </div>
-    <div class="uri">
-      <div class="board uri-board">
-        <svg id="uri-svg" viewBox="0 0 640 300" role="img" aria-label="Le même circuit avec de l’eau : une pompe pousse l’eau dans un tuyau en boucle, un rétrécissement la freine, et elle fait tourner un moulin.">
-          <path d="M120 230 V70 H520 V230 Z" class="pipe"/>
-          <path d="M120 230 V70 H520 V230 Z" class="water"/>
-          <path d="M120 230 V70 H520 V230 Z" class="drops" id="uri-flow"/>
-          <rect x="280" y="53" width="80" height="10" class="wall" id="uri-w1"/><rect x="280" y="77" width="80" height="10" class="wall" id="uri-w2"/>
-          <circle cx="120" cy="150" r="36" class="dev"/><g id="uri-pump"><path d="M120 122 V178 M92 150 H148 M101 131 L139 169 M139 131 L101 169" class="blade"/></g><circle cx="120" cy="150" r="6" class="hub"/>
-          <circle cx="520" cy="150" r="36" class="dev"/><g id="uri-mill"><path d="M520 120 V180 M490 150 H550" class="paddle"/><rect x="512" y="114" width="16" height="12" class="pad"/><rect x="512" y="174" width="16" height="12" class="pad"/><rect x="484" y="142" width="12" height="16" class="pad"/><rect x="544" y="142" width="12" height="16" class="pad"/></g><circle cx="520" cy="150" r="6" class="hub"/>
-          <text x="66" y="146" class="ulab" text-anchor="end">U</text><text x="66" y="166" class="usub" text-anchor="end">la pompe</text>
-          <text x="320" y="34" class="ulab" text-anchor="middle">R</text><text x="320" y="112" class="usub" text-anchor="middle">le rétrécissement</text>
-          <text x="320" y="270" class="ulab" text-anchor="middle">I</text><text x="320" y="290" class="usub" text-anchor="middle">le débit</text>
-          <text x="574" y="146" class="ulab">P</text><text x="574" y="166" class="usub">le moulin</text>
-          <text x="186" y="150" class="uval" id="uri-u">12 V</text><text x="372" y="34" class="uval" id="uri-r">24 Ω</text><text x="350" y="270" class="uval" id="uri-i">0,50 A</text>
-        </svg>
-      </div>
-      <div class="uri-side">
-        <h3>Comme de l’eau dans un tuyau</h3>
-        <ul class="uri-leg">
-          <li><b class="k">U</b><span><strong>La tension, c’est la pompe.</strong> Plus elle pousse fort, plus l’eau a envie de circuler.</span></li>
-          <li><b class="k">R</b><span><strong>La résistance, c’est le rétrécissement.</strong> Plus le tuyau est étroit, plus il freine l’eau.</span></li>
-          <li><b class="k">I</b><span><strong>L’intensité, c’est le débit</strong> : la quantité d’eau qui passe chaque seconde. Elle dépend des deux autres : I = U ÷ R.</span></li>
-        </ul>
-        <p class="uri-try">Bouge les curseurs au-dessus : la pompe, le tuyau et le moulin suivent le circuit électrique.</p>
-        <h3 style="margin-top:6px">Où mesurer chaque grandeur ?</h3>
-        <div class="uri-tabs" role="group" aria-label="Appareil de mesure affiché sur le schéma"><button type="button" data-m="u" aria-pressed="true">U · voltmètre</button><button type="button" data-m="i" aria-pressed="false">I · ampèremètre</button><button type="button" data-m="r" aria-pressed="false">R · ohmmètre</button></div>
-        <p class="uri-mes" id="uri-mes" aria-live="polite"></p>
       </div>
     </div>
   </section>
@@ -5428,32 +5391,18 @@ function sizeEd() {
 window.addEventListener('resize', sizeEd);
 
 
-/* ---------------- U, I, R : l'eau et les appareils de mesure ---------------- */
-(function uri() {
-  const u = $('#ohm-u'), r = $('#ohm-r'), svg = $('#uri-svg'); if (!u || !svg) return;
-  let mode = 'u';
-  const texte = (U, I, Rr) => ({
-    u: `La tension se mesure avec un <b>voltmètre</b>, branché <b>en parallèle</b> : ses deux fils touchent les deux côtés du générateur, sans rien couper. Ici, il affiche ${U} V. C’est comme un manomètre qui compare la pression avant et après la pompe.`,
-    i: `L’intensité se mesure avec un <b>ampèremètre</b>, placé <b>en série</b> : on ouvre le circuit et le courant passe à travers l’appareil, comme un compteur d’eau sur le tuyau. Ici, il affiche ${fr(I, 2)} A. Sur le terrain, on utilise plutôt une pince ampèremétrique, qui mesure sans couper le fil.`,
-    r: `La résistance se mesure avec un <b>ohmmètre</b>, <b>circuit hors tension</b>, aux deux bornes de l’élément. Ici, il affiche ${Rr} Ω. Si le générateur restait branché, la mesure serait fausse et l’appareil pourrait s’abîmer.`,
-  })[mode];
-  const upd = () => {
-    const U = +u.value, Rr = +r.value, I = U / Rr;
-    $('#uri-u').textContent = U + ' V'; $('#uri-r').textContent = Rr + ' Ω'; $('#uri-i').textContent = fr(I, 2) + ' A';
-    $('#ohm-m-u-v').textContent = U + ' V'; $('#ohm-m-i-v').textContent = fr(I, 2) + ' A'; $('#ohm-m-r-v').textContent = Rr + ' Ω';
-    const pump = $('#uri-pump'), flow = $('#uri-flow'), mill = $('#uri-mill');
-    pump.classList.toggle('on', U > 0); pump.style.animationDuration = (U > 0 ? 8 / U : 1).toFixed(2) + 's';
-    flow.classList.toggle('on', I > 0); flow.style.animationDuration = (I > 0 ? Math.max(0.22, Math.min(5, 1.1 / Math.sqrt(I))) : 1).toFixed(2) + 's';
-    mill.classList.toggle('on', I > 0); mill.style.animationDuration = (I > 0 ? Math.max(0.5, Math.min(8, 2.2 / Math.sqrt(I))) : 1).toFixed(2) + 's';
-    const h = 1 + 10 * (Rr - 2) / 98;
-    $('#uri-w1').setAttribute('height', 5 + h); $('#uri-w2').setAttribute('y', 87 - (5 + h)); $('#uri-w2').setAttribute('height', 5 + h);
-    $('#uri-mes').innerHTML = texte(U, I, Rr);
-  };
-  const show = () => { ['u', 'i', 'r'].forEach((m) => { $('#ohm-m-' + m).classList.toggle('on', m === mode); }); $$('.uri-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === mode))); upd(); };
-  $$('.uri-tabs button').forEach((b) => b.addEventListener('click', () => { mode = b.dataset.m; show(); }));
-  u.addEventListener('input', upd); r.addEventListener('input', upd); show();
-  if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => svg.classList.toggle('run', e.isIntersecting))).observe(svg);
-  else svg.classList.add('run');
+/* ---------------- U, I, R : petites animations dans les cartes ---------------- */
+(function grandeurs() {
+  const cartes = $$('.qanim'); if (!cartes.length) return;
+  const calme = matchMedia('(prefers-reduced-motion: reduce)');
+  let b = false, tmr = 0, vis = new Set();
+  const poser = () => cartes.forEach((c) => { c.classList.toggle('b', b); const cap = c.parentElement.querySelector('.qcap'); if (cap) cap.textContent = b ? cap.dataset.b : cap.dataset.a; });
+  const tic = () => { b = !b; poser(); };
+  const go = () => { clearInterval(tmr); tmr = 0; if (vis.size && !calme.matches && !document.hidden) tmr = setInterval(tic, 3200); };
+  if ('IntersectionObserver' in window) { const io = new IntersectionObserver((es) => { es.forEach((e) => { e.target.classList.toggle('run', e.isIntersecting); if (e.isIntersecting) vis.add(e.target); else vis.delete(e.target); }); go(); }); cartes.forEach((c) => io.observe(c)); }
+  else cartes.forEach((c) => { c.classList.add('run'); vis.add(c); });
+  document.addEventListener('visibilitychange', go);
+  poser();
 })();
 
 /* ---------------- Consignation pas à pas ---------------- */
