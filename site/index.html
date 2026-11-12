@@ -4108,23 +4108,39 @@ const V3D = (() => {
       this.hlC = c || null; if (!this.b) return;
       const b = this.b, T = window.THREE;
       (b.halos || []).forEach((m) => { b.g.remove(m); m.geometry.dispose(); }); b.halos = [];
+      (b.exMesh || []).forEach((m) => { (m.parent || b.g).remove(m); if (m.geometry) m.geometry.dispose(); if (m.isSprite && m.material.map) m.material.map.dispose(); }); b.exMesh = [];
+      (b.exHid || []).forEach((o) => { o.visible = true; }); b.exHid = [];
       (b.ghosted || []).forEach((m) => { m.material = m.userData.m0; }); b.ghosted = [];
       Object.values(b.lamps).forEach((L) => { if (L && L.glow) L.glow.material.opacity = 1; });
       if (!b.ghosts) { b.ghosts = new Map(); b.lits = new Map(); }
       /* le reste de la scène passe dans l'ombre, sans perdre ses couleurs */
       this.hemi.intensity = this.H0 * (c ? 0.7 : 1); this.sun.intensity = this.S0 * (c ? 0.6 : 1);
-      b.wires.forEach((r) => {
-        r.mesh.material = r.mat;
-        if (!c || !(r.wid ? c.wires.has(r.wid) : r.key === c.key)) return;
-        /* fil du circuit : couleur pleine, sans ombre, entouré d'un halo */
+      const mine = c ? b.wires.filter((r) => (r.wid ? c.wires.has(r.wid) : r.key === c.key)) : [];
+      const NOM = ['phase', 'neutre', 'terre', 'retour'], FOND = ['rgba(196,48,36,.95)', 'rgba(38,92,206,.95)', 'rgba(40,128,58,.95)', 'rgba(116,70,196,.95)'];
+      const P3 = (p) => (p.isVector3 ? p : new T.Vector3(p[0], p[1], p[2]));
+      b.wires.forEach((r) => { r.mesh.material = r.mat; });
+      const poses = [];
+      mine.forEach((r, i) => {
+        /* chaque fil se décolle du mur à sa propre profondeur et s'écarte un peu de ses voisins, en restant attaché à ses deux bornes */
+        const o = i - (mine.length - 1) / 2, off = new T.Vector3(o * 0.03, -o * 0.034, 0.08 + i * 0.05);
+        const V = r.pts.map(P3), ex = [V[0]].concat(V.map((v) => v.clone().add(off)), [V[V.length - 1]]);
         if (!b.lits.has(r.mat)) b.lits.set(r.mat, new T.MeshBasicMaterial({ color: r.mat.color, map: r.mat.map || null }));
-        r.mesh.material = b.lits.get(r.mat);
-        const halo = b.tube(r.pts, 0.0085, new T.MeshBasicMaterial({ color: r.mat.map ? 0xc9e84f : r.mat.color, transparent: true, opacity: 0.42, depthWrite: false }), 0.03);
+        const m = b.tube(ex, 0.0042, b.lits.get(r.mat), 0.03);
+        if (!m) return;
+        b.exMesh.push(m); r.mesh.visible = false; b.exHid.push(r.mesh);
+        const halo = b.tube(ex, 0.0095, new T.MeshBasicMaterial({ color: r.mat.map ? 0xc9e84f : r.mat.color, transparent: true, opacity: 0.35, depthWrite: false }), 0.03);
         if (halo) { halo.renderOrder = 5; b.halos.push(halo); }
+        /* nom du fil : chaque étiquette à un endroit différent du trajet, pour ne pas se chevaucher */
+        let tot = 0; for (let k = 2; k < ex.length - 1; k++) tot += ex[k].distanceTo(ex[k - 1]);
+        let vise = tot * (i + 1) / (mine.length + 1), mid = null;
+        for (let k = 2; k < ex.length - 1 && !mid; k++) { const l = ex[k].distanceTo(ex[k - 1]); if (vise <= l) mid = ex[k - 1].clone().lerp(ex[k], l ? vise / l : 0); else vise -= l; }
+        const best = tot;
+        if (mid && best > 0.4 && !poses.some((q) => q.distanceTo(mid) < 0.22)) { poses.push(mid); const sp = b.label(NOM[r.cls] || 'fil', mid.x, mid.y + 0.035, mid.z + 0.01, 0, FOND[r.cls] || FOND[3]); if (sp) { sp.renderOrder = 9; b.exMesh.push(sp); } }
       });
       /* les autres circuits (fils, câbles, connecteurs, appareils) deviennent transparents */
       if (c) Object.keys(b.groups).forEach((k) => {
         if (!/:(dev|w)$/.test(k) || k.split(':')[0] === c.key) return;
+        if (/:w$/.test(k)) { if (b.groups[k].visible) { b.groups[k].visible = false; b.exHid.push(b.groups[k]); } return; }
         b.groups[k].traverse((o) => {
           if (o.isSprite) { if (o.material.blending === T.AdditiveBlending) o.material.opacity = 0.12; return; }
           if (!o.isMesh) return;
@@ -4133,6 +4149,10 @@ const V3D = (() => {
           o.userData.m0 = m0; o.material = b.ghosts.get(m0); b.ghosted.push(o);
         });
       });
+      if (mine.length && b.exMesh.length && !this.stepOn) {
+        const bx = new T.Box3(); b.exMesh.forEach((m) => { if (m.isMesh) bx.expandByObject(m); });
+        if (!bx.isEmpty()) { const ctr = bx.getCenter(new T.Vector3()), sz = bx.getSize(new T.Vector3()); this.exOn = true; this.fly(ctr, Math.max(0.6, (Math.max(sz.x, sz.y) * 1.2 + 0.15) / 0.61), 0.32, 0.12); }
+      } else if (this.exOn && !c) { this.exOn = false; if (this.home && this.fitR) this.fly(this.home, this.fitR, 0.2, 0.09); }
       Object.values(b.mats).forEach((m) => { if (!m.transparent) return; if (m.userData.o === undefined) m.userData.o = m.opacity; m.opacity = c ? m.userData.o * 0.3 : m.userData.o; });
       Object.keys(b.ctl).forEach((ref) => { const k = b.ctl[ref]; if (k.lab) k.lab.material.opacity = !c || c.refs.has(ref) ? 1 : 0.35; });
       b.runLabs.forEach((r) => { r.sp.material.opacity = !c || r.keys.has(c.key) ? 1 : 0.35; });
