@@ -78,7 +78,8 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45de
   body.menu-open{overflow:hidden}
   body.menu-open .nav{display:flex}
   .nav-g,.nav-g.nav-home{display:flex;flex-direction:column;gap:6px}
-  .nav-t{display:block;font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 2px 4px}
+  .nav-t{display:block;font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 2px 4px;padding:0;border:0;background:none;text-align:left;pointer-events:none}
+  .nav-p{display:contents}
   .nav a{display:flex;flex-direction:column;gap:2px;width:100%;padding:12px 14px;border-radius:12px;font-size:16px}
   .nav a:hover{transform:none;box-shadow:none}
   .nav small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
@@ -980,6 +981,27 @@ html.fx .tilt:hover{--ty:-4px}
 .lex-box[open] .lex-go::before{transform:translateY(2px) rotate(-135deg)}
 .lex-box>summary:hover .lex-go{border-color:var(--accent)}
 .lex-box[open]{padding-bottom:6px}
+/* Ordinateur : trois menus déroulants au lieu de neuf boutons */
+@media (min-width:1241px){
+  header.top{z-index:45}
+  .nav{flex-wrap:nowrap;gap:8px}
+  .nav-g:not(.nav-home){display:block;position:relative}
+  .nav-t{pointer-events:auto;margin:0;text-transform:none;letter-spacing:normal;display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 16px;border:1.5px solid color-mix(in srgb,var(--line) 80%,transparent);border-radius:999px;background:color-mix(in srgb,var(--paper-2) 70%,transparent);color:var(--ink);font:600 15px var(--f-body);cursor:pointer;transition:border-color .2s}
+  .nav-t::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+  .nav-g.open .nav-t::after{transform:translateY(2px) rotate(-135deg)}
+  .nav-t:hover,.nav-g.open .nav-t{border-color:var(--ion)}
+  .nav-g.actif .nav-t{background:var(--g-cta) border-box no-repeat;color:#fff;border-color:transparent}
+  .nav-p{position:absolute;top:calc(100% + 10px);left:0;z-index:30;display:none;flex-direction:column;gap:4px;min-width:310px;padding:8px;border:1.5px solid var(--line);border-radius:18px;background:var(--paper);box-shadow:0 26px 50px -24px rgba(10,12,30,.55)}
+  .nav-p::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+  .nav-g:last-child .nav-p{left:auto;right:0}
+  .nav-g.open .nav-p{display:flex}
+  .nav .nav-p a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:0;border-radius:12px;background:transparent;box-shadow:none;transform:none;font-size:15px}
+  .nav .nav-p a:hover{background:var(--paper-2);box-shadow:none;transform:none}
+  .nav .nav-p a[aria-current="page"]{background:var(--g-cta) border-box no-repeat;color:#fff}
+  .nav-p small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
+}
+@media (min-width:1241px) and (hover:hover){.nav-g:not(.nav-home):hover .nav-p{display:flex}}
+@media (prefers-reduced-motion:reduce){.nav-t,.nav-t::after{transition:none}}
 .au-head{fill:#E0362B;stroke:#7A1A12;stroke-width:1.5}
 /* Zoom involontaire sur téléphone : pas de zoom au double toucher (le pincement reste possible),
    et des champs en 16 px au moins pour que l'iPhone ne zoome pas quand on les touche */
@@ -1079,9 +1101,9 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
     <span class="top-cur" id="top-cur"></span>
     <nav class="nav" id="nav" aria-label="Navigation principale">
       <div class="nav-g nav-home"><a href="#accueil" data-nav="accueil"><b>Accueil</b><small>Choisir par où commencer</small></a></div>
-      <div class="nav-g"><span class="nav-t">Apprendre</span><a href="#bases" data-nav="bases"><b>Les bases</b><small>Tension, courant, symboles, code couleur</small></a><a href="#schemas" data-nav="schemas"><b>Schémas</b><small>12 circuits animés à actionner</small></a></div>
-      <div class="nav-g"><span class="nav-t">S’entraîner</span><a href="#examen" data-nav="examen"><b>Examen pratique</b><small>Les 3 espaces de travail du TP-00467</small></a><a href="#qcm" data-nav="qcm"><b>Examen théorique</b><small>Le QCM de 60 questions, corrigé</small></a><a href="#depannage" data-nav="depannage"><b>Sécurité et dépannage</b><small>Consigner un circuit, puis trouver la panne</small></a><a href="#bac-a-sable" data-nav="bac-a-sable"><b>Bac à sable</b><small>Dessiner et tester ton propre circuit</small></a></div>
-      <div class="nav-g"><span class="nav-t">Aller plus loin</span><a href="#tableaux" data-nav="tableaux"><b>Tableaux FR / US</b><small>Comparer les deux installations</small></a><a href="#pv" data-nav="pv"><b>Panneaux PV</b><small>Du panneau au compteur</small></a><a href="#irve" data-nav="irve"><b>Bornes IRVE</b><small>Recharger une voiture électrique</small></a></div>
+      <div class="nav-g"><button class="nav-t" type="button" aria-expanded="false">Apprendre</button><div class="nav-p"><a href="#bases" data-nav="bases"><b>Les bases</b><small>Tension, courant, symboles, code couleur</small></a><a href="#schemas" data-nav="schemas"><b>Schémas</b><small>12 circuits animés à actionner</small></a></div></div>
+      <div class="nav-g"><button class="nav-t" type="button" aria-expanded="false">S’entraîner</button><div class="nav-p"><a href="#examen" data-nav="examen"><b>Examen pratique</b><small>Les 3 espaces de travail du TP-00467</small></a><a href="#qcm" data-nav="qcm"><b>Examen théorique</b><small>Le QCM de 60 questions, corrigé</small></a><a href="#depannage" data-nav="depannage"><b>Sécurité et dépannage</b><small>Consigner un circuit, puis trouver la panne</small></a><a href="#bac-a-sable" data-nav="bac-a-sable"><b>Bac à sable</b><small>Dessiner et tester ton propre circuit</small></a></div></div>
+      <div class="nav-g"><button class="nav-t" type="button" aria-expanded="false">Aller plus loin</button><div class="nav-p"><a href="#tableaux" data-nav="tableaux"><b>Tableaux FR / US</b><small>Comparer les deux installations</small></a><a href="#pv" data-nav="pv"><b>Panneaux PV</b><small>Du panneau au compteur</small></a><a href="#irve" data-nav="irve"><b>Bornes IRVE</b><small>Recharger une voiture électrique</small></a></div></div>
     </nav>
     <div class="top-act">
       <button class="snd" id="theme" type="button" aria-label="Mode sombre" title="Passer en mode sombre"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path id="theme-moon" d="M15.5 12.2 A6.5 6.5 0 0 1 7.8 4.5 A6.5 6.5 0 1 0 15.5 12.2 Z" class="ico"/><g id="theme-sun" style="display:none"><circle cx="10" cy="10" r="3.4" class="ico"/><path d="M10 2.5V4.3M10 15.7V17.5M2.5 10H4.3M15.7 10H17.5M4.7 4.7L6 6M14 14L15.3 15.3M4.7 15.3L6 14M14 6L15.3 4.7" class="ico"/></g></svg></button>
@@ -5850,6 +5872,20 @@ document.querySelectorAll('.tbl-box').forEach((b) => {
   addEventListener('hashchange', () => setTimeout(agrandir, 200)); setTimeout(agrandir, 300);
 })();
 
+(function menusDeroulants() {
+  const grand = matchMedia('(min-width:1241px)');
+  const groupes = [...document.querySelectorAll('#nav .nav-g:not(.nav-home)')];
+  const fermer = (sauf) => groupes.forEach((g) => { if (g !== sauf) { g.classList.remove('open'); g.querySelector('.nav-t').setAttribute('aria-expanded', 'false'); } });
+  groupes.forEach((g) => {
+    const b = g.querySelector('.nav-t');
+    b.addEventListener('click', () => { if (!grand.matches) return; const o = !g.classList.contains('open'); fermer(g); g.classList.toggle('open', o); b.setAttribute('aria-expanded', String(o)); });
+    g.addEventListener('focusout', (e) => { if (!g.contains(e.relatedTarget)) { g.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
+  });
+  document.addEventListener('click', (e) => { if (!e.target.closest('#nav .nav-g')) fermer(); });
+  document.addEventListener('keydown', (e) => { if (e.key !== 'Escape') return; const g = groupes.find((x) => x.classList.contains('open')); if (g) { fermer(); g.querySelector('.nav-t').focus(); } });
+  const sync = () => { fermer(); groupes.forEach((g) => { g.classList.toggle('actif', !!g.querySelector('a[aria-current="page"]')); g.querySelector('.nav-t').tabIndex = grand.matches ? 0 : -1; }); };
+  addEventListener('hashchange', () => setTimeout(sync, 30)); grand.addEventListener('change', sync); setTimeout(sync, 60);
+})();
 window.addEventListener('hashchange', route);
 route();
 })();

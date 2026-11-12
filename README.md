@@ -101,6 +101,10 @@ Composant `vari` (variateur) : il ferme le circuit comme un interrupteur dès qu
 
 `S1` est un interrupteur marqué `au` : au repos son contact est fermé ; un appui (« coup de poing ») l’ouvre ; le déverrouillage le remet en place sans refermer le contact (`st.arme = false`) ; seul le réarmement volontaire referme le circuit et réalimente la bobine de KM1. Symbole : contact fermé au repos avec tête rouge, et mention « enfoncé » ou « à réarmer ».
 
+## Navigation
+
+Au-delà de 1 240 px de large, la barre du haut montre trois menus déroulants (`.nav-g` : « Apprendre », « S’entraîner », « Aller plus loin »), chacun avec un bouton `.nav-t` et un panneau `.nav-p` : ouverture au survol, au clic ou au clavier (Entrée), fermeture par Échap, clic ailleurs ou changement de page (`menusDeroulants()`). Le groupe de la page en cours prend la classe `actif` (pas `cur`, déjà utilisé par l’animation du courant, qui bloque les clics). En dessous de 1 240 px, le menu burger affiche les mêmes groupes en liste.
+
 ## Ajouter un composant
 
 1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).
