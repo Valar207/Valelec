@@ -149,3 +149,10 @@ Schémas simplifiés à but pédagogique. Références : NF C 15-100 (France), N
 ## Bouton test du différentiel
 
 En 3D, toucher le bouton jaune d’un interrupteur différentiel (ID1, ID2) appelle `Circuit.testDiff` : s’il est armé et sous tension, il déclenche comme en vrai (fuite volontaire de plus de 30 mA) et un message l’explique ; s’il est déjà déclenché ou hors tension, rien ne se passe et le message dit pourquoi. `View.nearTest` ne retient le bouton que s’il est plus proche du doigt que le centre du module.
+
+## Sens du courant en 3D
+
+Comme sur le schéma 2D, des tirets jaunes avancent dans chaque fil 3D parcouru par le courant (`View.flowSync`, appelée par `sync`). Chaque fil reçoit une fine gaine transparente texturée de tirets, dont le décalage de texture avance environ 30 fois par seconde, seulement quand la vue est à l'écran (`this.vis`), et pas du tout si l'utilisateur a demandé moins d'animations.
+
+- **Les 12 schémas** : chaque fil 3D est relié à son fil 2D (`wid`), on reprend donc exactement l'état et le sens calculés par `solve` (`res.ws[id].from`).
+- **Les espaces d'examen** : les fils 3D n'ont pas d'équivalent un à un en 2D. Chaque conducteur retient ses deux nœuds et son nom (`meta`), et le sens est déduit : la phase va du tableau vers les boîtes puis les appareils, le retour va de l'interrupteur vers la lampe, le neutre revient au tableau. Un fil ne s'anime que si son circuit alimente un récepteur, et pas s'il touche un récepteur éteint. Les fils de commande (poussoirs, bobines) et la terre restent immobiles.

@@ -3487,7 +3487,7 @@ const V3D = (() => {
       return hd;
     }
     /* conducteur rattaché à un circuit : key (scènes de l'énoncé) ou wid (scènes générées) */
-    wire(P, c, key, wid, rad) { const m = this.tube(P, 0.0034, this.wmat(c), rad === undefined ? 0.03 : rad); if (m) this.wires.push({ mesh: m, mat: m.material, key, wid, pts: P, sk: this.curK, cls: c === 'vj' ? 2 : c === 'bleu' ? 1 : c === 'rouge' || c === 'marron' ? 0 : 3 }); return m; }
+    wire(P, c, key, wid, rad, meta) { if (meta) this.wmeta = meta; const m = this.tube(P, 0.0034, this.wmat(c), rad === undefined ? 0.03 : rad); if (m) this.wires.push({ mesh: m, mat: m.material, key, wid, rad: rad === undefined ? 0.03 : rad, meta: this.wmeta || null, pts: P, sk: this.curK, cls: c === 'vj' ? 2 : c === 'bleu' ? 1 : c === 'rouge' || c === 'marron' ? 0 : 3 }); if (meta) this.wmeta = null; return m; }
     /* voyant vert d'un appareil alimenté : caché tant que l'appareil ne fonctionne pas */
     led(x, y, z) { const m = new this.T.Mesh(new this.T.SphereGeometry(0.011, 10, 8), new this.T.MeshBasicMaterial({ color: 0x4ade80 })); m.position.set(x, y, z); m.visible = false; this.g.add(m); return m; }
     mat(c, o) { const k = c + JSON.stringify(o || {}); if (!this.mats[k]) this.mats[k] = new this.T.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.48, metalness: 0.02, envMapIntensity: 0.4 }, o || {})); return this.mats[k]; }
@@ -3674,7 +3674,8 @@ const V3D = (() => {
         const A = o.from && this.nodes[o.from] ? this.nodes[o.from].at(w.a || w.n) : null, B = o.to && this.nodes[o.to] ? this.nodes[o.to].at(w.b || w.n) : null;
         if (w.via) w.via.slice().reverse().forEach((v) => P.unshift(v)); if (A) { if (this.nodes[o.from].kind === 'jbox') P.unshift([A.x, A.y - 0.028, A.z + 0.02]); P.unshift([A.x, A.y, A.z]); } if (B) { if (this.nodes[o.to].kind === 'jbox') P.push([B.x, B.y - 0.028, B.z + 0.02]); P.push([B.x, B.y, B.z]); }
         keys.add(w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null));
-        this.wire(P, w.c, w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null));
+        this.wmeta = { na: A ? o.from : null, nb: B ? o.to : null, net: w.n || w.a };
+        this.wire(P, w.c, w.ck || o.ck || (this.cmap ? this.cmap(w.n || w.a) : null)); this.wmeta = null;
       }));
       if (o.label) { const p = pts[Math.floor(pts.length / 2)], q = pts[Math.max(0, Math.floor(pts.length / 2) - 1)], at = o.at || [(p[0] + q[0]) / 2 + 0.05, (p[1] + q[1]) / 2 + 0.04]; this.runLabs.push({ sp: this.grp(ck0, () => this.label(o.label, at[0], at[1], 0.12)), keys }); }
     }
@@ -3719,7 +3720,7 @@ const V3D = (() => {
       for (let i = -7; i <= 7; i++) this.cyl(0.0055, 0.004, this.mat(0x8c7433, { metalness: 0.3 }), x + i * W * 0.046, py, 0.032, 10);
       this.nodes[id] = N; return N;
     }
-    link(a, na, b, nb, c) { return this.grp(((this.cmap && this.cmap(na)) || 'COM') + ':w', () => { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.wire([[A.x, A.y, A.z]].concat(this.nodes[a].kind === 'jbox' ? [[A.x, A.y - 0.028, A.z + 0.02]] : [], [mid, [B.x, B.y, B.z]]), c, this.cmap ? this.cmap(na) : null); }); }
+    link(a, na, b, nb, c) { return this.grp(((this.cmap && this.cmap(na)) || 'COM') + ':w', () => { const A = this.nodes[a].at(na), B = this.nodes[b].at(nb), mid = [(A.x + B.x) / 2, (A.y + B.y) / 2, Math.max(A.z, B.z) + 0.02]; this.wire([[A.x, A.y, A.z]].concat(this.nodes[a].kind === 'jbox' ? [[A.x, A.y - 0.028, A.z + 0.02]] : [], [mid, [B.x, B.y, B.z]]), c, this.cmap ? this.cmap(na) : null, undefined, undefined, { na: a, nb: b, net: na }); }); }
   }
   /* ---- Espace 1 : implantation de l'énoncé (TR, BD1, ICTA G01 à G07, moulure M1) ---- */
   function esp1(B) {
@@ -3998,7 +3999,7 @@ const V3D = (() => {
       this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.renderSteps(); this.draw();
     }
-    sync(C) { if (!this.b || !C || !C.res) return; this.r.shadowMap.needsUpdate = true; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = !this.stepOn && c && C.res.loadsOn[c.id], dm = on ? (c.st.dim ?? 1) : 0; L.m.emissiveIntensity = on ? 1.1 * (0.2 + 0.8 * dm) : 0; L.pt.intensity = on ? 0.38 * dm : 0; if (L.glow) L.glow.visible = !!on; });
+    sync(C) { if (!this.b || !C || !C.res) return; this.flowSync(C); this.r.shadowMap.needsUpdate = true; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = !this.stepOn && c && C.res.loadsOn[c.id], dm = on ? (c.st.dim ?? 1) : 0; L.m.emissiveIntensity = on ? 1.1 * (0.2 + 0.8 * dm) : 0; L.pt.intensity = on ? 0.38 * dm : 0; if (L.glow) L.glow.visible = !!on; });
       Object.keys(this.b.ctl).forEach((ref) => {
         const k = this.b.ctl[ref], c = C.comps.find((x) => x.ref === ref); if (!c) return;
         const s = c.st, on = !this.stepOn && !!C.res.loadsOn[c.id];
@@ -4141,6 +4142,62 @@ const V3D = (() => {
       Object.keys(b.ctl).forEach((ref) => { const k = b.ctl[ref]; if (k.lab) k.lab.material.opacity = !c || c.refs.has(ref) ? 1 : 0.35; });
       b.runLabs.forEach((r) => { r.sp.visible = !c || r.keys.has(c.key); });
       this.draw();
+    }
+    /* sens du courant : des tirets jaunes avancent dans chaque fil parcouru par le courant, comme sur le schéma 2D */
+    flowSync(C) {
+      const b = this.b, T = window.THREE; if (!b || !T) return;
+      const ws = C.res.ws || {}; let any = false;
+      if (!this.dashTex) {
+        const cv = document.createElement('canvas'); cv.width = 64; cv.height = 8; const q = cv.getContext('2d');
+        q.fillStyle = '#FFD84A'; q.fillRect(0, 0, 22, 8);
+        this.dashTex = new T.CanvasTexture(cv); this.dashTex.wrapS = T.RepeatWrapping;
+      }
+      const REC = new Set(['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'baes', 'prise', 'ev']);
+      const byRef = {}; C.comps.forEach((c) => { byRef[c.ref] = c; });
+      const actif = {}; (b.circ.list || []).forEach((c) => { actif[c.key] = [...c.refs].some((ref) => byRef[ref] && C.res.loadsOn[byRef[ref].id]); });
+      const prof = (id) => { const N = b.nodes[id]; if (/^AGCP/.test(id)) return -1; return !N ? 2 : N.kind === 'tab' ? 0 : N.kind === 'jbox' ? 1 : 2; };
+      const recep = (id) => byRef[id] && REC.has(byRef[id].type) ? byRef[id] : null;
+      const deduit = (r) => {
+        const m = r.meta; if (!m || !m.na || !m.nb || !actif[r.key]) return null;
+        const n = m.net || '', k = /^PE/.test(n) ? '' : /^N(\.|$)/.test(n) ? 'n' : /^L(\.|$)/.test(n) || n === 'C1.1' ? 'l' : /^(S|RL)(\.|$)/.test(n) || n === 'C1.2' ? 'r' : '';
+        if (!k) return null;
+        const ra = recep(m.na), rb = recep(m.nb);
+        if ((ra && !C.res.loadsOn[ra.id]) || (rb && !C.res.loadsOn[rb.id])) return null;
+        const pa = prof(m.na), pb = prof(m.nb);
+        let fwd = k === 'r' ? (rb ? true : ra ? false : pb < pa) : pa <= pb;
+        if (k === 'n') fwd = !fwd;
+        return { on: true, dir: fwd ? 1 : -1 };
+      };
+      b.wires.forEach((r) => {
+        const st0 = !this.stepOn && r.wid ? ws[r.wid] : null, dd = !this.stepOn && !r.wid ? deduit(r) : null;
+        const st = st0 || null, on = (!!st && st.s === 'on') || !!dd;
+        if (on && !r.flow) {
+          const tx = this.dashTex.clone(); tx.needsUpdate = true;
+          const m = b.tube(r.pts, 0.0058, new T.MeshBasicMaterial({ map: tx, transparent: true, depthWrite: false }), r.rad);
+          if (!m) return;
+          if (m.parent) m.parent.remove(m); (r.mesh.parent || b.g).add(m); m.renderOrder = 4;
+          let L = 0; const P = r.pts.map((q) => (q.isVector3 ? q : new T.Vector3(q[0], q[1], q[2]))); for (let i = 1; i < P.length; i++) L += P[i].distanceTo(P[i - 1]);
+          tx.repeat.set(Math.max(1, Math.round(L / 0.035)), 1);
+          r.flow = { m, tx, dir: 1 };
+        }
+        if (!r.flow) return;
+        r.flow.m.visible = on;
+        if (on) { if (dd) r.flow.dir = dd.dir; else { const w = C.wires.find((x) => x.id === r.wid); r.flow.dir = !st.from || !w || st.from === w.a ? 1 : -1; } any = true; }
+      });
+      this.flowOn = any;
+      if (any && !this.flowAf) {
+        let last = performance.now();
+        const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const step = (now) => {
+          if (!this.flowOn || !this.b) { this.flowAf = 0; return; }
+          this.flowAf = requestAnimationFrame(step);
+          if (calme || !this.vis || now - last < 33) return;
+          const dt = Math.min(0.1, (now - last) / 1000); last = now;
+          this.b.wires.forEach((r) => { if (r.flow && r.flow.m.visible) r.flow.tx.offset.x -= r.flow.dir * dt * 1.5; });
+          this.draw();
+        };
+        this.flowAf = requestAnimationFrame(step);
+      }
     }
     /* boîte située sous un point de l'écran */
     zoneAt(x, y) {
