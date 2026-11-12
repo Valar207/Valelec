@@ -980,6 +980,10 @@ html.fx .tilt:hover{--ty:-4px}
 .lex-box[open] .lex-go::before{transform:translateY(2px) rotate(-135deg)}
 .lex-box>summary:hover .lex-go{border-color:var(--accent)}
 .lex-box[open]{padding-bottom:6px}
+/* Zoom involontaire sur téléphone : pas de zoom au double toucher (le pincement reste possible),
+   et des champs en 16 px au moins pour que l'iPhone ne zoome pas quand on les touche */
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (max-width:820px){input:not([type=range]):not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px !important}}
 /* U, I, R : animations des cartes */
 .qanim{display:block;width:100%;height:auto;margin:6px 0 10px;border-radius:14px;background:var(--board)}
 .pipe{fill:none;stroke:#556273;stroke-width:30;stroke-linecap:round}

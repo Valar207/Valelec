@@ -89,6 +89,10 @@ Tableau de bord : https://valaris.goatcounter.com (compte de Valentin). Comptage
 - **Temps passé** : `temps/<page>/30s` et `temps/<page>/2min`, onglet visible uniquement.
 - La page de présentation compte ses visites avec le script standard.
 
+## Zoom sur téléphone
+
+`html{touch-action:manipulation}` supprime le zoom au double toucher, sans bloquer le pincement à deux doigts (nécessaire pour l’accessibilité, et que Safari impose de toute façon). Sous 820 px de large, les champs de saisie sont en 16 px au moins, pour que l’iPhone ne zoome pas quand on les touche. Les schémas gardent leur propre zoom au pincement (`touch-action:none` sur les tableaux de dessin).
+
 ## Ajouter un composant
 
 1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).
