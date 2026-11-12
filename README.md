@@ -15,7 +15,7 @@ valelec/
 ├── README.md
 ├── site/
 │   ├── index.html          ← le site complet (HTML + CSS + JS dans un seul fichier)
-│   ├── presentation.html   ← page de présentation pour les centres de formation (non référencée, captures dans presentation/)
+│   ├── presentation.html   ← page de présentation pour les centres de formation (non référencée, captures dans presentation/ : examen, pas-a-pas, qcm, lexique, grandeurs, consignation, panne ; à reprendre après un gros changement)
 │   ├── qcm/                ← photos du QCM
 │   └── vendor/three.min.js ← three.js r150.1 (licence MIT), chargé seulement quand une vue 3D devient visible
 └── maquettes-design/       ← maquettes du canevas Design (format .dc.html de claude.ai), pour référence

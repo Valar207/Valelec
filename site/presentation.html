@@ -9,54 +9,63 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
 :root{--paper:#F6F4FC;--card:#fff;--line:#DCD6EF;--ink:#14122B;--ink-2:#3A3757;--muted:#625E80;--accent:#C8195F;
-  --g-live:linear-gradient(120deg,#5B3BFF,#B83DFF 38%,#FF3D81 68%,#FF7A3D);--g-arc:linear-gradient(100deg,#FFD84A,#FF6A3D 28%,#FF3D81 54%,#8B5CFF 78%,#27C4FF)}
+  --g-live:linear-gradient(120deg,#5B3BFF,#B83DFF 38%,#FF3D81 68%,#FF7A3D);--g-cta:linear-gradient(120deg,#4F2FE0,#8E24C9 40%,#C5175E 72%,#B23C0C);--g-arc:linear-gradient(100deg,#FFD84A,#FF6A3D 28%,#FF3D81 54%,#8B5CFF 78%,#27C4FF)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;touch-action:manipulation}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 header{padding:56px 0 36px;background:radial-gradient(60% 120% at 0% 0%,rgba(139,92,255,.28),transparent 70%),radial-gradient(50% 110% at 100% 20%,rgba(255,61,129,.22),transparent 70%)}
 .eyebrow{margin:0 0 14px;font:500 13px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.04em;line-height:1.08;margin:0;text-wrap:balance}
 h1{font-size:clamp(34px,5.4vw,60px);font-weight:800}
-h1 span{background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
-h2{font-size:clamp(24px,3.2vw,34px);margin-bottom:18px}
+h1 span{background:var(--g-cta);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(24px,3.2vw,34px);margin-bottom:10px}
 h3{font-size:18px;margin-bottom:6px;letter-spacing:-.02em}
-.lead{font-size:clamp(17px,2vw,20px);color:var(--ink-2);max-width:62ch;margin:18px 0 26px}
-.btn{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 24px;border-radius:999px;background:var(--g-live);color:#fff;font-weight:600;text-decoration:none;box-shadow:0 20px 44px -20px rgba(139,92,255,.8)}
+.lead{font-size:clamp(17px,2vw,20px);color:var(--ink-2);max-width:64ch;margin:18px 0 26px}
+.sub{color:var(--ink-2);max-width:70ch;margin:0 0 22px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 24px;border-radius:999px;background:var(--g-cta);color:#fff;font-weight:600;text-decoration:none;box-shadow:0 20px 44px -20px rgba(139,92,255,.8)}
 .btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 section{padding:44px 0}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:34px}
 .facts div{padding:16px 18px;border:1.5px solid var(--line);border-radius:16px;background:var(--card)}
-.facts b{display:block;font:800 30px 'Sora',sans-serif;letter-spacing:-.04em;background:var(--g-live);-webkit-background-clip:text;background-clip:text;color:transparent}
+.facts b{display:block;font:800 30px 'Sora',sans-serif;letter-spacing:-.04em;background:var(--g-cta);-webkit-background-clip:text;background-clip:text;color:transparent}
 .facts span{font-size:14px;color:var(--ink-2)}
 .shots{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.duo.tall{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
 figure{margin:0}
-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1.5px solid var(--line);box-shadow:0 30px 60px -36px rgba(20,18,43,.5)}
+figure img{display:block;width:100%;height:auto;border-radius:16px;border:1.5px solid var(--line);box-shadow:0 30px 60px -36px rgba(20,18,43,.5);background:#fff}
 figcaption{margin-top:8px;font-size:13.5px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr));gap:14px}
 .card{padding:20px 22px;border:1.5px solid var(--line);border-radius:18px;background:var(--card)}
 .card p{margin:0;color:var(--ink-2);font-size:15px}
-ul{margin:0;padding-left:20px;color:var(--ink-2)}
-li{margin-bottom:6px}
+.card .tag{display:inline-block;margin-bottom:8px;font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.why{display:grid;gap:14px}
+.why>div{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;padding:18px 20px;border:1.5px solid var(--line);border-radius:18px;background:var(--card)}
+.why i{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--g-cta);color:#fff;font:800 18px 'Sora',sans-serif;font-style:normal}
+.why h3{margin-bottom:4px}
+.why p{margin:0;color:var(--ink-2);font-size:15px}
 .ask{border:2px solid transparent;border-radius:22px;background:linear-gradient(var(--card),var(--card)) padding-box,var(--g-arc) border-box;padding:28px}
 .ask ol{margin:0;padding-left:22px;color:var(--ink-2)}
 .ask li{margin-bottom:10px}
 .ask b{color:var(--ink)}
 footer{padding:28px 0 48px;font-size:14px;color:var(--muted)}
-@media (max-width:760px){.shots{grid-template-columns:1fr 1fr}.shots figure:first-child{grid-column:1/-1}}
+footer a{color:inherit}
+@media (max-width:760px){.shots{grid-template-columns:1fr 1fr}.shots figure:first-child{grid-column:1/-1}.duo,.duo.tall{grid-template-columns:1fr}}
 @media print{header{background:none}.btn{box-shadow:none}section{padding:22px 0;break-inside:avoid}}
 </style>
 
 <header><div class="wrap">
   <p class="eyebrow">Titre professionnel Électricien d’équipement du bâtiment</p>
   <h1>Valelec, l’outil de révision <span>créé par un stagiaire, pour les stagiaires.</span></h1>
-  <p class="lead">Un site sans installation ni compte, pour comprendre les schémas et préparer les deux épreuves du titre : l’examen pratique et le questionnaire professionnel. Il fonctionne sur téléphone comme sur ordinateur.</p>
-  <div class="row"><a class="btn" href="./">Essayer le site →</a><a class="btn ghost" href="./#examen">Voir l’examen pratique</a></div>
+  <p class="lead">Un site gratuit, sans installation ni compte, pour comprendre l’électricité, lire les schémas, travailler en sécurité et préparer les deux épreuves du titre : l’examen pratique et le questionnaire professionnel. Il fonctionne aussi bien sur téléphone que sur ordinateur, du grand débutant au stagiaire en fin de parcours.</p>
+  <div class="row"><a class="btn" href="./">Essayer le site →</a><a class="btn ghost" href="./#depannage">Voir la consignation et les pannes</a></div>
   <div class="facts">
     <div><b>3</b><span>espaces de travail de l’examen pratique, en 2D et en 3D</span></div>
     <div><b>60</b><span>questions du QCM, corrigées et expliquées une à une</span></div>
     <div><b>11</b><span>schémas animés, du simple allumage au contacteur heures creuses</span></div>
-    <div><b>4</b><span>modes de recharge IRVE, plus un module photovoltaïque</span></div>
+    <div><b>7</b><span>pannes à diagnostiquer avec un vérificateur d’absence de tension</span></div>
+    <div><b>44</b><span>mots techniques expliqués d’un simple toucher</span></div>
   </div>
 </div></header>
 <main>
@@ -71,25 +80,47 @@ footer{padding:28px 0 48px;font-size:14px;color:var(--muted)}
 </div></section>
 
 <section><div class="wrap">
-  <h2>Ce que le site apporte</h2>
-  <div class="grid">
-    <div class="card"><h3>Comprendre avant de câbler</h3><p>Chaque schéma est vivant : on voit quel fil est sous tension, où le courant circule, et ce qui se passe quand on déclenche une protection. Le câblage suit les règles françaises, avec un disjoncteur phase + neutre par circuit.</p></div>
-    <div class="card"><h3>Voir l’installation réelle</h3><p>La vue 3D reprend l’implantation de l’énoncé : tableau, boîtes de dérivation, conduits, goulottes, chaque conducteur à sa couleur. On peut ouvrir une boîte pour voir les connexions une à une.</p></div>
-    <div class="card"><h3>Suivre un circuit</h3><p>Un toucher sur un fil met son circuit en surbrillance, du disjoncteur jusqu’au récepteur, et efface les autres. Utile pour repérer une erreur de raisonnement.</p></div>
-    <div class="card"><h3>S’entraîner au questionnaire</h3><p>Les 60 questions par compétence, la correction commentée, le score par compétence et la liste des erreurs à revoir.</p></div>
-    <div class="card"><h3>Réviser partout</h3><p>Aucune application à installer, aucun compte à créer. Le stagiaire révise dans les transports, sur son téléphone.</p></div>
-    <div class="card"><h3>Aller plus loin</h3><p>Des leçons sur les bases, un bac à sable pour dessiner ses propres schémas, la comparaison des tableaux français et américain, le photovoltaïque et les bornes de recharge.</p></div>
+  <h2>Accessible aux grands débutants</h2>
+  <p class="sub">Un stagiaire qui découvre le métier ne connaît ni « phase », ni « navette », ni « bobine ». Le site part de zéro et ne laisse aucun mot technique sans explication.</p>
+  <div class="duo tall">
+    <figure><img src="presentation/lexique.jpg" alt="Sur téléphone, une infobulle explique le mot « retour lampe »"><figcaption>Partout sur le site, les mots du lexique sont en italique. Un toucher ou un survol affiche leur définition, sans quitter la page.</figcaption></figure>
+    <figure><img src="presentation/grandeurs.jpg" alt="Les cartes Tension, Intensité et Résistance, chacune animée avec un tuyau d’eau"><figcaption>Tension, intensité, résistance : chaque grandeur est animée avec l’image du tuyau d’eau, et chaque carte dit avec quel appareil la mesurer.</figcaption></figure>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Ce que le centre peut y gagner</h2>
-  <ul>
-    <li>Un support de révision que les stagiaires utilisent d’eux-mêmes, en dehors des heures d’atelier.</li>
-    <li>Un appui pour le formateur : projeter un schéma animé ou la vue 3D pour expliquer un montage à tout le groupe.</li>
-    <li>Un outil qui peut être adapté aux sujets et au matériel du centre.</li>
-    <li>Aucune donnée personnelle collectée : pas de compte, pas de cookie publicitaire.</li>
-  </ul>
+  <h2>La sécurité avant tout : consigner, puis dépanner</h2>
+  <p class="sub">Deux compétences difficiles à entraîner en atelier, parce qu’elles demandent de préparer des installations en défaut et de surveiller chaque geste. Ici, le stagiaire s’exerce autant qu’il veut, sans aucun risque.</p>
+  <div class="duo">
+    <figure><img src="presentation/consignation.jpg" alt="Exercice de consignation : le tableau avec le disjoncteur ouvert et cadenassé, et le choix de l’étape suivante"><figcaption>La consignation selon la NF C 18-510 : le stagiaire choisit chaque étape dans l’ordre, au milieu de pièges réalistes (tournevis testeur, interrupteur d’éclairage…). Le tableau réagit à chaque choix.</figcaption></figure>
+    <figure><img src="presentation/panne.jpg" alt="Exercice Trouve la panne : mesures au VAT et conclusion validée, avec la croix rouge sur le défaut"><figcaption>Trouve la panne : le défaut est invisible sur le schéma. Le stagiaire mesure au VAT entre deux bornes, raisonne, puis conclut. Ici, le neutre coupé, avec le piège classique d’un fil de neutre sous tension.</figcaption></figure>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Ce que le site apporte</h2>
+  <div class="grid">
+    <div class="card"><span class="tag">Comprendre</span><h3>Partir de zéro</h3><p>Un lexique des mots de base en tête du parcours, des infobulles sur 44 termes, et des symboles présentés du plus simple au plus technique : chaque explication ne s’appuie que sur ce qui a déjà été vu.</p></div>
+    <div class="card"><span class="tag">Comprendre</span><h3>Voir le courant circuler</h3><p>Chaque schéma est vivant : on voit quel fil est sous tension, où le courant passe, et ce qui se passe quand une protection déclenche. Le câblage suit les règles françaises, avec un disjoncteur phase + neutre par circuit.</p></div>
+    <div class="card"><span class="tag">Examen pratique</span><h3>L’installation réelle en 3D</h3><p>La vue 3D reprend l’implantation des espaces de travail : tableau, boîtes de dérivation, conduits, chaque conducteur à sa couleur. On ouvre une boîte pour voir les connexions, ou on construit l’installation pas à pas.</p></div>
+    <div class="card"><span class="tag">Examen théorique</span><h3>Le QCM corrigé</h3><p>Les 60 questions par compétence, la correction expliquée après chaque réponse, le score par compétence et la liste des erreurs à revoir.</p></div>
+    <div class="card"><span class="tag">Sécurité</span><h3>Consigner et dépanner</h3><p>La consignation étape par étape, puis 7 pannes réalistes à trouver au VAT : fil coupé, neutre coupé, navette coupée, interrupteur sur le neutre, prise sans terre…</p></div>
+    <div class="card"><span class="tag">Aller plus loin</span><h3>Au-delà de l’examen</h3><p>Un bac à sable pour dessiner et tester ses propres schémas, la comparaison des tableaux français et américain, le photovoltaïque et les bornes de recharge, avec leurs calculs de dimensionnement.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Pourquoi c’est utile pour une école</h2>
+  <div class="why">
+    <div><i>1</i><div><h3>Plus de temps d’atelier pour la pratique</h3><p>Les stagiaires révisent la théorie, les schémas et le QCM de leur côté, sur leur téléphone, dans les transports ou le soir. Le temps en atelier se concentre sur le geste professionnel.</p></div></div>
+    <div><i>2</i><div><h3>Des groupes hétérogènes, un seul outil</h3><p>Le débutant s’appuie sur le lexique, les infobulles et les animations. Le stagiaire avancé passe directement aux espaces d’examen, au dépannage, au photovoltaïque ou aux bornes de recharge. Chacun avance à son rythme.</p></div></div>
+    <div><i>3</i><div><h3>La sécurité répétée jusqu’au réflexe</h3><p>La consignation et la vérification d’absence de tension s’entraînent sans limite et sans danger, avant de toucher une installation réelle. Les erreurs classiques sont expliquées au moment où elles sont commises.</p></div></div>
+    <div><i>4</i><div><h3>Le dépannage, enfin entraînable</h3><p>Préparer des pannes en atelier prend du temps et du matériel. Ici, sept pannes sont prêtes, se relancent en un clic, et obligent à raisonner à partir de mesures, comme sur un vrai chantier.</p></div></div>
+    <div><i>5</i><div><h3>Un appui pour le formateur</h3><p>Projeter un schéma animé ou la vue 3D devant le groupe, lancer une panne et la diagnostiquer ensemble, faire construire l’installation pas à pas : le site sert aussi en cours collectif.</p></div></div>
+    <div><i>6</i><div><h3>Savoir ce qui est réellement utilisé</h3><p>Une mesure d’audience anonyme indique les pages consultées, les schémas ouverts, les mots les plus souvent consultés dans le lexique, les pannes trouvées ou ratées et les tranches de résultats au QCM. De quoi repérer les notions qui posent problème à une promotion, sans aucune donnée personnelle.</p></div></div>
+    <div><i>7</i><div><h3>Rien à installer, rien à payer, ouvert à tous</h3><p>Pas de compte, pas de cookie, pas de logiciel. Le site est hébergé gratuitement, fonctionne sur n’importe quel téléphone, et son accessibilité a été vérifiée (contraste, clavier, lecteurs d’écran, thème sombre).</p></div></div>
+    <div><i>8</i><div><h3>Adaptable au centre</h3><p>Les espaces d’examen, les pannes et les questions peuvent être adaptés aux sujets, au matériel et aux priorités pédagogiques du centre.</p></div></div>
+  </div>
 </div></section>
 
 <section><div class="wrap">
@@ -97,14 +128,14 @@ footer{padding:28px 0 48px;font-size:14px;color:var(--muted)}
     <h2>Ce que je propose</h2>
     <ol>
       <li><b>Valider le contenu ensemble.</b> Les espaces de l’examen pratique et le questionnaire reprennent le dossier TP-00467. Je souhaite votre accord écrit pour les utiliser, ou les remplacer par des exercices équivalents rédigés avec vous.</li>
-      <li><b>Faire relire le site par un formateur.</b> Les explications et l’ordre de câblage du pas à pas gagneraient à être vérifiés par un professionnel de la formation.</li>
-      <li><b>Lancer un essai sur une promotion.</b> Quelques semaines d’utilisation, puis un retour des stagiaires et des formateurs.</li>
+      <li><b>Faire relire le site par un formateur.</b> Les explications, l’ordre de câblage du pas à pas, la consignation et les pannes gagneraient à être vérifiés par un professionnel de la formation.</li>
+      <li><b>Lancer un essai sur une promotion.</b> Quelques semaines d’utilisation, la mesure d’audience pour voir ce qui sert vraiment, puis un retour des stagiaires et des formateurs.</li>
       <li><b>Discuter d’un partenariat.</b> Si l’essai est concluant : une licence pour le centre, avec les adaptations et le suivi dont vous avez besoin.</li>
     </ol>
   </div>
 </div></section>
 
 </main>
-<footer><div class="wrap">Valelec · conçu et développé par Valentin, stagiaire du titre professionnel Électricien d’équipement du bâtiment · <a href="./">formationeeb.pages.dev</a></div></footer>
+<footer><div class="wrap">Valelec · conçu et développé par Valentin, stagiaire du titre professionnel Électricien d’équipement du bâtiment · <a href="./">formationeeb.pages.dev</a> · mesure d’audience anonyme, sans cookie</div></footer>
 <script>if (location.hostname === 'formationeeb.pages.dev') { const s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.dataset.goatcounter = 'https://valaris.goatcounter.com/count'; document.body.appendChild(s); }</script>
 </html>
