@@ -981,25 +981,19 @@ html.fx .tilt:hover{--ty:-4px}
 .lex-box[open] .lex-go::before{transform:translateY(2px) rotate(-135deg)}
 .lex-box>summary:hover .lex-go{border-color:var(--accent)}
 .lex-box[open]{padding-bottom:6px}
-/* Fil par fil et tableau de câblage */
-.fil{grid-column:1/-1;margin-top:10px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper-2);display:grid !important;grid-template-columns:minmax(0,1fr) !important;gap:8px;max-width:760px}
-.fil>*{grid-column:1/-1 !important}
-.fil p{margin:0;font-size:15px;color:var(--ink-2)}
-.fil b{color:var(--ink)}
-.fil .fil-go{justify-self:start}
-.fil-d{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
-.fil-k{display:inline-block;width:22px;height:6px;border-radius:3px;margin-right:6px;vertical-align:middle;background:#B48CF2}
-.fil-k.k-ph{background:#E5533D}.fil-k.k-ne{background:#4E8EF7}.fil-k.k-pe{background:repeating-linear-gradient(90deg,#3E9A3A 0 6px,#F2CB2E 6px 12px)}
-.fil-n{display:flex;flex-wrap:wrap;gap:8px}
-.cab{grid-column:1/-1;margin-top:10px}
-.cab>summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;align-items:center}
-.cab table{width:100%;border-collapse:collapse;font-size:14px}
-.cab th,.cab td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
-.cab .fil-row{min-width:36px;min-height:32px;padding:0 8px}
-.fil-note{margin:8px 0 0;font-size:13px;color:var(--muted)}
+/* Vue éclatée d'un circuit */
+.ex-bar{position:absolute;left:10px;top:10px;z-index:3;display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;padding:6px 6px 6px 12px;border-radius:999px;background:rgba(12,16,24,.82);color:#e8eef6;font-size:13.5px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.ex-bar b{color:#FFD84A}
+.ex-bar .ctl{min-height:34px;padding:0 12px;border-radius:999px;font-size:13px}
+.t.exl{font-size:12px;font-weight:600;paint-order:stroke;stroke:#111A24;stroke-width:4px}
+.t.exl.ph{fill:#FF8A7A}.t.exl.ne{fill:#8DB6FF}.t.exl.pe{fill:#9FD88F}.t.exl.rt{fill:#CDB2FF}.t.exl.c{text-anchor:middle}
+
 /* Ordinateur : trois menus déroulants au lieu de neuf boutons */
 @media (min-width:1241px){
   header.top{z-index:45}
+  .top .wrap{justify-content:flex-start}
+  .top .nav{margin-left:18px}
+  .top-act{margin-left:auto}
   .nav{flex-wrap:nowrap;gap:8px}
   .nav-g:not(.nav-home){display:block;position:relative}
   .nav-t{pointer-events:auto;margin:0;text-transform:none;letter-spacing:normal;display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 16px;border:1.5px solid color-mix(in srgb,var(--line) 80%,transparent);border-radius:999px;background:color-mix(in srgb,var(--paper-2) 70%,transparent);color:var(--ink);font:600 15px var(--f-body);cursor:pointer;transition:border-color .2s}
@@ -2805,6 +2799,7 @@ class Board {
   /* Routage des fils du bac à sable : chemin orthogonal sur la grille (A*), sans jamais longer un autre fil.
      Un fil peut seulement en croiser un autre à angle droit ; il évite l’intérieur des composants et les bornes des autres appareils. */
   routeAll(pos) {
+    if (this.exAnim) return null;
     const C = this.C, G = 20, W = ED_W, H = ED_H;
     const sig = C.comps.map((c) => c.id + ':' + c.x + ',' + c.y + ',' + (c.rot || 0)).join('|') + '#' + C.wires.map((w) => w.id + w.a + w.b + (w.flip ? 1 : 0)).join('|');
     if (this._rsig === sig) return this._routes;
@@ -2880,7 +2875,76 @@ class Board {
     this._rsig = sig; this._routes = out;
     return out;
   }
+  /* Vue éclatée : seul le circuit choisi reste, ses appareils sont écartés en colonnes (de l'alimentation au récepteur) et ses fils redessinés, nommés */
+  explode(c, net) {
+    const C = this.C;
+    if (this.edit || !this.svg) { this.render(); return; }
+    const from = this.ex ? this.ex.cur : null;
+    if (!c) {
+      if (!this.ex) { this.render(); return; }
+      if (net) { this.ex = null; this.exBar(); this.fit(); this.render(); return; }
+      const ex = this.ex; ex.back = true; this.anim(ex, () => { this.ex = null; this.exBar(); this.fit(); this.render(); });
+      return;
+    }
+    const keep = new Set(c.comps), src = C.comps.find((x) => x.type === 'src' || x.type === 'pv');
+    const wires = C.wires.filter((w) => c.wires.has(w.id) || (src && (w.a.startsWith(src.id + ':') || w.b.startsWith(src.id + ':')) && [w.a, w.b].some((k) => keep.has(k.split(':')[0]))));
+    wires.forEach((w) => [w.a, w.b].forEach((k) => keep.add(k.split(':')[0])));
+    const cab = cablage(C), roles = {}; cab.fils.forEach((f) => { roles[f.id] = f; });
+    /* colonnes : distance depuis l'alimentation en suivant la phase ; les appareils reliés seulement au neutre vont en bas */
+    const col = {}, q = [], br = C.comps.find((x) => x.ref === c.key && keep.has(x.id));
+    if (src && keep.has(src.id)) { col[src.id] = 0; q.push(src.id); } else if (br) { col[br.id] = 0; q.push(br.id); }
+    while (q.length) { const x = q.shift(); wires.forEach((w) => { const r = roles[w.id]; if (r && (r.k === 'ne' || r.k === 'pe')) return; const a = w.a.split(':')[0], b = w.b.split(':')[0]; [[a, b], [b, a]].forEach(([m, n]) => { if (m === x && col[n] === undefined) { col[n] = col[x] + 1; q.push(n); } }); }); }
+    const maxc = Math.max(1, ...Object.values(col));
+    const loads = new Set([...keep].filter((id) => { const k = C.find(id); return k && ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes', 'ev', 'evse', 'ond'].includes(k.type); }));
+    loads.forEach((id) => { col[id] = Math.max(col[id] ?? 0, maxc); });
+    const bas = [...keep].filter((id) => col[id] === undefined);
+    const parCol = {}; [...keep].forEach((id) => { if (col[id] === undefined) return; (parCol[col[id]] = parCol[col[id]] || []).push(id); });
+    const pos = {}, DX = 230, DY = 150;
+    Object.keys(parCol).forEach((k) => { const L = parCol[k].sort((a, b) => C.find(a).y - C.find(b).y); L.forEach((id, i) => { pos[id] = { x: 140 + +k * DX, y: 160 + (i - (L.length - 1) / 2) * DY }; }); });
+    const ymax = Math.max(160, ...Object.values(pos).map((p) => p.y));
+    bas.forEach((id, i) => { pos[id] = { x: 140 + DX * (0.5 + i), y: ymax + DY }; });
+    const orig = {}; [...keep].forEach((id) => { const k = C.find(id); orig[id] = { x: k.x, y: k.y }; });
+    this.ex = { c, keep, wires, roles, from: from || orig, to: pos, cur: from || orig, t: 0, back: false, vb0: this.vb ? Object.assign({}, this.vb) : null };
+    this.exBar();
+    this.anim(this.ex, () => { this.render(); });
+  }
+  anim(ex, done) {
+    cancelAnimationFrame(this.exRaf);
+    const t0 = performance.now(), D = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450;
+    const vbA = ex.back ? this.exVb(ex.to) : (ex.vb0 || this.vb), vbB = ex.back ? (ex.vb0 || this.vb) : this.exVb(ex.to);
+    const step = (now) => {
+      const k = D ? Math.min(1, (now - t0) / D) : 1, e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, s = ex.back ? 1 - e : e;
+      ex.cur = {}; Object.keys(ex.to).forEach((id) => { const a = ex.from[id] || ex.to[id], b = ex.to[id]; ex.cur[id] = { x: a.x + (b.x - a.x) * s, y: a.y + (b.y - a.y) * s }; });
+      const vb = { x: vbA.x + (vbB.x - vbA.x) * e, y: vbA.y + (vbB.y - vbA.y) * e, w: vbA.w + (vbB.w - vbA.w) * e, h: vbA.h + (vbB.h - vbA.h) * e };
+      this.vb = vb; this.svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+      this.exAnim = k < 1; this.render();
+      if (k < 1) this.exRaf = requestAnimationFrame(step); else { this.exAnim = false; done && done(); }
+    };
+    this.exRaf = requestAnimationFrame(step);
+  }
+  exVb(pos) {
+    const C = this.C; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    Object.keys(pos).forEach((id) => { const k = C.find(id); if (!k) return; const b = boxOf(k), right = (k.rot || 0) % 180 !== 0, p = pos[id]; x0 = Math.min(x0, p.x - b.W / 2 - 20); x1 = Math.max(x1, p.x + b.W / 2 + (right ? 130 : 20)); y0 = Math.min(y0, p.y - b.H / 2 - 30); y1 = Math.max(y1, p.y + b.H / 2 + (right ? 20 : 50)); });
+    const pad = 40; return { x: x0 - pad, y: y0 - pad - 10, w: x1 - x0 + 2 * pad, h: y1 - y0 + 2 * pad + 10 };
+  }
+  exView() {
+    const C = this.C, ex = this.ex;
+    const comps = C.comps.filter((k) => ex.keep.has(k.id)).map((k) => Object.assign({}, k, ex.cur[k.id] || {}));
+    return { comps, wires: ex.wires, res: C.res, find: (id) => comps.find((k) => k.id === id), power: C.power, events: C.events };
+  }
+  exBar() {
+    const host = this.svg.parentElement; if (!host) return;
+    let bar = host.querySelector(':scope > .ex-bar');
+    if (!this.ex || this.ex.back) { if (bar) bar.remove(); return; }
+    if (!bar) { if (getComputedStyle(host).position === 'static') host.style.position = 'relative'; bar = document.createElement('div'); bar.className = 'ex-bar'; host.appendChild(bar); bar.addEventListener('click', (e) => { if (e.target.closest('button') && this.opts.onExitExplode) this.opts.onExitExplode(); }); }
+    bar.innerHTML = `<span>Vue éclatée · circuit <b>${esc(this.ex.c.key)}</b></span><button type="button" class="ctl">Tout le schéma</button>`;
+  }
   render() {
+    if (!this.ex) return this._render();
+    const C0 = this.C; this.C = this.exView();
+    try { this._render(); } finally { this.C = C0; }
+  }
+  _render() {
     const C = this.C, ui = this.ui, res = C.res, now = Date.now();
     const t = performance.now() / 1000;
     const dFlow = -(t % 0.7).toFixed(3), dLive = -(t % 1.8).toFixed(3);
@@ -2905,7 +2969,7 @@ class Board {
     let h = '';
     const vb = this.edit ? { x: 0, y: 0, w: ED_W, h: ED_H } : (this.vb || { x: 0, y: 0, w: 800, h: 500 });
     h += `<rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="#111A24"/><rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="url(#${this.gid})" data-bg="1"/>`;
-    const conn = {}, RT = this.routeAll(pos);
+    const conn = {}, RT = this.routeAll(pos), exLab = [];
     C.wires.forEach((w) => {
       conn[w.a] = (conn[w.a] || 0) + 1; conn[w.b] = (conn[w.b] || 0) + 1;
       const A = pos[w.a], B = pos[w.b]; if (!A || !B) return;
@@ -2917,6 +2981,7 @@ class Board {
       const sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === w.id ? ' sel' : '';
       if (sel) { let best = -1; for (let i = 1; i < pts.length; i++) { const l = Math.abs(pts[i].x - pts[i - 1].x) + Math.abs(pts[i].y - pts[i - 1].y); if (l > best) { best = l; selMid = { x: (pts[i].x + pts[i - 1].x) / 2, y: (pts[i].y + pts[i - 1].y) / 2 }; } } }
       const delay = r.s === 'live' ? dLive : dFlow;
+      if (this.ex && !this.exAnim && this.ex.roles[w.id]) { let best = -1, m = null; for (let i = 1; i < pts.length; i++) { const l = Math.abs(pts[i].x - pts[i - 1].x) + Math.abs(pts[i].y - pts[i - 1].y); if (l > best) { best = l; m = { x: (pts[i].x + pts[i - 1].x) / 2, y: (pts[i].y + pts[i - 1].y) / 2, v: pts[i].x === pts[i - 1].x }; } } if (m && best > 60) exLab.push(`<text x="${m.x + (m.v ? 8 : 0)}" y="${m.y - (m.v ? 0 : 7)}" class="t exl ${color}${m.v ? '' : ' c'}">${esc(this.ex.roles[w.id].role.toLowerCase())}</text>`); }
       h += `<g class="wire${sel}${this.hl ? (this.hl.wires.has(w.id) ? ' lit' : ' dimmed') : ''}" data-wire="${w.id}">${this.edit || this.opts.onWire ? `<path d="${d}" class="whit"/>` : ''}<path d="${d}" class="w ${color}"/>${color === 'pe' ? `<path d="${d}" class="w pey"/>` : ''}${r.s ? `<path d="${d}" class="cur ${r.s}" style="animation-delay:${delay}s"/>` : ''}</g>`;
     });
     C.comps.forEach((c) => {
@@ -2973,6 +3038,7 @@ class Board {
       if (RT && RT._j) RT._j.forEach((q) => { h += `<circle class="jdot" cx="${q.x}" cy="${q.y}" r="4.5"/>`; });
       Object.keys(conn).forEach((k) => { if (conn[k] >= 2 && pos[k] && !k.startsWith('x')) { const c = C.find(k.split(':')[0]); if (c && c.type !== 'borne') h += `<circle class="jdot" cx="${pos[k].x}" cy="${pos[k].y}" r="4"/>`; } });
     }
+    if (exLab.length) h += exLab.join('');
     this.root.innerHTML = h;
     if (this.opts.onRender) this.opts.onRender();
   }
@@ -3308,56 +3374,17 @@ function cablage(C) {
 function makeHL(C, B, V, el) {
   let list = [], cur = null;
   const paint = () => { el.querySelectorAll('[data-c]').forEach((b) => b.setAttribute('aria-pressed', String((cur ? cur.key : '') === b.dataset.c))); };
-  const box = document.createElement('div'); box.className = 'fil'; box.hidden = true; box.setAttribute('aria-live', 'polite');
-  const tab = document.createElement('details'); tab.className = 'cab';
-  (el.closest('.stage') || el).after(box); box.after(tab);
-  let cab = { fils: [] }, mode = null;
-  const fil1 = (f) => ({ key: f.c ? f.c.key : 'ALIM', wires: new Set([f.id]), comps: new Set(f.comps), refs: new Set(), loads: [], others: [] });
-  const voir = () => {
-    const c0 = cur || (list.length === 1 ? list[0] : null);
-    if (!c0) { box.hidden = true; return; }
-    const L = cab.fils.filter((f) => f.c && f.c.key === c0.key);
-    box.hidden = !L.length;
-    if (!mode) { box.innerHTML = `<p class="fil-t"><b>Circuit ${c0.key}</b> · ${L.length} fils</p><button type="button" class="ctl fil-go" data-f="0">Câbler fil par fil</button>`; return; }
-    const i = Math.max(0, Math.min(mode.i, L.length - 1)), f = L[i]; mode.i = i;
-    B.hl = fil1(f); B.render(); V.setCircuit(fil1(f));
-    box.innerHTML = `<p class="fil-t"><b>Circuit ${cur.key}</b> · fil ${i + 1} sur ${L.length}</p>
-      <p class="fil-d"><span class="fil-k k-${f.k}"></span><b>${f.role}</b> · ${f.section} · ${f.couleur}</p>
-      <p class="fil-e">De <b>${f.de}</b><br>à <b>${f.a}</b></p>
-      <div class="fil-n"><button type="button" class="ctl" data-f="${i - 1}" ${i ? '' : 'disabled'}>← Précédent</button><button type="button" class="ctl" data-f="${i + 1}" ${i < L.length - 1 ? '' : 'disabled'}>Suivant →</button><button type="button" class="ctl" data-f="tout">Tout le circuit</button></div>`;
-  };
-  const tableau = () => {
-    cab = cablage(C);
-    const rows = cab.fils.map((f, n) => `<tr><td><button type="button" class="ctl fil-row" data-w="${f.id}" aria-label="Voir le fil ${n + 1}">${n + 1}</button></td><td>${f.c ? f.c.key : 'Alim.'}</td><td><span class="fil-k k-${f.k}"></span>${f.role}</td><td>${f.de}</td><td>${f.a}</td><td>${f.section}</td></tr>`).join('');
-    tab.hidden = !cab.fils.length;
-    tab.innerHTML = `<summary>Tableau de câblage · ${cab.fils.length} fils</summary><div class="tbl-box" tabindex="0" role="region" aria-label="Tableau de câblage"><table data-gl-non><thead><tr><th scope="col">N°</th><th scope="col">Circuit</th><th scope="col">Fil</th><th scope="col">De</th><th scope="col">À</th><th scope="col">Section</th></tr></thead><tbody>${rows}</tbody></table></div><p class="fil-note">Couleurs : phase rouge, marron ou noire ; neutre bleu ; terre vert et jaune ; retours, navettes et commandes d’une autre couleur. Touche un numéro pour voir le fil.</p>`;
-  };
-  box.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-f]'); if (!b) return;
-    if (!cur && list.length === 1) { cur = list[0]; paint(); }
-    if (!cur) return;
-    if (b.dataset.f === 'tout') { mode = null; B.hl = cur; B.render(); V.setCircuit(cur); voir(); return; }
-    mode = { i: +b.dataset.f }; voir();
-  });
-  tab.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-w]'); if (!b) return;
-    const f = cab.fils.find((x) => x.id === b.dataset.w); if (!f) return;
-    if (!f.c) { mode = null; cur = null; B.hl = fil1(f); B.render(); V.setCircuit(fil1(f)); paint(); box.hidden = true; return; }
-    const L = cab.fils.filter((x) => x.c && x.c.key === f.c.key);
-    cur = list.find((c) => c.key === f.c.key) || f.c; paint(); mode = { i: L.indexOf(f) }; voir();
-    (box.closest('.v3d-wrap, .col2d, section') || box).scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  });
-  const set = (c) => { cur = c || null; mode = null; B.hl = cur; B.render(); V.setCircuit(cur); paint(); voir(); };
+  const set = (c) => { cur = c || null; B.hl = cur; if (B.explode) B.explode(cur); else B.render(); V.setCircuit(cur); paint(); };
   const hl = {
-    refresh() { list = circuitsOf(C); cur = null; mode = null; B.hl = null; V.setCircuit(null); el.hidden = list.length < 2; tableau(); voir(); el.innerHTML = '<span>Suivre un circuit :</span>' + list.map((c) => `<button class="ctl" type="button" data-c="${c.key}" aria-pressed="false">${c.text}</button>`).join('') + '<button class="ctl ghost" type="button" data-c="" aria-pressed="true">Tous</button>'; },
+    refresh() { list = circuitsOf(C); cur = null; B.hl = null; if (B.explode) B.explode(null, true); V.setCircuit(null); el.hidden = list.length < 2; el.innerHTML = '<span>Suivre un circuit :</span>' + list.map((c) => `<button class="ctl" type="button" data-c="${c.key}" aria-pressed="false">${c.text}</button>`).join('') + '<button class="ctl ghost" type="button" data-c="" aria-pressed="true">Tous</button>'; },
     pick(c) { if (V.stepOn) return; if (list.length > 1) set(c && cur && c.key === cur.key ? null : c); },
     byWire(id) { this.pick(id ? list.find((c) => c.wires.has(id)) : null); },
     tap(r) { if (!r) { this.pick(null); return; } this.pick(r.wid ? list.find((c) => c.wires.has(r.wid)) : list.find((c) => c.key === r.key)); }
   };
   el.addEventListener('click', (e) => { const b = e.target.closest('[data-c]'); if (b) set(list.find((c) => c.key === b.dataset.c)); });
   /* un clic ailleurs sur la page rend l'affichage normal ; schémas et 3D gèrent leur propre toucher, les boutons restent utilisables */
-  document.addEventListener('click', (e) => { if (cur && !e.target.closest('.ctl, .v3d-zoom, .v3d canvas, svg.view, .fil, .cab')) set(null); });
-  B.opts.onWire = (id) => hl.byWire(id); V.hl = hl;
+  document.addEventListener('click', (e) => { if (cur && !e.target.closest('.ctl, .v3d-zoom, .v3d canvas, svg.view, .ex-bar')) set(null); });
+  B.opts.onWire = (id) => hl.byWire(id); B.opts.onExitExplode = () => set(null); V.hl = hl;
   return hl;
 }
 const V3D = (() => {

@@ -103,15 +103,11 @@ Composant `vari` (variateur) : il ferme le circuit comme un interrupteur dès qu
 
 ## Navigation
 
-Au-delà de 1 240 px de large, la barre du haut montre trois menus déroulants (`.nav-g` : « Apprendre », « S’entraîner », « Aller plus loin »), chacun avec un bouton `.nav-t` et un panneau `.nav-p` : ouverture au survol, au clic ou au clavier (Entrée), fermeture par Échap, clic ailleurs ou changement de page (`menusDeroulants()`). Le groupe de la page en cours prend la classe `actif` (pas `cur`, déjà utilisé par l’animation du courant, qui bloque les clics). En dessous de 1 240 px, le menu burger affiche les mêmes groupes en liste.
+Au-delà de 1 240 px de large, la barre du haut montre, à droite du logo, trois menus déroulants (`.nav-g` : « Apprendre », « S’entraîner », « Aller plus loin »), chacun avec un bouton `.nav-t` et un panneau `.nav-p` : ouverture au survol, au clic ou au clavier (Entrée), fermeture par Échap, clic ailleurs ou changement de page (`menusDeroulants()`). Le groupe de la page en cours prend la classe `actif` (pas `cur`, déjà utilisé par l’animation du courant, qui bloque les clics). En dessous de 1 240 px, le menu burger affiche les mêmes groupes en liste.
 
-## Fil par fil et tableau de câblage
+## Vue éclatée d'un circuit
 
-`cablage(C)` décrit chaque fil d’un schéma : rôle (phase, neutre, terre, retour lampe, navette, commande), couleur réglementaire, section (déduite du disjoncteur du circuit : 16 A → 1,5 mm², 20 A → 2,5 mm²…), et ses deux extrémités (appareil et borne), orientées du disjoncteur vers le récepteur en suivant la phase. `makeHL()` ajoute sous le schéma et la 3D :
-- un panneau `.fil` : dès qu’un circuit est choisi (ou s’il n’y en a qu’un), « Câbler fil par fil » montre chaque fil seul, avec Précédent, Suivant et « Tout le circuit » ;
-- un tableau repliable `.cab` de tous les fils, dont chaque numéro ouvre le fil correspondant.
-
-Dans la page Schémas et les modules PV/IRVE, la 3D isole le même fil (les fils 3D portent l’identifiant du fil 2D). Dans l’examen pratique, la 3D est dessinée câble par câble : elle met en évidence le circuit entier pendant que le schéma 2D montre le fil exact.
+Quand on choisit un circuit (bouton « Suivre un circuit » ou toucher d’un fil), le schéma 2D passe en vue éclatée (`Board.explode`) : seuls les appareils et les fils de ce circuit restent ; ils sont rangés en colonnes à partir du disjoncteur du circuit en suivant la phase (récepteurs dans la dernière colonne, appareils reliés seulement au neutre en bas), avec une transition animée, puis les fils sont retracés et nommés (phase, neutre, retour lampe, navette, commande), d’après `cablage(C)`. Le bandeau « Vue éclatée · circuit … » propose « Tout le schéma » pour revenir. Pendant l’animation, le tracé reste simple (`exAnim`) ; il est recalculé à l’arrivée. Les appareils restent actionnables. La 3D garde sa mise en évidence (les autres circuits deviennent transparents).
 
 ## Ajouter un composant
 
