@@ -105,6 +105,14 @@ Composant `vari` (variateur) : il ferme le circuit comme un interrupteur dès qu
 
 Au-delà de 1 240 px de large, la barre du haut montre trois menus déroulants (`.nav-g` : « Apprendre », « S’entraîner », « Aller plus loin »), chacun avec un bouton `.nav-t` et un panneau `.nav-p` : ouverture au survol, au clic ou au clavier (Entrée), fermeture par Échap, clic ailleurs ou changement de page (`menusDeroulants()`). Le groupe de la page en cours prend la classe `actif` (pas `cur`, déjà utilisé par l’animation du courant, qui bloque les clics). En dessous de 1 240 px, le menu burger affiche les mêmes groupes en liste.
 
+## Fil par fil et tableau de câblage
+
+`cablage(C)` décrit chaque fil d’un schéma : rôle (phase, neutre, terre, retour lampe, navette, commande), couleur réglementaire, section (déduite du disjoncteur du circuit : 16 A → 1,5 mm², 20 A → 2,5 mm²…), et ses deux extrémités (appareil et borne), orientées du disjoncteur vers le récepteur en suivant la phase. `makeHL()` ajoute sous le schéma et la 3D :
+- un panneau `.fil` : dès qu’un circuit est choisi (ou s’il n’y en a qu’un), « Câbler fil par fil » montre chaque fil seul, avec Précédent, Suivant et « Tout le circuit » ;
+- un tableau repliable `.cab` de tous les fils, dont chaque numéro ouvre le fil correspondant.
+
+Dans la page Schémas et les modules PV/IRVE, la 3D isole le même fil (les fils 3D portent l’identifiant du fil 2D). Dans l’examen pratique, la 3D est dessinée câble par câble : elle met en évidence le circuit entier pendant que le schéma 2D montre le fil exact.
+
 ## Ajouter un composant
 
 1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).

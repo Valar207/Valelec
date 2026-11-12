@@ -981,6 +981,22 @@ html.fx .tilt:hover{--ty:-4px}
 .lex-box[open] .lex-go::before{transform:translateY(2px) rotate(-135deg)}
 .lex-box>summary:hover .lex-go{border-color:var(--accent)}
 .lex-box[open]{padding-bottom:6px}
+/* Fil par fil et tableau de câblage */
+.fil{grid-column:1/-1;margin-top:10px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper-2);display:grid !important;grid-template-columns:minmax(0,1fr) !important;gap:8px;max-width:760px}
+.fil>*{grid-column:1/-1 !important}
+.fil p{margin:0;font-size:15px;color:var(--ink-2)}
+.fil b{color:var(--ink)}
+.fil .fil-go{justify-self:start}
+.fil-d{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.fil-k{display:inline-block;width:22px;height:6px;border-radius:3px;margin-right:6px;vertical-align:middle;background:#B48CF2}
+.fil-k.k-ph{background:#E5533D}.fil-k.k-ne{background:#4E8EF7}.fil-k.k-pe{background:repeating-linear-gradient(90deg,#3E9A3A 0 6px,#F2CB2E 6px 12px)}
+.fil-n{display:flex;flex-wrap:wrap;gap:8px}
+.cab{grid-column:1/-1;margin-top:10px}
+.cab>summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;align-items:center}
+.cab table{width:100%;border-collapse:collapse;font-size:14px}
+.cab th,.cab td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.cab .fil-row{min-width:36px;min-height:32px;padding:0 8px}
+.fil-note{margin:8px 0 0;font-size:13px;color:var(--muted)}
 /* Ordinateur : trois menus déroulants au lieu de neuf boutons */
 @media (min-width:1241px){
   header.top{z-index:45}
@@ -3240,20 +3256,107 @@ function circuitsOf(C) {
   C.wires.forEach((w) => { [w.a, w.b].forEach((k) => { if (!src(k) && G[f(k)]) G[f(k)].wires.add(w.id); }); if (src(w.a) !== undefined || src(w.b) !== undefined) { const k = src(w.a) ? w.b : w.a, s = src(w.a) || src(w.b); if (G[f(k)] && !G[f(k)].key && !src(k)) G[f(k)].key = s.ref; } });
   return Object.values(G).filter((g) => g.real && g.key).map((g) => Object.assign(g, { text: g.key + ' · ' + (g.loads.length ? g.loads : g.others.slice(0, 2)).join(', ') }));
 }
+/* ---------------- Câblage : description de chaque fil (rôle, couleur, section, extrémités) ---------------- */
+function cablage(C) {
+  const P = {}; C.comps.forEach((c) => DEF[c.type].t.forEach((x) => { const k = c.id + ':' + x[0]; P[k] = k; }));
+  const f = (a) => { while (P[a] !== a) { P[a] = P[P[a]]; a = P[a]; } return a; };
+  const u = (a, b) => { const ra = f(a), rb = f(b); if (ra !== rb) P[ra] = rb; };
+  C.wires.forEach((w) => { if (P[w.a] !== undefined && P[w.b] !== undefined) u(w.a, w.b); });
+  C.comps.forEach((c) => { if (['disj', 'dpn', 'fus'].includes(c.type)) u(c.id + ':1', c.id + ':2'); if (c.type === 'dpn') u(c.id + ':N1', c.id + ':N2'); });
+  const kind = {};
+  C.comps.forEach((c) => { if (c.type === 'src') kind[f(c.id + ':L')] = 'ph'; if (c.type === 'pv') kind[f(c.id + ':+')] = 'ph'; });
+  C.comps.forEach((c) => { const s = (k, v) => { const r = f(k); if (!kind[r]) kind[r] = v; }; if (c.type === 'src') { s(c.id + ':N', 'ne'); s(c.id + ':PE', 'pe'); } if (c.type === 'pv') { s(c.id + ':-', 'ne'); s(c.id + ':PE', 'pe'); } if (c.type === 'terre') s(c.id + ':PE', 'pe'); });
+  const comp = (k) => C.find(k.split(':')[0]), tn = (k) => k.split(':')[1];
+  const BORNE = { src: { L: 'arrivée phase', N: 'arrivée neutre', PE: 'terre' }, dpn: { 1: 'entrée phase', 2: 'sortie phase', N1: 'entrée neutre', N2: 'sortie neutre' }, disj: { 1: 'entrée', 2: 'sortie' }, vav: { C: 'commun', 1: 'navette 1', 2: 'navette 2' }, prise: { L: 'phase', N: 'neutre', PE: 'terre' }, borne: { P: 'connecteur' } };
+  const lab = (k) => { const c = comp(k); if (!c) return k; const b = (BORNE[c.type] || {})[tn(k)]; return `${c.ref} · ${b || (/^A[12]$/.test(tn(k)) ? 'bobine ' + tn(k) : 'borne ' + tn(k))}`; };
+  const role = (w) => {
+    const k = kind[f(w.a)];
+    if (k === 'ph') return ['ph', 'Phase']; if (k === 'ne') return ['ne', 'Neutre']; if (k === 'pe') return ['pe', 'Terre'];
+    const ends = [w.a, w.b].map((x) => [comp(x), tn(x)]);
+    if (ends.some(([c, n]) => c && (c.type === 'perm' || (c.type === 'vav' && n !== 'C')))) return ['rt', 'Navette'];
+    if (ends.some(([c, n]) => c && (n === 'A1' || n === 'BP' || c.type === 'bp' || c.type === 'radio'))) return ['rt', 'Commande'];
+    if (ends.some(([c]) => c && ['lampe', 'voyant'].includes(c.type))) return ['rt', 'Retour lampe'];
+    return ['rt', 'Retour'];
+  };
+  const COUL = { ph: 'rouge, marron ou noir', ne: 'bleu', pe: 'vert et jaune', rt: 'une autre couleur (orange, violet…)' };
+  const circ = circuitsOf(C), deQui = {};
+  circ.forEach((c) => c.wires.forEach((id) => { deQui[id] = c; }));
+  const section = (c) => {
+    const br = c && C.comps.find((x) => x.ref === c.key && ['dpn', 'disj', 'fus'].includes(x.type)); const s = br ? String(br.lab || '') : '';
+    const m = s.match(/(\d+(?:,\d+)?)\s*mm²/); if (m) return m[1] + ' mm²';
+    const a = s.match(/(?:^|\D)(\d+)\s*A\b/) || s.match(/C(\d+)/); const A = a ? +a[1] : 0;
+    return A ? ({ 2: '1,5', 10: '1,5', 16: '1,5', 20: '2,5', 25: '4', 32: '6', 40: '10' }[A] || '—') + (A in { 2: 1, 10: 1, 16: 1, 20: 1, 25: 1, 32: 1, 40: 1 } ? ' mm²' : '') : '—';
+  };
+  /* ordre : phase, retours, neutre, terre ; dans chaque famille, du disjoncteur vers le récepteur */
+  const dist = {}, dc = {};
+  circ.forEach((c) => {
+    const br = C.comps.find((x) => x.ref === c.key); if (!br) return;
+    const d = { [br.id]: 0 }, q = [br.id];
+    while (q.length) { const x = q.shift(); C.wires.forEach((w) => { if (!c.wires.has(w.id) || ['ne', 'pe'].includes(kind[f(w.a)])) return; const a = w.a.split(':')[0], b = w.b.split(':')[0]; [[a, b], [b, a]].forEach(([m, n]) => { if (m === x && d[n] === undefined) { d[n] = d[x] + 1; q.push(n); } }); }); }
+    dc[c.key] = d;
+    c.wires.forEach((id) => { const w = C.wires.find((y) => y.id === id); if (w) dist[id] = Math.min(d[w.a.split(':')[0]] ?? 99, d[w.b.split(':')[0]] ?? 99); });
+  });
+  const ORD = { ph: 0, rt: 1, ne: 2, pe: 3 };
+  const fils = C.wires.map((w) => { const [k, r] = role(w), c = deQui[w.id], D = (c && dc[c.key]) || {}; let a = w.a, b = w.b;
+    if ((D[b.split(':')[0]] ?? 99) < (D[a.split(':')[0]] ?? 99)) [a, b] = [b, a];
+    return { id: w.id, c, k, role: r, couleur: COUL[k], section: k === 'pe' ? 'comme le circuit' : section(c), de: lab(a), a: lab(b), comps: [a.split(':')[0], b.split(':')[0]] }; });
+  fils.forEach((x) => { if (x.k === 'pe' && x.c) x.section = section(x.c); });
+  fils.sort((x, y) => (x.c ? 0 : 1) - (y.c ? 0 : 1) || (x.c && y.c ? circ.indexOf(x.c) - circ.indexOf(y.c) : 0) || ORD[x.k] - ORD[y.k] || (dist[x.id] ?? 99) - (dist[y.id] ?? 99));
+  return { fils, circ };
+}
 /* Boutons « suivre un circuit », reliés au schéma 2D et à la vue 3D */
 function makeHL(C, B, V, el) {
   let list = [], cur = null;
   const paint = () => { el.querySelectorAll('[data-c]').forEach((b) => b.setAttribute('aria-pressed', String((cur ? cur.key : '') === b.dataset.c))); };
-  const set = (c) => { cur = c || null; B.hl = cur; B.render(); V.setCircuit(cur); paint(); };
+  const box = document.createElement('div'); box.className = 'fil'; box.hidden = true; box.setAttribute('aria-live', 'polite');
+  const tab = document.createElement('details'); tab.className = 'cab';
+  (el.closest('.stage') || el).after(box); box.after(tab);
+  let cab = { fils: [] }, mode = null;
+  const fil1 = (f) => ({ key: f.c ? f.c.key : 'ALIM', wires: new Set([f.id]), comps: new Set(f.comps), refs: new Set(), loads: [], others: [] });
+  const voir = () => {
+    const c0 = cur || (list.length === 1 ? list[0] : null);
+    if (!c0) { box.hidden = true; return; }
+    const L = cab.fils.filter((f) => f.c && f.c.key === c0.key);
+    box.hidden = !L.length;
+    if (!mode) { box.innerHTML = `<p class="fil-t"><b>Circuit ${c0.key}</b> · ${L.length} fils</p><button type="button" class="ctl fil-go" data-f="0">Câbler fil par fil</button>`; return; }
+    const i = Math.max(0, Math.min(mode.i, L.length - 1)), f = L[i]; mode.i = i;
+    B.hl = fil1(f); B.render(); V.setCircuit(fil1(f));
+    box.innerHTML = `<p class="fil-t"><b>Circuit ${cur.key}</b> · fil ${i + 1} sur ${L.length}</p>
+      <p class="fil-d"><span class="fil-k k-${f.k}"></span><b>${f.role}</b> · ${f.section} · ${f.couleur}</p>
+      <p class="fil-e">De <b>${f.de}</b><br>à <b>${f.a}</b></p>
+      <div class="fil-n"><button type="button" class="ctl" data-f="${i - 1}" ${i ? '' : 'disabled'}>← Précédent</button><button type="button" class="ctl" data-f="${i + 1}" ${i < L.length - 1 ? '' : 'disabled'}>Suivant →</button><button type="button" class="ctl" data-f="tout">Tout le circuit</button></div>`;
+  };
+  const tableau = () => {
+    cab = cablage(C);
+    const rows = cab.fils.map((f, n) => `<tr><td><button type="button" class="ctl fil-row" data-w="${f.id}" aria-label="Voir le fil ${n + 1}">${n + 1}</button></td><td>${f.c ? f.c.key : 'Alim.'}</td><td><span class="fil-k k-${f.k}"></span>${f.role}</td><td>${f.de}</td><td>${f.a}</td><td>${f.section}</td></tr>`).join('');
+    tab.hidden = !cab.fils.length;
+    tab.innerHTML = `<summary>Tableau de câblage · ${cab.fils.length} fils</summary><div class="tbl-box" tabindex="0" role="region" aria-label="Tableau de câblage"><table data-gl-non><thead><tr><th scope="col">N°</th><th scope="col">Circuit</th><th scope="col">Fil</th><th scope="col">De</th><th scope="col">À</th><th scope="col">Section</th></tr></thead><tbody>${rows}</tbody></table></div><p class="fil-note">Couleurs : phase rouge, marron ou noire ; neutre bleu ; terre vert et jaune ; retours, navettes et commandes d’une autre couleur. Touche un numéro pour voir le fil.</p>`;
+  };
+  box.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-f]'); if (!b) return;
+    if (!cur && list.length === 1) { cur = list[0]; paint(); }
+    if (!cur) return;
+    if (b.dataset.f === 'tout') { mode = null; B.hl = cur; B.render(); V.setCircuit(cur); voir(); return; }
+    mode = { i: +b.dataset.f }; voir();
+  });
+  tab.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-w]'); if (!b) return;
+    const f = cab.fils.find((x) => x.id === b.dataset.w); if (!f) return;
+    if (!f.c) { mode = null; cur = null; B.hl = fil1(f); B.render(); V.setCircuit(fil1(f)); paint(); box.hidden = true; return; }
+    const L = cab.fils.filter((x) => x.c && x.c.key === f.c.key);
+    cur = list.find((c) => c.key === f.c.key) || f.c; paint(); mode = { i: L.indexOf(f) }; voir();
+    (box.closest('.v3d-wrap, .col2d, section') || box).scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  });
+  const set = (c) => { cur = c || null; mode = null; B.hl = cur; B.render(); V.setCircuit(cur); paint(); voir(); };
   const hl = {
-    refresh() { list = circuitsOf(C); cur = null; B.hl = null; V.setCircuit(null); el.hidden = list.length < 2; el.innerHTML = '<span>Suivre un circuit :</span>' + list.map((c) => `<button class="ctl" type="button" data-c="${c.key}" aria-pressed="false">${c.text}</button>`).join('') + '<button class="ctl ghost" type="button" data-c="" aria-pressed="true">Tous</button>'; },
+    refresh() { list = circuitsOf(C); cur = null; mode = null; B.hl = null; V.setCircuit(null); el.hidden = list.length < 2; tableau(); voir(); el.innerHTML = '<span>Suivre un circuit :</span>' + list.map((c) => `<button class="ctl" type="button" data-c="${c.key}" aria-pressed="false">${c.text}</button>`).join('') + '<button class="ctl ghost" type="button" data-c="" aria-pressed="true">Tous</button>'; },
     pick(c) { if (V.stepOn) return; if (list.length > 1) set(c && cur && c.key === cur.key ? null : c); },
     byWire(id) { this.pick(id ? list.find((c) => c.wires.has(id)) : null); },
     tap(r) { if (!r) { this.pick(null); return; } this.pick(r.wid ? list.find((c) => c.wires.has(r.wid)) : list.find((c) => c.key === r.key)); }
   };
   el.addEventListener('click', (e) => { const b = e.target.closest('[data-c]'); if (b) set(list.find((c) => c.key === b.dataset.c)); });
   /* un clic ailleurs sur la page rend l'affichage normal ; schémas et 3D gèrent leur propre toucher, les boutons restent utilisables */
-  document.addEventListener('click', (e) => { if (cur && !e.target.closest('.ctl, .v3d-zoom, .v3d canvas, svg.view')) set(null); });
+  document.addEventListener('click', (e) => { if (cur && !e.target.closest('.ctl, .v3d-zoom, .v3d canvas, svg.view, .fil, .cab')) set(null); });
   B.opts.onWire = (id) => hl.byWire(id); V.hl = hl;
   return hl;
 }
