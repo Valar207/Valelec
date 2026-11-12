@@ -97,6 +97,10 @@ Tableau de bord : https://valaris.goatcounter.com (compte de Valentin). Comptage
 
 Composant `vari` (variateur) : il ferme le circuit comme un interrupteur dès que son réglage `st.lvl` dépasse 0 ; chaque action le fait passer à 25, 50, 75, 100 % puis l’éteint. Dans `solve()`, une lampe placée après un variateur (recherche sans les liens internes des variateurs) consomme `watt × réglage` (`res.dim`) ; `simulate()` recopie ce réglage dans `st.dim` de la lampe, qui règle son éclat en 2D (`sym`) et en 3D (`sync`). En 3D, le variateur reprend le modèle de l’interrupteur. Schéma `vari` (« Variateur ») dans les circuits de base, après le double allumage ; symbole dans les Bases et la palette du bac à sable.
 
+## Arrêt d'urgence (espace n°3)
+
+`S1` est un interrupteur marqué `au` : au repos son contact est fermé ; un appui (« coup de poing ») l’ouvre ; le déverrouillage le remet en place sans refermer le contact (`st.arme = false`) ; seul le réarmement volontaire referme le circuit et réalimente la bobine de KM1. Symbole : contact fermé au repos avec tête rouge, et mention « enfoncé » ou « à réarmer ».
+
 ## Ajouter un composant
 
 1. Ajouter une entrée dans `DEF` (dimensions multiples de 40, bornes à des multiples de 20 du centre pour tomber sur la grille). Mettre `norot: true` pour un composant qui ne doit pas pivoter (c’est le cas de la borne de connexion, qui n’est qu’un point).
