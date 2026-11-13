@@ -180,3 +180,13 @@ Sur téléphone, un toucher long sur la vue 3D ou sur un schéma 2D ne sélectio
 - **Grand écran** (zone des schémas d'au moins 1000 px) : le schéma 2D prend toute la largeur (hauteur limitée à 74 % de l'écran), puis la vue 3D s'étale dessous en 16/10, avec les commandes, le pas à pas et les circuits dans une colonne à droite. La page Schémas s'élargit jusqu'à 1760 px ; sur la page Examen, seule la zone des schémas déborde de la colonne de texte (`.ex>.sim-cols`), les textes gardent une largeur confortable.
 - **Téléphone** : les deux vues vont presque d'un bord à l'autre et la 3D est plus haute (4/5). La caméra recule quand le cadre est plus haut que large (`View.recul()`), pour que le mur reste entier en largeur.
 - **Plein écran du schéma 2D** : même bouton que pour la 3D (`fsSet` gère `.col2d` et `.v3d-wrap`, un seul plein écran à la fois). Téléphone tourné à l'horizontale, le schéma occupe la gauche et les commandes passent en colonne à droite. Échap, ou un changement de page, referme.
+
+## 3D plus lisible
+
+- **Appareils reconnaissables** : le variateur est un bouton rotatif dont le repère orange tourne selon le réglage ; le va-et-vient porte une flèche ↕ gravée sur la bascule, le permutateur deux flèches croisées ; le poussoir une petite ampoule, le poussoir radio des ondes ; la bascule s'incline davantage pour qu'on voie sa position. Le type exact de l'appareil est transmis au constructeur 3D (`o.type`).
+- **Étiquettes** (`View.declutter`, recalculé seulement quand la caméra, le cadre ou le circuit suivi changent) : les noms de gaines et de câbles (G01, C1 · U1000…) n'apparaissent que pour le circuit suivi ; les étiquettes rapetissent quand on zoome (jusqu'à 45 %) ; quand deux étiquettes se chevauchent à l'écran, seule la plus importante reste (appareil à actionner, puis boîtes et titres, puis le reste).
+- **Téléphone** : animation du courant à 20 images par seconde au lieu de 30, arrêt quand l'onglet est caché, densité de pixels limitée à 1,5.
+
+## Symbole du variateur
+
+Le schéma 2D utilise le symbole normalisé : un cercle, une tige oblique et le triangle de variation. Le cercle se remplit de jaune selon le réglage, avec le pourcentage affiché.

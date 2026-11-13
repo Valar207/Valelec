@@ -2564,7 +2564,7 @@ function sym(c, on, now) {
     case 'dpn': { const y2 = s.closed ? 20 : 3, y6 = s.closed ? 60 : 43, x2 = s.closed ? 60 : 54; return `<path d="M0 20H20M62 20H80M56 14L68 26M68 14L56 26M0 60H20M60 60H80" class="s"/>${dot(20, 20)}${dot(20, 60)}${dot(60, 60)}<line x1="20" y1="20" x2="${x2}" y2="${y2}" class="s"/><line x1="20" y1="60" x2="${x2}" y2="${y6}" class="s"/><line x1="38" y1="${s.closed ? 20 : 11}" x2="38" y2="${s.closed ? 60 : 51}" class="s" stroke-dasharray="4 4"/><text x="8" y="56" class="t lab c" style="font-size:12px">N</text>`; }
     case 'fus': return `<path d="M0 20H18M62 20H80" class="s"/><rect x="18" y="11" width="44" height="18" rx="2" class="fuse${s.ok ? '' : ' blown'}"/><path d="M18 20H62" class="s thin${s.ok ? '' : ' blown'}"/>`;
     case 'terre': return `<path d="M20 0V20M6 20H34M11 27H29M16 34H24" class="s pe2"/>`;
-    case 'vari': return `<path d="M0 20H20M60 20H80" class="s"/>${dot(20, 20)}${dot(60, 20)}<line x1="20" y1="20" x2="${s.lvl ? 60 : 54}" y2="${s.lvl ? 20 : 3}" class="s"/><path d="M28 36L52 4M45 4H52V11" class="s thin"/>${s.lvl ? `<text x="40" y="-4" class="t sm c" style="fill:#FFD84A">${s.lvl} %</text>` : ''}`;
+    case 'vari': { const on = s.lvl > 0; return `<path d="M0 20H27M53 20H80" class="s"/><circle cx="40" cy="20" r="13" class="s" style="fill:${on ? `rgba(255,216,74,${(0.15 + 0.5 * s.lvl / 100).toFixed(2)})` : 'none'}"/><path d="M46 8.5L62 -22" class="s"/><path d="M45 -4H67V-12Z" class="s" style="fill:none;stroke-linejoin:round"/>${on ? `<text x="22" y="-8" class="t sm c" style="fill:#FFD84A">${s.lvl} %</text>` : ''}`; }
     case 'inter': if (c.au) { const ferme = s.on && s.arme !== false, enf = !s.on; return `<path d="M0 20H20M60 20H80" class="s"/>${dot(20, 20)}${dot(60, 20)}<line x1="20" y1="20" x2="${ferme ? 60 : 56}" y2="${ferme ? 20 : 4}" class="s"/><path d="M40 ${enf ? 12 : 6}V-6" class="s thin dash"/><path d="M28 -6H52" class="s"/><path d="M27 -6Q40 -22 53 -6Z" class="au-head"/>${!ferme ? `<text x="40" y="38" class="t sm c" style="fill:#FF8A7A">${enf ? 'enfoncé' : 'à réarmer'}</text>` : ''}`; }
       return `<path d="M0 20H20M60 20H80" class="s"/>${dot(20, 20)}${dot(60, 20)}<line x1="20" y1="20" x2="${s.on ? 60 : 54}" y2="${s.on ? 20 : 3}" class="s"/>`;
     case 'vav': return `<path d="M0 40H20M60 20H80M60 60H80" class="s"/>${dot(20, 40)}${dot(60, 20)}${dot(60, 60)}<line x1="20" y1="40" x2="58" y2="${s.pos === 2 ? 58 : 22}" class="s"/>`;
@@ -3546,7 +3546,7 @@ const V3D = (() => {
       if (this.dry) return this.stub();
       const c = document.createElement('canvas'), s = 2, f = (big === 1 ? 22 : 17) * s, x2 = c.getContext('2d'); x2.font = `600 ${f}px "IBM Plex Mono",monospace`; const w = Math.ceil(x2.measureText(txt).width) + 8 * s; c.width = w; c.height = f + 6 * s;
       const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = typeof hot === 'string' ? hot : hot ? 'rgba(13,120,100,.96)' : 'rgba(17,26,36,.88)'; q.beginPath(); if (q.roundRect) q.roundRect(0, 0, c.width, c.height, 7 * s); else q.rect(0, 0, c.width, c.height); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
-      const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'wago' ? 0.015 : big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; this.g.add(sp); if (big !== 'wago') this.labels.push(sp); return sp;
+      const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'wago' ? 0.015 : big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; sp.userData.prio = hot === true ? 3 : big === 1 || typeof hot === 'string' ? 2 : 1; sp.userData.s0 = sp.scale.clone(); this.g.add(sp); if (big !== 'wago') this.labels.push(sp); return sp;
     }
     _wall(W, H, cx, cy) {
       if (!this.tex.wall) { const c = document.createElement('canvas'); c.width = c.height = 256; const q = c.getContext('2d'); q.fillStyle = '#ffffff'; q.fillRect(0, 0, 256, 256); let sd = 73; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647; for (let i = 0; i < 5200; i++) { q.fillStyle = 'rgba(90,80,60,' + (0.015 + rnd() * 0.05) + ')'; q.fillRect(rnd() * 256, rnd() * 256, 1 + rnd() * 2.4, 1 + rnd() * 2.4); } this.tex.wall = new this.T.CanvasTexture(c); this.tex.wall.wrapS = this.tex.wall.wrapT = this.T.RepeatWrapping; this.tex.wall.repeat.set(5, 5); }
@@ -3609,13 +3609,30 @@ const V3D = (() => {
         if (!this.tex.glow) { const c = document.createElement('canvas'); c.width = c.height = 128; const q = c.getContext('2d'), gr = q.createRadialGradient(64, 64, 4, 64, 64, 64); gr.addColorStop(0, 'rgba(255,215,130,.5)'); gr.addColorStop(0.35, 'rgba(255,200,110,.16)'); gr.addColorStop(1, 'rgba(255,190,90,0)'); q.fillStyle = gr; q.fillRect(0, 0, 128, 128); this.tex.glow = new T.CanvasTexture(c); }
         const glow = new T.Sprite(new T.SpriteMaterial({ map: this.tex.glow, transparent: true, depthWrite: false, blending: T.AdditiveBlending })); glow.scale.set(0.36, 0.36, 1); glow.position.set(x, y, 0.13); glow.visible = false; glow.renderOrder = 8; this.g.add(glow);
         this.lamps[N.ref] = { m, pt, glow };
+      } else if (kind === 'inter' && o.type === 'vari') {
+        /* variateur : un bouton rotatif, avec un repère qui tourne selon le réglage */
+        plate(); this.cyl(Math.min(W, H) * 0.34, 0.006, 0xe6e4db, x, y, 0.015, 30);
+        part = this.cyl(Math.min(W, H) * 0.26, 0.016, 0xfcfcf8, x, y, 0.024, 30); dz = 0.034;
+        const m = new T.Mesh(new T.BoxGeometry(0.005, Math.min(W, H) * 0.2, 0.003), this.mat(0xe0892b)); m.position.set(0, Math.min(W, H) * 0.13, 0.0095); part.add(m); part.userData.vari = true;
       } else if (kind === 'inter') {
         plate(); this.rb(W * 0.74, H * 0.74, 0.006, 0.005, 0xe6e4db, x, y, 0.014);
         part = this.rb(W * 0.6, H * 0.64, 0.012, 0.005, 0xfcfcf8, x, y, 0.018); dz = 0.024;
+        /* va-et-vient et permutateur : des flèches gravées sur la bascule, pour ne pas les confondre avec un interrupteur simple */
+        if (o.type === 'vav' || o.type === 'perm') {
+          const d = this.decal('fl-' + o.type, W * 0.34, H * 0.36, 0, 0, 0, (q, a, b) => { q.fillStyle = '#fcfcf8'; q.fillRect(0, 0, a, b); q.strokeStyle = '#9aa0a8'; q.lineWidth = a * 0.07; q.lineCap = 'round'; q.lineJoin = 'round';
+            const fl = (x1, y1, x2, y2) => { q.beginPath(); q.moveTo(x1, y1); q.lineTo(x2, y2); q.stroke(); const an = Math.atan2(y2 - y1, x2 - x1), L = a * 0.16; q.beginPath(); q.moveTo(x2 - L * Math.cos(an - 0.6), y2 - L * Math.sin(an - 0.6)); q.lineTo(x2, y2); q.lineTo(x2 - L * Math.cos(an + 0.6), y2 - L * Math.sin(an + 0.6)); q.stroke(); };
+            if (o.type === 'vav') { fl(a * 0.5, b * 0.5, a * 0.5, b * 0.1); fl(a * 0.5, b * 0.5, a * 0.5, b * 0.9); } else { fl(a * 0.15, b * 0.85, a * 0.85, b * 0.15); fl(a * 0.85, b * 0.85, a * 0.15, b * 0.15); } });
+          part.add(d); d.position.set(0, 0, 0.0126);
+        }
       } else if (kind === 'bp') {
         plate(); this.rb(W * 0.74, H * 0.74, 0.006, 0.005, 0xe6e4db, x, y, 0.014);
         part = this.rb(W * 0.56, H * 0.56, 0.012, 0.012, 0xfcfcf8, x, y, 0.018); dz = 0.024;
         this.cyl(0.005, 0.002, 0xf0b429, x, y - H * 0.31, 0.021, 12);
+        /* poussoir : une petite ampoule gravée ; poussoir radio : des ondes */
+        const d = this.decal('bp-' + (o.type === 'radio' ? 'radio' : 'bp'), W * 0.3, H * 0.3, 0, 0, 0, (q, a, b) => { q.fillStyle = '#fcfcf8'; q.fillRect(0, 0, a, b); q.strokeStyle = '#9aa0a8'; q.lineWidth = a * 0.07; q.lineCap = 'round';
+          if (o.type === 'radio') { q.beginPath(); q.arc(a * 0.32, b * 0.55, a * 0.06, 0, 7); q.fillStyle = '#9aa0a8'; q.fill(); [0.22, 0.38, 0.54].forEach((r) => { q.beginPath(); q.arc(a * 0.32, b * 0.55, a * r, -0.75, 0.75); q.stroke(); }); }
+          else { q.beginPath(); q.arc(a * 0.5, b * 0.4, a * 0.22, Math.PI * 0.8, Math.PI * 2.2); q.stroke(); q.beginPath(); q.moveTo(a * 0.38, b * 0.62); q.lineTo(a * 0.38, b * 0.74); q.lineTo(a * 0.62, b * 0.74); q.lineTo(a * 0.62, b * 0.62); q.stroke(); q.beginPath(); q.moveTo(a * 0.42, b * 0.86); q.lineTo(a * 0.58, b * 0.86); q.stroke(); } });
+        part.add(d); d.position.set(0, 0, 0.0126);
       } else if (kind === 'poussoir') {
         dz = 0.056; this.rb(W, H, 0.05, 0.014, grey, x, y, 0); this.rb(W * 0.92, H * 0.92, 0.006, 0.012, 0xa9afb6, x, y, 0.05); screws(W * 0.36);
         this.cyl(0.037, 0.006, 0x6b7178, x, y, 0.059, 26); part = this.cyl(0.03, 0.012, white, x, y, 0.067, 26); dz = 0.07;
@@ -3903,7 +3920,7 @@ const V3D = (() => {
     sorted.filter((c) => !panel.includes(c)).forEach((c, i) => {
       const x = x0 + i * dx, y = Y[c.type] || 1.1, k = KIND[c.type] || 'micro';
       const SZ = { pvpanel: [0.5, 0.32], ond: [0.3, 0.38], cpt: [0.18, 0.26], wallbox: [0.24, 0.32], car: [0.95, 0.42] }[k] || [0.14, 0.14];
-      B.dev(c.id, k, x + (k === 'car' ? 0.3 : 0), y, { ref: c.ref, label: c.ref, side: k === 'car' ? 'l' : 1, w: SZ[0], h: SZ[1], z: k === 'car' ? 0.16 : 0 });
+      B.dev(c.id, k, x + (k === 'car' ? 0.3 : 0), y, { ref: c.ref, label: c.ref, side: k === 'car' ? 'l' : 1, w: SZ[0], h: SZ[1], z: k === 'car' ? 0.16 : 0, type: c.type });
       B.grp(B.devKey(c.ref), () => DEF[c.type].t.forEach((t) => { pos[c.id + ':' + t[0]] = B.nodes[c.id].at(t[0]); }));
     });
     // couleur de chaque fil, d'après le réseau
@@ -3955,7 +3972,7 @@ const V3D = (() => {
       try { await loadThree(); } catch (e) { this.el.innerHTML = '<p class="v3d-msg">Vue 3D indisponible (fichier vendor/three.min.js introuvable).</p>'; return false; }
       const T = window.THREE;
       this.r = this.renderer(T); if (!this.r) { this.failed = true; this.showFailure(); return false; }
-      this.r.setPixelRatio(Math.min(navigator.maxTouchPoints ? 1.75 : 2, window.devicePixelRatio || 1));
+      this.r.setPixelRatio(Math.min(navigator.maxTouchPoints ? 1.5 : 2, window.devicePixelRatio || 1));
       this.el.innerHTML = '<div class="v3d-zoom" hidden><button type="button">← Vue d’ensemble</button><span></span></div>'; this.el.appendChild(this.r.domElement); this.r.domElement.setAttribute('role', 'img'); this.r.domElement.setAttribute('aria-label', 'Vue 3D de l’installation. Les mêmes commandes existent en boutons sous le schéma électrique.'); this.ui = this.el.firstChild; this.ui.firstChild.addEventListener('click', () => this.closeZone());
       if (T.ColorManagement) T.ColorManagement.legacyMode = false;
       this.scene = new T.Scene(); this.scene.background = new T.Color(0x18212c);
@@ -4024,7 +4041,7 @@ const V3D = (() => {
     /* recul de la caméra : dans un cadre plus haut que large, elle recule pour que le mur reste entier en largeur */
     recul() { const w = this.el.clientWidth, h = this.el.clientHeight; return (this.fitR0 || 1) / (w && h ? Math.min(1, w / h) : 1); }
     size() { const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h || !this.r) return; if (this.fitR0) { const nf = this.recul(); if (Math.abs(this.rad - this.fitR) < 1e-6) this.rad = nf; this.fitR = nf; } this.r.setSize(w, h, false); this.r.domElement.style.width = '100%'; this.r.domElement.style.height = '100%'; this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.draw(); }
-    draw() { if (!this.r || !this.b) return; const t = this.target, cp = Math.cos(this.pitch); this.cam.position.set(t.x + this.rad * Math.sin(this.yaw) * cp, t.y + this.rad * Math.sin(this.pitch), t.z + this.rad * Math.cos(this.yaw) * cp); this.cam.lookAt(t); this.r.render(this.scene, this.cam); }
+    draw() { if (!this.r || !this.b) return; const t = this.target, cp = Math.cos(this.pitch); this.cam.position.set(t.x + this.rad * Math.sin(this.yaw) * cp, t.y + this.rad * Math.sin(this.pitch), t.z + this.rad * Math.cos(this.yaw) * cp); this.cam.lookAt(t); this.declutter(); this.r.render(this.scene, this.cam); }
     show(make, ctx) {
       this.pending = [make, ctx];
       if (!this.io) { this.io = new IntersectionObserver((es) => { this.vis = es.some((e) => e.isIntersecting); if (this.vis) this.flush(); }, { rootMargin: '300px' }); this.io.observe(this.el); }
@@ -4058,11 +4075,38 @@ const V3D = (() => {
         if (c.type === 'disj' || c.type === 'dpn') { p.position.y = b.y - (s.closed ? 0 : 0.012); p.rotation.x = s.closed ? -0.6 : 0.6; return; }
         const act = c.type === 'inter' ? s.on !== !!c.inv : c.type === 'vari' ? s.lvl > 0 : c.type === 'vav' ? s.pos === 2 : c.type === 'perm' ? !!s.cross : c.type === 'bp' || c.type === 'radio' ? !!s.pressed : c.type === 'tele2' ? !!s.k : false;
         if (k.kind === 'au' || k.kind === 'dm' || c.type === 'bp' || c.type === 'radio') p.position.z = b.z - (act ? 0.012 : 0);
-        else p.rotation.x = act ? -0.16 : 0.16;
+        else if (p.userData.vari) p.rotation.z = -((s.lvl || 0) / 100) * 4.2;
+        else p.rotation.x = act ? -0.24 : 0.24;
       });
       this.draw();
     }
     /* appareil actionnable le plus proche d'un point de l'écran (zone large pour le doigt) */
+    /* étiquettes lisibles : celles des gaines seulement en suivant un circuit ; elles rapetissent au zoom ; si deux se chevauchent, la plus importante reste */
+    declutter() {
+      const b = this.b; if (!b || !b.labels) return;
+      const w = this.el.clientWidth, h = this.el.clientHeight, t = this.target;
+      const cle = [this.yaw, this.pitch, this.rad, t.x, t.y, t.z, w, h, this.declV || 0, this.stepOn ? 1 : 0, this.si || 0, this.zone ? 1 : 0, b.g.uuid].map((v) => (typeof v === 'number' ? v.toFixed(4) : v)).join();
+      if (cle === this.declK) return; this.declK = cle;
+      const run = new Map((b.runLabs || []).map((r) => [r.sp, r.keys]));
+      const k = Math.max(0.45, Math.min(1, this.rad / (this.fitR || this.rad)));
+      this.cam.updateMatrixWorld(); const v = new window.THREE.Vector3(), places = [];
+      const montre = (o) => { for (let p = o.parent; p; p = p.parent) if (!p.visible) return false; return true; };
+      const L = b.labels.filter((sp) => sp.userData.s0).map((sp) => {
+        const keys = run.get(sp), veut = keys ? !!(this.hlC && keys.has(this.hlC.key)) : true;
+        sp.scale.set(sp.userData.s0.x * k, sp.userData.s0.y * k, 1);
+        return { sp, veut, prio: keys ? 0 : sp.userData.prio || 1 };
+      }).sort((a, c) => c.prio - a.prio);
+      L.forEach((e) => {
+        const sp = e.sp; if (!e.veut || !montre(sp)) { sp.visible = false; return; }
+        v.copy(sp.position); sp.parent.localToWorld(v); const c0 = v.clone().project(this.cam);
+        if (c0.z > 1) { sp.visible = false; return; }
+        const c1 = v.clone().add(new window.THREE.Vector3(sp.scale.x / 2, sp.scale.y / 2, 0)).project(this.cam);
+        const cx = (c0.x + 1) / 2 * w, cy = (1 - c0.y) / 2 * h, hw = Math.abs(c1.x - c0.x) / 2 * w + 2, hh = Math.abs(c1.y - c0.y) / 2 * h + 1;
+        const r = [cx - hw, cy - hh, cx + hw, cy + hh];
+        const gene = places.some((q) => r[0] < q[2] && r[2] > q[0] && r[1] < q[3] && r[3] > q[1]);
+        sp.visible = !gene; if (!gene) places.push(r);
+      });
+    }
     /* bouton test jaune : retenu s'il est plus proche du doigt que le centre du module */
     nearTest(x, y) {
       if (!this.b || this.zone || this.stepOn) return null;
@@ -4187,7 +4231,7 @@ const V3D = (() => {
         if (b.groups[k].visible) { b.groups[k].visible = false; b.exHid.push(b.groups[k]); }
       });
       Object.keys(b.ctl).forEach((ref) => { const k = b.ctl[ref]; if (k.lab) k.lab.material.opacity = !c || c.refs.has(ref) ? 1 : 0.35; });
-      b.runLabs.forEach((r) => { r.sp.visible = !c || r.keys.has(c.key); });
+      this.declV = (this.declV || 0) + 1;
       this.draw();
     }
     /* sens du courant : des tirets jaunes avancent dans chaque fil parcouru par le courant, comme sur le schéma 2D */
@@ -4238,7 +4282,7 @@ const V3D = (() => {
         const step = (now) => {
           if (!this.flowOn || !this.b) { this.flowAf = 0; return; }
           this.flowAf = requestAnimationFrame(step);
-          if (calme || !this.vis || now - last < 33) return;
+          if (calme || !this.vis || document.hidden || now - last < (navigator.maxTouchPoints ? 50 : 33)) return;
           const dt = Math.min(0.1, (now - last) / 1000); last = now;
           this.b.wires.forEach((r) => { if (r.flow && r.flow.m.visible) r.flow.tx.offset.x -= r.flow.dir * dt * 1.5; });
           this.draw();
