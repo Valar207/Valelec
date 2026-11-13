@@ -1400,7 +1400,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
         </ul></div>
         <div class="box inv" data-espace="3" hidden><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
           <li>Simule un passage devant le détecteur S2 : L1 et L2 s’allument 8 secondes, puis s’éteignent seules.</li>
-          <li>Branche un appareil sur PC1, puis appuie sur l’arrêt d’urgence S1 : la bobine de KM1 n’est plus alimentée, et ses deux contacts coupent la phase et le neutre de la prise.</li>
+          <li>Branche un appareil sur PC1, puis appuie sur l’arrêt d’urgence S1 : la bobine de KM1 n’est plus alimentée, ses deux contacts coupent la phase et le neutre en tête de l’installation, et tout s’arrête : prise et éclairage. Le BAES passe alors en mode secours.</li>
           <li>Déverrouille S1 : la prise reste coupée. Il faut ensuite réarmer volontairement pour la remettre sous tension, comme sur une vraie installation.</li>
           <li>Déclenche Q2 (éclairage) : le BAES passe en secours et s’allume sur sa batterie.</li>
           <li>Pendant la coupure, mets le BAES au repos avec la télécommande : il s’éteint. Réarme Q2 : il revient en veille et recharge sa batterie.</li>
@@ -4453,18 +4453,22 @@ function buildExam2() {
 }
 // Espace n°3 : locaux tertiaires (détecteur, BAES, arrêt d'urgence, prise)
 function buildExam3() {
-  const src = mk('src', 80, 320, 0, 'TER'), xl = mk('borne', 160, 260, 0, 'XL'), xn0 = mk('borne', 140, 340, 0, 'XN');
-  const q1 = mk('dpn', 260, 120, 0, 'Q1', { lab: '20 A · C6' }), q3 = mk('dpn', 260, 300, 0, 'Q3', { lab: '2 A · C8' }), q2 = mk('dpn', 260, 500, 0, 'Q2', { lab: '16 A · C7' });
-  const km = mk('cont2', 760, 240, 0, 'KM1', { lab: 'MN · AU · bipolaire' }), pc1 = mk('prise', 1060, 120, 0, 'PC1', { lab: 'C6' });
-  const s1 = mk('inter', 480, 240, 0, 'S1', { lab: 'arrêt d’urgence', st: { on: true } });
+  /* L'arrêt d'urgence coupe tout : KM1 (bipolaire, à manque de tension) est en tête, entre l'arrivée et les disjoncteurs Q1 et Q2.
+     Seul Q3, qui alimente la bobine de KM1 à travers S1, reste en amont : sinon on ne pourrait plus jamais réenclencher. */
+  const src = mk('src', 60, 420, 0, 'TER'), xl = mk('borne', 200, 380, 0, 'XL'), xn0 = mk('borne', 180, 460, 0, 'XN');
+  const q3 = mk('dpn', 300, 100, 0, 'Q3', { lab: '2 A · C8' }), s1 = mk('inter', 520, 80, 0, 'S1', { lab: 'arrêt d’urgence', st: { on: true } });
   s1.inv = true; s1.au = true; s1.st.arme = true;
-  const xe = mk('borne', 400, 480, 0, 'XE'), xn2 = mk('borne', 400, 520, 0, 'XN2'), baes = mk('baes', 600, 420, 0, 'BAES', { lab: 'C7' });
-  const s2 = mk('detect', 600, 540, 0, 'S2'), l1 = mk('lampe', 800, 520, 0, 'L1'), l2 = mk('lampe', 960, 520, 0, 'L2');
-  return { comps: [src, xl, xn0, q1, q2, q3, km, pc1, s1, xe, xn2, baes, s2, l1, l2],
+  const km = mk('cont2', 640, 260, 0, 'KM1', { lab: 'MN · AU · coupure générale' });
+  const xl2 = mk('borne', 860, 420, 0, 'XL2'), xn3 = mk('borne', 880, 460, 0, 'XN3');
+  const q1 = mk('dpn', 980, 160, 0, 'Q1', { lab: '20 A · C6' }), q2 = mk('dpn', 980, 560, 0, 'Q2', { lab: '16 A · C7' }), pc1 = mk('prise', 1400, 140, 0, 'PC1', { lab: 'C6' });
+  const xe = mk('borne', 1140, 560, 0, 'XE'), xn2 = mk('borne', 1140, 600, 0, 'XN2'), baes = mk('baes', 1300, 500, 0, 'BAES', { lab: 'C7' });
+  const s2 = mk('detect', 1300, 640, 0, 'S2'), l1 = mk('lampe', 1480, 620, 0, 'L1'), l2 = mk('lampe', 1640, 620, 0, 'L2');
+  return { comps: [src, xl, xn0, q3, s1, km, xl2, xn3, q1, q2, pc1, xe, xn2, baes, s2, l1, l2],
     wires: [
-      wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q3, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'), wr(xn0, 'P', q1, 'N1'), wr(xn0, 'P', q3, 'N1'), wr(xn0, 'P', q2, 'N1'),
-      wr(q1, '2', km, '1'), wr(km, '2', pc1, 'L'), wr(q1, 'N2', km, '3'), wr(km, '4', pc1, 'N'), wr(src, 'PE', pc1, 'PE'),
+      wr(src, 'L', xl, 'P'), wr(xl, 'P', q3, '1'), wr(xl, 'P', km, '1'), wr(src, 'N', xn0, 'P'), wr(xn0, 'P', q3, 'N1'), wr(xn0, 'P', km, '3'),
       wr(q3, '2', s1, '1'), wr(s1, '2', km, 'A1'), wr(q3, 'N2', km, 'A2'),
+      wr(km, '2', xl2, 'P'), wr(xl2, 'P', q1, '1'), wr(xl2, 'P', q2, '1'), wr(km, '4', xn3, 'P'), wr(xn3, 'P', q1, 'N1'), wr(xn3, 'P', q2, 'N1'),
+      wr(q1, '2', pc1, 'L'), wr(q1, 'N2', pc1, 'N'), wr(src, 'PE', pc1, 'PE'),
       wr(q2, '2', xe, 'P'), wr(q2, 'N2', xn2, 'P'), wr(xe, 'P', s2, 'L'), wr(xe, 'P', baes, '1'), wr(xn2, 'P', baes, '2'), wr(xn2, 'P', s2, 'N'),
       wr(s2, 'S', l1, '1'), wr(l1, '1', l2, '1'), wr(xn2, 'P', l1, '2'), wr(xn2, 'P', l2, '2')
     ] };
@@ -4477,7 +4481,7 @@ const ESPACES = {
     sub: 'Un couloir d’immeuble : éclairage sur minuterie commandé par deux boutons-poussoirs, une prise de courant et deux déclencheurs manuels d’alarme incendie (SSI). Tout le matériel est étanche, en saillie.',
     order: ['Q1', 'Q2', 'S1', 'S2', 'PC1', 'DM1', 'DM2'] },
   3: { build: buildExam3, eyebrow: 'Espace de travail n°3', title: 'Locaux tertiaires petits et moyens',
-    sub: 'Un bureau : éclairage commandé par un détecteur de mouvement, bloc autonome d’éclairage de sécurité (BAES), prise de courant protégée par un arrêt d’urgence, et deux prises informatiques RJ45 dans une goulotte double compartiment.',
+    sub: 'Un bureau : éclairage commandé par un détecteur de mouvement, bloc autonome d’éclairage de sécurité (BAES), prise de courant, arrêt d’urgence qui coupe toute l’installation, et deux prises informatiques RJ45 dans une goulotte double compartiment.',
     order: ['Q1', 'Q2', 'Q3', 'S2', 'S1', 'PC1', 'BAES'] }
 };
 let exN = [2, 3].includes(store.get('pn-espace')) ? store.get('pn-espace') : 1;
