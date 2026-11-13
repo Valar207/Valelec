@@ -180,3 +180,13 @@ Sur téléphone, un toucher long sur la vue 3D ou sur un schéma 2D ne sélectio
 - **Grand écran** (zone des schémas d'au moins 1000 px) : le schéma 2D prend toute la largeur (hauteur limitée à 74 % de l'écran), puis la vue 3D s'étale dessous en 16/10, avec les commandes, le pas à pas et les circuits dans une colonne à droite. La page Schémas s'élargit jusqu'à 1760 px ; sur la page Examen, seule la zone des schémas déborde de la colonne de texte (`.ex>.sim-cols`), les textes gardent une largeur confortable.
 - **Téléphone** : les deux vues vont presque d'un bord à l'autre et la 3D est plus haute (4/5). La caméra recule quand le cadre est plus haut que large (`View.recul()`), pour que le mur reste entier en largeur.
 - **Plein écran du schéma 2D** : même bouton que pour la 3D (`fsSet` gère `.col2d` et `.v3d-wrap`, un seul plein écran à la fois). Téléphone tourné à l'horizontale, le schéma occupe la gauche et les commandes passent en colonne à droite. Échap, ou un changement de page, referme.
+
+## 3D : actionner un appareil ou voir son branchement
+
+Toucher un appareil en 3D (appareils du mur, modules du tableau, lampes : `View.nearDev`) ne l'actionne plus directement :
+- s'il peut être actionné, un petit menu (`.v3d-pop`) propose son action (« Basculer », « Déclencher », « Brancher un appareil »…) et **Branchement** ; il se ferme si la caméra bouge ou au toucher suivant ;
+- sinon (lampe, micromodule…), le branchement s'ouvre directement.
+
+**Branchement** (`View.voirBranchement`, données par `branchement(C, c)`) : la carte de l'appareil sort de l'endroit touché, grandit, puis se retourne (rotation 3D en CSS) pour montrer son dos, dessiné comme un appareil du commerce : un bornier par borne, marqué comme sur l'appareil (L, N, terre, 1/2 pour les navettes, ↓ pour la sortie lampe, BP, A1/A2…), deux trous à poussoir par borne, et les fils qui y entrent avec leur couleur. Au-dessus de chaque borne, une étiquette donne le rôle du fil (phase, neutre, terre, retour lampe, navette, commande) et les appareils au bout, en traversant les bornes de connexion (dominos). La même information est répétée en liste sous le dessin (lecteurs d'écran). On ferme avec ×, Échap ou un toucher à côté. Sans animation si l'utilisateur a demandé moins d'animations.
+
+Le bouton test jaune d'un différentiel n'est retenu que s'il est plus proche du doigt que le centre de tous les appareils (sinon toucher le module voisin le déclenchait).

@@ -894,6 +894,25 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .col2d.fs>.d2-head{grid-area:h}.col2d.fs>.board{grid-area:b;min-height:0}
   .col2d.fs>.ctls{grid-area:c;max-height:none;min-height:0;overflow:auto;grid-template-columns:minmax(0,1fr);align-content:start}
 }
+.v3d-pop{position:absolute;z-index:6;transform:translate(-50%,calc(-100% - 16px));display:flex;flex-direction:column;gap:6px;min-width:190px;padding:10px;border-radius:14px;background:var(--card);color:var(--ink);box-shadow:0 18px 40px -16px rgba(0,0,0,.55),0 0 0 1px var(--line)}
+.v3d-pop::after{content:"";position:absolute;left:50%;bottom:-7px;width:14px;height:14px;background:var(--card);transform:translateX(-50%) rotate(45deg);box-shadow:3px 3px 0 -2px var(--line)}
+.v3d-pop b{display:flex;align-items:baseline;gap:8px;padding:2px 4px 4px;font:800 16px var(--f-display)}.v3d-pop b span{font:500 12px var(--f-mono);color:var(--muted)}
+.v3d-pop button{position:relative;z-index:1;min-height:42px;padding:0 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:600 14px var(--f-body);text-align:left;cursor:pointer}
+.v3d-pop button:first-of-type{background:var(--g-cta);border-color:transparent;color:#fff}
+.v3d-pop button:hover{border-color:var(--ion)}
+.v3d-fiche{position:absolute;inset:0;z-index:7;display:grid;place-items:center;padding:12px;background:rgba(9,13,19,.66);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);perspective:1400px;overflow:auto}
+.fiche-card{display:grid;width:min(560px,100%);transform-style:preserve-3d;transition:transform .75s cubic-bezier(.2,.8,.2,1)}
+.fiche-card.dos{transform:rotateY(180deg)}.fiche-card.sans{transition:none}
+.fiche-face{grid-area:1/1;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:18px;background:#FBFAF7;color:#14181F;--ink:#14181F;--ink-2:#3B4250;--muted:#6B7280;--line:#DAD5CB;--paper:#fff;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
+.fiche-av{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:260px}
+.fiche-av .fiche-sym{width:120px;height:120px;border-radius:22px;background:#F4F1EA;display:grid;place-items:center;color:#14181F}.fiche-av .fiche-sym svg{width:84px;height:84px}
+.fiche-av b{font:800 26px var(--f-display)}.fiche-av span{font:500 13px var(--f-mono);color:var(--muted)}
+.fiche-dos{transform:rotateY(180deg);padding:14px 14px 10px;display:flex;flex-direction:column;gap:6px;max-height:calc(100% - 4px)}
+.fiche-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.fiche-h b{display:block;font:800 17px var(--f-display)}.fiche-h span{font-size:13px;color:var(--muted)}
+.fiche-x{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:400 24px/1 var(--f-body);cursor:pointer}
+.fiche-dos svg{width:100%;height:auto;display:block}
+.fiche-l{margin:0;padding:0 2px;list-style:none;display:grid;gap:3px;font-size:13px;color:var(--ink-2)}.fiche-l b{display:inline-block;min-width:22px;color:var(--ink)}.fiche-l span{color:var(--muted)}
+@media (max-height:520px){.fiche-l{display:none}}
 .v3d-wrap.fs .v3d{flex:1 1 auto;min-height:0;height:auto;aspect-ratio:auto;border-radius:var(--r-m)}
 .v3d-wrap.fs :is(.v3d-steps,.v3d-circ){flex:none;max-height:34vh;overflow:auto}
 .v3d-wrap.fs .v3d-leg{flex:none;font-size:12px;gap:4px 14px}
@@ -1350,7 +1369,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
             <li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
           </ul>
           <button class="btn" id="sim-next" type="button" style="justify-content:space-between;border-radius:12px" hidden></button>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>« Construire pas à pas » : pars du mur vide et ajoute chaque élément avec Suivant.</li><li>Sur trackpad : cliquer-glisser pour te déplacer, deux doigts pour tourner, pincer pour zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="sim-3d"></div><div class="v3d-steps" id="sim-steps"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Touche un appareil : l’actionner, ou voir son branchement vu de dos. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>« Construire pas à pas » : pars du mur vide et ajoute chaque élément avec Suivant.</li><li>Sur trackpad : cliquer-glisser pour te déplacer, deux doigts pour tourner, pincer pour zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="sim-3d"></div><div class="v3d-steps" id="sim-steps"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
         </div>
         <div class="info">
           <div class="box"><h2>À retenir</h2><ol id="sim-ret"></ol></div>
@@ -1394,7 +1413,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
           <li data-espace="1"><span class="lsw" style="background:repeating-linear-gradient(90deg,#8E9BAA 0 2px,transparent 2px 8px)"></span>Liaison radio</li>
           <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
         </ul>
-        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>« Construire pas à pas » : pars du mur vide et ajoute chaque élément avec Suivant.</li><li>Sur trackpad : cliquer-glisser pour te déplacer, deux doigts pour tourner, pincer pour zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="ex-3d"></div><div class="v3d-steps" id="ex-steps"></div><div class="v3d-circ" id="ex-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
+        </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Touche un appareil : l’actionner, ou voir son branchement vu de dos. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>« Construire pas à pas » : pars du mur vide et ajoute chaque élément avec Suivant.</li><li>Sur trackpad : cliquer-glisser pour te déplacer, deux doigts pour tourner, pincer pour zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="ex-3d"></div><div class="v3d-steps" id="ex-steps"></div><div class="v3d-circ" id="ex-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
       </div>
       <div class="info">
         <div class="box inv" data-espace="1"><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
@@ -3424,6 +3443,41 @@ function cablage(C) {
   fils.sort((x, y) => (x.c ? 0 : 1) - (y.c ? 0 : 1) || (x.c && y.c ? circ.indexOf(x.c) - circ.indexOf(y.c) : 0) || ORD[x.k] - ORD[y.k] || (dist[x.id] ?? 99) - (dist[y.id] ?? 99));
   return { fils, circ };
 }
+/* Branchement d'un appareil : ses bornes (marquées comme sur l'appareil), et pour chacune les fils qui y arrivent, avec leur rôle et l'appareil au bout (en traversant les bornes de connexion) */
+function branchement(C, c) {
+  const cab = cablage(C), roleDe = {}; cab.fils.forEach((x) => { roleDe[x.id] = x; });
+  const comp = (k) => C.find(k.split(':')[0]);
+  const DESC = { dpn: { 1: 'entrée phase', 2: 'sortie phase', N1: 'entrée neutre', N2: 'sortie neutre' }, disj: { 1: 'entrée', 2: 'sortie' }, vav: { C: 'commun', 1: 'navette 1', 2: 'navette 2' }, perm: { 1: 'navette', 2: 'navette', 3: 'navette', 4: 'navette' }, detect: { L: 'phase', N: 'neutre', S: 'sortie lampe' }, prise: { L: 'phase', N: 'neutre', PE: 'terre' }, yokis: { L: 'phase', N: 'neutre', BP: 'poussoirs', S: 'sortie lampe' }, tele: { A1: 'bobine', A2: 'bobine', 1: 'contact', 2: 'contact' }, cont: { A1: 'bobine', A2: 'bobine', 1: 'contact', 2: 'contact' }, cont2: { A1: 'bobine', A2: 'bobine', 1: 'phase', 2: 'phase', 3: 'neutre', 4: 'neutre' }, tele2: { A1: 'bobine', A2: 'bobine' }, minu: { A1: 'bobine', A2: 'bobine', 1: 'contact', 2: 'contact' } };
+  /* au bout du fil : on traverse les bornes de connexion (dominos, wagos) jusqu'aux vrais appareils */
+  const bout = (k0, w0) => {
+    const vus = new Set([w0.id]), out = new Set(), file = [k0], deja = new Set();
+    while (file.length) {
+      const k = file.shift(); if (deja.has(k)) continue; deja.add(k);
+      const x = comp(k); if (!x || x.id === c.id) continue;
+      if (x.type !== 'borne') { out.add(x.ref); continue; }
+      C.wires.forEach((w) => { if (vus.has(w.id)) return; if (w.a.split(':')[0] === x.id) { vus.add(w.id); file.push(w.b); } else if (w.b.split(':')[0] === x.id) { vus.add(w.id); file.push(w.a); } });
+    }
+    return [...out];
+  };
+  const bornes = DEF[c.type].t.map(([tn]) => {
+    const fils = C.wires.filter((w) => w.a === c.id + ':' + tn || w.b === c.id + ':' + tn).map((w) => {
+      const r = roleDe[w.id] || { k: 'rt', role: 'Fil' }, autre = w.a === c.id + ':' + tn ? w.b : w.a;
+      return { k: r.k, role: r.role, vers: bout(autre, w) };
+    });
+    const k = fils[0] ? fils[0].k : '';
+    let mark = tn;
+    if (tn === 'PE') mark = 'PE';
+    else if (['inter', 'vari', 'bp', 'radio'].includes(c.type)) mark = k === 'ph' ? 'L' : '↓';
+    else if (['lampe', 'voyant', 'sonnette', 'rad', 'moteur', 'baes'].includes(c.type)) mark = k === 'ne' ? 'N' : k === 'pe' ? 'PE' : 'L';
+    else if (c.type === 'vav') mark = tn === 'C' ? 'L' : tn;
+    else if (c.type === 'detect' || c.type === 'yokis') mark = tn === 'S' ? '↓' : tn;
+    else if (c.type === 'dpn') mark = /^N/.test(tn) ? 'N' : tn;
+    const desc = (DESC[c.type] || {})[tn] || (k === 'ph' ? 'phase' : k === 'ne' ? 'neutre' : k === 'pe' ? 'terre' : fils.length ? fils[0].role.toLowerCase() : '');
+    return { tn, mark, desc, k, fils };
+  });
+  return { c, bornes };
+}
+
 /* Boutons « suivre un circuit », reliés au schéma 2D et à la vue 3D */
 function makeHL(C, B, V, el) {
   let list = [], cur = null;
@@ -3437,7 +3491,7 @@ function makeHL(C, B, V, el) {
   };
   el.addEventListener('click', (e) => { const b = e.target.closest('[data-c]'); if (b) set(list.find((c) => c.key === b.dataset.c)); });
   /* un clic ailleurs sur la page rend l'affichage normal ; schémas et 3D gèrent leur propre toucher, les boutons restent utilisables */
-  document.addEventListener('click', (e) => { if (cur && !e.target.closest('.ctl, .v3d-zoom, .v3d canvas, svg.view, .ex-bar')) set(null); });
+  document.addEventListener('click', (e) => { if (cur && !e.target.closest('.ctl, .v3d-zoom, .v3d canvas, svg.view, .ex-bar, .v3d-pop, .v3d-fiche')) set(null); });
   B.opts.onWire = (id) => hl.byWire(id); B.opts.onExitExplode = () => set(null); V.hl = hl;
   return hl;
 }
@@ -3926,7 +3980,7 @@ const V3D = (() => {
   }
   const free = (g) => g.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material && o.material.map) o.material.map.dispose(); });
   class View {
-    constructor(el) { this.el = el; this.spec = null; this.ready = false; }
+    constructor(el) { this.el = el; this.spec = null; this.ready = false; el.__vue = this; }
     /* Safari peut refuser certains réglages : on essaie du plus beau au plus simple */
     renderer(T) {
       this.errs = [];
@@ -4024,7 +4078,8 @@ const V3D = (() => {
     /* recul de la caméra : dans un cadre plus haut que large, elle recule pour que le mur reste entier en largeur */
     recul() { const w = this.el.clientWidth, h = this.el.clientHeight; return (this.fitR0 || 1) / (w && h ? Math.min(1, w / h) : 1); }
     size() { const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h || !this.r) return; if (this.fitR0) { const nf = this.recul(); if (Math.abs(this.rad - this.fitR) < 1e-6) this.rad = nf; this.fitR = nf; } this.r.setSize(w, h, false); this.r.domElement.style.width = '100%'; this.r.domElement.style.height = '100%'; this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.draw(); }
-    draw() { if (!this.r || !this.b) return; const t = this.target, cp = Math.cos(this.pitch); this.cam.position.set(t.x + this.rad * Math.sin(this.yaw) * cp, t.y + this.rad * Math.sin(this.pitch), t.z + this.rad * Math.cos(this.yaw) * cp); this.cam.lookAt(t); this.r.render(this.scene, this.cam); }
+    camCle() { const t = this.target; return [this.yaw, this.pitch, this.rad, t.x, t.y, t.z].map((v) => v.toFixed(4)).join(); }
+    draw() { if (this.pop && this.popCam !== this.camCle()) { this.pop.remove(); this.pop = null; } if (!this.r || !this.b) return; const t = this.target, cp = Math.cos(this.pitch); this.cam.position.set(t.x + this.rad * Math.sin(this.yaw) * cp, t.y + this.rad * Math.sin(this.pitch), t.z + this.rad * Math.cos(this.yaw) * cp); this.cam.lookAt(t); this.r.render(this.scene, this.cam); }
     show(make, ctx) {
       this.pending = [make, ctx];
       if (!this.io) { this.io = new IntersectionObserver((es) => { this.vis = es.some((e) => e.isIntersecting); if (this.vis) this.flush(); }, { rootMargin: '300px' }); this.io.observe(this.el); }
@@ -4063,12 +4118,84 @@ const V3D = (() => {
       this.draw();
     }
     /* appareil actionnable le plus proche d'un point de l'écran (zone large pour le doigt) */
+    /* appareil le plus proche du doigt : appareils du mur, modules du tableau et lampes */
+    posDe(ref) { const k = this.b.ctl[ref]; if (k && k.pos) return k.pos; const L = this.b.lamps[ref]; return L && L.pt ? L.pt.position : null; }
+    nearDev(x, y) {
+      if (!this.b || this.zone || this.stepOn) return null;
+      const rc = this.r.domElement.getBoundingClientRect(), v = new window.THREE.Vector3(); let best = null, bd = 28;
+      new Set([...Object.keys(this.b.ctl), ...Object.keys(this.b.lamps)]).forEach((ref) => {
+        if (!this.ctx.comps.some((c) => c.ref === ref)) return; const p = this.posDe(ref); if (!p) return;
+        v.copy(p).project(this.cam); const d = Math.hypot((v.x + 1) / 2 * rc.width + rc.left - x, (1 - v.y) / 2 * rc.height + rc.top - y); if (d < bd) { bd = d; best = ref; }
+      });
+      return best;
+    }
+    fermer() { if (this.pop) { this.pop.remove(); this.pop = null; } if (this.fiche) { this.fiche.remove(); this.fiche = null; if (this.ficheRet) this.ficheRet.focus({ preventScroll: true }); } }
+    /* appareil qu'on peut actionner : petit menu « Actionner » / « Branchement » ; sinon le branchement s'ouvre directement */
+    choisir(c, x, y) {
+      this.fermer();
+      const rc = this.el.getBoundingClientRect(), px = x - rc.left, py = y - rc.top;
+      const op = this.b.ops.has(c.ref) && opLabel(c);
+      if (!op) { this.voirBranchement(c, px, py); return; }
+      const d = document.createElement('div'); d.className = 'v3d-pop'; d.setAttribute('role', 'menu');
+      d.innerHTML = `<b>${c.ref}<span>${KIND[c.type] || DEF[c.type].name}</span></b><button type="button" role="menuitem" data-a="op">${op}</button><button type="button" role="menuitem" data-a="br">Branchement</button>`;
+      d.style.left = Math.max(110, Math.min(rc.width - 110, px)) + 'px'; d.style.top = Math.max(120, py) + 'px';
+      d.addEventListener('pointerdown', (e) => e.stopPropagation());
+      d.addEventListener('click', (e) => { const b = e.target.closest('[data-a]'); if (!b) return; e.stopPropagation(); this.fermer(); if (b.dataset.a === 'op') this.ctx.operate(c.id); else this.voirBranchement(c, px, py); });
+      this.el.appendChild(d); this.pop = d; this.popCam = this.camCle(); d.querySelector('button').focus({ preventScroll: true });
+    }
+    /* le dos de l'appareil : il sort de la scène, se retourne, et on voit ses bornes et ses fils */
+    voirBranchement(c, px, py) {
+      this.fermer(); this.ficheRet = document.activeElement;
+      const B = branchement(this.ctx, c), n = B.bornes.length, col = 104, W = Math.max(380, n * col + 60), bx = (W - n * col) / 2, H = 292;
+      const COUL = { ph: '#D9412B', ne: '#2F6FE0', pe: '#3A9A3A', rt: '#9B6CF0', '': '#8B95A3' }, NOM = { ph: 'Phase', ne: 'Neutre', pe: 'Terre', rt: 'Retour' };
+      const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+      let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Dos de ${esc(c.ref)} : ses bornes et les fils raccordés"><defs><pattern id="vj-${c.id}" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#3A9A3A"/><rect width="5" height="10" fill="#E8C930"/></pattern></defs>`;
+      s += `<rect x="${bx - 14}" y="128" width="${n * col + 28}" height="156" rx="20" fill="#F4F1EA" stroke="#CFC8BA" stroke-width="2"/><rect x="${bx - 4}" y="138" width="${n * col + 8}" height="136" rx="14" fill="none" stroke="#E2DCCF" stroke-width="1.5"/>`;
+      s += `<text x="${W / 2}" y="264" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#9A9284">${esc(c.ref)} · ${esc(KIND[c.type] || DEF[c.type].name)} · vu de dos</text>`;
+      B.bornes.forEach((b, i) => {
+        const cx = bx + col * (i + 0.5), k = b.fils[0] ? b.fils[0].k : '', vers = [...new Set(b.fils.flatMap((f) => f.vers))];
+        s += `<rect x="${cx - 30}" y="144" width="60" height="96" rx="8" fill="#E7E1D4" stroke="#CBC3B3"/><rect x="${cx - 9}" y="174" width="18" height="9" rx="3" fill="#F39A2C"/>`;
+        s += b.mark === 'PE' ? `<path d="M${cx} 192V202M${cx - 12} 202H${cx + 12}M${cx - 8} 207H${cx + 8}M${cx - 4} 212H${cx + 4}" stroke="#4B4537" stroke-width="2.6" stroke-linecap="round" fill="none"/>` : `<text x="${cx}" y="210" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="800" font-size="22" fill="#4B4537">${esc(b.mark)}</text>`;
+        s += `<text x="${cx}" y="230" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" fill="#7D7564">${esc(b.desc)}</text>`;
+        [-12, 12].forEach((dx, h) => {
+          const f = b.fils[h], hx = cx + dx;
+          s += `<circle cx="${hx}" cy="158" r="7" fill="#2B2A27"/>`;
+          if (!f) return;
+          const c1 = COUL[f.k] || COUL.rt, y0 = 158, yTop = 92;
+          s += `<path d="M${hx} ${y0}V${yTop + 20}Q${hx} ${yTop} ${cx} ${yTop}" fill="none" stroke="#1A1D22" stroke-width="10" stroke-linecap="round" opacity=".35"/>`;
+          s += `<path class="fil" d="M${hx} ${y0}V${yTop + 20}Q${hx} ${yTop} ${cx} ${yTop}" fill="none" stroke="${f.k === 'pe' ? `url(#vj-${c.id})` : c1}" stroke-width="8" stroke-linecap="round"/>`;
+          s += `<rect x="${hx - 3}" y="${y0 - 6}" width="6" height="8" fill="#C9A26B"/>`;
+        });
+        const nom = b.fils.length ? (b.fils[0].role || NOM[k]) : 'libre';
+        s += `<rect x="${cx - 48}" y="30" width="96" height="${vers.length ? 52 : 34}" rx="10" fill="${b.fils.length ? COUL[k] || COUL.rt : '#E9E5DC'}"/>`;
+        s += `<text x="${cx}" y="52" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="13" fill="${b.fils.length ? '#fff' : '#8B8577'}">${esc(nom)}</text>`;
+        if (vers.length) s += `<text x="${cx}" y="71" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11.5" fill="#fff" opacity=".92">→ ${esc(vers.slice(0, 3).join(', '))}</text>`;
+      });
+      s += '</svg>';
+      const lignes = B.bornes.map((b) => `<li><b>${esc(b.mark)}</b>${b.desc ? ` <span>${esc(b.desc)}</span>` : ''} : ${b.fils.length ? b.fils.map((f) => `${esc(f.role)}${f.vers.length ? ' vers ' + esc(f.vers.join(', ')) : ''}`).join(' ; ') : 'rien de raccordé'}</li>`).join('');
+      const nb = B.bornes.reduce((a, b) => a + b.fils.length, 0);
+      const d = document.createElement('div'); d.className = 'v3d-fiche'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'Branchement de ' + c.ref);
+      d.innerHTML = `<div class="fiche-card"><div class="fiche-face fiche-av"><div class="fiche-sym">${symIcon(c.type, 8)}</div><b>${esc(c.ref)}</b><span>${esc(KIND[c.type] || DEF[c.type].name)}</span></div>`
+        + `<div class="fiche-face fiche-dos"><div class="fiche-h"><div><b>${esc(c.ref)} · branchement</b><span>${nb} fil${nb > 1 ? 's' : ''} raccordé${nb > 1 ? 's' : ''}, vu de dos</span></div><button type="button" class="fiche-x" aria-label="Fermer">×</button></div>${s}<ul class="fiche-l">${lignes}</ul></div></div>`;
+      d.addEventListener('pointerdown', (e) => { e.stopPropagation(); if (e.target === d) this.fermer(); });
+      d.addEventListener('click', (e) => { e.stopPropagation(); if (e.target.closest('.fiche-x')) this.fermer(); });
+      d.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.stopPropagation(); this.fermer(); } });
+      this.el.appendChild(d); this.fiche = d;
+      const card = d.querySelector('.fiche-card'), calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const fin = () => { card.classList.add('dos'); d.querySelector('.fiche-x').focus({ preventScroll: true }); };
+      if (calme || !card.animate) { card.classList.add('dos', 'sans'); fin(); return; }
+      const r = card.getBoundingClientRect(), rc = this.el.getBoundingClientRect();
+      const dx = px - (r.left - rc.left + r.width / 2), dy = py - (r.top - rc.top + r.height / 2);
+      const an = card.animate([{ transform: `translate(${dx}px,${dy}px) scale(.12)`, opacity: 0.2 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      let fait = false; const go = () => { if (fait) return; fait = true; requestAnimationFrame(() => requestAnimationFrame(fin)); }; an.onfinish = go; setTimeout(go, 1600);
+    }
     /* bouton test jaune : retenu s'il est plus proche du doigt que le centre du module */
     nearTest(x, y) {
       if (!this.b || this.zone || this.stepOn) return null;
       const rc = this.r.domElement.getBoundingClientRect(), v = new window.THREE.Vector3(), sc = (p) => { v.copy(p).project(this.cam); return Math.hypot((v.x + 1) / 2 * rc.width + rc.left - x, (1 - v.y) / 2 * rc.height + rc.top - y); };
       let best = null, bd = 22;
-      Object.keys(this.b.ctl).forEach((ref) => { const k = this.b.ctl[ref]; if (!k || !k.test) return; const d = sc(k.test); if (d < bd && d < sc(k.pos)) { bd = d; best = ref; } });
+      const proche = Math.min(...Object.values(this.b.ctl).filter((k) => k && k.pos).map((k) => sc(k.pos)));
+      Object.keys(this.b.ctl).forEach((ref) => { const k = this.b.ctl[ref]; if (!k || !k.test) return; const d = sc(k.test); if (d < bd && d < proche) { bd = d; best = ref; } });
       return best;
     }
     near(x, y) {
@@ -4078,12 +4205,13 @@ const V3D = (() => {
       return best;
     }
     pick(x, y) {
+      if (this.pop || this.fiche) { this.fermer(); return; }
       if (this.stepOn) { const z0 = this.zoneAt(x, y); if (z0) this.openZone(z0); return; }
-      if (this.hlC) { this.hl.pick(null); return; } // un circuit est en surbrillance : le toucher suivant le relâche
       const tst = this.nearTest(x, y);
       if (tst) { const ct = this.ctx.comps.find((q) => q.ref === tst); if (ct && this.ctx.testDiff) { this.ctx.testDiff(ct.id); return; } }
-      const ref = this.near(x, y), c = ref && this.ctx.comps.find((q) => q.ref === ref);
-      if (c) { this.ctx.operate(c.id); return; }
+      const ref = this.nearDev(x, y), c = ref && this.ctx.comps.find((q) => q.ref === ref);
+      if (c) { this.choisir(c, x, y); return; }
+      if (this.hlC) { this.hl.pick(null); return; } // un circuit est en surbrillance : le toucher suivant le relâche
       const z = this.zoneAt(x, y); if (z) { this.openZone(z); return; }
       if (this.hl) this.hl.tap(this.wireAt(x, y));
     }
@@ -6249,7 +6377,7 @@ route();
     h.insertBefore(b, h.children[1] || null);
     b.addEventListener('click', () => { const w = b.closest('.v3d-wrap, .col2d'); fsSet(w, !w.classList.contains('fs')); });
   });
-  D.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const w = D.querySelector('.v3d-wrap.fs, .col2d.fs'); if (w) fsSet(w, false); } });
+  D.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (D.querySelector('.v3d-fiche, .v3d-pop')) return; const w = D.querySelector('.v3d-wrap.fs, .col2d.fs'); if (w) fsSet(w, false); } });
   addEventListener('hashchange', () => { const w = D.querySelector('.v3d-wrap.fs, .col2d.fs'); if (w) fsSet(w, false); });
 
   // Téléphone : boutons « 3D → » et « ← 2D » pour passer d'un schéma à l'autre (en plus du glissement)
