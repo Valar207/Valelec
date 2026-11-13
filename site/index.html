@@ -109,6 +109,7 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45de
 .btn:hover{background:var(--hover);color:var(--ink)}
 .btn.pri{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
 .btn.pri:hover{opacity:.9;color:var(--inv-fg)}
+.partage{margin-top:12px;min-height:40px;font-size:14px}
 .btn.yel{background:var(--yellow);border-color:var(--yellow);color:#17191E}
 .btn.yel:hover{background:#FFE47F;color:#17191E}
 .btn.sm{min-height:40px;padding:0 14px;font-size:14px;border-radius:10px}
@@ -1304,7 +1305,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
     <p class="sim-pick" id="sim-pick">Choisis un circuit <span>13 circuits · glisse pour les voir</span></p>
     <aside class="sim-nav" id="sim-nav" aria-labelledby="sim-pick"></aside>
     <div class="sim-main">
-      <div><p class="eyebrow" id="sim-group"></p><h1 class="display" id="sim-title"></h1><p class="lead" id="sim-sub"></p></div>
+      <div><p class="eyebrow" id="sim-group"></p><h1 class="display" id="sim-title"></h1><p class="lead" id="sim-sub"></p><button class="btn ghost partage" type="button" data-partage="schemas">Partager ce schéma</button></div>
       <div class="sim-cols has3d">
         <div class="stage">
           <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
@@ -1349,7 +1350,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
       <button class="extab" type="button" data-espace="2" aria-pressed="false"><span class="num">2</span><span class="tx"><span class="k">Espace de travail n°2</span><strong>Parties communes</strong><span class="ds">Minuterie, prise, alarme incendie</span></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <button class="extab" type="button" data-espace="3" aria-pressed="false"><span class="num">3</span><span class="tx"><span class="k">Espace de travail n°3</span><strong>Locaux tertiaires</strong><span class="ds">Détecteur, BAES, arrêt d’urgence</span></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
-    <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p></div>
+    <div><p class="eyebrow" id="ex-eyebrow"></p><h2 class="display" id="ex-title" style="margin:4px 0 8px;font-size:clamp(28px,3.4vw,42px)"></h2><p class="lead" id="ex-sub" style="margin:0"></p><button class="btn ghost partage" type="button" data-partage="examen">Partager cet espace</button></div>
     <div class="sim-cols has3d">
       <div class="stage">
         <div class="dual"><div class="col2d"><div class="d2-head"><strong>Schéma électrique</strong><span>Touche un appareil pour l’actionner · pince pour zoomer</span></div><div class="board">
@@ -4363,8 +4364,11 @@ function simNav() {
   const act = navEl.querySelector('[aria-current="true"]');
   if (act && navEl.scrollWidth > navEl.clientWidth) { const na = navEl.getBoundingClientRect(), ab = act.getBoundingClientRect(); navEl.scrollLeft += ab.left - na.left - (na.width - ab.width) / 2; }
 }
+const lienDe = (pg) => pg === 'schemas' ? 'schemas/' + cur.id : 'examen/' + exN;
+let routePret = false;
+const majLien = (pg) => { if (routePret && decodeURIComponent(location.hash.slice(1)).split('/')[0] === pg) history.replaceState(null, '', '#' + lienDe(pg)); };
 function simSet(p) {
-  cur = p;
+  cur = p; majLien('schemas');
   simC.power = true; simC.load(p.build()); simHL.refresh(); simB.fit(); simB.render();
   $('#sim-group').textContent = p.group === 'base' ? 'Module 3 · Circuits de base' : 'Module 4 · Circuits avancés';
   $('#sim-title').textContent = p.title; $('#sim-sub').textContent = p.sub;
@@ -4503,7 +4507,7 @@ const ex3d = new V3D.View($('#ex-3d'));
 const exHL = makeHL(exC, exB, ex3d, $('#ex-circ'));
 ex3d.stepEl = $('#ex-steps');
 function exSet(n) {
-  if (n) exN = n;
+  if (n) exN = n; majLien('examen');
   const E = ESPACES[exN];
   exC.power = true; exC.load(E.build()); exHL.refresh(); exB.fit(); exB.render();
   $('#ex-eyebrow').textContent = E.eyebrow; $('#ex-title').textContent = E.title; $('#ex-sub').textContent = E.sub;
@@ -5625,6 +5629,12 @@ const PAGES = ['accueil', 'bases', 'schemas', 'examen', 'qcm', 'depannage', 'bac
 function route() {
   let h = decodeURIComponent(location.hash.slice(1)) || 'accueil';
   let target = null;
+  const [base, det] = h.split('/');
+  if (det && PAGES.includes(base)) {
+    h = base;
+    if (base === 'schemas') { const p = PRESETS.find((x) => x.id === det); if (p && p !== cur) simSet(p); }
+    if (base === 'examen' && ESPACES[+det] && +det !== exN) exSet(+det);
+  }
   if (!PAGES.includes(h)) {
     const el = document.getElementById(h);
     const page = el && el.closest('[data-page]');
@@ -5650,6 +5660,7 @@ function route() {
   document.body.classList.toggle('ed-mode', h === 'bac-a-sable');
   if (h === 'bac-a-sable') { editor.render(); requestAnimationFrame(sizeEd); }
   Sound.alarmClear(); if (h === 'examen') exC.update();
+  routePret = true;
 }
 function sizeEd() {
   const ed = $('.ed'); if (!ed || ed.closest('[hidden]')) return;
@@ -5680,7 +5691,7 @@ function stat(nom, titre) { statEnvoi({ path: nom, title: titre || nom, event: t
   }
   /* une page vue par page du site (#bases → /bases) */
   let page = '', t0 = 0, cumul = 0, paliers = new Set(), tmr = 0;
-  const pageDe = () => { const h = decodeURIComponent(location.hash.slice(1)) || 'accueil'; if (PAGES.includes(h)) return h; const el = document.getElementById(h); const pg = el && el.closest('[data-page]'); return pg ? pg.dataset.page : 'accueil'; };
+  const pageDe = () => { const h = (decodeURIComponent(location.hash.slice(1)) || 'accueil').split('/')[0] || 'accueil'; if (PAGES.includes(h)) return h; const el = document.getElementById(h); const pg = el && el.closest('[data-page]'); return pg ? pg.dataset.page : 'accueil'; };
   /* temps passé : repères à 30 s et 2 min sur la page en cours, pendant que l'onglet est visible */
   const tic = () => {
     if (document.hidden || !page) return;
@@ -6050,6 +6061,19 @@ const GLOSSAIRE = [
   addEventListener('scroll', () => { if (cible) cacher(); }, { passive: true });
   addEventListener('hashchange', cacher);
 })();
+
+/* Bouton « Partager » : lien direct vers le schéma ou l'espace affiché */
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-partage]'); if (!b) return;
+  const pg = b.dataset.partage, url = location.href.split('#')[0] + '#' + lienDe(pg);
+  const titre = (pg === 'schemas' ? $('#sim-title') : $('#ex-title')).textContent + ' · Valelec';
+  const dire = (txt) => { const o = b.dataset.txt || (b.dataset.txt = b.textContent); b.textContent = txt; clearTimeout(b.tmr); b.tmr = setTimeout(() => { b.textContent = o; }, 2200); };
+  try {
+    if (navigator.share && matchMedia('(pointer: coarse)').matches) { await navigator.share({ title: titre, url }); return; }
+    await navigator.clipboard.writeText(url); dire('Lien copié ✓');
+  } catch (err) { if (err && err.name === 'AbortError') return; prompt('Copie ce lien :', url); }
+  stat('partage/' + lienDe(pg), 'Partage');
+});
 
 /* Boutons « Ouvrir ce schéma » des symboles */
 document.addEventListener('click', (e) => {

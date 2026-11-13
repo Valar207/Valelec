@@ -164,3 +164,9 @@ Dans l'espace 3, l'arrêt d'urgence S1 coupe **toute l'installation** : prise PC
 ## Détecteur avec marche forcée
 
 Schéma `forcee` (circuits avancés, après la minuterie) : le détecteur S2 (alimenté en L et N) et l'interrupteur de marche forcée S1 sont câblés en parallèle sur le même retour lampe (borne X3), qui alimente deux lampes en parallèle. S1 ouvert : le détecteur commande (allumage au passage, extinction après la temporisation). S1 fermé : les deux lampes restent allumées en permanence.
+
+## Liens directs et bouton « Partager »
+
+Chaque schéma et chaque espace d'examen a sa propre adresse : `#schemas/<id>` (par exemple `#schemas/vav`, `#schemas/forcee`) et `#examen/<n>` (1 à 3). `route()` lit la partie après la barre oblique et charge le bon schéma (`simSet`) ou le bon espace (`exSet`). Quand on change de schéma ou d'espace, l'adresse est mise à jour avec `history.replaceState` (`majLien`, seulement après le premier routage, pour ne pas écraser un lien ouvert directement). Les anciens liens `#schemas` et `#examen` marchent toujours.
+
+Le bouton « Partager ce schéma » / « Partager cet espace », sous le titre, ouvre la feuille de partage sur téléphone (`navigator.share`), et copie sinon le lien dans le presse-papiers (« Lien copié ✓ »). La mesure d'audience compte ces adresses comme la page Schémas ou Examen, et enregistre un évènement `partage/<lien>`.
