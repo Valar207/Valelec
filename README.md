@@ -190,3 +190,7 @@ Sur téléphone, un toucher long sur la vue 3D ou sur un schéma 2D ne sélectio
 ## Symbole du variateur
 
 Le schéma 2D utilise le symbole normalisé : un cercle, une tige oblique et le triangle de variation. Le cercle se remplit de jaune selon le réglage, avec le pourcentage affiché.
+
+## Menus du haut : ouverture au clic
+
+Sur ordinateur, les menus « Apprendre », « S'entraîner » et « Aller plus loin » s'ouvrent seulement au clic, plus au survol de la souris : la flèche à droite du bouton suit donc toujours l'état réel du menu. Un clic sur un autre menu, à côté, sur un lien, ou la touche Échap le referme.
