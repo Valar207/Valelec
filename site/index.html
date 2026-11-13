@@ -880,6 +880,20 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .v3d-head{align-items:center}
 .stage.has-fs{container-type:normal}
 .dual .v3d-wrap.fs,.v3d-wrap.fs{display:flex !important;flex-direction:column;gap:8px;position:fixed;inset:0;z-index:60;margin:0;background:var(--paper);padding:calc(8px + env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));animation:pgin .3s var(--ease)}
+.dual .col2d.fs,.col2d.fs{display:flex !important;flex-direction:column;gap:8px;position:fixed;inset:0;z-index:60;margin:0;background:var(--paper);overflow:auto;padding:calc(8px + env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))}
+.col2d.fs>.board{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;border-radius:var(--r-m)}
+.col2d.fs>.board>svg{flex:1 1 auto;min-height:0;height:100%;max-height:none;width:100%;margin:0}
+.col2d.fs>.ctls{flex:none;max-height:32vh;overflow:auto}
+.col2d.fs>.mini-legend,.col2d.fs .d2-head>span,.col2d.fs .swp{display:none !important}
+.col2d.fs .d2-head{display:flex;align-items:center;gap:10px}
+@media (max-height:500px){.col2d.fs .statusbar{padding-block:6px}.col2d.fs .statusbar .d{display:none}.col2d.fs .statusbar strong{font-size:14px}}
+.col2d.fs>#sim-next{display:none}
+/* plein écran à l'horizontale : le schéma à gauche, les commandes en colonne à droite */
+@media (orientation:landscape){
+  .dual .col2d.fs,.col2d.fs{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(190px,24vw);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"h h" "b c";overflow:hidden}
+  .col2d.fs>.d2-head{grid-area:h}.col2d.fs>.board{grid-area:b;min-height:0}
+  .col2d.fs>.ctls{grid-area:c;max-height:none;min-height:0;overflow:auto;grid-template-columns:minmax(0,1fr);align-content:start}
+}
 .v3d-wrap.fs .v3d{flex:1 1 auto;min-height:0;height:auto;aspect-ratio:auto;border-radius:var(--r-m)}
 .v3d-wrap.fs :is(.v3d-steps,.v3d-circ){flex:none;max-height:34vh;overflow:auto}
 .v3d-wrap.fs .v3d-leg{flex:none;font-size:12px;gap:4px 14px}
@@ -888,14 +902,24 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .v3d-wrap.fs .stp-p{min-height:0;font-size:13.5px}
 @media (max-height:560px),(max-width:520px){.v3d-wrap.fs .v3d-leg{display:none}}
 body.fs-lock{overflow:hidden}
+/* Grand écran : le schéma 2D prend toute la largeur, la 3D s'étale dessous avec les commandes à côté */
+.wrap.wide.sim{max-width:1760px}
+@media (min-width:1100px){.ex>.sim-cols{margin-inline:calc(50% - min(50vw - 24px, 880px))}}
+@container (min-width:1000px){
+  .dual{grid-template-columns:minmax(0,1.75fr) minmax(300px,1fr);grid-template-areas:"h2 h2" "b2 b2" "h3 ct" "v3 ct" "v3 st" "v3 ci" "l3 lg" "nx nx";grid-template-rows:auto auto auto auto auto 1fr auto auto;gap:14px 26px}
+  .col2d>.board>svg{max-height:74vh}
+  .dual .v3d{aspect-ratio:16/10;min-height:420px;max-height:80vh;align-self:start}
+  .col2d>.ctls{align-self:start}
+}
 
 /* Téléphone : schéma 2D et vue 3D côte à côte, on glisse de l'un à l'autre (le suivant dépasse un peu) */
 .swp{display:none}
 @container (max-width:759px){
-  .stage:not(.has-fs) .dual{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;margin-inline:-16px;padding:4px 24px 26px;gap:10px;scrollbar-width:none}
+  .stage:not(.has-fs) .dual{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;margin-inline:-16px;padding:4px 10px 26px;gap:8px;scrollbar-width:none;scroll-padding-inline:10px}
+  .stage:not(.has-fs) .v3d{aspect-ratio:4/5;max-height:72vh}
   .stage:not(.has-fs) .dual::-webkit-scrollbar{display:none}
   .stage:not(.has-fs) .dual>:is(.col2d,.v3d-wrap){flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always}
-  .stage:not(.has-fs) .d2-head span{display:none}
+  .stage:not(.has-fs) .d2-head>span{display:none}
   .stage:not(.has-fs) .swp{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:999px;background:var(--g-cta) border-box no-repeat;color:#fff;font:700 13px var(--f-body);cursor:pointer;box-shadow:var(--glow)}
   .swp i{font-style:normal;display:inline-block;animation:nudge 1.3s ease-in-out infinite}
   .swp.back i{animation-name:nudgeb}
@@ -3997,7 +4021,9 @@ const V3D = (() => {
       /* dézoom à la main depuis une boîte : on quitte le mode zoom */
       if (this.zone && this.rad > this.zoneR * 1.6) { this.zone = null; this.tags(null); this.ui.hidden = true; }
       this.draw(); }
-    size() { const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h || !this.r) return; this.r.setSize(w, h, false); this.r.domElement.style.width = '100%'; this.r.domElement.style.height = '100%'; this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.draw(); }
+    /* recul de la caméra : dans un cadre plus haut que large, elle recule pour que le mur reste entier en largeur */
+    recul() { const w = this.el.clientWidth, h = this.el.clientHeight; return (this.fitR0 || 1) / (w && h ? Math.min(1, w / h) : 1); }
+    size() { const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h || !this.r) return; if (this.fitR0) { const nf = this.recul(); if (Math.abs(this.rad - this.fitR) < 1e-6) this.rad = nf; this.fitR = nf; } this.r.setSize(w, h, false); this.r.domElement.style.width = '100%'; this.r.domElement.style.height = '100%'; this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.draw(); }
     draw() { if (!this.r || !this.b) return; const t = this.target, cp = Math.cos(this.pitch); this.cam.position.set(t.x + this.rad * Math.sin(this.yaw) * cp, t.y + this.rad * Math.sin(this.pitch), t.z + this.rad * Math.cos(this.yaw) * cp); this.cam.lookAt(t); this.r.render(this.scene, this.cam); }
     show(make, ctx) {
       this.pending = [make, ctx];
@@ -4017,7 +4043,7 @@ const V3D = (() => {
         if (o.isMesh && !m.transparent && !m.isMeshBasicMaterial) { o.castShadow = true; o.receiveShadow = true; }
       });
       { const s = this.sun, k = v.r * 0.62; s.target.position.set(v.cx, v.cy, 0); s.position.set(v.cx - v.r * 0.42, v.cy + v.r * 0.62, v.r * 0.9); const c = s.shadow.camera; c.left = -k; c.right = k; c.top = k; c.bottom = -k; c.near = 0.1; c.far = v.r * 4; c.updateProjectionMatrix(); }
-      this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.rad = v.r; this.fitR = v.r; this.yaw = 0.2; this.pitch = 0.09;
+      this.target.set(v.cx, v.cy, 0.05); this.home = this.target.clone(); this.fitR0 = v.r; this.fitR = this.recul(); this.rad = this.fitR; this.yaw = 0.2; this.pitch = 0.09;
       this.size(); this.sync(ctx); this.setCircuit(this.hlC); this.renderSteps(); this.draw();
     }
     sync(C) { if (!this.b || !C || !C.res) return; this.flowSync(C); this.r.shadowMap.needsUpdate = true; Object.keys(this.b.lamps).forEach((ref) => { const L = this.b.lamps[ref]; if (!L) return; const c = C.comps.find((x) => x.ref === ref), on = !this.stepOn && c && C.res.loadsOn[c.id], dm = on ? (c.st.dim ?? 1) : 0; L.m.emissiveIntensity = on ? 1.1 * (0.2 + 0.8 * dm) : 0; L.pt.intensity = on ? 0.38 * dm : 0; if (L.glow) L.glow.visible = !!on; });
@@ -5723,7 +5749,7 @@ function stat(nom, titre) { statEnvoi({ path: nom, title: titre || nom, event: t
     if (el.matches('#lex-det > summary')) return stat('lexique/ouvert', 'Lexique ouvert');
     if (el.matches('.symmore > summary')) return stat('symbole/detail', 'Symbole : détail ouvert');
     if (el.matches('#qz-go')) return stat('qcm/commence', 'QCM commencé');
-    if (el.matches('.v3d-fs')) return stat('3d/plein-ecran/' + page, 'Vue 3D en plein écran');
+    if (el.matches('.v3d-fs')) return el.closest('.col2d') ? stat('2d/plein-ecran/' + page, 'Schéma 2D en plein écran') : stat('3d/plein-ecran/' + page, 'Vue 3D en plein écran');
     if (el.matches('.stp-go')) return stat('3d/pas-a-pas/' + page, 'Construction pas à pas');
     if (el.matches('#pn-pick [data-i]')) return stat('panne/choisie-' + (+el.dataset.i + 1), 'Panne choisie');
     if (el.matches('#pn-hint')) return stat('panne/indice', 'Panne : indice demandé');
@@ -6212,18 +6238,19 @@ route();
   // Vue 3D en plein écran (le pas à pas, les circuits et les gestes restent actifs)
   const fsSet = (w, on) => {
     const st = w.closest('.stage'), b = w.querySelector('.v3d-fs');
+    if (on) D.querySelectorAll('.v3d-wrap.fs, .col2d.fs').forEach((x) => { if (x !== w) fsSet(x, false); });
     w.classList.toggle('fs', on); if (st) st.classList.toggle('has-fs', on); D.body.classList.toggle('fs-lock', on);
     b.setAttribute('aria-pressed', String(on)); b.lastChild.textContent = on ? 'Quitter le plein écran' : 'Plein écran';
     if (!on) w.scrollIntoView({ block: 'center' });
   };
-  D.querySelectorAll('.v3d-head').forEach((h) => {
+  D.querySelectorAll('.v3d-head, .d2-head').forEach((h) => {
     const b = D.createElement('button'); b.type = 'button'; b.className = 'v3d-fs'; b.setAttribute('aria-pressed', 'false');
     b.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Plein écran</span>';
     h.insertBefore(b, h.children[1] || null);
-    b.addEventListener('click', () => { const w = b.closest('.v3d-wrap'); fsSet(w, !w.classList.contains('fs')); });
+    b.addEventListener('click', () => { const w = b.closest('.v3d-wrap, .col2d'); fsSet(w, !w.classList.contains('fs')); });
   });
-  D.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const w = D.querySelector('.v3d-wrap.fs'); if (w) fsSet(w, false); } });
-  addEventListener('hashchange', () => { const w = D.querySelector('.v3d-wrap.fs'); if (w) fsSet(w, false); });
+  D.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const w = D.querySelector('.v3d-wrap.fs, .col2d.fs'); if (w) fsSet(w, false); } });
+  addEventListener('hashchange', () => { const w = D.querySelector('.v3d-wrap.fs, .col2d.fs'); if (w) fsSet(w, false); });
 
   // Téléphone : boutons « 3D → » et « ← 2D » pour passer d'un schéma à l'autre (en plus du glissement)
   D.querySelectorAll('.dual').forEach((dual) => {

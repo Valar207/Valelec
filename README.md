@@ -174,3 +174,9 @@ Le bouton « Partager ce schéma » / « Partager cet espace », sous le titre, 
 ## Pas de sélection au toucher long
 
 Sur téléphone, un toucher long sur la vue 3D ou sur un schéma 2D ne sélectionne plus rien (pas de surlignage bleu, pas de menu « Copier ») : `.v3d-wrap`, `.v3d` et `.board` ont `user-select:none`, `-webkit-touch-callout:none` et un `-webkit-tap-highlight-color` transparent. Le menu contextuel était déjà bloqué sur la 3D.
+
+## Schémas en grand
+
+- **Grand écran** (zone des schémas d'au moins 1000 px) : le schéma 2D prend toute la largeur (hauteur limitée à 74 % de l'écran), puis la vue 3D s'étale dessous en 16/10, avec les commandes, le pas à pas et les circuits dans une colonne à droite. La page Schémas s'élargit jusqu'à 1760 px ; sur la page Examen, seule la zone des schémas déborde de la colonne de texte (`.ex>.sim-cols`), les textes gardent une largeur confortable.
+- **Téléphone** : les deux vues vont presque d'un bord à l'autre et la 3D est plus haute (4/5). La caméra recule quand le cadre est plus haut que large (`View.recul()`), pour que le mur reste entier en largeur.
+- **Plein écran du schéma 2D** : même bouton que pour la 3D (`fsSet` gère `.col2d` et `.v3d-wrap`, un seul plein écran à la fois). Téléphone tourné à l'horizontale, le schéma occupe la gauche et les commandes passent en colonne à droite. Échap, ou un changement de page, referme.
