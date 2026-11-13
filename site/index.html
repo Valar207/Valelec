@@ -5,6 +5,7 @@
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Valelec</title>
 <script>try{var t=JSON.parse(localStorage.getItem("pn-theme"));if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>(function(){var l=null,q=/[?&]lang=(en|fr|collect)\b/.exec(location.search);try{l=q?q[1]:localStorage.getItem("pn-lang")}catch(e){}if(l!=="en"&&l!=="fr"&&l!=="collect"){var n=(navigator.languages&&navigator.languages[0])||navigator.language||"";l=/^en/i.test(n)?"en":"fr"}if(q&&l!=="collect"){try{localStorage.setItem("pn-lang",l)}catch(e){}}window.LANG=l;window.tr=function(s){return s};document.documentElement.lang=l==="en"?"en":"fr";if(l==="en")document.write('<script src="i18n-en.js"><\/script>');if(l!=="fr")document.write('<script src="i18n.js"><\/script>')})()</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2317191E'/%3E%3Cpath d='M6 5 L14.5 15 L10 15 L16 27 L26 5' fill='none' stroke='%23FFD84A' stroke-width='3.6' stroke-linejoin='miter' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,6 +111,7 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45de
 .btn.pri{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
 .btn.pri:hover{opacity:.9;color:var(--inv-fg)}
 .partage{margin-top:12px;min-height:40px;font-size:14px}
+.lang-btn{font:700 13px var(--f-mono);letter-spacing:.04em}
 .btn.yel{background:var(--yellow);border-color:var(--yellow);color:#17191E}
 .btn.yel:hover{background:#FFE47F;color:#17191E}
 .btn.sm{min-height:40px;padding:0 14px;font-size:14px;border-radius:10px}
@@ -1142,6 +1144,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
       <div class="nav-g"><button class="nav-t" type="button" aria-expanded="false">Aller plus loin</button><div class="nav-p"><a href="#tableaux" data-nav="tableaux"><b>Tableaux FR / US</b><small>Comparer les deux installations</small></a><a href="#pv" data-nav="pv"><b>Panneaux PV</b><small>Du panneau au compteur</small></a><a href="#irve" data-nav="irve"><b>Bornes IRVE</b><small>Recharger une voiture électrique</small></a></div></div>
     </nav>
     <div class="top-act">
+      <button class="snd lang-btn" id="lang" type="button" translate="no"></button>
       <button class="snd" id="theme" type="button" aria-label="Mode sombre" title="Passer en mode sombre"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path id="theme-moon" d="M15.5 12.2 A6.5 6.5 0 0 1 7.8 4.5 A6.5 6.5 0 1 0 15.5 12.2 Z" class="ico"/><g id="theme-sun" style="display:none"><circle cx="10" cy="10" r="3.4" class="ico"/><path d="M10 2.5V4.3M10 15.7V17.5M2.5 10H4.3M15.7 10H17.5M4.7 4.7L6 6M14 14L15.3 15.3M4.7 15.3L6 14M14 6L15.3 4.7" class="ico"/></g></svg></button>
       <button class="burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
     </div>
@@ -3542,7 +3545,7 @@ const V3D = (() => {
     box(w, h, d, m, x, y, z) { if (this.dry) return this.stub(); const b = new this.T.Mesh(new this.T.BoxGeometry(w, h, d), typeof m === 'number' ? this.mat(m) : m); b.position.set(x, y, z); this.g.add(b); return b; }
     tube(pts, r, m, rad) { if (this.dry) return null; const V = pts.map((p) => (p.isVector3 ? p : new this.T.Vector3(p[0], p[1], p[2]))); const P = rounded(V, rad === undefined ? 0.05 : rad); const dedupe = P.filter((p, i) => !i || p.distanceTo(P[i - 1]) > 1e-4); if (dedupe.length < 2) return null; const c = new this.T.CatmullRomCurve3(dedupe, false, 'catmullrom', 0.02); const t = new this.T.Mesh(new this.T.TubeGeometry(c, Math.min(260, dedupe.length * 5), r, r < 0.006 ? 5 : 8, false), m); this.g.add(t); return t; }
     label(txt, x, y, z, big, hot) {
-      if (this.dry) return this.stub();
+      if (this.dry) return this.stub(); txt = window.tr(txt);
       const c = document.createElement('canvas'), s = 2, f = (big === 1 ? 22 : 17) * s, x2 = c.getContext('2d'); x2.font = `600 ${f}px "IBM Plex Mono",monospace`; const w = Math.ceil(x2.measureText(txt).width) + 8 * s; c.width = w; c.height = f + 6 * s;
       const q = c.getContext('2d'); q.font = `600 ${f}px "IBM Plex Mono",monospace`; q.fillStyle = typeof hot === 'string' ? hot : hot ? 'rgba(13,120,100,.96)' : 'rgba(17,26,36,.88)'; q.beginPath(); if (q.roundRect) q.roundRect(0, 0, c.width, c.height, 7 * s); else q.rect(0, 0, c.width, c.height); q.fill(); q.fillStyle = '#fff'; q.textBaseline = 'middle'; q.textAlign = 'center'; q.fillText(txt, c.width / 2, c.height / 2 + s);
       const tx = new this.T.CanvasTexture(c); tx.anisotropy = 4; const sp = new this.T.Sprite(new this.T.SpriteMaterial({ map: tx, depthTest: false, transparent: true })); const h = big === 'wago' ? 0.015 : big === 'tiny' ? 0.05 : big ? 0.095 : 0.075; sp.scale.set(h * c.width / c.height, h, 1); sp.position.set(x, y, z); sp.renderOrder = 10; sp.userData.prio = hot === true ? 3 : big === 1 || typeof hot === 'string' ? 2 : 1; sp.userData.s0 = sp.scale.clone(); this.g.add(sp); if (big !== 'wago') this.labels.push(sp); return sp;
@@ -4363,7 +4366,7 @@ $('#hero-btn').addEventListener('click', () => { const s = heroC.comps.find((c) 
     fus: ['Une protection à usage unique : un petit fil à l’intérieur fond s’il passe trop de courant, ce qui coupe le circuit.', 'Un petit rectangle traversé par le fil : c’est le fil fin, à l’intérieur, qui fond.', '', ''],
     terre: ['Le raccordement de sécurité au sol. Si un appareil métallique a un défaut, le courant part dans la terre et le différentiel coupe aussitôt.', 'Des traits de plus en plus courts, comme un piquet planté dans le sol.', 'Dans « Tableaux FR / US », provoque un défaut sur le lave-linge : le courant de défaut part à la terre et le différentiel coupe.', 'tableaux'],
     inter: ['L’interrupteur classique : il ouvre ou ferme le chemin de l’électricité. Fermé, la lampe s’allume. Ouvert, elle s’éteint.', 'Un trait penché : c’est le contact, ouvert. Quand on actionne l’interrupteur, il se referme sur l’autre borne.', 'Dans « Simple allumage », S1 coupe la phase qui va à la lampe L1.', 'schemas:simple'],
-    vari: ['Il allume la lampe et règle sa luminosité, de faible à pleine puissance.', 'Le dessin de l’interrupteur, traversé par une flèche en biais : la flèche veut dire « réglable ».', 'Dans « Variateur », chaque appui sur S1 augmente la lumière de L1 : 25 %, 50 %, 75 %, 100 %, puis éteint.', 'schemas:vari'],
+    vari: ['Il allume la lampe et règle sa luminosité, de faible à pleine puissance.', 'Un cercle avec une tige en biais, barrée d’un triangle : le triangle veut dire « réglable ».', 'Dans « Variateur », chaque appui sur S1 augmente la lumière de L1 : 25 %, 50 %, 75 %, 100 %, puis éteint.', 'schemas:vari'],
     vav: ['Pour allumer et éteindre la même lampe depuis deux endroits.', 'Un trait qui pivote entre deux bornes : il bascule d’une navette à l’autre.', 'Dans « Va-et-vient », S1 et S2 commandent la même lampe L1, chacun de son côté.', 'schemas:vav'],
     perm: ['Pour commander la même lampe depuis un troisième endroit, ou plus.', 'Deux contacts qui se croisent : à chaque appui, il échange les deux navettes.', 'Dans « Commande depuis 3 endroits », S2 est placé entre les deux va-et-vient S1 et S3.', 'schemas:perm'],
     bp: ['Un bouton qui ne laisse passer le courant que pendant que tu appuies, comme une sonnette.', 'Un contact ouvert surmonté d’un petit poussoir : il ne se ferme que pendant l’appui.', 'Dans « Bouton poussoir et sonnette », BP1 fait sonner B1 tant que tu appuies.', 'schemas:sonnette'],
@@ -6059,7 +6062,8 @@ const GLOSSAIRE = [
   ['onduleur', 'onduleurs?', 'Onduleur', 'L’appareil qui transforme le courant continu des panneaux solaires en courant alternatif 230 V.', 0],
 ];
 (function glossaire() {
-  const G = GLOSSAIRE.map(([k, motif, titre, def, lex]) => ({ k, titre, def, lex, motif }));
+  const GE = window.LANG === 'en' && window.I18N_EN && window.I18N_EN.g || {};
+  const G = GLOSSAIRE.map(([k, motif, titre, def, lex]) => (GE[k] ? { k, motif: GE[k][0], titre: GE[k][1], def: GE[k][2], lex } : { k, titre, def, lex, motif }));
   const PAR = Object.fromEntries(G.map((g) => [g.k, g]));
   /* lexique de début de parcours */
   const ll = $('#lex-list');
@@ -6138,6 +6142,14 @@ const GLOSSAIRE = [
   document.addEventListener('focusin', (e) => { const g = e.target.closest && e.target.closest('.gl'); if (g) montrer(g, false); else if (cible && !e.target.closest('#gltip')) cacher(); });
   addEventListener('scroll', () => { if (cible) cacher(); }, { passive: true });
   addEventListener('hashchange', cacher);
+})();
+
+/* Bouton FR / EN : on enregistre le choix et on recharge la page dans l'autre langue, au même endroit */
+(() => {
+  const b = $('#lang'); if (!b) return; const en = window.LANG === 'en';
+  b.textContent = en ? 'FR' : 'EN'; b.setAttribute('lang', en ? 'fr' : 'en');
+  b.setAttribute('aria-label', en ? 'Version française' : 'English version'); b.title = en ? 'Passer le site en français' : 'Switch the site to English';
+  b.addEventListener('click', () => { try { localStorage.setItem('pn-lang', en ? 'fr' : 'en'); } catch (e) {} stat('langue/' + (en ? 'fr' : 'en'), 'Langue'); location.replace(location.pathname + location.hash); });
 })();
 
 /* Bouton « Partager » : lien direct vers le schéma ou l'espace affiché */

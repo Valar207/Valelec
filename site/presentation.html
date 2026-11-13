@@ -2,6 +2,7 @@
 <html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var l=null,q=/[?&]lang=(en|fr|collect)\b/.exec(location.search);try{l=q?q[1]:localStorage.getItem("pn-lang")}catch(e){}if(l!=="en"&&l!=="fr"&&l!=="collect"){var n=(navigator.languages&&navigator.languages[0])||navigator.language||"";l=/^en/i.test(n)?"en":"fr"}if(q&&l!=="collect"){try{localStorage.setItem("pn-lang",l)}catch(e){}}window.LANG=l;window.tr=function(s){return s};document.documentElement.lang=l==="en"?"en":"fr";if(l==="en")document.write('<script src="i18n-en.js"><\/script>');if(l!=="fr")document.write('<script src="i18n.js"><\/script>')})()</script>
 <meta name="robots" content="noindex">
 <title>Valelec · présentation pour les centres de formation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +14,9 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;touch-action:manipulation}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header .wrap{position:relative}
+.lang{position:absolute;top:14px;right:20px;display:inline-grid;place-items:center;min-width:44px;height:40px;padding:0 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font:600 13px "IBM Plex Mono",monospace;text-decoration:none}
+.lang:hover{border-color:var(--accent)}
 header{padding:56px 0 36px;background:radial-gradient(60% 120% at 0% 0%,rgba(139,92,255,.28),transparent 70%),radial-gradient(50% 110% at 100% 20%,rgba(255,61,129,.22),transparent 70%)}
 .eyebrow{margin:0 0 14px;font:500 13px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.04em;line-height:1.08;margin:0;text-wrap:balance}
@@ -56,6 +60,8 @@ footer a{color:inherit}
 </style>
 
 <header><div class="wrap">
+  <a class="lang" id="lang" href="?lang=en" translate="no" lang="en" aria-label="English version">EN</a>
+  <script>if (window.LANG === "en") { const a = document.getElementById("lang"); a.textContent = "FR"; a.href = "?lang=fr"; a.lang = "fr"; a.setAttribute("aria-label", "Version française"); }</script>
   <p class="eyebrow">Titre professionnel Électricien d’équipement du bâtiment</p>
   <h1>Valelec, l’outil de révision <span>créé par un stagiaire, pour les stagiaires.</span></h1>
   <p class="lead">Un site gratuit, sans installation ni compte, pour comprendre l’électricité, lire les schémas, travailler en sécurité et préparer les deux épreuves du titre : l’examen pratique et le questionnaire professionnel. Il fonctionne aussi bien sur téléphone que sur ordinateur, du grand débutant au stagiaire en fin de parcours.</p>
