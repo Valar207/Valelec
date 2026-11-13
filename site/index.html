@@ -350,6 +350,8 @@ details.more[open]>summary::before{content:"−"}
 .v3d-help[open]{flex-basis:100%}
 .v3d-help ul{margin:8px 0 0;padding-left:18px;line-height:1.5}
 .v3d-head strong{color:var(--ink,inherit);font-size:15px}
+/* pas de sélection ni de menu au toucher long sur la 3D et les schémas */
+.v3d-wrap,.v3d,.v3d *,.board,.board svg{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .v3d{aspect-ratio:1/1;min-height:300px;width:100%;border-radius:18px;overflow:hidden;background:#18212c;position:relative}
 .v3d canvas{display:block;cursor:grab}
 .v3d canvas:active{cursor:grabbing}

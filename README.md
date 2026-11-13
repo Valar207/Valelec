@@ -170,3 +170,7 @@ Schéma `forcee` (circuits avancés, après la minuterie) : le détecteur S2 (al
 Chaque schéma et chaque espace d'examen a sa propre adresse : `#schemas/<id>` (par exemple `#schemas/vav`, `#schemas/forcee`) et `#examen/<n>` (1 à 3). `route()` lit la partie après la barre oblique et charge le bon schéma (`simSet`) ou le bon espace (`exSet`). Quand on change de schéma ou d'espace, l'adresse est mise à jour avec `history.replaceState` (`majLien`, seulement après le premier routage, pour ne pas écraser un lien ouvert directement). Les anciens liens `#schemas` et `#examen` marchent toujours.
 
 Le bouton « Partager ce schéma » / « Partager cet espace », sous le titre, ouvre la feuille de partage sur téléphone (`navigator.share`), et copie sinon le lien dans le presse-papiers (« Lien copié ✓ »). La mesure d'audience compte ces adresses comme la page Schémas ou Examen, et enregistre un évènement `partage/<lien>`.
+
+## Pas de sélection au toucher long
+
+Sur téléphone, un toucher long sur la vue 3D ou sur un schéma 2D ne sélectionne plus rien (pas de surlignage bleu, pas de menu « Copier ») : `.v3d-wrap`, `.v3d` et `.board` ont `user-select:none`, `-webkit-touch-callout:none` et un `-webkit-tap-highlight-color` transparent. Le menu contextuel était déjà bloqué sur la 3D.
