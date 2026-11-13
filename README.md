@@ -156,3 +156,7 @@ Comme sur le schéma 2D, des tirets jaunes avancent dans chaque fil 3D parcouru 
 
 - **Les 12 schémas** : chaque fil 3D est relié à son fil 2D (`wid`), on reprend donc exactement l'état et le sens calculés par `solve` (`res.ws[id].from`).
 - **Les espaces d'examen** : les fils 3D n'ont pas d'équivalent un à un en 2D. Chaque conducteur retient ses deux nœuds et son nom (`meta`), et le sens est déduit : la phase va du tableau vers les boîtes puis les appareils, le retour va de l'interrupteur vers la lampe, le neutre revient au tableau. Un fil ne s'anime que si son circuit alimente un récepteur, et pas s'il touche un récepteur éteint. Les fils de commande (poussoirs, bobines) et la terre restent immobiles.
+
+## Arrêt d'urgence : coupure de la phase et du neutre
+
+Dans l'espace 3, KM1 est un **contacteur bipolaire** (nouveau type `cont2`, même disposition que le télérupteur bipolaire : bobine A1-A2, contacts 1-2 pour la phase et 3-4 pour le neutre). Une coupure d'urgence doit couper tous les conducteurs actifs : le neutre de PC1 passe donc lui aussi par KM1 (`Q1:N2 → KM1:3`, `KM1:4 → PC1:N`). Quand on frappe S1, la bobine n'est plus alimentée et les deux contacts s'ouvrent ensemble. Le contacteur bipolaire est aussi disponible dans le bac à sable (Appareillage modulaire).

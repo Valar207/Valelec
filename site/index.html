@@ -1400,7 +1400,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
         </ul></div>
         <div class="box inv" data-espace="3" hidden><h2>À toi de jouer</h2><ol class="ex-steps" style="margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:6px">
           <li>Simule un passage devant le détecteur S2 : L1 et L2 s’allument 8 secondes, puis s’éteignent seules.</li>
-          <li>Branche un appareil sur PC1, puis appuie sur l’arrêt d’urgence S1 : la bobine de KM1 n’est plus alimentée et la prise est coupée.</li>
+          <li>Branche un appareil sur PC1, puis appuie sur l’arrêt d’urgence S1 : la bobine de KM1 n’est plus alimentée, et ses deux contacts coupent la phase et le neutre de la prise.</li>
           <li>Déverrouille S1 : la prise reste coupée. Il faut ensuite réarmer volontairement pour la remettre sous tension, comme sur une vraie installation.</li>
           <li>Déclenche Q2 (éclairage) : le BAES passe en secours et s’allume sur sa batterie.</li>
           <li>Pendant la coupure, mets le BAES au repos avec la télécommande : il s’éteint. Réarme Q2 : il revient en veille et recharge sa batterie.</li>
@@ -1512,7 +1512,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
         <li>Le <strong>BAES</strong> se raccorde sur le circuit d’éclairage du local, <strong>en aval de la protection et en amont de la commande</strong> : il doit rester alimenté quand les lampes sont éteintes, et s’allumer si ce circuit est coupé.</li>
         <li>La <strong>télécommande</strong> du BAES (câble C7) le met au repos pendant les coupures volontaires, pour ne pas vider sa batterie.</li>
         <li>Le <strong>détecteur</strong> est alimenté par la phase et le neutre, et sa sortie (retour lampes) alimente L1 et L2. Il peut être remplacé par un interrupteur.</li>
-        <li>Arrêt d’urgence <strong>à manque de tension</strong> : contact fermé au repos, l’appui coupe la bobine (représenté ici par KM1). <strong>À émission</strong> : contact ouvert au repos, l’appui alimente une bobine qui fait déclencher l’appareil de coupure.</li>
+        <li>Arrêt d’urgence <strong>à manque de tension</strong> : contact fermé au repos, l’appui coupe la bobine (représenté ici par KM1, un contacteur bipolaire : une coupure d’urgence doit couper tous les conducteurs actifs, phase et neutre). <strong>À émission</strong> : contact ouvert au repos, l’appui alimente une bobine qui fait déclencher l’appareil de coupure.</li>
         <li>Après un arrêt d’urgence, la remise en service doit être volontaire (réarmement), jamais automatique.</li>
         <li>Goulotte DLP <strong>double compartiment</strong> : courants forts (230 V) d’un côté, courants faibles (RJ45) de l’autre, jamais mélangés.</li>
         <li>Prises RJ45 : câble cat 6 FTP, même plan de câblage (T568A ou T568B) aux deux extrémités, blindage repris.</li>
@@ -2239,6 +2239,7 @@ const DEF = {
   bp: { name: 'Bouton poussoir', pre: 'BP', w: 80, h: 40, t: T2, desc: 'Ferme le circuit uniquement pendant l’appui.', op: true },
   tele: { name: 'Télérupteur', pre: 'KA', w: 120, h: 80, t: COIL, desc: 'À chaque impulsion sur sa bobine (A1-A2), son contact change d’état.' },
   cont: { name: 'Contacteur', pre: 'KM', w: 120, h: 80, t: COIL, desc: 'Son contact reste fermé tant que la bobine (A1-A2) est alimentée.' },
+  cont2: { name: 'Contacteur bipolaire', pre: 'KM', w: 160, h: 80, t: [['A1', 0, 20], ['A2', 0, 60], ['1', 100, 0], ['2', 100, 80], ['3', 140, 0], ['4', 140, 80]], desc: 'Deux contacts (1-2 pour la phase, 3-4 pour le neutre) qui restent fermés tant que la bobine A1-A2 est alimentée, et s’ouvrent ensemble dès qu’on la coupe.' },
   tele2: { name: 'Télérupteur bipolaire', pre: 'KA', w: 160, h: 80, t: [['A1', 0, 20], ['A2', 0, 60], ['1', 100, 0], ['2', 100, 80], ['3', 140, 0], ['4', 140, 80]], desc: 'Deux contacts (1-2 et 3-4) qui basculent ensemble à chaque impulsion sur la bobine A1-A2, comme le Legrand 412412. Le levier en façade le commande à la main.', op: true },
   minu: { name: 'Minuterie', pre: 'KT', w: 120, h: 80, t: COIL, desc: 'Une impulsion sur la bobine ferme le contact pendant 8 secondes.' },
   yokis: { name: 'Micromodule télérupteur', pre: 'Y', w: 80, h: 80, t: [['L', 0, 20], ['BP', 0, 60], ['S', 80, 20], ['N', 80, 60]], desc: 'Micromodule encastré (type Yokis) : alimenté par L et N, il fait basculer sa sortie S vers les lampes à chaque impulsion reçue sur BP.' },
@@ -2259,7 +2260,7 @@ const DEF = {
   prise: { name: 'Prise 2P+T', pre: 'P', w: 80, h: 80, t: [['L', 0, 20], ['N', 0, 40], ['PE', 0, 60]], desc: 'Prise de courant. Actionne-la pour brancher un appareil de 2 000 W.', op: true },
   borne: { name: 'Borne de connexion', pre: 'X', w: 40, h: 40, t: [['P', 20, 20]], desc: 'Point de raccordement pour relier plusieurs fils.', norot: true }
 };
-const WATT = { ev: 7400, tele2: 3, detect: 1, baes: 1, lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, minu: 3, yokis: 1 };
+const WATT = { ev: 7400, tele2: 3, detect: 1, baes: 1, lampe: 60, voyant: 1, rad: 1000, moteur: 250, sonnette: 8, prise: 2000, tele: 3, cont: 5, cont2: 5, minu: 3, yokis: 1 };
 const MINU_MS = 8000;
 const ED_W = 1400, ED_H = 1000; // taille du plan du bac à sable
 
@@ -2278,7 +2279,7 @@ function defSt(type) {
     case 'pv': return { sun: true };
     case 'evse': return { charge: true };
     case 'ev': return { plug: true };
-    case 'tele': case 'tele2': case 'cont': case 'yokis': return { k: false, coil: false };
+    case 'tele': case 'tele2': case 'cont': case 'cont2': case 'yokis': return { k: false, coil: false };
     case 'minu': return { k: false, coil: false, until: 0 };
     default: return {};
   }
@@ -2303,7 +2304,7 @@ function links(c) {
     case 'perm': return s.cross ? [['1', '4'], ['2', '3']] : [['1', '3'], ['2', '4']];
     case 'bp': return s.pressed ? [['1', '2']] : [];
     case 'tele': case 'cont': case 'minu': return s.k ? [['1', '2']] : [];
-    case 'tele2': return s.k ? [['1', '2'], ['3', '4']] : [];
+    case 'tele2': case 'cont2': return s.k ? [['1', '2'], ['3', '4']] : [];
     case 'yokis': case 'detect': return s.k ? [['L', 'S']] : [];
     case 'cpt': return [['L1', 'L2'], ['N1', 'N2']];
     case 'evse': return s.charge ? [['L', 'L2'], ['N', 'N2'], ['PE', 'PE2']] : [['PE', 'PE2']];
@@ -2313,7 +2314,7 @@ function links(c) {
 function loadPair(c) {
   if (['lampe', 'voyant', 'rad', 'moteur', 'sonnette'].includes(c.type)) return ['1', '2'];
   if (c.type === 'prise') return c.st.plug ? ['L', 'N'] : null;
-  if (['tele', 'tele2', 'cont', 'minu'].includes(c.type)) return ['A1', 'A2'];
+  if (['tele', 'tele2', 'cont', 'cont2', 'minu'].includes(c.type)) return ['A1', 'A2'];
   if (c.type === 'yokis') return ['BP', 'N'];
   if (c.type === 'detect') return ['L', 'N'];
   if (c.type === 'baes') return ['1', '2'];
@@ -2358,7 +2359,7 @@ function solve(comps, wires, power) {
     const a = c.id + ':' + lp[0], b = c.id + ':' + lp[1], ra = f(a), rb = f(b);
     if ((LN.has(ra) && NN.has(rb)) || (LN.has(rb) && NN.has(ra))) {
       loadsOn[c.id] = true; anchors.add(a); anchors.add(b); loadNets.add(ra); loadNets.add(rb);
-      watts += wattOf(c) * (dim[c.id] ?? 1); if (!['tele', 'tele2', 'cont', 'minu', 'yokis', 'detect', 'baes'].includes(c.type)) onCount++;
+      watts += wattOf(c) * (dim[c.id] ?? 1); if (!['tele', 'tele2', 'cont', 'cont2', 'minu', 'yokis', 'detect', 'baes'].includes(c.type)) onCount++;
     }
   });
   const act = edges.filter((e) => loadNets.has(f(e.a)));
@@ -2431,11 +2432,11 @@ function simulate(comps, wires, power) {
     cs = cs.map((c) => {
       if (c.type === 'baes' && res.loadsOn[c.id] && c.st.rest) return Object.assign({}, c, { st: Object.assign({}, c.st, { rest: false }) });
       if (c.type === 'detect') { const st = Object.assign({}, c.st); st.k = !!res.loadsOn[c.id] && now < st.until; if (st.k !== c.st.k) ch = true; return Object.assign({}, c, { st }); }
-      if (!['tele', 'tele2', 'cont', 'minu', 'yokis'].includes(c.type)) return c;
+      if (!['tele', 'tele2', 'cont', 'cont2', 'minu', 'yokis'].includes(c.type)) return c;
       const radio = c.type === 'yokis' && res.sup[c.id] && cs.some((r) => r.type === 'radio' && r.st.pressed && (r.to || []).includes(c.ref));
       const en = !!res.loadsOn[c.id] || !!radio, st = Object.assign({}, c.st), rising = en && !st.coil;
       if (['tele', 'tele2', 'yokis'].includes(c.type) && rising) st.k = !st.k;
-      if (c.type === 'cont') st.k = en;
+      if (c.type === 'cont' || c.type === 'cont2') st.k = en;
       if (c.type === 'minu') { if (en) st.until = now + MINU_MS; st.k = en || now < st.until; }
       st.coil = en;
       if (st.k !== c.st.k) ch = true;
@@ -2500,13 +2501,13 @@ function stateText(c, on, power) {
     case 'baes': return on ? 'Veille : batterie en charge (voyant vert)' : (s.rest ? 'Au repos (télécommande)' : 'Secours : allumé sur sa batterie');
     case 'radio': return (s.pressed ? 'Impulsion radio envoyée' : 'Au repos') + (c.to && c.to.length ? ' · vers ' + c.to.join(', ') : '');
     case 'prise': return s.plug ? (on ? 'Appareil en marche' : 'Appareil branché, sans courant') : 'Aucun appareil branché';
-    case 'tele': case 'tele2': case 'cont': case 'minu': return (s.coil ? 'Bobine alimentée · ' : 'Bobine au repos · ') + (s.k ? 'contact fermé' : 'contact ouvert');
+    case 'tele': case 'tele2': case 'cont': case 'cont2': case 'minu': return (s.coil ? 'Bobine alimentée · ' : 'Bobine au repos · ') + (s.k ? 'contact fermé' : 'contact ouvert');
     case 'yokis': return (s.coil ? 'Impulsion reçue sur BP · ' : '') + (s.k ? 'sortie allumée' : 'sortie éteinte');
     case 'borne': case 'terre': return 'Point de raccordement';
     default: return on ? 'Alimenté · ' + wattOf(c).toLocaleString('fr-FR') + ' W' : 'Non alimenté';
   }
 }
-const KIND = { disj: 'disjoncteur', dpn: 'disjoncteur', fus: 'fusible', inter: 'interrupteur', vari: 'variateur', vav: 'va-et-vient', perm: 'permutateur', bp: 'poussoir', radio: 'poussoir radio', detect: 'détecteur', tele: 'télérupteur', tele2: 'télérupteur', cont: 'contacteur', minu: 'minuterie', yokis: 'micromodule', lampe: 'lampe', voyant: 'voyant', rad: 'radiateur', moteur: 'moteur', sonnette: 'sonnette', prise: 'prise', baes: 'secours', pv: 'panneaux solaires', ond: 'onduleur', cpt: 'compteur', spd: 'parafoudre', evse: 'borne de recharge', ev: 'voiture électrique' };
+const KIND = { disj: 'disjoncteur', dpn: 'disjoncteur', fus: 'fusible', inter: 'interrupteur', vari: 'variateur', vav: 'va-et-vient', perm: 'permutateur', bp: 'poussoir', radio: 'poussoir radio', detect: 'détecteur', tele: 'télérupteur', tele2: 'télérupteur', cont: 'contacteur', cont2: 'contacteur', minu: 'minuterie', yokis: 'micromodule', lampe: 'lampe', voyant: 'voyant', rad: 'radiateur', moteur: 'moteur', sonnette: 'sonnette', prise: 'prise', baes: 'secours', pv: 'panneaux solaires', ond: 'onduleur', cpt: 'compteur', spd: 'parafoudre', evse: 'borne de recharge', ev: 'voiture électrique' };
 const LAB_LIEU = /^(salon|séjour|salle à manger|chambre|entrée|couloir|cuisine|bas d’escalier|haut d’escalier|porte d’entrée|rdc|1er|2e)$/i;
 const LAB_SEUL = /^(sectionneur|chauffe-eau|onduleur|parafoudre|arrêt|borne|wallbox|boîtier|prise|contact|marche)/i;
 /* [nom de l'appareil, précision] affichés sous le repère d'un composant */
@@ -2546,6 +2547,11 @@ function sym(c, on, now) {
       const blade = (x) => s.k ? `<line x1="${x}" y1="58" x2="${x}" y2="22" class="s"/>` : `<line x1="${x}" y1="58" x2="${x - 14}" y2="27" class="s"/>`;
       return `<path d="M0 20H20M0 60H20M100 0V22M100 58V80M140 0V22M140 58V80" class="s"/><rect x="20" y="12" width="40" height="56" rx="3" class="coil${s.coil ? ' on' : ''}"/><path d="M28 50V30H36V50H44V30H52" class="s thin"/><path d="M60 40H136" class="s dash"/>${dot(100, 22)}${dot(100, 58)}${dot(140, 22)}${dot(140, 58)}${blade(100)}${blade(140)}`
         + `<text x="106" y="11" class="t sm">1</text><text x="146" y="11" class="t sm">3</text><text x="106" y="77" class="t sm">2</text><text x="146" y="77" class="t sm">4</text><text x="4" y="12" class="t sm">A1</text><text x="4" y="76" class="t sm">A2</text>`;
+    }
+    case 'cont2': {
+      const blade = (x) => s.k ? `<line x1="${x}" y1="58" x2="${x}" y2="22" class="s"/>` : `<line x1="${x}" y1="58" x2="${x - 14}" y2="27" class="s"/>`;
+      return `<path d="M0 20H20M0 60H20M100 0V22M100 58V80M140 0V22M140 58V80" class="s"/><rect x="20" y="12" width="40" height="56" rx="3" class="coil${s.coil ? ' on' : ''}"/><path d="M28 56L52 24" class="s thin"/><path d="M60 40H136" class="s dash"/>${dot(100, 22)}${dot(100, 58)}${dot(140, 22)}${dot(140, 58)}${blade(100)}${blade(140)}`
+        + `<text x="106" y="11" class="t sm">1</text><text x="146" y="11" class="t sm">3</text><text x="106" y="77" class="t sm">2</text><text x="146" y="77" class="t sm">4</text><text x="80" y="11" class="t sm">L</text><text x="146" y="44" class="t sm">N</text><text x="4" y="12" class="t sm">A1</text><text x="4" y="76" class="t sm">A2</text>`;
     }
     case 'tele': return coilBlock('<path d="M28 50V30H36V50H44V30H52" class="s thin"/>');
     case 'cont': return coilBlock('<path d="M28 56L52 24" class="s thin"/>');
@@ -3156,7 +3162,7 @@ class Board {
     const x = Math.max(20, Math.min(ED_W - 20, this.snap(p.x))), y = Math.max(20, Math.min(ED_H - 20, this.snap(p.y)));
     const c = mk(type, x, y, ((tpl ? tpl.rot || 0 : 0) + (this.ui.prot || 0)) % 360, pre + (n + 1));
     if (tpl) {
-      if (!['tele', 'tele2', 'cont', 'minu', 'yokis'].includes(type)) c.st = Object.assign(defSt(type), JSON.parse(JSON.stringify(tpl.st || {})), type === 'bp' ? { pressed: false } : {});
+      if (!['tele', 'tele2', 'cont', 'cont2', 'minu', 'yokis'].includes(type)) c.st = Object.assign(defSt(type), JSON.parse(JSON.stringify(tpl.st || {})), type === 'bp' ? { pressed: false } : {});
       if (tpl.lab) c.lab = tpl.lab;
       if (tpl.watt) c.watt = tpl.watt;
     }
@@ -3850,7 +3856,7 @@ const V3D = (() => {
     const yG = 2.42; B.run({ k: 'dlp', pts: [[-W / 2 + 0.05, yG, 0.03], [W / 2 - 0.05, yG, 0.03]] }); B.label('Goulotte', W / 2 - 0.3, yG + 0.12, 0.1);
     // Parafoudre mis à part, tableau : alimentation + protection
     const KIND = { pv: 'pvpanel', ond: 'ond', cpt: 'cpt', evse: 'wallbox', ev: 'car', inter: 'inter', vari: 'inter', vav: 'inter', perm: 'inter', bp: 'bp', radio: 'bp', lampe: 'lampe', voyant: 'lampe', prise: 'prise', rad: 'pc', sonnette: 'bell', moteur: 'pc', baes: 'baes', detect: 'detect' };
-    const Y = { pv: 2.66, ond: 1.55, cpt: 1.75, spd: 1.5, evse: 1.25, ev: 0.24, lampe: 2.0, voyant: 2.0, sonnette: 1.9, detect: 2.0, prise: 0.4, rad: 0.55, moteur: 0.55, baes: 2.05, tele: 1.65, tele2: 1.65, cont: 1.65, minu: 1.65, yokis: 1.65 };
+    const Y = { pv: 2.66, ond: 1.55, cpt: 1.75, spd: 1.5, evse: 1.25, ev: 0.24, lampe: 2.0, voyant: 2.0, sonnette: 1.9, detect: 2.0, prise: 0.4, rad: 0.55, moteur: 0.55, baes: 2.05, tele: 1.65, tele2: 1.65, cont: 1.65, cont2: 1.65, minu: 1.65, yokis: 1.65 };
     const pos = {};
     const panel = C.comps.filter((c) => ['src', 'disj', 'dpn', 'fus'].includes(c.type));
     B.grp('tab', () => { const PH = Math.max(0.9, panel.length * 0.27 + 0.2), PY = 2.02 - PH / 2; B.soft(0.6, PH, -W / 2 + 0.42, PY); B.rb(0.6, PH, 0.018, 0.014, 0xf3f2ec, -W / 2 + 0.42, PY, 0); B.label('Tableau', -W / 2 + 0.42, 2.08, 0.1, true);
@@ -4449,7 +4455,7 @@ function buildExam2() {
 function buildExam3() {
   const src = mk('src', 80, 320, 0, 'TER'), xl = mk('borne', 160, 260, 0, 'XL'), xn0 = mk('borne', 140, 340, 0, 'XN');
   const q1 = mk('dpn', 260, 120, 0, 'Q1', { lab: '20 A · C6' }), q3 = mk('dpn', 260, 300, 0, 'Q3', { lab: '2 A · C8' }), q2 = mk('dpn', 260, 500, 0, 'Q2', { lab: '16 A · C7' });
-  const km = mk('cont', 760, 260, 0, 'KM1', { lab: 'MN · AU' }), pc1 = mk('prise', 1060, 120, 0, 'PC1', { lab: 'C6' });
+  const km = mk('cont2', 760, 240, 0, 'KM1', { lab: 'MN · AU · bipolaire' }), pc1 = mk('prise', 1060, 120, 0, 'PC1', { lab: 'C6' });
   const s1 = mk('inter', 480, 240, 0, 'S1', { lab: 'arrêt d’urgence', st: { on: true } });
   s1.inv = true; s1.au = true; s1.st.arme = true;
   const xe = mk('borne', 400, 480, 0, 'XE'), xn2 = mk('borne', 400, 520, 0, 'XN2'), baes = mk('baes', 600, 420, 0, 'BAES', { lab: 'C7' });
@@ -4457,7 +4463,7 @@ function buildExam3() {
   return { comps: [src, xl, xn0, q1, q2, q3, km, pc1, s1, xe, xn2, baes, s2, l1, l2],
     wires: [
       wr(src, 'L', xl, 'P'), wr(xl, 'P', q1, '1'), wr(xl, 'P', q3, '1'), wr(xl, 'P', q2, '1'), wr(src, 'N', xn0, 'P'), wr(xn0, 'P', q1, 'N1'), wr(xn0, 'P', q3, 'N1'), wr(xn0, 'P', q2, 'N1'),
-      wr(q1, '2', km, '1'), wr(km, '2', pc1, 'L'), wr(q1, 'N2', pc1, 'N'), wr(src, 'PE', pc1, 'PE'),
+      wr(q1, '2', km, '1'), wr(km, '2', pc1, 'L'), wr(q1, 'N2', km, '3'), wr(km, '4', pc1, 'N'), wr(src, 'PE', pc1, 'PE'),
       wr(q3, '2', s1, '1'), wr(s1, '2', km, 'A1'), wr(q3, 'N2', km, 'A2'),
       wr(q2, '2', xe, 'P'), wr(q2, 'N2', xn2, 'P'), wr(xe, 'P', s2, 'L'), wr(xe, 'P', baes, '1'), wr(xn2, 'P', baes, '2'), wr(xn2, 'P', s2, 'N'),
       wr(s2, 'S', l1, '1'), wr(l1, '1', l2, '1'), wr(xn2, 'P', l1, '2'), wr(xn2, 'P', l2, '2')
@@ -4523,7 +4529,7 @@ const editor = (() => {
   const save = () => store.set('pn-bac-a-sable', { comps: C.comps.map((c) => Object.assign({}, c, { st: Object.assign({}, c.st, (c.type === 'bp' || c.type === 'radio') ? { pressed: false } : {}) })), wires: C.wires });
   C.listeners.push(() => { panel(); save(); });
 
-  const groups = [['Alimentation · protection', ['src', 'dpn', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vari', 'vav', 'perm', 'bp', 'detect']], ['Appareillage modulaire', ['tele', 'tele2', 'cont', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']], ['Photovoltaïque et IRVE', ['pv', 'ond', 'cpt', 'spd', 'evse', 'ev']], ['Connexion', ['borne']]];
+  const groups = [['Alimentation · protection', ['src', 'dpn', 'disj', 'fus', 'terre']], ['Commande', ['inter', 'vari', 'vav', 'perm', 'bp', 'detect']], ['Appareillage modulaire', ['tele', 'tele2', 'cont', 'cont2', 'minu', 'yokis']], ['Récepteurs', ['lampe', 'voyant', 'rad', 'moteur', 'sonnette', 'prise', 'baes']], ['Photovoltaïque et IRVE', ['pv', 'ond', 'cpt', 'spd', 'evse', 'ev']], ['Connexion', ['borne']]];
   $('#ed-pal').innerHTML = `<p style="margin:0 8px 6px;font-size:13px;color:var(--ink-2)">Choisis un symbole, puis clique sur la grille pour le poser.</p>` +
     groups.map(([g, ks]) => `<h2>${g}</h2>` + ks.map((k) => `<button class="pal" type="button" data-pal="${k}" aria-pressed="false" title="${esc(DEF[k].desc)}"><span class="ic">${symIcon(k, 8)}</span>${DEF[k].name}</button>`).join('')).join('');
   $('#ed-pal').addEventListener('click', (e) => {
