@@ -194,3 +194,7 @@ Le schéma 2D utilise le symbole normalisé : un cercle, une tige oblique et le 
 ## Menus du haut : ouverture au clic
 
 Sur ordinateur, les menus « Apprendre », « S'entraîner » et « Aller plus loin » s'ouvrent seulement au clic, plus au survol de la souris : la flèche à droite du bouton suit donc toujours l'état réel du menu. Un clic sur un autre menu, à côté, sur un lien, ou la touche Échap le referme.
+
+## Le circuit choisi reste visible dans la liste
+
+« Choisis un circuit » montre toujours le circuit sélectionné, y compris après un rechargement de la page (`montrerChoix`, appelée par `simSet` et par `route` une fois la page Schémas affichée) : sur téléphone, il est centré dans la bande qui défile à l'horizontale ; sur ordinateur, la colonne de gauche tient dans la hauteur de l'écran et défile toute seule (`max-height`, `overflow-y:auto`), et elle est ramenée sur le circuit choisi s'il était hors de vue.
