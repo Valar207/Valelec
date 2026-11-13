@@ -1150,7 +1150,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
     <div class="sec-head"><h2 class="display">Que veux-tu faire&nbsp;?</h2><p id="resume-w" hidden><a class="btn sm pri" id="resume" href="#bases"></a></p></div>
     <div class="goals">
       <a href="#bases"><b>Je débute</b><span>Comprendre la tension, le courant et lire un schéma.</span></a>
-      <a href="#schemas"><b>Je manipule</b><span>Allumer, couper et observer 12 circuits animés.</span></a>
+      <a href="#schemas"><b>Je manipule</b><span>Allumer, couper et observer 13 circuits animés.</span></a>
       <a href="#examen"><b>Je prépare l’examen</b><span>Les 3 espaces du TP-00467, en 2D et en 3D.</span></a>
       <a href="#qcm"><b>Je révise le QCM</b><span>Les 60 questions de l’épreuve, corrigées une à une.</span></a>
       <a href="#bac-a-sable"><b>Je dessine</b><span>Créer et tester mon propre circuit.</span></a>
@@ -1301,7 +1301,7 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
 <!-- ============ SCHÉMAS ============ -->
 <div id="page-schemas" data-page="schemas" hidden>
   <div class="wrap wide sim">
-    <p class="sim-pick" id="sim-pick">Choisis un circuit <span>12 circuits · glisse pour les voir</span></p>
+    <p class="sim-pick" id="sim-pick">Choisis un circuit <span>13 circuits · glisse pour les voir</span></p>
     <aside class="sim-nav" id="sim-nav" aria-labelledby="sim-pick"></aside>
     <div class="sim-main">
       <div><p class="eyebrow" id="sim-group"></p><h1 class="display" id="sim-title"></h1><p class="lead" id="sim-sub"></p></div>
@@ -3253,6 +3253,18 @@ const PRESETS = [
     essai: 'Appuie sur un bouton poussoir, puis regarde le décompte sous la bobine KT1.',
     mat: ['1 minuterie modulaire (au tableau)', '3 boutons poussoirs', 'Points lumineux · disjoncteur 16 A'],
     build() { return buildImpulse('minu', 'KT1', ['RDC', '1er', '2e']); } },
+  { id: 'forcee', group: 'adv', title: 'Détecteur avec marche forcée', sub: 'Un détecteur de mouvement allume deux lampes quand quelqu’un passe ; un interrupteur de marche forcée les garde allumées en permanence.',
+    ret: ['Le détecteur est alimenté en permanence par la phase (L) et le neutre (N). Sa sortie S envoie la phase sur le retour lampe quand il détecte un passage.', 'L’interrupteur de marche forcée est câblé en parallèle sur le détecteur : la phase arrive sur une borne, l’autre rejoint le même retour lampe.', 'Interrupteur ouvert : c’est le détecteur qui commande. Interrupteur fermé : les lampes restent allumées, quoi que fasse le détecteur.', 'Les deux lampes sont en parallèle sur le retour : elles s’allument et s’éteignent ensemble.'],
+    essai: 'Simule un passage devant S2 : les deux lampes s’allument, puis s’éteignent après la temporisation. Ferme ensuite S1 : elles restent allumées en permanence. Rouvre S1 : le détecteur reprend la main.',
+    mat: ['1 détecteur de mouvement 3 fils (L, N, sortie)', '1 interrupteur simple pour la marche forcée', '2 points lumineux · disjoncteur 16 A · fils 1,5 mm²'],
+    build() { const src = mk('src', 100, 280, 0, 'ALIM'), q = mk('dpn', 240, 240, 0, 'Q1', { lab: '16 A' }), x1 = mk('borne', 360, 220, 0, 'X1'), xn = mk('borne', 180, 480, 0, 'X2');
+      const d = mk('detect', 520, 160, 0, 'S2'), s = mk('inter', 520, 340, 0, 'S1', { lab: 'marche forcée' }), x3 = mk('borne', 720, 260, 0, 'X3');
+      const l1 = mk('lampe', 860, 400, 90, 'L1'), l2 = mk('lampe', 980, 400, 90, 'L2');
+      return { comps: [src, q, x1, xn, d, s, x3, l1, l2], wires: [
+        wr(src, 'L', q, '1'), wr(src, 'N', q, 'N1'), wr(q, '2', x1, 'P'), wr(q, 'N2', xn, 'P'),
+        wr(x1, 'P', d, 'L'), wr(d, 'N', xn, 'P', true), wr(x1, 'P', s, '1'),
+        wr(d, 'S', x3, 'P'), wr(s, '2', x3, 'P'),
+        wr(x3, 'P', l1, '1'), wr(l1, '1', l2, '1'), wr(l1, '2', xn, 'P', true), wr(l2, '2', l1, '2')] }; } },
   { id: 'yokis', group: 'adv', title: 'Micromodule Yokis : 3 lampes', sub: 'Un micromodule télérupteur encastré, caché derrière un poussoir ou dans une boîte de dérivation : 3 boutons poussoirs commandent 3 lampes.',
     ret: ['Le micromodule est alimenté en permanence par la phase (L) et le neutre (N).', 'Les boutons poussoirs, câblés en parallèle, envoient une impulsion sur son entrée BP.', 'À chaque impulsion, sa sortie S bascule et allume ou éteint les 3 lampes branchées en parallèle.'],
     essai: 'Appuie sur BP1, puis sur BP3 : les trois lampes s’allument puis s’éteignent ensemble, quel que soit le poussoir utilisé.',
@@ -4342,7 +4354,7 @@ sim3d.stepEl = $('#sim-steps');
 $('#sim-next').addEventListener('click', () => { const n = PRESETS[PRESETS.indexOf(cur) + 1]; if (!n) return; simSet(n); window.scrollTo({ top: $('#sim-title').getBoundingClientRect().top + window.scrollY - 90 }); });
 let cur = PRESETS[0];
 function simNav() {
-  const ICON = { simple: 'inter', double: 'inter', vari: 'vari', vav: 'vav', sonnette: 'sonnette', perm: 'perm', tele: 'tele', tele412: 'tele2', minu: 'minu', yokis: 'yokis', hc: 'cont', court: 'dpn' };
+  const ICON = { simple: 'inter', double: 'inter', vari: 'vari', vav: 'vav', sonnette: 'sonnette', perm: 'perm', tele: 'tele', tele412: 'tele2', minu: 'minu', forcee: 'detect', yokis: 'yokis', hc: 'cont', court: 'dpn' };
   const go = '<svg class="go" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4L12 9L7 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const g = (grp, label) => `<div><h2>${label}</h2>${PRESETS.filter((p) => p.group === grp).map((p) => `<button class="side" type="button" data-preset="${p.id}" aria-current="${p === cur}"><span class="ic">${symIcon(ICON[p.id] || 'lampe', 6)}</span><span class="tx"><span class="n">${String(PRESETS.indexOf(p) + 1).padStart(2, '0')}</span>${p.title}</span>${go}</button>`).join('')}</div>`;
   const navEl = $('#sim-nav'), keep = navEl.scrollLeft;
