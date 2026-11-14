@@ -5,7 +5,7 @@
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Valelec</title>
 <script>try{var t=JSON.parse(localStorage.getItem("pn-theme"));if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
-<script>(function(){var l=null,q=/[?&]lang=(en|fr|collect)\b/.exec(location.search);try{l=q?q[1]:localStorage.getItem("pn-lang")}catch(e){}if(l!=="en"&&l!=="fr"&&l!=="collect"){var n=(navigator.languages&&navigator.languages[0])||navigator.language||"";l=/^en/i.test(n)?"en":"fr"}if(q&&l!=="collect"){try{localStorage.setItem("pn-lang",l)}catch(e){}}window.LANG=l;window.tr=function(s){return s};document.documentElement.lang=l==="en"?"en":"fr";if(l==="en")document.write('<script src="i18n-en.js"><\/script>');if(l!=="fr")document.write('<script src="i18n.js"><\/script>')})()</script>
+<script>(function(){var l=null,q=/[?&]lang=(en|fr|collect)\b/.exec(location.search);try{l=q?q[1]:localStorage.getItem("pn-lang")}catch(e){}if(l!=="en"&&l!=="fr"&&l!=="collect"){var n=(navigator.languages&&navigator.languages[0])||navigator.language||"";l=/^en/i.test(n)?"en":"fr"}if(q&&l!=="collect"){try{localStorage.setItem("pn-lang",l)}catch(e){}}window.LANG=l;window.tr=function(s){return s};document.documentElement.lang=l==="en"?"en":"fr";if(l==="en")document.write('<script src="i18n-en.js"><\/script>');document.write('<script src="i18n.js"><\/script>')})()</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2317191E'/%3E%3Cpath d='M6 5 L14.5 15 L10 15 L16 27 L26 5' fill='none' stroke='%23FFD84A' stroke-width='3.6' stroke-linejoin='miter' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3945,7 +3945,7 @@ const V3D = (() => {
   }
   const free = (g) => g.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material && o.material.map) o.material.map.dispose(); });
   class View {
-    constructor(el) { this.el = el; this.spec = null; this.ready = false; }
+    constructor(el) { this.el = el; this.spec = null; this.ready = false; (window.__vues = window.__vues || []).push(this); }
     /* Safari peut refuser certains réglages : on essaie du plus beau au plus simple */
     renderer(T) {
       this.errs = [];
@@ -6062,22 +6062,26 @@ const GLOSSAIRE = [
   ['onduleur', 'onduleurs?', 'Onduleur', 'L’appareil qui transforme le courant continu des panneaux solaires en courant alternatif 230 V.', 0],
 ];
 (function glossaire() {
-  const GE = window.LANG === 'en' && window.I18N_EN && window.I18N_EN.g || {};
-  const G = GLOSSAIRE.map(([k, motif, titre, def, lex]) => (GE[k] ? { k, motif: GE[k][0], titre: GE[k][1], def: GE[k][2], lex } : { k, titre, def, lex, motif }));
-  const PAR = Object.fromEntries(G.map((g) => [g.k, g]));
+  let GE, G, PAR, RE; let alts = [];
+  const sensibles = new Set(['terre', 'tt', 'courbe', 'vat', 'epi', 'tbt', 'baes', 'ssi', 'dcl', 'icta', 'irl', 'agcp', 'diff']);
+  const decoupe = (s) => { const out = []; let d = 0, cur = ''; for (const ch of s) { if (ch === '(') d++; if (ch === ')') d--; if (ch === '|' && d === 0) { out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out; };
+  /* motifs, définitions et lexique dans la langue affichée */
+  function regles() {
+  GE = window.LANG === 'en' && window.I18N_EN && window.I18N_EN.g || {};
+  G = GLOSSAIRE.map(([k, motif, titre, def, lex]) => (GE[k] ? { k, motif: GE[k][0], titre: GE[k][1], def: GE[k][2], lex } : { k, titre, def, lex, motif }));
+  PAR = Object.fromEntries(G.map((g) => [g.k, g]));
   /* lexique de début de parcours */
   const ll = $('#lex-list');
   if (ll) { const L = G.filter((g) => g.lex); ll.innerHTML = L.map((g) => `<div><dt>${g.titre}</dt><dd>${g.def}</dd></div>`).join(''); const n = $('#lex-n'); if (n) n.textContent = L.length; }
   /* le lien du sommaire ouvre le lexique */
-  document.addEventListener('click', (e) => { if (e.target.closest('a[href="#lexique"]')) { const d = $('#lex-det'); if (d) d.open = true; } });
   /* un seul motif, le plus long d'abord ; les mots courts en majuscules (PE, TT…) restent sensibles à la casse */
-  const sensibles = new Set(['terre', 'tt', 'courbe', 'vat', 'epi', 'tbt', 'baes', 'ssi', 'dcl', 'icta', 'irl', 'agcp', 'diff']);
-  const alts = [];
-  /* découpe un motif sur les | de premier niveau seulement */
-  const decoupe = (s) => { const out = []; let d = 0, cur = ''; for (const ch of s) { if (ch === '(') d++; if (ch === ')') d--; if (ch === '|' && d === 0) { out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out; };
+  alts = [];
   for (const g of G) for (const m of decoupe(g.motif)) alts.push({ m, k: g.k, cs: sensibles.has(g.k) && /^[A-Z0-9+\\]+$/.test(m.replace(/\(\?:[^)]*\)\??/g, '')) });
   alts.sort((a, b) => b.m.length - a.m.length);
-  const RE = new RegExp('(^|[^\\p{L}\\p{N}])(' + alts.map((a, i) => `(?<g${i}>${a.m})`).join('|') + ')(?![\\p{L}\\p{N}])', 'giu');
+  RE = new RegExp('(^|[^\\p{L}\\p{N}])(' + alts.map((a, i) => `(?<g${i}>${a.m})`).join('|') + ')(?![\\p{L}\\p{N}])', 'giu');
+  }
+  regles();
+  document.addEventListener('click', (e) => { if (e.target.closest('a[href="#lexique"]')) { const d = $('#lex-det'); if (d) d.open = true; } });
   const BLOCS = 'p,li,td,dd,figcaption,.lead,#qz-q';
   const EXCLU = 'a,button,label,summary,svg,h1,h2:not(#qz-q),h3,h4,input,select,textarea,.gl,.board,.statusbar,.v3d,.v3d-wrap,nav,header,footer,.chip,.formula,.mono,#gltip,#lexique,.lex-box,code,kbd,[data-gl-non]';
   let vus = new Map();
@@ -6109,6 +6113,7 @@ const GLOSSAIRE = [
   const planifier = () => { clearTimeout(tmr); tmr = setTimeout(() => { const pg = document.querySelector('[data-page]:not([hidden])'); if (pg) balayer(pg); }, 120); };
   new MutationObserver((ms) => { if (ms.some((m) => !(m.target.closest && m.target.closest('svg,.board,.v3d,.statusbar,#gltip')) && [...m.addedNodes].some((x) => x.nodeType === 3 || (x.nodeType === 1 && !(x.classList && x.classList.contains('gl')))))) planifier(); }).observe(document.querySelector('main') || document.body, { childList: true, subtree: true });
   addEventListener('hashchange', planifier); addEventListener('load', planifier); planifier();
+  document.addEventListener('langue', () => { regles(); vus = new Map(); planifier(); });
   document.addEventListener('toggle', (e) => { if (e.target.tagName === 'DETAILS' && e.target.open) balayer(e.target); }, true);
 
   /* l'infobulle : survol à la souris, toucher ou clic sur mobile, Entrée ou Espace au clavier ; fermée par un clic ailleurs ou Échap */
@@ -6144,12 +6149,18 @@ const GLOSSAIRE = [
   addEventListener('hashchange', cacher);
 })();
 
-/* Bouton FR / EN : on enregistre le choix et on recharge la page dans l'autre langue, au même endroit */
+document.addEventListener('langue', () => (window.__vues || []).forEach((v) => { if (!v.pending || !v.done) return; v.pending = v.pending.slice(); if (v.vis) v.flush(); }));
+
+/* Bouton FR / EN : la langue change sur place, sans recharger la page */
 (() => {
-  const b = $('#lang'); if (!b) return; const en = window.LANG === 'en';
-  b.textContent = en ? 'FR' : 'EN'; b.setAttribute('lang', en ? 'fr' : 'en');
-  b.setAttribute('aria-label', en ? 'Version française' : 'English version'); b.title = en ? 'Passer le site en français' : 'Switch the site to English';
-  b.addEventListener('click', () => { try { localStorage.setItem('pn-lang', en ? 'fr' : 'en'); } catch (e) {} stat('langue/' + (en ? 'fr' : 'en'), 'Langue'); if (/[?&]lang=/.test(location.search)) history.replaceState(null, '', location.pathname + location.hash); location.reload(); });
+  const b = $('#lang'); if (!b) return;
+  const maj = () => { const en = window.LANG === 'en'; b.textContent = en ? 'FR' : 'EN'; b.setAttribute('lang', en ? 'fr' : 'en'); b.setAttribute('aria-label', en ? 'Version française' : 'English version'); b.title = en ? 'Passer le site en français' : 'Switch the site to English'; };
+  maj();
+  b.addEventListener('click', async () => {
+    const l = window.LANG === 'en' ? 'fr' : 'en'; b.disabled = true;
+    try { await window.i18nSet(l); } catch (e) { try { localStorage.setItem('pn-lang', l); } catch (x) {} location.reload(); return; }
+    b.disabled = false; maj(); stat('langue/' + l, 'Langue');
+  });
 })();
 
 /* Bouton « Partager » : lien direct vers le schéma ou l'espace affiché */

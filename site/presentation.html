@@ -2,7 +2,7 @@
 <html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){var l=null,q=/[?&]lang=(en|fr|collect)\b/.exec(location.search);try{l=q?q[1]:localStorage.getItem("pn-lang")}catch(e){}if(l!=="en"&&l!=="fr"&&l!=="collect"){var n=(navigator.languages&&navigator.languages[0])||navigator.language||"";l=/^en/i.test(n)?"en":"fr"}if(q&&l!=="collect"){try{localStorage.setItem("pn-lang",l)}catch(e){}}window.LANG=l;window.tr=function(s){return s};document.documentElement.lang=l==="en"?"en":"fr";if(l==="en")document.write('<script src="i18n-en.js"><\/script>');if(l!=="fr")document.write('<script src="i18n.js"><\/script>')})()</script>
+<script>(function(){var l=null,q=/[?&]lang=(en|fr|collect)\b/.exec(location.search);try{l=q?q[1]:localStorage.getItem("pn-lang")}catch(e){}if(l!=="en"&&l!=="fr"&&l!=="collect"){var n=(navigator.languages&&navigator.languages[0])||navigator.language||"";l=/^en/i.test(n)?"en":"fr"}if(q&&l!=="collect"){try{localStorage.setItem("pn-lang",l)}catch(e){}}window.LANG=l;window.tr=function(s){return s};document.documentElement.lang=l==="en"?"en":"fr";if(l==="en")document.write('<script src="i18n-en.js"><\/script>');document.write('<script src="i18n.js"><\/script>')})()</script>
 <meta name="robots" content="noindex">
 <title>Valelec · présentation pour les centres de formation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,7 +61,8 @@ footer a{color:inherit}
 
 <header><div class="wrap">
   <a class="lang" id="lang" href="?lang=en" translate="no" lang="en" aria-label="English version">EN</a>
-  <script>if (window.LANG === "en") { const a = document.getElementById("lang"); a.textContent = "FR"; a.href = "?lang=fr"; a.lang = "fr"; a.setAttribute("aria-label", "Version française"); }</script>
+  <script>(() => { const a = document.getElementById("lang"); const maj = () => { const en = window.LANG === "en"; a.textContent = en ? "FR" : "EN"; a.href = en ? "?lang=fr" : "?lang=en"; a.lang = en ? "fr" : "en"; a.setAttribute("aria-label", en ? "Version française" : "English version"); }; maj();
+    a.addEventListener("click", async (e) => { if (!window.i18nSet) return; e.preventDefault(); try { await window.i18nSet(window.LANG === "en" ? "fr" : "en"); maj(); } catch (x) { location.href = a.href; } }); })();</script>
   <p class="eyebrow">Titre professionnel Électricien d’équipement du bâtiment</p>
   <h1>Valelec, l’outil de révision <span>créé par un stagiaire, pour les stagiaires.</span></h1>
   <p class="lead">Un site gratuit, sans installation ni compte, pour comprendre l’électricité, lire les schémas, travailler en sécurité et préparer les deux épreuves du titre : l’examen pratique et le questionnaire professionnel. Il fonctionne aussi bien sur téléphone que sur ordinateur, du grand débutant au stagiaire en fin de parcours.</p>
