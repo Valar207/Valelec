@@ -6149,7 +6149,7 @@ const GLOSSAIRE = [
   const b = $('#lang'); if (!b) return; const en = window.LANG === 'en';
   b.textContent = en ? 'FR' : 'EN'; b.setAttribute('lang', en ? 'fr' : 'en');
   b.setAttribute('aria-label', en ? 'Version française' : 'English version'); b.title = en ? 'Passer le site en français' : 'Switch the site to English';
-  b.addEventListener('click', () => { try { localStorage.setItem('pn-lang', en ? 'fr' : 'en'); } catch (e) {} stat('langue/' + (en ? 'fr' : 'en'), 'Langue'); location.replace(location.pathname + location.hash); });
+  b.addEventListener('click', () => { try { localStorage.setItem('pn-lang', en ? 'fr' : 'en'); } catch (e) {} stat('langue/' + (en ? 'fr' : 'en'), 'Langue'); if (/[?&]lang=/.test(location.search)) history.replaceState(null, '', location.pathname + location.hash); location.reload(); });
 })();
 
 /* Bouton « Partager » : lien direct vers le schéma ou l'espace affiché */
