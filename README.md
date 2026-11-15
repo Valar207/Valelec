@@ -211,9 +211,9 @@ Sur la page Schémas, il est placé juste après « Circuit suivant », sous le 
 
 Toujours sur une seule ligne, chacun sur une moitié de la largeur, téléphone compris (`.nextbar`, deux colonnes égales). Sur la première page du parcours, « Suivant » reste dans la moitié droite. Sur petit écran, le texte est un peu réduit pour tenir.
 
-## Outils du bac à sable posés sur le plan
+## Outils du bac à sable dans le cadre du plan
 
-Les outils du bac à sable (déplacer, gomme, annuler, copier, coller, couleur des nouveaux fils, zoom, tout effacer, couper le courant) ne sont plus dans une barre au-dessus : ils flottent sur le plan, en haut à gauche, dans un cadre semi-transparent (`.ed-stage` > `.ed-ov`). Les boutons n'affichent que leur icône (le texte reste lu par les lecteurs d'écran, et une bulle d'aide apparaît au survol). Sur téléphone, ils tiennent sur deux lignes : les icônes en haut, la couleur et le zoom en dessous.
+Les outils du bac à sable (déplacer, gomme, annuler, copier, coller, couleur des nouveaux fils, zoom, couper le courant) sont dans le cadre sombre du plan, en haut à gauche, dans un cadre semi-transparent (`.ed-stage` > `.ed-ov`). Ils sont posés au-dessus de la zone du schéma, jamais par-dessus, même très dézoomé. Le bouton « Tout effacer » a été retiré : on supprime un élément depuis sa sélection (poubelle rouge). Les boutons n'affichent que leur icône (le texte reste lu par les lecteurs d'écran, et une bulle d'aide apparaît au survol). Sur téléphone, ils tiennent sur deux lignes : les icônes en haut, la couleur et le zoom en dessous.
 
 ## Dupliquer un composant (bac à sable)
 
