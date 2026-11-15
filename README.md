@@ -213,7 +213,7 @@ Toujours sur une seule ligne, chacun sur une moitié de la largeur, téléphone 
 
 ## Outils du bac à sable dans le cadre du plan
 
-Les outils du bac à sable (déplacer, gomme, annuler, copier, coller, couleur des nouveaux fils, zoom, couper le courant) sont dans le cadre sombre du plan, en haut à gauche, dans un cadre semi-transparent (`.ed-stage` > `.ed-ov`). Ils sont posés au-dessus de la zone du schéma, jamais par-dessus, même très dézoomé. Le bouton « Tout effacer » a été retiré : on supprime un élément depuis sa sélection (poubelle rouge). Les boutons n'affichent que leur icône (le texte reste lu par les lecteurs d'écran, et une bulle d'aide apparaît au survol). Sur téléphone, ils tiennent sur deux lignes : les icônes en haut, la couleur et le zoom en dessous.
+Les outils du bac à sable (déplacer, gomme, annuler, copier, coller, zoom, couper le courant) sont dans le cadre sombre du plan, en haut à gauche, dans un cadre semi-transparent (`.ed-stage` > `.ed-ov`). Ils sont posés au-dessus de la zone du schéma, jamais par-dessus, même très dézoomé. Le bouton « Tout effacer » a été retiré : on supprime un élément depuis sa sélection (poubelle rouge). Les boutons n'affichent que leur icône (le texte reste lu par les lecteurs d'écran, et une bulle d'aide apparaît au survol). Sur téléphone, ils tiennent sur une seule ligne. Le choix de couleur des nouveaux fils a été retiré : la couleur est détectée automatiquement (phase, neutre, terre, retour), et on peut toujours la changer pour un fil précis en le sélectionnant.
 
 ## Dupliquer un composant (bac à sable)
 
