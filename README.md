@@ -211,6 +211,10 @@ Sur la page Schémas, il est placé juste après « Circuit suivant », sous le 
 
 Toujours sur une seule ligne, chacun sur une moitié de la largeur, téléphone compris (`.nextbar`, deux colonnes égales). Sur la première page du parcours, « Suivant » reste dans la moitié droite. Sur petit écran, le texte est un peu réduit pour tenir.
 
+## Outils du bac à sable posés sur le plan
+
+Les outils du bac à sable (déplacer, gomme, annuler, copier, coller, couleur des nouveaux fils, zoom, tout effacer, couper le courant) ne sont plus dans une barre au-dessus : ils flottent sur le plan, en haut à gauche, dans un cadre semi-transparent (`.ed-stage` > `.ed-ov`). Les boutons n'affichent que leur icône (le texte reste lu par les lecteurs d'écran, et une bulle d'aide apparaît au survol). Sur téléphone, ils tiennent sur deux lignes : les icônes en haut, la couleur et le zoom en dessous.
+
 ## Version anglaise (bouton FR / EN)
 
 Le site est écrit en français ; l'anglais est une **couche de traduction** posée par-dessus, sans toucher au code des pages.
