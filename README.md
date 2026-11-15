@@ -199,6 +199,14 @@ Sur ordinateur, les menus « Apprendre », « S'entraîner » et « Aller plus l
 
 « Choisis un circuit » montre toujours le circuit sélectionné, y compris après un rechargement de la page (`montrerChoix`, appelée par `simSet` et par `route` une fois la page Schémas affichée) : sur téléphone, il est centré dans la bande qui défile à l'horizontale ; sur ordinateur, la colonne de gauche tient dans la hauteur de l'écran et défile toute seule (`max-height`, `overflow-y:auto`), et elle est ramenée sur le circuit choisi s'il était hors de vue.
 
+## Ponts aux croisements de fils (schéma 2D)
+
+Quand deux fils se croisent sans être reliés, le fil tracé en dernier fait un petit pont en arc de cercle (vers le haut s'il est horizontal, vers la droite s'il est vertical) : `hopPath()` et `segsOf()` juste avant `class Board`, appelés dans `Board._render()`. Les raccordements (points de jonction, bornes) ne font pas de pont : seuls les vrais croisements au milieu de deux segments en font. Valable pour les schémas, l'examen et le bac à sable.
+
+## Bouton « Modifier dans le bac à sable »
+
+Sur la page Schémas, il est placé juste après « Circuit suivant », sous le schéma (`.sim-acts`). Sur le dernier circuit, « Circuit suivant » est masqué et le bouton reste seul.
+
 ## Version anglaise (bouton FR / EN)
 
 Le site est écrit en français ; l'anglais est une **couche de traduction** posée par-dessus, sans toucher au code des pages.

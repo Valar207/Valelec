@@ -344,8 +344,9 @@ details.more[open]>summary::before{content:"−"}
   .dual .v3d{grid-area:v3;aspect-ratio:auto;height:auto;min-height:280px;align-self:stretch}
   .col2d>.ctls{grid-area:ct}.v3d-steps{grid-area:st}.v3d-circ{grid-area:ci;align-self:start}
   .col2d>.mini-legend{grid-area:lg}.v3d-leg{grid-area:l3}
-  #sim-next{grid-area:nx;justify-self:start}
+  .sim-acts{grid-area:nx}
 }
+.sim-acts{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
 .v3d-wrap{display:flex;flex-direction:column;gap:8px;min-width:0}
 .v3d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .v3d-help summary{cursor:pointer;font-weight:600;color:var(--ink-2)}
@@ -889,7 +890,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .col2d.fs>.mini-legend,.col2d.fs .d2-head>span,.col2d.fs .swp{display:none !important}
 .col2d.fs .d2-head{display:flex;align-items:center;gap:10px}
 @media (max-height:500px){.col2d.fs .statusbar{padding-block:6px}.col2d.fs .statusbar .d{display:none}.col2d.fs .statusbar strong{font-size:14px}}
-.col2d.fs>#sim-next{display:none}
+.col2d.fs>.sim-acts{display:none}
 /* plein écran à l'horizontale : le schéma à gauche, les commandes en colonne à droite */
 @media (orientation:landscape){
   .dual .col2d.fs,.col2d.fs{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(190px,24vw);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"h h" "b c";overflow:hidden}
@@ -1351,14 +1352,13 @@ footer nav.row a{display:inline-flex;align-items:center;min-height:32px}
             <li><span class="lsw" style="background:repeating-linear-gradient(90deg,#E0A800 0 5px,transparent 5px 10px)"></span>Courant</li>
             <li><span class="lsw" style="background:#FF6B52;box-shadow:0 0 6px #FF6B52"></span>Sous tension</li>
           </ul>
-          <button class="btn" id="sim-next" type="button" style="justify-content:space-between;border-radius:12px" hidden></button>
+          <div class="sim-acts"><button class="btn" id="sim-next" type="button" style="justify-content:space-between;border-radius:12px" hidden></button><button class="btn" id="sim-open" type="button" style="justify-content:space-between;border-radius:12px">Modifier dans le bac à sable <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></button></div>
         </div><div class="v3d-wrap"><div class="v3d-head"><strong>Vue 3D</strong><details class="v3d-help"><summary>Comment ça marche&nbsp;?</summary><ul><li>Touche un fil : son circuit passe en surbrillance. Touche n’importe où pour revenir.</li><li>Étiquette verte : actionner l’appareil. Étiquette bleue : zoomer dans la boîte.</li><li>Un doigt : te déplacer. Deux doigts : tourner. Pincer : zoomer.</li><li>« Construire pas à pas » : pars du mur vide et ajoute chaque élément avec Suivant.</li><li>Sur trackpad : cliquer-glisser pour te déplacer, deux doigts pour tourner, pincer pour zoomer.</li><li>À la souris : glisser pour te déplacer, molette pour zoomer, Maj + glisser ou clic droit pour tourner.</li></ul></details></div><div class="v3d" id="sim-3d"></div><div class="v3d-steps" id="sim-steps"></div><div class="v3d-circ" id="sim-circ" hidden></div><ul class="mini-legend v3d-leg" aria-label="Légende 3D"><li><span class="lsw" style="background:#d8362a"></span>Phase (rouge ou marron)</li><li><span class="lsw" style="background:#2b6be0"></span>Neutre</li><li><span class="lsw" style="background:repeating-linear-gradient(90deg,#2f9e44 0 5px,#f2c81e 5px 10px)"></span>Terre</li><li><span class="lsw" style="background:#ea8420"></span>Retour</li><li><span class="lsw" style="background:#0d7864"></span>Étiquette verte : à actionner</li><li><span class="lsw" style="background:#2563eb"></span>Étiquette bleue : zoomer dans la boîte</li></ul></div></div>
         </div>
         <div class="info">
           <div class="box"><h2>À retenir</h2><ol id="sim-ret"></ol></div>
           <div class="box inv"><h2>À toi de jouer</h2><p id="sim-try"></p></div>
           <div class="box"><h2>Matériel</h2><ul id="sim-mat"></ul></div>
-          <button class="btn" id="sim-open" type="button" style="justify-content:space-between;border-radius:12px">Modifier dans le bac à sable <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9 H15 M10 4 L15 9 L10 14" class="ico"/></svg></button>
         </div>
       </div>
     </div>
@@ -2755,6 +2755,32 @@ class Circuit {
 /* ---------------- Rendu SVG d’un circuit ---------------- */
 const SVGNS = 'http://www.w3.org/2000/svg';
 let GID = 0;
+/* Pont (petit arc) là où un fil passe par-dessus un fil déjà tracé : segs = segments orthogonaux des fils précédents. */
+function hopPath(pts, segs, r = 6) {
+  let d = 'M' + pts[0].x + ' ' + pts[0].y;
+  for (let i = 1; i < pts.length; i++) {
+    const p = pts[i - 1], q = pts[i], hz = p.y === q.y && p.x !== q.x, vt = p.x === q.x && p.y !== q.y;
+    if (hz || vt) {
+      const sx = Math.sign(q.x - p.x), sy = Math.sign(q.y - p.y), hits = [];
+      segs.forEach((s) => {
+        if (hz && s.v && (s.x - p.x) * sx > r + 1 && (q.x - s.x) * sx > r + 1 && p.y > s.a + 1 && p.y < s.b - 1) hits.push(Math.abs(s.x - p.x));
+        if (vt && s.h && (s.y - p.y) * sy > r + 1 && (q.y - s.y) * sy > r + 1 && p.x > s.a + 1 && p.x < s.b - 1) hits.push(Math.abs(s.y - p.y));
+      });
+      hits.sort((a, b) => a - b);
+      let last = -Infinity;
+      hits.forEach((k) => {
+        if (k - last < 2 * r + 2) return;
+        last = k;
+        const cx = p.x + sx * k, cy = p.y + sy * k, sw = sx > 0 || sy > 0 ? 1 : 0; // arc toujours vers le haut ou vers la droite
+        d += `L${cx - sx * r} ${cy - sy * r}A${r} ${r} 0 0 ${sw} ${cx + sx * r} ${cy + sy * r}`;
+      });
+    }
+    d += 'L' + q.x + ' ' + q.y;
+  }
+  return d;
+}
+const segsOf = (pts) => pts.slice(1).map((q, i) => { const p = pts[i]; return p.y === q.y ? { h: 1, y: p.y, a: Math.min(p.x, q.x), b: Math.max(p.x, q.x) } : p.x === q.x ? { v: 1, x: p.x, a: Math.min(p.y, q.y), b: Math.max(p.y, q.y) } : null; }).filter(Boolean);
+
 class Board {
   constructor(svg, circuit, opts) {
     this.svg = svg; this.C = circuit; this.opts = opts || {}; this.edit = !!this.opts.editable;
@@ -3013,7 +3039,7 @@ class Board {
     let h = '';
     const vb = this.edit ? { x: 0, y: 0, w: ED_W, h: ED_H } : (this.vb || { x: 0, y: 0, w: 800, h: 500 });
     h += `<rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="#111A24"/><rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="url(#${this.gid})" data-bg="1"/>`;
-    const conn = {}, RT = this.routeAll(pos), exLab = [];
+    const conn = {}, RT = this.routeAll(pos), exLab = [], dejaTraces = [];
     C.wires.forEach((w) => {
       conn[w.a] = (conn[w.a] || 0) + 1; conn[w.b] = (conn[w.b] || 0) + 1;
       const A = pos[w.a], B = pos[w.b]; if (!A || !B) return;
@@ -3021,7 +3047,7 @@ class Board {
       const r = res.ws[w.id] || { s: '' };
       const fwd = r.from ? r.from === w.a : true;
       const pts = RT && RT[w.id] ? (fwd ? RT[w.id] : RT[w.id].slice().reverse()) : this.route(A, B, w.flip, fwd);
-      const d = 'M' + pts.map((q) => q.x + ' ' + q.y).join('L');
+      const d = hopPath(pts, dejaTraces); dejaTraces.push(...segsOf(pts));
       const sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === w.id ? ' sel' : '';
       if (sel) { let best = -1; for (let i = 1; i < pts.length; i++) { const l = Math.abs(pts[i].x - pts[i - 1].x) + Math.abs(pts[i].y - pts[i - 1].y); if (l > best) { best = l; selMid = { x: (pts[i].x + pts[i - 1].x) / 2, y: (pts[i].y + pts[i - 1].y) / 2 }; } } }
       const delay = r.s === 'live' ? dLive : dFlow;
