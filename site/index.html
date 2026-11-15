@@ -146,7 +146,9 @@ a.card:hover{border-color:var(--ink);transform:translateY(-2px);color:var(--ink)
 .goals b{font-family:var(--f-display);font-size:19px;letter-spacing:-.01em}
 .goals span{font-size:14px;color:var(--ink-2)}
 @media (max-width:560px){.goals{grid-template-columns:repeat(2,minmax(0,1fr))}.goals a{padding:13px}.goals b{font-size:16px}.goals span{font-size:13px}}
-.nextbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:12px;padding-block:28px}
+.nextbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-block:28px}
+.nextbar a.nx:only-child{grid-column:2}
+@media (max-width:560px){.nextbar{gap:10px}.nextbar a{padding:12px 14px}.nextbar b{font-size:15px;line-height:1.25}}
 .nextbar[hidden]{display:none}
 .nextbar a{display:flex;flex-direction:column;gap:2px;padding:14px 18px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper-2);color:var(--ink);text-decoration:none}
 .nextbar a:hover{border-color:var(--ink);color:var(--ink)}

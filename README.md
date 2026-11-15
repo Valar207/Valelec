@@ -207,6 +207,10 @@ Quand deux fils se croisent sans être reliés, le fil tracé en dernier fait un
 
 Sur la page Schémas, il est placé juste après « Circuit suivant », sous le schéma (`.sim-acts`). Sur le dernier circuit, « Circuit suivant » est masqué et le bouton reste seul.
 
+## Boutons « Précédent / Suivant » en bas de page
+
+Toujours sur une seule ligne, chacun sur une moitié de la largeur, téléphone compris (`.nextbar`, deux colonnes égales). Sur la première page du parcours, « Suivant » reste dans la moitié droite. Sur petit écran, le texte est un peu réduit pour tenir.
+
 ## Version anglaise (bouton FR / EN)
 
 Le site est écrit en français ; l'anglais est une **couche de traduction** posée par-dessus, sans toucher au code des pages.
