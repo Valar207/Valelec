@@ -433,6 +433,8 @@ details.more[open]>summary::before{content:"−"}
 .ed-ov .tool,.ed-ov .btn.sm{min-height:38px;min-width:38px;width:38px;padding:0;gap:0;font-size:0;border-radius:10px}
 .ed-ov .tool svg,.ed-ov .btn.sm svg{width:18px;height:18px}
 .ed-ov .btn.sm span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ed-ov #ed-clear.arm{width:auto;padding:0 10px;gap:6px;font-size:13px}
+.ed-ov #ed-clear.arm span{position:static;width:auto;height:auto;clip:auto}
 .ed-ov .tgroup{padding:0;gap:2px;background:transparent}
 .ed-ov .ov-g{display:flex;align-items:center;gap:2px}
 .ed-ov .selectc{min-height:38px;max-width:132px;padding:0 6px;font-size:12px;background:color-mix(in srgb,var(--paper) 80%,transparent)}
@@ -4713,8 +4715,22 @@ const editor = (() => {
   function duplicate() {
     const c = selComp(); if (!c) return;
     copySel();
+    // la copie se pose sur une place libre à côté (à droite, en dessous…), pas à moitié sur l'original
+    const bx = boxOf(c), W = bx.W + 30, H = bx.H + 30;
+    const libre = (x, y) => C.comps.every((o) => { const b = boxOf(o); return Math.abs(o.x - x) >= (b.W + bx.W) / 2 + 20 || Math.abs(o.y - y) >= (b.H + bx.H) / 2 + 20; });
+    let pos = { x: c.x + W, y: c.y };
+    for (const [dx, dy] of [[W, 0], [0, H], [W, H], [-W, 0], [0, -H], [2 * W, 0], [0, 2 * H], [2 * W, H], [W, 2 * H], [-W, H]]) {
+      const x = c.x + dx, y = c.y + dy;
+      if (x > 30 && x < ED_W - 30 && y > 30 && y < ED_H - 30 && libre(x, y)) { pos = { x, y }; break; }
+    }
     B.ui.place = clip.type; B.ui.clip = clip; B.ui.prot = 0;
-    B.placeAt({ x: c.x + 40, y: c.y + 40 });
+    B.placeAt(pos);
+    const n = C.comps[C.comps.length - 1];
+    flash('Dupliqué : ' + n.ref + ' (copie de ' + c.ref + ').');
+    // montrer la copie : sur téléphone le panneau est sous le plan, on remonte jusqu'au plan
+    const sc = $('#ed-scroll');
+    if (window.matchMedia('(max-width: 1100px)').matches) sc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    sc.scrollTo({ left: n.x * zoom - sc.clientWidth / 2, top: n.y * zoom - sc.clientHeight / 2, behavior: 'smooth' });
   }
   $('#ed-copy').addEventListener('click', () => copySel());
   $('#ed-paste').addEventListener('click', () => {
@@ -4744,8 +4760,9 @@ const editor = (() => {
   let clearArm = false, clearT;
   $('#ed-clear').addEventListener('click', (e) => {
     const b = e.currentTarget;
-    if (!clearArm) { clearArm = true; b.textContent = 'Confirmer l’effacement'; clearT = setTimeout(() => { clearArm = false; b.textContent = 'Tout effacer'; }, 3000); return; }
-    clearTimeout(clearT); clearArm = false; b.textContent = 'Tout effacer';
+    const lab = (s, arm) => { b.querySelector('span').textContent = s; b.title = s; b.classList.toggle('arm', arm); };
+    if (!clearArm) { clearArm = true; lab('Confirmer l’effacement', true); clearT = setTimeout(() => { clearArm = false; lab('Tout effacer', false); }, 3000); return; }
+    clearTimeout(clearT); clearArm = false; lab('Tout effacer', false);
     C.snapshot(); C.comps = []; C.wires = []; C.events = []; B.ui.sel = null; B.ui.pending = null; C.update();
   });
   const exs = [['simple', 'Simple allumage'], ['sonnette', 'Sonnette'], ['vav', 'Va-et-vient'], ['perm', '3 points'], ['tele', 'Télérupteur'], ['minu', 'Minuterie'], ['yokis', 'Yokis · 3 lampes'], ['hc', 'Heures creuses'], ['court', 'Court-circuit']];

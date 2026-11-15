@@ -215,6 +215,10 @@ Toujours sur une seule ligne, chacun sur une moitié de la largeur, téléphone 
 
 Les outils du bac à sable (déplacer, gomme, annuler, copier, coller, couleur des nouveaux fils, zoom, tout effacer, couper le courant) ne sont plus dans une barre au-dessus : ils flottent sur le plan, en haut à gauche, dans un cadre semi-transparent (`.ed-stage` > `.ed-ov`). Les boutons n'affichent que leur icône (le texte reste lu par les lecteurs d'écran, et une bulle d'aide apparaît au survol). Sur téléphone, ils tiennent sur deux lignes : les icônes en haut, la couleur et le zoom en dessous.
 
+## Dupliquer un composant (bac à sable)
+
+« Dupliquer » (panneau du composant sélectionné, ou Ctrl+D) pose la copie sur une place libre juste à côté (à droite, sinon en dessous, etc.), jamais à moitié sur l'original, puis la sélectionne, affiche « Dupliqué : S3 (copie de S2) » et fait défiler le plan jusqu'à elle (sur téléphone, la page remonte jusqu'au plan). Code : `duplicate()` dans la partie bac à sable.
+
 ## Version anglaise (bouton FR / EN)
 
 Le site est écrit en français ; l'anglais est une **couche de traduction** posée par-dessus, sans toucher au code des pages.
